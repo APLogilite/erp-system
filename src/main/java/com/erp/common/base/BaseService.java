@@ -56,7 +56,7 @@ public abstract class BaseService<T extends BaseEntity> {
     T existingEntity =
         findById(id).orElseThrow(() -> new IllegalArgumentException("Entity not found for id: " + id));
     beforeDelete(existingEntity);
-    existingEntity.setIsActive(false);
+    existingEntity.softDelete();
     T deletedEntity = getRepository().save(existingEntity);
     afterDelete(deletedEntity);
   }

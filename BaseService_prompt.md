@@ -1,11 +1,45 @@
 Using PROJECT_RULES.md,
 
-Create a production-ready BaseService class in package: com.erp.common.base
+IMPORTANT CONTEXT (DO NOT IGNORE):
+We already have a BaseEntity class in the system. All entities extend it.
 
-Assume that all entities extend a common BaseEntity class with:
-- UUID id field
-- public UUID getId()
-- Boolean isActive field (soft delete support)
+BaseEntity contains the following structure:
+
+4. UUID primary key:
+   - private UUID id
+   - @Id and @GeneratedValue(strategy = GenerationType.UUID)
+
+5. Audit fields:
+   - private LocalDateTime createdAt
+   - private LocalDateTime updatedAt
+   - private UUID createdBy
+   - private UUID updatedBy
+
+6. Soft delete support:
+   - private Boolean isActive = true
+   - private LocalDateTime deletedAt
+
+7. JPA lifecycle hooks:
+   - @PrePersist:
+       - set createdAt = now
+       - set updatedAt = now
+       - set isActive = true
+   - @PreUpdate:
+       - set updatedAt = now
+
+8. Helper methods:
+   - void softDelete():
+       → set isActive = false
+       → set deletedAt = now
+   - void restore():
+       → set isActive = true
+       → set deletedAt = null
+
+All entities in the system MUST follow this structure.
+
+------------------------------------------------------------
+
+Now create a production-ready BaseService class in package: com.erp.common.base
 
 Requirements:
 
@@ -15,15 +49,18 @@ Requirements:
    BaseService<T extends BaseEntity>
 
 3. Use JpaRepository for persistence:
-   - Define an abstract method:
+   - Define abstract method:
      protected abstract JpaRepository<T, UUID> getRepository();
 
 4. Implement CRUD methods:
 
    READ:
    - List<T> findAll()
+     → MUST return only entities where isActive = true
    - Optional<T> findById(UUID id)
+     → MUST return only if isActive = true
    - T findByIdOrThrow(UUID id)
+     → throw IllegalArgumentException if not found or inactive
 
    CREATE:
    - T create(T entity)
@@ -33,21 +70,20 @@ Requirements:
 
    DELETE (SOFT DELETE ONLY):
    - void delete(UUID id)
-   - Do NOT physically delete records
-   - Instead set entity.isActive = false and persist update
+     → MUST call entity.softDelete()
+     → MUST NOT physically delete from database
 
 5. Transaction management:
-   - Use @Transactional(readOnly = true) for read methods
-   - Use @Transactional for create, update, delete
+   - @Transactional(readOnly = true) for read methods
+   - @Transactional for create, update, delete
 
 6. Validation rules:
-   - For update and delete:
-     - Fetch entity using findById
-     - Throw IllegalArgumentException if not found
-   - Only consider records where isActive = true in normal find operations
-   - Do NOT use existsById (avoid extra DB calls)
+   - For update/delete:
+     - fetch entity using findById
+     - throw IllegalArgumentException if not found
+   - Do NOT use existsById
 
-7. Lifecycle hook methods (empty by default):
+7. Lifecycle hook methods:
 
    CREATE:
    - protected void beforeCreate(T entity)
@@ -70,23 +106,22 @@ Requirements:
    fetch existing → beforeUpdate(new, existing) → save → afterUpdate
 
    DELETE:
-   fetch existing → beforeDelete → set isActive=false → save → afterDelete
+   fetch existing → beforeDelete → softDelete → save → afterDelete
 
-9. Coding best practices:
+9. Coding rules:
    - Use Optional properly
    - Do not expose repository outside
-   - Keep class clean and reusable
    - Avoid redundant DB calls
-   - Follow clean architecture
-   - Ensure soft deleted records are not returned in normal findAll/findById
+   - Follow clean architecture strictly
+   - Always respect isActive = true in read operations
 
 10. Exception handling:
-   - Use IllegalArgumentException for "not found" cases
-   - Do NOT use generic RuntimeException
+   - Use IllegalArgumentException for not found or inactive entities
+   - Do NOT use RuntimeException
 
-11. Do NOT add any business logic
+11. Do NOT add business logic
 
-12. Add all necessary imports and annotations
+12. Add all required imports and annotations
 
-Goal:
-This BaseService must be reusable across all modules (Product, User, etc.), enforce a consistent UUID-based identity via BaseEntity, support soft delete using isActive flag, and provide clean lifecycle hooks for extensibility.
+GOAL:
+This BaseService must strictly align with the existing BaseEntity structure, enforce soft delete behavior, ensure UUID-based identity consistency, and provide reusable lifecycle hooks across all ERP modules without changing the architecture.
