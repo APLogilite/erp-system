@@ -1,41 +1,35 @@
-package com.erp.modules.product.entity;
+package com.erp.modules.product.dto;
 
-import com.erp.common.base.BaseEntity;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
-import jakarta.persistence.Column;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.PositiveOrZero;
+import java.time.LocalDateTime;
+import java.util.UUID;
 
 /**
- * Product entity (Odoo-inspired product.product).
+ * Product Response DTO.
  */
-@Entity
-@Table(name = "products")
-public class Product extends BaseEntity {
+public class ProductResponseDTO {
 
-    @NotNull
-    @Column(nullable = false)
+    private UUID id;
     private String name;
-
-    @Column(unique = true, nullable = false)
     private String sku;
-
     private String description;
-
     private String category;
-
-    private String uom; // unit of measure
-
-    private String type; // STOCKABLE / SERVICE
-
-    @PositiveOrZero
+    private String uom;
+    private String type;
     private Double costPrice;
-
-    @PositiveOrZero
     private Double salePrice;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
+    private Boolean isActive;
 
     // Getters and setters
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
     public String getName() {
         return name;
     }
@@ -98,5 +92,29 @@ public class Product extends BaseEntity {
 
     public void setSalePrice(Double salePrice) {
         this.salePrice = salePrice;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    public Boolean getIsActive() {
+        return isActive;
+    }
+
+    public void setIsActive(Boolean isActive) {
+        this.isActive = isActive;
     }
 }

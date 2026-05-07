@@ -1,33 +1,26 @@
-package com.erp.modules.product.entity;
+package com.erp.modules.product.dto;
 
-import com.erp.common.base.BaseEntity;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
-import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
 
 /**
- * Product entity (Odoo-inspired product.product).
+ * Product Request DTO.
  */
-@Entity
-@Table(name = "products")
-public class Product extends BaseEntity {
+public class ProductRequestDTO {
 
     @NotNull
-    @Column(nullable = false)
     private String name;
 
-    @Column(unique = true, nullable = false)
+    @NotNull
     private String sku;
 
     private String description;
 
     private String category;
 
-    private String uom; // unit of measure
+    private String uom;
 
-    private String type; // STOCKABLE / SERVICE
+    private String type;
 
     @PositiveOrZero
     private Double costPrice;

@@ -17,7 +17,7 @@
 - users
 - product
 - inventory
-- sales
+- order
 
 ## Structure:
 
@@ -31,4 +31,4 @@ com.erp
       ├── users/
       ├── product/
       ├── inventory/
-      ├── sales/
+      ├── order/

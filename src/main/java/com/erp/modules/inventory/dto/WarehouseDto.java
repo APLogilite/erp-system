@@ -1,20 +1,10 @@
-package com.erp.modules.inventory.entity;
-
-import com.erp.common.base.BaseEntity;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
-import jakarta.persistence.Column;
+package com.erp.modules.inventory.dto;
 
 /**
- * Warehouse entity.
+ * Warehouse DTO.
  */
-@Entity
-@Table(name = "warehouses")
-public class Warehouse extends BaseEntity {
-
-    @Column(nullable = false)
+public class WarehouseDto {
     private String name;
-
     private String location;
 
     // Getters and setters

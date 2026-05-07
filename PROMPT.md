@@ -4,7 +4,7 @@ Create a Spring Boot project structure for an ERP system.
 
 Requirements:
 - Base package: com.erp
-- Create modules: auth, users, product, inventory, sales
+- Create modules: auth, users, product, inventory, order
 - Each module must include:
   - controller/
   - service/

@@ -3,7 +3,7 @@
 Modular ERP system built with Spring Boot and React, designed for scalability, AI-assisted development, and future mobile integration.
 
 ## Features
-- Modular architecture (Auth, Product, Inventory, Sales)
+- Modular architecture (Auth, Product, Inventory, Order)
 - REST API based backend
 - PostgreSQL database
 - AI-assisted development workflow
