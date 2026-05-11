@@ -42,7 +42,7 @@ public class ProductController {
 
   @GetMapping("/{id}")
   public ResponseEntity<ProductResponseDTO> getProduct(@PathVariable UUID id) {
-    Product product = productService.findById(id);
+    Product product = productService.findById(id).orElseThrow(() -> new RuntimeException("Product not found"));
     if (!product.getIsActive()) {
       return ResponseEntity.notFound().build();
     }
@@ -52,8 +52,16 @@ public class ProductController {
 
   @PutMapping("/{id}")
   public ResponseEntity<ProductResponseDTO> updateProduct(@PathVariable UUID id, @RequestBody ProductRequestDTO dto) {
-    Product product = mapToEntity(dto);
-    Product updated = productService.update(id, product);
+    Product existing = productService.findById(id).orElseThrow(() -> new RuntimeException("Product not found"));
+    existing.setName(dto.getName());
+    existing.setSku(dto.getSku());
+    existing.setDescription(dto.getDescription());
+    existing.setCategory(dto.getCategory());
+    existing.setUom(dto.getUom());
+    existing.setType(dto.getType());
+    existing.setCostPrice(dto.getCostPrice());
+    existing.setSalePrice(dto.getSalePrice());
+    Product updated = productService.update(existing);
     ProductResponseDTO response = mapToResponse(updated);
     return ResponseEntity.ok(response);
   }

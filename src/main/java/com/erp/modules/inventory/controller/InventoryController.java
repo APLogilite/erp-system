@@ -55,7 +55,7 @@ public class InventoryController {
 
   @GetMapping("/warehouses/{id}")
   public ResponseEntity<Warehouse> getWarehouse(@PathVariable UUID id) {
-    Warehouse warehouse = warehouseService.findById(id);
+    Warehouse warehouse = warehouseService.findById(id).orElseThrow(() -> new RuntimeException("Warehouse not found"));
     return ResponseEntity.ok(warehouse);
   }
 
@@ -70,10 +70,10 @@ public class InventoryController {
 
   @PutMapping("/warehouses/{id}")
   public ResponseEntity<Warehouse> updateWarehouse(@PathVariable UUID id, @RequestBody WarehouseDto dto) {
-    Warehouse warehouse = warehouseService.findById(id);
+    Warehouse warehouse = warehouseService.findById(id).orElseThrow(() -> new RuntimeException("Warehouse not found"));
     warehouse.setName(dto.getName());
     warehouse.setLocation(dto.getLocation());
-    Warehouse updated = warehouseService.update(id, warehouse);
+    Warehouse updated = warehouseService.update(warehouse);
     return ResponseEntity.ok(updated);
   }
 

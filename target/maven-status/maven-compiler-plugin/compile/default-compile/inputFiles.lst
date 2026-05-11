@@ -1,8 +1,10 @@
 /mnt/EXT_LL1/erp-system/src/main/java/com/erp/ErpApplication.java
+/mnt/EXT_LL1/erp-system/src/main/java/com/erp/codegen/CodeGenerator.java
 /mnt/EXT_LL1/erp-system/src/main/java/com/erp/common/base/BaseEntity.java
 /mnt/EXT_LL1/erp-system/src/main/java/com/erp/common/base/BaseService.java
 /mnt/EXT_LL1/erp-system/src/main/java/com/erp/common/utils/UuidUtils.java
 /mnt/EXT_LL1/erp-system/src/main/java/com/erp/config/ApiVersionConfig.java
+/mnt/EXT_LL1/erp-system/src/main/java/com/erp/config/DatabaseConfig.java
 /mnt/EXT_LL1/erp-system/src/main/java/com/erp/modules/auth/controller/AuthController.java
 /mnt/EXT_LL1/erp-system/src/main/java/com/erp/modules/auth/dto/AuthDto.java
 /mnt/EXT_LL1/erp-system/src/main/java/com/erp/modules/auth/entity/AuthEntity.java
@@ -12,10 +14,8 @@
 /mnt/EXT_LL1/erp-system/src/main/java/com/erp/modules/inventory/dto/InventoryDto.java
 /mnt/EXT_LL1/erp-system/src/main/java/com/erp/modules/inventory/dto/StockMovementDto.java
 /mnt/EXT_LL1/erp-system/src/main/java/com/erp/modules/inventory/dto/WarehouseDto.java
-/mnt/EXT_LL1/erp-system/src/main/java/com/erp/modules/inventory/entity/InventoryEntity.java
 /mnt/EXT_LL1/erp-system/src/main/java/com/erp/modules/inventory/entity/StockMovement.java
 /mnt/EXT_LL1/erp-system/src/main/java/com/erp/modules/inventory/entity/Warehouse.java
-/mnt/EXT_LL1/erp-system/src/main/java/com/erp/modules/inventory/repository/InventoryRepository.java
 /mnt/EXT_LL1/erp-system/src/main/java/com/erp/modules/inventory/repository/StockMovementRepository.java
 /mnt/EXT_LL1/erp-system/src/main/java/com/erp/modules/inventory/repository/WarehouseRepository.java
 /mnt/EXT_LL1/erp-system/src/main/java/com/erp/modules/inventory/service/InventoryService.java
@@ -36,7 +36,6 @@
 /mnt/EXT_LL1/erp-system/src/main/java/com/erp/modules/product/dto/ProductRequestDTO.java
 /mnt/EXT_LL1/erp-system/src/main/java/com/erp/modules/product/dto/ProductResponseDTO.java
 /mnt/EXT_LL1/erp-system/src/main/java/com/erp/modules/product/entity/Product.java
-/mnt/EXT_LL1/erp-system/src/main/java/com/erp/modules/product/entity/ProductEntity.java
 /mnt/EXT_LL1/erp-system/src/main/java/com/erp/modules/product/repository/ProductRepository.java
 /mnt/EXT_LL1/erp-system/src/main/java/com/erp/modules/product/service/ProductService.java
 /mnt/EXT_LL1/erp-system/src/main/java/com/erp/modules/users/controller/UserController.java

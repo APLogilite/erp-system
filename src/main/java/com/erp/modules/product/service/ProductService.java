@@ -31,10 +31,12 @@ public class ProductService extends BaseService<Product> {
   }
 
   @Override
-  protected void beforeUpdate(UUID id, Product entity) {
-    Optional<Product> existing = productRepository.findBySku(entity.getSku());
-    if (existing.isPresent() && !existing.get().getId().equals(id)) {
-      throw new IllegalArgumentException("SKU must be unique");
+  protected void beforeUpdate(Product newEntity, Product existingEntity) {
+    if (!newEntity.getSku().equals(existingEntity.getSku())) {
+      Optional<Product> existingWithSku = productRepository.findBySku(newEntity.getSku());
+      if (existingWithSku.isPresent() && !existingWithSku.get().getId().equals(newEntity.getId())) {
+        throw new IllegalArgumentException("SKU must be unique");
+      }
     }
   }
 
