@@ -16,6 +16,12 @@ Thumbs.db
 
 # Build artifacts
 target/
+backend/target/
+frontend/dist/
+frontend/node_modules/
+frontend/.vite/
+frontend/.local/
+frontend/.env*
 *.jar
 *.war
 *.ear
