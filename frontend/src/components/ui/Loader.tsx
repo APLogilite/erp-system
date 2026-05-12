@@ -6,11 +6,7 @@ type LoaderProps = {
   fullScreen?: boolean;
 };
 
-export function Loader({
-  size = 40,
-  message = 'Loading...',
-  fullScreen = false,
-}: LoaderProps) {
+export function Loader({ size = 40, message = 'Loading...', fullScreen = false }: LoaderProps) {
   const content = (
     <Box
       sx={{

@@ -1,8 +1,9 @@
-import { ReactNode } from 'react';
 import { Box } from '@mui/material';
-import { Sidebar } from '../Sidebar';
-import { Header } from '../Header';
+import { ReactNode } from 'react';
+
 import { ContentArea } from '../ContentArea';
+import { Header } from '../Header';
+import { Sidebar } from '../Sidebar';
 
 type AppLayoutProps = {
   children: ReactNode;
@@ -16,9 +17,7 @@ export function AppLayout({ children, mobileOpen = false, onMobileClose }: AppLa
       <Sidebar mobileOpen={mobileOpen} onMobileClose={onMobileClose} />
       <Box sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
         <Header onMobileMenuToggle={onMobileClose} />
-        <ContentArea>
-          {children}
-        </ContentArea>
+        <ContentArea>{children}</ContentArea>
       </Box>
     </Box>
   );

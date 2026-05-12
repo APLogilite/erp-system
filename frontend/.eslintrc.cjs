@@ -5,13 +5,13 @@ module.exports = {
     ecmaVersion: 2022,
     sourceType: 'module',
     ecmaFeatures: {
-      jsx: true
-    }
+      jsx: true,
+    },
   },
   env: {
     browser: true,
     node: true,
-    es2022: true
+    es2022: true,
   },
   extends: [
     'eslint:recommended',
@@ -20,16 +20,16 @@ module.exports = {
     'plugin:@typescript-eslint/recommended',
     'plugin:import/recommended',
     'plugin:import/typescript',
-    'plugin:prettier/recommended'
+    'plugin:prettier/recommended',
   ],
   plugins: ['react', 'react-hooks', '@typescript-eslint', 'import', 'prettier'],
   settings: {
     react: {
-      version: 'detect'
+      version: 'detect',
     },
     'import/resolver': {
-      typescript: {}
-    }
+      typescript: {},
+    },
   },
   rules: {
     'prettier/prettier': 'error',
@@ -40,10 +40,10 @@ module.exports = {
       {
         groups: ['builtin', 'external', 'internal', 'parent', 'sibling', 'index'],
         'newlines-between': 'always',
-        alphabetize: { order: 'asc', caseInsensitive: true }
-      }
+        alphabetize: { order: 'asc', caseInsensitive: true },
+      },
     ],
     'import/no-unresolved': 'error',
-    'no-unused-vars': 'off'
-  }
+    'no-unused-vars': 'off',
+  },
 };

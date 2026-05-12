@@ -1,3 +1,4 @@
+import { Menu as MenuIcon, Brightness4, Brightness7 } from '@mui/icons-material';
 import {
   AppBar,
   Toolbar,
@@ -7,11 +8,7 @@ import {
   useTheme,
   useMediaQuery,
 } from '@mui/material';
-import {
-  Menu as MenuIcon,
-  Brightness4,
-  Brightness7,
-} from '@mui/icons-material';
+
 import { useTheme as useAppTheme } from '@/app/providers/ThemeProvider';
 
 type HeaderProps = {
@@ -61,11 +58,7 @@ export function Header({ onMobileMenuToggle, title = 'ERP System' }: HeaderProps
         </Typography>
 
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-          <IconButton
-            color="inherit"
-            onClick={toggleTheme}
-            aria-label="toggle theme"
-          >
+          <IconButton color="inherit" onClick={toggleTheme} aria-label="toggle theme">
             {mode === 'dark' ? <Brightness7 /> : <Brightness4 />}
           </IconButton>
         </Box>

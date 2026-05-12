@@ -8,10 +8,10 @@ export default ({ mode }) => {
   return defineConfig({
     plugins: [react()],
     resolve: {
-      alias: [{ find: '@', replacement: path.resolve(__dirname, 'src') }]
+      alias: [{ find: '@', replacement: path.resolve(__dirname, 'src') }],
     },
     server: {
-      port: Number(process.env.VITE_PORT) || 5173
-    }
+      port: Number(process.env.VITE_PORT) || 5173,
+    },
   });
 };

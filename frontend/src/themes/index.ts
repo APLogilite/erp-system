@@ -1,6 +1,7 @@
 import { Theme } from '@mui/material/styles';
-import { lightTheme } from './lightTheme';
+
 import { darkTheme } from './darkTheme';
+import { lightTheme } from './lightTheme';
 
 export type ThemeMode = 'light' | 'dark';
 

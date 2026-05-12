@@ -1,6 +1,7 @@
 # Developer Task Breakdown — Dynamic ERP Frontend Runtime
 
 References:
+
 - docs/planning/project-rules.md
 - docs/backend/order-module-prompt.md
 - docs/backend/inventory-module-prompt.md
@@ -171,14 +172,14 @@ T1 → T2 → T3
 
 Minimum viable ERP runtime should include:
 
-* Dynamic forms
-* Dynamic grids
-* CRUD support
-* Relations
-* Permissions
-* Workflow transitions
-* Metadata rendering
-* Dynamic menus
-* Runtime routing
+- Dynamic forms
+- Dynamic grids
+- CRUD support
+- Relations
+- Permissions
+- Workflow transitions
+- Metadata rendering
+- Dynamic menus
+- Runtime routing
 
 Everything else can come later.

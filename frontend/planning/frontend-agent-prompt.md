@@ -16,15 +16,15 @@ You must fully implement all requirements below.
 
 Create the foundational frontend workspace that establishes:
 
-* scalable architecture
-* strict TypeScript standards
-* enterprise folder organization
-* development tooling
-* linting + formatting
-* Git commit protections
-* routing foundation
-* environment management
-* maintainable developer workflow
+- scalable architecture
+- strict TypeScript standards
+- enterprise folder organization
+- development tooling
+- linting + formatting
+- Git commit protections
+- routing foundation
+- environment management
+- maintainable developer workflow
 
 This setup will serve as the base platform for all future ERP modules.
 
@@ -72,9 +72,9 @@ npm create vite@latest dynamic-erp -- --template react-ts
 
 ## Requirements
 
-* Ensure application starts successfully
-* Ensure Vite dev server works
-* Ensure TypeScript compilation works
+- Ensure application starts successfully
+- Ensure Vite dev server works
+- Ensure TypeScript compilation works
 
 ## Validation
 
@@ -86,8 +86,8 @@ pnpm dev
 
 Expected:
 
-* Browser opens successfully
-* React app loads correctly
+- Browser opens successfully
+- React app loads correctly
 
 ---
 
@@ -130,9 +130,9 @@ src/
 
 ## Requirements
 
-* Maintain clean modular separation
-* Avoid feature chaos
-* Follow enterprise architecture conventions
+- Maintain clean modular separation
+- Avoid feature chaos
+- Follow enterprise architecture conventions
 
 ---
 
@@ -155,8 +155,8 @@ Enable:
 
 ## Requirements
 
-* Invalid types must fail compilation
-* Strict enterprise type safety enforced
+- Invalid types must fail compilation
+- Strict enterprise type safety enforced
 
 ## Validation
 
@@ -182,8 +182,8 @@ Setup aliases for:
 
 ## Update
 
-* `vite.config.ts`
-* `tsconfig.json`
+- `vite.config.ts`
+- `tsconfig.json`
 
 ## Example
 
@@ -197,8 +197,8 @@ Setup aliases for:
 
 ## Requirements
 
-* Aliases must resolve correctly
-* No relative import hell
+- Aliases must resolve correctly
+- No relative import hell
 
 ## Validation
 
@@ -216,26 +216,26 @@ Install and configure ESLint with enterprise rules.
 
 ## Required Packages
 
-* eslint
-* typescript-eslint
-* eslint-plugin-react
-* eslint-plugin-import
-* eslint-plugin-react-hooks
+- eslint
+- typescript-eslint
+- eslint-plugin-react
+- eslint-plugin-import
+- eslint-plugin-react-hooks
 
 ## Rules
 
 Enforce:
 
-* no unused vars
-* import ordering
-* consistent type imports
-* React hooks rules
-* TypeScript best practices
+- no unused vars
+- import ordering
+- consistent type imports
+- React hooks rules
+- TypeScript best practices
 
 ## Requirements
 
-* lint command passes
-* invalid code flagged properly
+- lint command passes
+- invalid code flagged properly
 
 ## Validation
 
@@ -253,15 +253,15 @@ Configure Prettier.
 
 ## Enforce
 
-* semicolons
-* single quotes
-* trailing commas
-* consistent line width
+- semicolons
+- single quotes
+- trailing commas
+- consistent line width
 
 ## Requirements
 
-* formatting automated
-* style consistency enforced
+- formatting automated
+- style consistency enforced
 
 ## Validation
 
@@ -273,7 +273,7 @@ pnpm prettier --write .
 
 Expected:
 
-* files formatted consistently
+- files formatted consistently
 
 ---
 
@@ -285,12 +285,12 @@ Configure Git hooks.
 
 Before commit automatically run:
 
-* lint
-* typecheck
+- lint
+- typecheck
 
 ## Requirements
 
-* broken code cannot be committed
+- broken code cannot be committed
 
 ## Validation
 
@@ -317,14 +317,14 @@ VITE_APP_NAME=
 
 ## Requirements
 
-* environment variables accessible through Vite
+- environment variables accessible through Vite
 
 ## Validation
 
 This must work:
 
 ```ts
-import.meta.env.VITE_API_URL
+import.meta.env.VITE_API_URL;
 ```
 
 ---
@@ -335,15 +335,15 @@ Create scalable root application architecture.
 
 ## Implement
 
-* AppProviders
-* RouterProvider
-* ErrorBoundary placeholder
-* Theme placeholder
+- AppProviders
+- RouterProvider
+- ErrorBoundary placeholder
+- Theme placeholder
 
 ## Requirements
 
-* providers centralized
-* app composition clean and scalable
+- providers centralized
+- app composition clean and scalable
 
 ---
 
@@ -353,14 +353,14 @@ Install React Router.
 
 Create:
 
-* route placeholders
-* layout placeholders
-* dashboard route
+- route placeholders
+- layout placeholders
+- dashboard route
 
 ## Requirements
 
-* routing operational
-* future dynamic routing supported
+- routing operational
+- future dynamic routing supported
 
 ## Validation
 
@@ -466,28 +466,28 @@ The AI agent must provide:
 
 You MUST follow these standards:
 
-* enterprise-grade scalability
-* modular architecture
-* strict typing
-* maintainable structure
-* clean code principles
-* low coupling
-* high cohesion
-* future extensibility
-* production readiness
+- enterprise-grade scalability
+- modular architecture
+- strict typing
+- maintainable structure
+- clean code principles
+- low coupling
+- high cohesion
+- future extensibility
+- production readiness
 
 ---
 
 # IMPORTANT IMPLEMENTATION RULES
 
-* Prefer composition over monoliths
-* Keep folders responsibility-driven
-* Avoid premature business logic
-* Create placeholders where future systems will integrate
-* Keep architecture extensible for metadata-driven ERP runtime
-* Use modern React patterns
-* Use functional components only
-* Avoid unnecessary dependencies
+- Prefer composition over monoliths
+- Keep folders responsibility-driven
+- Avoid premature business logic
+- Create placeholders where future systems will integrate
+- Keep architecture extensible for metadata-driven ERP runtime
+- Use modern React patterns
+- Use functional components only
+- Avoid unnecessary dependencies
 
 ---
 
@@ -499,7 +499,7 @@ The result should be:
 Enterprise-ready React + TypeScript frontend foundation for Dynamic ERP platform
 ```
 
------------------------------------------------- ------------------------------------------------ 
+---
 
 # AI AGENT PROMPT — T2 Enterprise UI Framework Setup
 
@@ -517,15 +517,15 @@ This task builds on top of the existing T1 frontend foundation.
 
 Create the complete UI foundation layer for the ERP runtime including:
 
-* enterprise application shell
-* responsive navigation
-* centralized theme system
-* dark/light mode
-* reusable layout architecture
-* page container standards
-* loading/error states
-* routing integration
-* scalable design system
+- enterprise application shell
+- responsive navigation
+- centralized theme system
+- dark/light mode
+- reusable layout architecture
+- page container standards
+- loading/error states
+- routing integration
+- scalable design system
 
 This foundation will be reused across all ERP modules.
 
@@ -570,9 +570,9 @@ pnpm add @fontsource/inter
 
 ## Requirements
 
-* no dependency conflicts
-* application builds successfully
-* MUI fully operational
+- no dependency conflicts
+- application builds successfully
+- MUI fully operational
 
 ## Validation
 
@@ -614,12 +614,12 @@ src/themes/
 
 Theme architecture must support:
 
-* light mode
-* dark mode
-* future tenant branding
-* runtime customization
-* component overrides
-* scalable design tokens
+- light mode
+- dark mode
+- future tenant branding
+- runtime customization
+- component overrides
+- scalable design tokens
 
 ---
 
@@ -628,27 +628,27 @@ Theme architecture must support:
 Create theme factory:
 
 ```ts
-createAppTheme(mode)
+createAppTheme(mode);
 ```
 
 Theme should centralize:
 
-* palette
-* typography
-* spacing
-* shadows
-* border radius
-* z-indexes
-* breakpoints
-* component overrides
+- palette
+- typography
+- spacing
+- shadows
+- border radius
+- z-indexes
+- breakpoints
+- component overrides
 
 ---
 
 # ACCEPTANCE CRITERIA
 
-* no inline hardcoded styling patterns
-* theme fully centralized
-* dark/light switching supported globally
+- no inline hardcoded styling patterns
+- theme fully centralized
+- dark/light switching supported globally
 
 ---
 
@@ -674,24 +674,24 @@ Create enterprise typography standards.
 
 Define typography system for:
 
-* headings
-* body text
-* captions
-* labels
-* table text
-* monospace/code text
+- headings
+- body text
+- captions
+- labels
+- table text
+- monospace/code text
 
 Recommended font:
 
-* Inter
+- Inter
 
 ---
 
 # ACCEPTANCE CRITERIA
 
-* typography globally consistent
-* reusable typography scales
-* responsive readability maintained
+- typography globally consistent
+- reusable typography scales
+- responsive readability maintained
 
 ---
 
@@ -713,19 +713,19 @@ src/app/AppProviders.tsx
 
 AppProviders must include:
 
-* ThemeProvider
-* CssBaseline
-* ThemeMode context/provider
-* future provider placeholders
-* notification provider placeholder
+- ThemeProvider
+- CssBaseline
+- ThemeMode context/provider
+- future provider placeholders
+- notification provider placeholder
 
 ---
 
 # ACCEPTANCE CRITERIA
 
-* global styles applied
-* theme accessible globally
-* providers cleanly composed
+- global styles applied
+- theme accessible globally
+- providers cleanly composed
 
 ---
 
@@ -758,13 +758,13 @@ src/components/layouts/
 
 Layout must support:
 
-* sidebar navigation
-* top header
-* content area
-* isolated content scrolling
-* responsive collapse behavior
-* future dynamic menu loading
-* future plugin injection zones
+- sidebar navigation
+- top header
+- content area
+- isolated content scrolling
+- responsive collapse behavior
+- future dynamic menu loading
+- future plugin injection zones
 
 ---
 
@@ -783,9 +783,9 @@ Layout must support:
 
 # ACCEPTANCE CRITERIA
 
-* responsive layout operational
-* shell reusable globally
-* layout scalable for ERP complexity
+- responsive layout operational
+- shell reusable globally
+- layout scalable for ERP complexity
 
 ---
 
@@ -811,23 +811,23 @@ Build scalable ERP navigation system.
 
 Sidebar must support:
 
-* nested menus
-* menu groups
-* icons
-* collapse mode
-* active route highlighting
-* mobile drawer behavior
-* future permission-based rendering
-* future favorites/recent items
-* future plugin menus
+- nested menus
+- menu groups
+- icons
+- collapse mode
+- active route highlighting
+- mobile drawer behavior
+- future permission-based rendering
+- future favorites/recent items
+- future plugin menus
 
 ---
 
 # ACCEPTANCE CRITERIA
 
-* navigation state maintained
-* responsive behavior works
-* active routes highlighted correctly
+- navigation state maintained
+- responsive behavior works
+- active routes highlighted correctly
 
 ---
 
@@ -861,20 +861,20 @@ Build reusable topbar/header.
 
 Header must support:
 
-* page title
-* breadcrumb placeholder
-* theme toggle
-* notifications placeholder
-* profile menu placeholder
-* future global search placeholder
+- page title
+- breadcrumb placeholder
+- theme toggle
+- notifications placeholder
+- profile menu placeholder
+- future global search placeholder
 
 ---
 
 # ACCEPTANCE CRITERIA
 
-* reusable globally
-* responsive layout
-* clean enterprise spacing
+- reusable globally
+- responsive layout
+- clean enterprise spacing
 
 ---
 
@@ -900,20 +900,20 @@ Create runtime theme switching.
 
 Initial implementation:
 
-* local React state/context
+- local React state/context
 
 Future-ready for:
 
-* Zustand persistence
-* localStorage persistence
+- Zustand persistence
+- localStorage persistence
 
 ---
 
 # ACCEPTANCE CRITERIA
 
-* instant theme switching
-* no page reload required
-* entire UI updates dynamically
+- instant theme switching
+- no page reload required
+- entire UI updates dynamically
 
 ---
 
@@ -947,20 +947,20 @@ src/components/layouts/PageContainer
 
 PageContainer must support:
 
-* title
-* subtitle
-* breadcrumbs placeholder
-* actions area
-* toolbar placeholder
-* tabs placeholder
-* consistent content padding
+- title
+- subtitle
+- breadcrumbs placeholder
+- actions area
+- toolbar placeholder
+- tabs placeholder
+- consistent content padding
 
 ---
 
 # ACCEPTANCE CRITERIA
 
-* all pages visually consistent
-* reusable page composition pattern
+- all pages visually consistent
+- reusable page composition pattern
 
 ---
 
@@ -974,18 +974,18 @@ Verify layout architecture.
 
 Create dashboard page containing:
 
-* sample metric cards
-* sample widgets
-* responsive grid
-* placeholder ERP widgets
+- sample metric cards
+- sample widgets
+- responsive grid
+- placeholder ERP widgets
 
 ---
 
 # ACCEPTANCE CRITERIA
 
-* dashboard renders correctly
-* responsive behavior verified
-* layout shell integration verified
+- dashboard renders correctly
+- responsive behavior verified
+- layout shell integration verified
 
 ---
 
@@ -1011,20 +1011,20 @@ Centralize spacing and sizing standards.
 
 Define centralized tokens for:
 
-* spacing scale
-* border radius
-* shadows
-* z-indexes
-* layout widths
-* sidebar widths
-* header heights
+- spacing scale
+- border radius
+- shadows
+- z-indexes
+- layout widths
+- sidebar widths
+- header heights
 
 ---
 
 # ACCEPTANCE CRITERIA
 
-* no arbitrary spacing values
-* design system fully centralized
+- no arbitrary spacing values
+- design system fully centralized
 
 ---
 
@@ -1050,16 +1050,16 @@ Prepare reusable UX states.
 
 Components must be:
 
-* reusable globally
-* theme-aware
-* visually consistent
-* accessible
+- reusable globally
+- theme-aware
+- visually consistent
+- accessible
 
 ---
 
 # ACCEPTANCE CRITERIA
 
-* shared UX states standardized
+- shared UX states standardized
 
 ---
 
@@ -1073,20 +1073,20 @@ Prepare future runtime notifications.
 
 Setup architecture for:
 
-* snackbar provider
-* global toast API
-* future centralized notifications
+- snackbar provider
+- global toast API
+- future centralized notifications
 
 Recommended:
 
-* notistack OR MUI Snackbar
+- notistack OR MUI Snackbar
 
 ---
 
 # ACCEPTANCE CRITERIA
 
-* notification API callable globally
-* provider architecture prepared
+- notification API callable globally
+- provider architecture prepared
 
 ---
 
@@ -1100,17 +1100,17 @@ Prevent runtime crashes.
 
 Create:
 
-* ErrorBoundary
-* fallback UI
-* error logging placeholder
-* retry action placeholder
+- ErrorBoundary
+- fallback UI
+- error logging placeholder
+- retry action placeholder
 
 ---
 
 # ACCEPTANCE CRITERIA
 
-* application survives component crashes
-* graceful fallback UI shown
+- application survives component crashes
+- graceful fallback UI shown
 
 ---
 
@@ -1149,16 +1149,16 @@ Public routes must remain outside shell.
 
 Prepare architecture for future:
 
-* auth guards
-* permissions
-* role-based layouts
+- auth guards
+- permissions
+- role-based layouts
 
 ---
 
 # ACCEPTANCE CRITERIA
 
-* layout wraps app routes correctly
-* public routes excluded from shell
+- layout wraps app routes correctly
+- public routes excluded from shell
 
 ---
 
@@ -1166,29 +1166,29 @@ Prepare architecture for future:
 
 You MUST follow:
 
-* enterprise scalability
-* modular architecture
-* strict typing
-* reusable composition
-* clean code principles
-* low coupling
-* high cohesion
-* responsive-first design
-* accessibility best practices
-* future extensibility
+- enterprise scalability
+- modular architecture
+- strict typing
+- reusable composition
+- clean code principles
+- low coupling
+- high cohesion
+- responsive-first design
+- accessibility best practices
+- future extensibility
 
 ---
 
 # IMPORTANT IMPLEMENTATION RULES
 
-* Use functional React components only
-* Prefer composition over inheritance
-* Avoid hardcoded values
-* Use theme tokens everywhere
-* Avoid inline styling when reusable styles belong in theme/system
-* Keep all UI runtime-ready for metadata-driven rendering
-* Prepare placeholders for future runtime engine integrations
-* Keep components responsibility-driven
+- Use functional React components only
+- Prefer composition over inheritance
+- Avoid hardcoded values
+- Use theme tokens everywhere
+- Avoid inline styling when reusable styles belong in theme/system
+- Keep all UI runtime-ready for metadata-driven rendering
+- Prepare placeholders for future runtime engine integrations
+- Keep components responsibility-driven
 
 ---
 

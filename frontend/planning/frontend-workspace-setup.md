@@ -6,11 +6,11 @@ Create a scalable enterprise-grade frontend foundation for the dynamic ERP runti
 
 This task establishes:
 
-* project structure
-* code standards
-* build tooling
-* TypeScript architecture
-* developer workflow
+- project structure
+- code standards
+- build tooling
+- TypeScript architecture
+- developer workflow
 
 This is the base for everything else.
 
@@ -78,9 +78,9 @@ npm create vite@latest dynamic-erp -- --template react-ts
 
 ## Acceptance Criteria
 
-* project runs successfully
-* TypeScript compiles
-* Vite dev server works
+- project runs successfully
+- TypeScript compiles
+- Vite dev server works
 
 ---
 
@@ -147,9 +147,9 @@ src/
 
 ## Acceptance Criteria
 
-* structure created
-* folders properly grouped
-* no feature chaos
+- structure created
+- folders properly grouped
+- no feature chaos
 
 ---
 
@@ -184,8 +184,8 @@ Enable:
 
 ## Acceptance Criteria
 
-* strict mode enabled
-* invalid typing causes compile failure
+- strict mode enabled
+- invalid typing causes compile failure
 
 ---
 
@@ -248,7 +248,7 @@ Example:
 
 ## Acceptance Criteria
 
-* aliases resolve correctly
+- aliases resolve correctly
 
 ---
 
@@ -278,10 +278,10 @@ Enforce code quality standards.
 
 Rules:
 
-* no unused vars
-* import ordering
-* consistent types
-* React hooks rules
+- no unused vars
+- import ordering
+- consistent types
+- React hooks rules
 
 ---
 
@@ -293,17 +293,17 @@ pnpm add -D eslint
 
 Plus:
 
-* typescript-eslint
-* eslint-plugin-react
-* eslint-plugin-import
-* eslint-plugin-react-hooks
+- typescript-eslint
+- eslint-plugin-react
+- eslint-plugin-import
+- eslint-plugin-react-hooks
 
 ---
 
 ## Acceptance Criteria
 
-* lint command passes
-* bad code flagged
+- lint command passes
+- bad code flagged
 
 ---
 
@@ -335,17 +335,17 @@ Enforce consistent formatting.
 
 Configure:
 
-* semicolons
-* quotes
-* trailing commas
-* line width
+- semicolons
+- quotes
+- trailing commas
+- line width
 
 ---
 
 ## Acceptance Criteria
 
-* formatting automatic
-* no style inconsistencies
+- formatting automatic
+- no style inconsistencies
 
 ---
 
@@ -377,14 +377,14 @@ Prevent broken commits.
 
 Pre-commit should run:
 
-* lint
-* typecheck
+- lint
+- typecheck
 
 ---
 
 ## Acceptance Criteria
 
-* invalid code cannot commit
+- invalid code cannot commit
 
 ---
 
@@ -429,7 +429,7 @@ VITE_APP_NAME=
 
 ## Acceptance Criteria
 
-* environment variables accessible
+- environment variables accessible
 
 ---
 
@@ -438,7 +438,7 @@ VITE_APP_NAME=
 ### TC-1
 
 ```ts id="t1x"
-import.meta.env.VITE_API_URL
+import.meta.env.VITE_API_URL;
 ```
 
 Expected:
@@ -459,17 +459,17 @@ Prepare root application structure.
 
 Create:
 
-* AppProviders
-* RouterProvider
-* ErrorBoundary placeholder
-* Theme placeholder
+- AppProviders
+- RouterProvider
+- ErrorBoundary placeholder
+- Theme placeholder
 
 ---
 
 ## Acceptance Criteria
 
-* app wrapped cleanly
-* providers centralized
+- app wrapped cleanly
+- providers centralized
 
 ---
 
@@ -483,18 +483,18 @@ Prepare future dynamic routing.
 
 Install:
 
-* React Router
+- React Router
 
 Create:
 
-* route placeholders
-* layout placeholders
+- route placeholders
+- layout placeholders
 
 ---
 
 ## Acceptance Criteria
 
-* routing operational
+- routing operational
 
 ---
 
@@ -605,9 +605,7 @@ After T1 we should have:
 Enterprise-ready React foundation
 ```
 
-
-------------------------------------------------
-
+---
 
 # T2 — UI Framework Setup
 
@@ -615,11 +613,11 @@ Enterprise-ready React foundation
 
 Setup the enterprise UI foundation for the ERP runtime using:
 
-* MUI
-* Responsive layout shell
-* Theme system
-* Navigation structure
-* Reusable layout architecture
+- MUI
+- Responsive layout shell
+- Theme system
+- Navigation structure
+- Reusable layout architecture
 
 This task creates the visual and structural foundation of the application.
 
@@ -684,9 +682,9 @@ pnpm add @fontsource/inter
 
 ## Acceptance Criteria
 
-* packages installed
-* no dependency conflicts
-* app builds successfully
+- packages installed
+- no dependency conflicts
+- app builds successfully
 
 ---
 
@@ -734,10 +732,10 @@ src/themes/
 
 Theme must support:
 
-* light mode
-* dark mode
-* future tenant branding
-* future runtime customization
+- light mode
+- dark mode
+- future tenant branding
+- future runtime customization
 
 ---
 
@@ -751,19 +749,19 @@ createAppTheme(mode)
 
 Should return:
 
-* palette
-* typography
-* spacing
-* breakpoints
-* component overrides
+- palette
+- typography
+- spacing
+- breakpoints
+- component overrides
 
 ---
 
 ## Acceptance Criteria
 
-* theme centralized
-* no inline hardcoded styles
-* supports dark/light switching
+- theme centralized
+- no inline hardcoded styles
+- supports dark/light switching
 
 ---
 
@@ -793,22 +791,22 @@ Create enterprise typography standards.
 
 Define:
 
-* headings
-* body text
-* captions
-* monospace support
-* table typography
+- headings
+- body text
+- captions
+- monospace support
+- table typography
 
 Recommended:
 
-* Inter font
+- Inter font
 
 ---
 
 ## Acceptance Criteria
 
-* typography consistent globally
-* reusable typography scales
+- typography consistent globally
+- reusable typography scales
 
 ---
 
@@ -818,9 +816,9 @@ Recommended:
 
 Render:
 
-* heading
-* paragraph
-* table text
+- heading
+- paragraph
+- table text
 
 Expected:
 
@@ -848,16 +846,16 @@ AppProviders.tsx
 
 Should include:
 
-* ThemeProvider
-* CssBaseline
-* future providers placeholder
+- ThemeProvider
+- CssBaseline
+- future providers placeholder
 
 ---
 
 ## Acceptance Criteria
 
-* global styles applied
-* theme available everywhere
+- global styles applied
+- theme available everywhere
 
 ---
 
@@ -900,11 +898,11 @@ components/layouts/
 
 Must support:
 
-* sidebar navigation
-* header actions
-* content container
-* responsive collapse
-* future dynamic menus
+- sidebar navigation
+- header actions
+- content container
+- responsive collapse
+- future dynamic menus
 
 ---
 
@@ -923,9 +921,9 @@ Must support:
 
 ## Acceptance Criteria
 
-* responsive layout works
-* shell reusable
-* content scroll isolated
+- responsive layout works
+- shell reusable
+- content scroll isolated
 
 ---
 
@@ -955,11 +953,11 @@ Build ERP-style navigation sidebar.
 
 Support:
 
-* nested menus
-* collapse mode
-* icons
-* active route highlighting
-* future dynamic menu loading
+- nested menus
+- collapse mode
+- icons
+- active route highlighting
+- future dynamic menu loading
 
 ---
 
@@ -967,17 +965,17 @@ Support:
 
 Future:
 
-* permissions
-* favorites
-* recent items
-* plugin menus
+- permissions
+- favorites
+- recent items
+- plugin menus
 
 ---
 
 ## Acceptance Criteria
 
-* responsive behavior works
-* navigation state maintained
+- responsive behavior works
+- navigation state maintained
 
 ---
 
@@ -1019,19 +1017,19 @@ Create enterprise header/topbar.
 
 Support:
 
-* page title
-* theme toggle
-* notifications placeholder
-* profile menu
-* breadcrumb placeholder
+- page title
+- theme toggle
+- notifications placeholder
+- profile menu
+- breadcrumb placeholder
 
 ---
 
 ## Acceptance Criteria
 
-* reusable globally
-* responsive
-* clean spacing
+- reusable globally
+- responsive
+- clean spacing
 
 ---
 
@@ -1061,22 +1059,22 @@ Implement runtime theme switching.
 
 Store:
 
-* selected theme mode
+- selected theme mode
 
 Initial implementation:
 
-* local component state
+- local component state
 
 Later:
 
-* Zustand persistence
+- Zustand persistence
 
 ---
 
 ## Acceptance Criteria
 
-* theme switches instantly
-* no reload required
+- theme switches instantly
+- no reload required
 
 ---
 
@@ -1110,17 +1108,17 @@ PageContainer
 
 Should support:
 
-* title
-* actions
-* breadcrumbs
-* tabs placeholder
-* toolbar placeholder
+- title
+- actions
+- breadcrumbs
+- tabs placeholder
+- toolbar placeholder
 
 ---
 
 ## Acceptance Criteria
 
-* pages visually consistent
+- pages visually consistent
 
 ---
 
@@ -1136,16 +1134,16 @@ Verify layout architecture.
 
 Create placeholder:
 
-* dashboard page
-* sample cards
-* sample widgets
+- dashboard page
+- sample cards
+- sample widgets
 
 ---
 
 ## Acceptance Criteria
 
-* layout renders correctly
-* responsive behavior verified
+- layout renders correctly
+- responsive behavior verified
 
 ---
 
@@ -1175,18 +1173,18 @@ Standardize spacing and sizing.
 
 Define:
 
-* spacing scale
-* border radius
-* shadows
-* z-indexes
-* container widths
+- spacing scale
+- border radius
+- shadows
+- z-indexes
+- container widths
 
 ---
 
 ## Acceptance Criteria
 
-* no random spacing values
-* design system centralized
+- no random spacing values
+- design system centralized
 
 ---
 
@@ -1212,8 +1210,8 @@ Prepare reusable UX states.
 
 ## Acceptance Criteria
 
-* reusable globally
-* visually consistent
+- reusable globally
+- visually consistent
 
 ---
 
@@ -1229,18 +1227,18 @@ Prepare future runtime notifications.
 
 Prepare:
 
-* snackbar provider
-* toast architecture
+- snackbar provider
+- toast architecture
 
 Recommended:
 
-* notistack OR MUI Snackbar
+- notistack OR MUI Snackbar
 
 ---
 
 ## Acceptance Criteria
 
-* notification API callable globally
+- notification API callable globally
 
 ---
 
@@ -1256,15 +1254,15 @@ Prevent runtime crashes.
 
 Create:
 
-* ErrorBoundary
-* fallback UI
-* error logging placeholder
+- ErrorBoundary
+- fallback UI
+- error logging placeholder
 
 ---
 
 ## Acceptance Criteria
 
-* app survives component crash
+- app survives component crash
 
 ---
 
@@ -1301,14 +1299,14 @@ Protected structure:
 
 ERP shell only inside:
 
-* authenticated routes
+- authenticated routes
 
 ---
 
 ## Acceptance Criteria
 
-* layout wraps app routes
-* public routes excluded
+- layout wraps app routes
+- public routes excluded
 
 ---
 
@@ -1355,5 +1353,3 @@ After T2 we should have:
 ```txt id="t2aa"
 Enterprise-ready ERP UI shell
 ```
-
-

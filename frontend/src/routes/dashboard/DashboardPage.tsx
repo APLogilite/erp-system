@@ -1,17 +1,6 @@
-import {
-  Grid,
-  Card,
-  CardContent,
-  Typography,
-  Box,
-  Avatar,
-} from '@mui/material';
-import {
-  Inventory,
-  ShoppingCart,
-  People,
-  TrendingUp,
-} from '@mui/icons-material';
+import { Inventory, ShoppingCart, People, TrendingUp } from '@mui/icons-material';
+import { Grid, Card, CardContent, Typography, Box, Avatar } from '@mui/material';
+
 import { PageContainer } from '@/components/layouts/PageContainer';
 
 const statsCards = [
@@ -47,10 +36,7 @@ const statsCards = [
 
 export function DashboardPage() {
   return (
-    <PageContainer
-      title="Dashboard"
-      subtitle="Welcome to your ERP system overview"
-    >
+    <PageContainer title="Dashboard" subtitle="Welcome to your ERP system overview">
       <Grid container spacing={3}>
         {statsCards.map((card, index) => (
           <Grid item xs={12} sm={6} md={3} key={index}>
@@ -80,11 +66,7 @@ export function DashboardPage() {
                   >
                     <card.icon />
                   </Avatar>
-                  <Typography
-                    variant="body2"
-                    color="success.main"
-                    sx={{ fontWeight: 600 }}
-                  >
+                  <Typography variant="body2" color="success.main" sx={{ fontWeight: 600 }}>
                     {card.change}
                   </Typography>
                 </Box>

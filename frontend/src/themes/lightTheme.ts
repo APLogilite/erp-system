@@ -1,7 +1,8 @@
 import { createTheme, Theme } from '@mui/material/styles';
+
 import { lightPalette } from './palette';
-import { typography } from './typography';
 import { shadows } from './shadows';
+import { typography } from './typography';
 
 export const lightTheme: Theme = createTheme({
   palette: lightPalette,

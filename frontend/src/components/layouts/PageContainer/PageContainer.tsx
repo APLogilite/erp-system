@@ -1,11 +1,5 @@
+import { Box, Typography, Breadcrumbs, Link as MuiLink, Paper } from '@mui/material';
 import { ReactNode } from 'react';
-import {
-  Box,
-  Typography,
-  Breadcrumbs,
-  Link as MuiLink,
-  Paper,
-} from '@mui/material';
 import { Link, useLocation } from 'react-router-dom';
 
 type BreadcrumbItem = {
@@ -104,11 +98,7 @@ export function PageContainer({
             )}
           </Box>
 
-          {actions && (
-            <Box sx={{ display: 'flex', gap: 1, flexShrink: 0 }}>
-              {actions}
-            </Box>
-          )}
+          {actions && <Box sx={{ display: 'flex', gap: 1, flexShrink: 0 }}>{actions}</Box>}
         </Box>
       </Box>
 

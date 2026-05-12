@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { Dashboard, Inventory, ShoppingCart, People, Settings } from '@mui/icons-material';
 import {
   Drawer,
   List,
@@ -11,14 +11,6 @@ import {
   Box,
   Divider,
 } from '@mui/material';
-import {
-  Dashboard,
-  Inventory,
-  ShoppingCart,
-  People,
-  Settings,
-  Menu as MenuIcon,
-} from '@mui/icons-material';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 const drawerWidth = 280;

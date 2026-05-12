@@ -1,5 +1,5 @@
-import { Box, Typography, Button } from '@mui/material';
 import { Inbox as InboxIcon } from '@mui/icons-material';
+import { Box, Typography, Button } from '@mui/material';
 
 type EmptyStateProps = {
   title?: string;

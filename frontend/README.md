@@ -76,6 +76,7 @@ Run the automated setup script:
 ```
 
 This will:
+
 - Download and install Node.js 22 locally
 - Install pnpm globally
 - Install project dependencies
@@ -178,6 +179,7 @@ Located in `vite.config.ts` - includes path aliases, plugins, and build settings
 ### ESLint & Prettier
 
 Configuration files:
+
 - `.eslintrc.cjs` - ESLint rules
 - `.prettierrc` - Prettier formatting
 - `.lintstagedrc.json` - Pre-commit hooks

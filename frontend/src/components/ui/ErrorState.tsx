@@ -1,5 +1,5 @@
-import { Box, Typography, Button, Alert } from '@mui/material';
 import { Error as ErrorIcon, Refresh } from '@mui/icons-material';
+import { Box, Typography, Button } from '@mui/material';
 
 type ErrorStateProps = {
   title?: string;
@@ -45,12 +45,7 @@ export function ErrorState({
       </Typography>
 
       {onRetry && (
-        <Button
-          variant="outlined"
-          startIcon={<Refresh />}
-          onClick={onRetry}
-          sx={{ mt: 1 }}
-        >
+        <Button variant="outlined" startIcon={<Refresh />} onClick={onRetry} sx={{ mt: 1 }}>
           Try Again
         </Button>
       )}
