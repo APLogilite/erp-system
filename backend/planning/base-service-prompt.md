@@ -1,4 +1,6 @@
-Using PROJECT_RULES.md,
+References:
+- docs/planning/project-rules.md
+- docs/planning/project-structure-prompt.md
 
 IMPORTANT CONTEXT (DO NOT IGNORE):
 We already have a BaseEntity class in the system. All entities extend it.

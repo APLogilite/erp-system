@@ -1,4 +1,8 @@
-Using PROJECT_RULES.md,
+References:
+- docs/planning/project-rules.md
+- docs/backend/inventory-module-prompt.md
+- docs/backend/product-module-prompt.md
+- docs/backend/base-service-prompt.md
 
 IMPORTANT CONTEXT:
 We are implementing a unified Order system inspired by:

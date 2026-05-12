@@ -1,4 +1,7 @@
-Using PROJECT_RULES.md,
+References:
+- docs/planning/project-rules.md
+- docs/backend/base-service-prompt.md
+- docs/backend/order-module-prompt.md
 
 IMPORTANT CONTEXT:
 ERP follows iDempiere/Odoo-inspired inventory design:

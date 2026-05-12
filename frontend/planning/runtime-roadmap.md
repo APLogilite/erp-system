@@ -1,5 +1,11 @@
 # Developer Task Breakdown — Dynamic ERP Frontend Runtime
 
+References:
+- docs/planning/project-rules.md
+- docs/backend/order-module-prompt.md
+- docs/backend/inventory-module-prompt.md
+- docs/backend/product-module-prompt.md
+
 ## Phase 1 — Foundation
 
 | Task ID | Task                     | One-Line Summary                                                |

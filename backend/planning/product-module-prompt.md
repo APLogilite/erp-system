@@ -1,4 +1,6 @@
-Using PROJECT_RULES.md,
+References:
+- docs/planning/project-rules.md
+- docs/backend/base-service-prompt.md
 
 IMPORTANT CONTEXT:
 We are building an ERP system inspired by Odoo and iDempiere domain modeling.

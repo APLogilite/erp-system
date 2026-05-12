@@ -1,4 +1,5 @@
-Using PROJECT_RULES.md,
+References:
+- docs/planning/project-rules.md
 
 Create a Spring Boot project structure for an ERP system.
 
