@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "pnpm run typecheck && vite build",
+    "build": "npm run typecheck && vite build",
     "preview": "vite preview",
     "lint": "eslint --max-warnings=0 \"src/**/*.{ts,tsx}\"",
     "typecheck": "tsc --noEmit",
