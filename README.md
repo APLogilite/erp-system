@@ -12,27 +12,61 @@ This repository is organized into separate backend and frontend applications:
 
 ## Getting Started
 
-### Prerequisites
+You can set up both the frontend and backend environments using the top-level full-stack setup script or manually set up each folder.
 
-- Java 17+ (for backend)
-- Node.js 22+ (for frontend, or use the setup script)
-- Maven (for backend)
-- pnpm (for frontend, or use the setup script)
+### 🚀 Full-Stack Setup (Recommended)
 
-### Backend Setup
+Run the root-level setup script from the root directory to sequentially configure the backend (downloads and compiles Maven resources) and the frontend (downloads local Node.js and `pnpm` tools locally without requiring global permissions):
 
 ```bash
-cd backend
-mvn clean install
-mvn spring-boot:run
+# Run full-stack setup
+./setup.sh
 ```
 
-### Frontend Setup
+---
 
+### 💻 Backend Setup & Execution
+
+#### Prerequisites:
+- **Java 17** (or higher)
+- **Maven 3.6+**
+- **PostgreSQL** database (running on port `5432` with a database named `erp_db`)
+
+#### Installation:
+```bash
+cd backend
+./setup.sh
+```
+
+#### Run Backend Server:
+Start the backend Spring Boot server on port `8081` using either the quickstart start script or manual maven task:
+```bash
+cd backend
+./start.sh          # Quickstart wrapper
+# OR
+mvn spring-boot:run # Manual maven command
+```
+
+---
+
+### 🎨 Frontend Setup & Execution
+
+#### Prerequisites:
+- Node.js 22+ & pnpm (managed automatically by local setup script)
+
+#### Installation:
 ```bash
 cd frontend
-./setup.sh  # Sets up local Node.js and pnpm
-pnpm dev
+./setup.sh
+```
+
+#### Run Frontend Server:
+Start the development server on port `5173` using either the quickstart start script or passing PATH parameters:
+```bash
+cd frontend
+./start.sh                              # Quickstart wrapper (highly recommended)
+# OR
+PATH=./.local/nodejs/bin:$PATH pnpm dev # Manual command using local Node.js binary
 ```
 
 ## Features

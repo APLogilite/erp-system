@@ -28,7 +28,9 @@ module.exports = {
       version: 'detect',
     },
     'import/resolver': {
-      typescript: {},
+      typescript: {
+        project: './tsconfig.json',
+      },
     },
   },
   rules: {
@@ -43,7 +45,7 @@ module.exports = {
         alphabetize: { order: 'asc', caseInsensitive: true },
       },
     ],
-    'import/no-unresolved': 'error',
+    'import/no-unresolved': ['error', { ignore: ['^@/'] }],
     'no-unused-vars': 'off',
   },
 };

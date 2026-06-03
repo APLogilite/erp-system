@@ -1,11 +1,8 @@
 # Developer Task Breakdown — Dynamic ERP Frontend Runtime
 
-References:
+References aLL file in :
 
-- docs/planning/project-rules.md
-- docs/backend/order-module-prompt.md
-- docs/backend/inventory-module-prompt.md
-- docs/backend/product-module-prompt.md
+- backend/planning/*.md
 
 ## Phase 1 — Foundation
 

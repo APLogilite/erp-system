@@ -1,5 +1,6 @@
 package com.erp.modules.product.controller;
 
+import com.erp.common.api.ApiResponse;
 import com.erp.config.ApiVersionConfig;
 import com.erp.modules.product.dto.ProductRequestDTO;
 import com.erp.modules.product.dto.ProductResponseDTO;
@@ -22,36 +23,36 @@ public class ProductController {
   }
 
   @PostMapping
-  public ResponseEntity<ProductResponseDTO> createProduct(@RequestBody ProductRequestDTO dto) {
+  public ResponseEntity<ApiResponse<ProductResponseDTO>> createProduct(@RequestBody ProductRequestDTO dto) {
     Product product = mapToEntity(dto);
     Product saved = productService.create(product);
     ProductResponseDTO response = mapToResponse(saved);
-    return ResponseEntity.ok(response);
+    return ResponseEntity.ok(ApiResponse.success(response, "Product created successfully."));
   }
 
   @GetMapping
-  public ResponseEntity<List<ProductResponseDTO>> getProducts() {
+  public ResponseEntity<ApiResponse<List<ProductResponseDTO>>> getProducts() {
     List<Product> products = productService.findAll().stream()
         .filter(Product::getIsActive)
         .collect(Collectors.toList());
     List<ProductResponseDTO> responses = products.stream()
         .map(this::mapToResponse)
         .collect(Collectors.toList());
-    return ResponseEntity.ok(responses);
+    return ResponseEntity.ok(ApiResponse.success(responses, "Product list retrieved."));
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<ProductResponseDTO> getProduct(@PathVariable UUID id) {
+  public ResponseEntity<ApiResponse<ProductResponseDTO>> getProduct(@PathVariable UUID id) {
     Product product = productService.findById(id).orElseThrow(() -> new RuntimeException("Product not found"));
     if (!product.getIsActive()) {
-      return ResponseEntity.notFound().build();
+      throw new RuntimeException("Product not found");
     }
     ProductResponseDTO response = mapToResponse(product);
-    return ResponseEntity.ok(response);
+    return ResponseEntity.ok(ApiResponse.success(response, "Product retrieved."));
   }
 
   @PutMapping("/{id}")
-  public ResponseEntity<ProductResponseDTO> updateProduct(@PathVariable UUID id, @RequestBody ProductRequestDTO dto) {
+  public ResponseEntity<ApiResponse<ProductResponseDTO>> updateProduct(@PathVariable UUID id, @RequestBody ProductRequestDTO dto) {
     Product existing = productService.findById(id).orElseThrow(() -> new RuntimeException("Product not found"));
     existing.setName(dto.getName());
     existing.setSku(dto.getSku());
@@ -63,13 +64,13 @@ public class ProductController {
     existing.setSalePrice(dto.getSalePrice());
     Product updated = productService.update(existing);
     ProductResponseDTO response = mapToResponse(updated);
-    return ResponseEntity.ok(response);
+    return ResponseEntity.ok(ApiResponse.success(response, "Product updated successfully."));
   }
 
   @DeleteMapping("/{id}")
-  public ResponseEntity<Void> deleteProduct(@PathVariable UUID id) {
+  public ResponseEntity<ApiResponse<Void>> deleteProduct(@PathVariable UUID id) {
     productService.delete(id);
-    return ResponseEntity.noContent().build();
+    return ResponseEntity.ok(ApiResponse.successMessage("Product deleted successfully."));
   }
 
   private Product mapToEntity(ProductRequestDTO dto) {
