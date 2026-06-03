@@ -1,53 +1,52 @@
-# T1 → Frontend Workspace Setup
+# PHASE 0 — Architecture Freeze
 
 ## Objective
 
-Create a scalable enterprise-grade frontend foundation for the dynamic ERP runtime.
+Freeze ALL critical ERP runtime architecture decisions BEFORE major implementation begins.
 
-This task establishes:
+This phase prevents:
 
-- project structure
-- code standards
-- build tooling
-- TypeScript architecture
-- developer workflow
-
-This is the base for everything else.
+* massive rewrites later
+* incompatible frontend/backend contracts
+* runtime instability
+* plugin architecture failures
+* metadata inconsistencies
 
 ---
 
-# Expected Stack
+# MOST IMPORTANT RULE
 
-| Area               | Technology         |
-| ------------------ | ------------------ |
-| Framework          | React              |
-| Language           | TypeScript         |
-| Build Tool         | Vite               |
-| Package Manager    | pnpm (recommended) |
-| Lint               | ESLint             |
-| Formatter          | Prettier           |
-| Git Hooks          | Husky              |
-| Commit Validation  | lint-staged        |
-| Import Aliases     | tsconfig paths     |
-| Environment Config | dotenv             |
+After Phase 0:
+
+```txt id="p0a"
+Core architecture decisions should NOT change frequently
+```
+
+because:
+
+* frontend runtime depends on backend contracts
+* metadata affects everything
+* workflows affect permissions
+* relations affect layouts
+* plugins affect module architecture
 
 ---
 
-# Deliverables
+# TARGET OUTCOME
 
-Developer must deliver:
+After Phase 0:
 
-```txt id="t1a"
-- Working React app
-- TypeScript strict mode
-- Vite configured
-- ESLint configured
-- Prettier configured
-- Husky pre-commit hooks
-- Path aliases working
-- Environment variable setup
-- Modular folder structure
-- Build passing
+```txt id="p0b"
+✓ Runtime architecture finalized
+✓ Metadata contracts frozen
+✓ API conventions finalized
+✓ Module structure finalized
+✓ Relation strategy finalized
+✓ Workflow strategy finalized
+✓ Naming conventions standardized
+✓ Frontend/backend contracts aligned
+✓ Runtime rendering philosophy finalized
+✓ ERP module strategy defined
 ```
 
 ---
@@ -56,551 +55,761 @@ Developer must deliver:
 
 ---
 
-# T1.1 — Initialize Project
+# P0.1 — Define ERP Runtime Philosophy
 
 ## Objective
 
-Create Vite React TypeScript project.
+Freeze the core platform philosophy.
 
-## Steps
+---
 
-```bash id="t1b"
-pnpm create vite dynamic-erp --template react-ts
-```
+# MUST FINALIZE
 
-OR
+## This platform IS:
 
-```bash id="t1c"
-npm create vite@latest dynamic-erp -- --template react-ts
+```txt id="p0c"
+Metadata-driven ERP runtime platform
 ```
 
 ---
 
-## Acceptance Criteria
+## This platform is NOT:
 
-- project runs successfully
-- TypeScript compiles
-- Vite dev server works
-
----
-
-## Test Cases
-
-### TC-1
-
-Run:
-
-```bash id="t1d"
-pnpm dev
-```
-
-Expected:
-
-```txt id="t1e"
-Application opens successfully in browser
+```txt id="p0d"
+Hardcoded CRUD application
 ```
 
 ---
 
-# T1.2 — Setup Folder Structure
+# Runtime Principles
+
+## Backend Responsibilities
+
+Backend becomes:
+
+```txt id="p0e"
+ERP runtime execution engine
+```
+
+Responsibilities:
+
+* metadata generation
+* dynamic CRUD
+* workflow execution
+* permission enforcement
+* runtime actions
+* inventory logic
+
+---
+
+## Frontend Responsibilities
+
+Frontend becomes:
+
+```txt id="p0f"
+ERP runtime renderer
+```
+
+Responsibilities:
+
+* render metadata dynamically
+* render forms/grids/layouts
+* execute runtime UI logic
+* workflow UI
+* runtime navigation
+
+---
+
+# Acceptance Criteria
+
+* all developers understand runtime philosophy
+* no hardcoded screen mindset remains
+
+---
+
+# P0.2 — Freeze Metadata Architecture
 
 ## Objective
 
-Create scalable enterprise structure.
+Finalize metadata-driven architecture contracts.
 
-## Required Structure
+---
 
-```txt id="t1f"
-src/
- ├── app/
- ├── core/
- │    ├── api/
- │    ├── auth/
- │    ├── metadata/
- │    ├── registry/
- │    ├── runtime/
- │    └── store/
- │
- ├── engine/
- │    ├── forms/
- │    ├── grids/
- │    ├── layouts/
- │    ├── workflows/
- │    └── actions/
- │
- ├── components/
- │    ├── fields/
- │    ├── layouts/
- │    ├── tables/
- │    ├── dialogs/
- │    └── widgets/
- │
- ├── hooks/
- ├── routes/
- ├── themes/
- ├── utils/
- ├── modules/
- └── assets/
+# MUST FINALIZE
+
+## Metadata Domains
+
+| Domain     | Responsibility              |
+| ---------- | --------------------------- |
+| Model      | data structure              |
+| Field      | data definition             |
+| View       | runtime rendering           |
+| Layout     | UI arrangement              |
+| Workflow   | state machine               |
+| Action     | executable runtime behavior |
+| Permission | access control              |
+| Expression | dynamic logic               |
+
+---
+
+# Freeze Metadata Strategy
+
+## Metadata Format
+
+```txt id="p0g"
+JSON
 ```
 
 ---
 
-## Acceptance Criteria
+## Validation Strategy
 
-- structure created
-- folders properly grouped
-- no feature chaos
+```txt id="p0h"
+Zod + TypeScript
+```
 
 ---
 
-# T1.3 — Configure TypeScript Strict Mode
+## Backend Storage
+
+```txt id="p0i"
+PostgreSQL JSONB + relational tables
+```
+
+---
+
+## Runtime Flow
+
+```txt id="p0j"
+Backend Metadata
+→ API
+→ Frontend Registry
+→ Runtime Renderer
+```
+
+---
+
+# Acceptance Criteria
+
+* metadata boundaries clearly separated
+* metadata responsibilities finalized
+
+---
+
+# P0.3 — Freeze Frontend Architecture
 
 ## Objective
 
-Enforce enterprise-level type safety.
-
-## Steps
-
-Update:
-
-```txt id="t1g"
-tsconfig.json
-```
-
-Enable:
-
-```json id="t1h"
-{
-  "compilerOptions": {
-    "strict": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "noImplicitReturns": true
-  }
-}
-```
+Finalize frontend runtime architecture.
 
 ---
 
-## Acceptance Criteria
+# MUST FINALIZE
 
-- strict mode enabled
-- invalid typing causes compile failure
+## Core Stack
 
----
-
-## Test Cases
-
-### TC-1
-
-Add invalid type:
-
-```ts id="t1i"
-const x: string = 123;
-```
-
-Expected:
-
-```txt id="t1j"
-TypeScript compilation error
-```
+| Area         | Technology   |
+| ------------ | ------------ |
+| Framework    | React        |
+| Language     | TypeScript   |
+| Build Tool   | Vite         |
+| UI           | MUI          |
+| State        | Zustand      |
+| Server State | React Query  |
+| Grid         | AG Grid      |
+| Validation   | Zod          |
+| Routing      | React Router |
 
 ---
 
-# T1.4 — Setup Path Aliases
+# Runtime Architecture
+
+## Dynamic Rendering Strategy
+
+Frontend should:
+
+* load metadata
+* resolve component registry
+* render dynamically
+
+---
+
+## Registry Architecture
+
+Must support:
+
+* field registry
+* layout registry
+* action registry
+* workflow registry
+
+---
+
+## Layout Philosophy
+
+Support:
+
+* recursive layouts
+* tabs
+* grids
+* sections
+* responsive layouts
+
+---
+
+# Acceptance Criteria
+
+* frontend stack frozen
+* runtime rendering strategy finalized
+
+---
+
+# P0.4 — Freeze Backend Architecture
 
 ## Objective
 
-Avoid relative import hell.
+Finalize backend runtime architecture.
 
-## Required Aliases
+---
 
-```txt id="t1k"
-@/components
-@/core
-@/engine
-@/hooks
-@/utils
+# MUST FINALIZE
+
+## Core Stack
+
+| Area       | Technology                   |
+| ---------- | ---------------------------- |
+| Framework  | Spring Boot                  |
+| Language   | Java                         |
+| ORM        | JPA/Hibernate                |
+| Database   | PostgreSQL                   |
+| Migration  | Flyway                       |
+| Security   | Spring Security + JWT        |
+| Cache      | Caffeine/Redis later         |
+| Validation | Jakarta + runtime validation |
+
+---
+
+# Backend Runtime Philosophy
+
+Backend should:
+
+* avoid hardcoded CRUD controllers
+* avoid hardcoded workflows
+* avoid hardcoded permissions
+
+Instead:
+
+* metadata-driven runtime execution
+
+---
+
+# Module Architecture
+
+Recommended:
+
+```txt id="p0k"
+core/
+modules/
+plugins/
+shared/
 ```
 
 ---
 
-## Steps
+# Acceptance Criteria
 
-Update:
+* backend runtime philosophy finalized
+* module boundaries finalized
 
-```txt id="t1l"
-vite.config.ts
-tsconfig.json
-```
+---
+
+# P0.5 — Freeze API Standards
+
+## Objective
+
+Standardize all API contracts.
+
+---
+
+# MUST DEFINE
+
+## API Structure
 
 Example:
 
-```json id="t1m"
+```txt id="p0l"
+/api/runtime/*
+/api/metadata/*
+/api/auth/*
+```
+
+---
+
+# Response Standard
+
+## Success Response
+
+```json id="p0m"
 {
-  "paths": {
-    "@/*": ["src/*"]
-  }
+  "success": true,
+  "data": {},
+  "message": null
 }
 ```
 
 ---
 
-## Acceptance Criteria
+## Error Response
 
-- aliases resolve correctly
-
----
-
-## Test Cases
-
-### TC-1
-
-```ts id="t1n"
-import Button from '@/components/Button';
-```
-
-Expected:
-
-```txt id="t1o"
-Import resolves correctly
-```
-
----
-
-# T1.5 — Setup ESLint
-
-## Objective
-
-Enforce code quality standards.
-
-## Requirements
-
-Rules:
-
-- no unused vars
-- import ordering
-- consistent types
-- React hooks rules
-
----
-
-## Packages
-
-```bash id="t1p"
-pnpm add -D eslint
-```
-
-Plus:
-
-- typescript-eslint
-- eslint-plugin-react
-- eslint-plugin-import
-- eslint-plugin-react-hooks
-
----
-
-## Acceptance Criteria
-
-- lint command passes
-- bad code flagged
-
----
-
-## Test Cases
-
-### TC-1
-
-Unused variable:
-
-```ts id="t1q"
-const abc = 1;
-```
-
-Expected:
-
-```txt id="t1r"
-ESLint warning/error
-```
-
----
-
-# T1.6 — Setup Prettier
-
-## Objective
-
-Enforce consistent formatting.
-
-## Requirements
-
-Configure:
-
-- semicolons
-- quotes
-- trailing commas
-- line width
-
----
-
-## Acceptance Criteria
-
-- formatting automatic
-- no style inconsistencies
-
----
-
-## Test Cases
-
-### TC-1
-
-Run:
-
-```bash id="t1s"
-pnpm prettier --write .
-```
-
-Expected:
-
-```txt id="t1t"
-Files formatted consistently
-```
-
----
-
-# T1.7 — Setup Husky + lint-staged
-
-## Objective
-
-Prevent broken commits.
-
-## Requirements
-
-Pre-commit should run:
-
-- lint
-- typecheck
-
----
-
-## Acceptance Criteria
-
-- invalid code cannot commit
-
----
-
-## Test Cases
-
-### TC-1
-
-Commit with lint error.
-
-Expected:
-
-```txt id="t1u"
-Commit blocked
-```
-
----
-
-# T1.8 — Setup Environment Configuration
-
-## Objective
-
-Support multiple environments.
-
-## Required Files
-
-```txt id="t1v"
-.env
-.env.development
-.env.production
-```
-
----
-
-## Example Variables
-
-```txt id="t1w"
-VITE_API_URL=
-VITE_APP_NAME=
-```
-
----
-
-## Acceptance Criteria
-
-- environment variables accessible
-
----
-
-## Test Cases
-
-### TC-1
-
-```ts id="t1x"
-import.meta.env.VITE_API_URL;
-```
-
-Expected:
-
-```txt id="t1y"
-Correct environment value returned
-```
-
----
-
-# T1.9 — Setup Global App Entry
-
-## Objective
-
-Prepare root application structure.
-
-## Requirements
-
-Create:
-
-- AppProviders
-- RouterProvider
-- ErrorBoundary placeholder
-- Theme placeholder
-
----
-
-## Acceptance Criteria
-
-- app wrapped cleanly
-- providers centralized
-
----
-
-# T1.10 — Setup Basic Routing
-
-## Objective
-
-Prepare future dynamic routing.
-
-## Requirements
-
-Install:
-
-- React Router
-
-Create:
-
-- route placeholders
-- layout placeholders
-
----
-
-## Acceptance Criteria
-
-- routing operational
-
----
-
-## Test Cases
-
-### TC-1
-
-Navigate:
-
-```txt id="t1z"
-/dashboard
-```
-
-Expected:
-
-```txt id="t1aa"
-Dashboard route renders
-```
-
----
-
-# T1.11 — Setup Build Scripts
-
-## Objective
-
-Standardize developer commands.
-
-## Required Scripts
-
-```json id="t1ab"
+```json id="p0n"
 {
-  "dev": "",
-  "build": "",
-  "preview": "",
-  "lint": "",
-  "typecheck": "",
-  "test": ""
+  "success": false,
+  "errorCode": "VALIDATION_ERROR",
+  "message": "Invalid field"
 }
 ```
 
 ---
 
-## Acceptance Criteria
+# Pagination Standard
 
-All scripts execute successfully.
+```json id="p0o"
+{
+  "items": [],
+  "page": 1,
+  "size": 20,
+  "total": 200
+}
+```
 
 ---
 
-# T1.12 — Setup Git Ignore
+# Acceptance Criteria
+
+* API responses standardized
+* frontend/backend aligned
+
+---
+
+# P0.6 — Freeze Naming Conventions
 
 ## Objective
 
-Prevent unnecessary commits.
+Prevent naming chaos later.
 
-## Must Ignore
+---
 
-```txt id="t1ac"
-node_modules
-dist
-.env
-coverage
+# MUST DEFINE
+
+## Naming Standards
+
+| Item             | Convention |
+| ---------------- | ---------- |
+| Database Tables  | snake_case |
+| Columns          | snake_case |
+| Java Classes     | PascalCase |
+| React Components | PascalCase |
+| API Routes       | kebab-case |
+| Metadata Codes   | snake_case |
+| Variables        | camelCase  |
+
+---
+
+# Module Naming
+
+Examples:
+
+```txt id="p0p"
+sales_order
+business_partner
+inventory_transaction
 ```
 
 ---
 
-# FINAL ACCEPTANCE CRITERIA FOR T1
+# Acceptance Criteria
 
-Developer is DONE only when:
+* naming standards documented
+* enforced consistently
 
-```txt id="t1ad"
-✓ Vite app works
-✓ TypeScript strict mode works
-✓ ESLint works
-✓ Prettier works
-✓ Husky blocks bad commits
-✓ Aliases work
-✓ Routing works
-✓ Environment variables work
-✓ Folder structure finalized
-✓ Build passes
+---
+
+# P0.7 — Freeze Relation Strategy
+
+## Objective
+
+Define ERP relation architecture.
+
+---
+
+# MUST SUPPORT
+
+| Relation  | Example            |
+| --------- | ------------------ |
+| many2one  | order.customer     |
+| one2many  | order.lines        |
+| many2many | product.tags       |
+| tree      | category hierarchy |
+
+---
+
+# MUST DEFINE
+
+## Relation Loading Strategy
+
+| Strategy  | Use               |
+| --------- | ----------------- |
+| lazy      | default           |
+| eager     | small datasets    |
+| paginated | large child grids |
+
+---
+
+# Relation APIs
+
+Must support:
+
+* lookup
+* autocomplete
+* nested save
+* batch loading
+
+---
+
+# Acceptance Criteria
+
+* relation architecture finalized
+* frontend/backend aligned
+
+---
+
+# P0.8 — Freeze Workflow Strategy
+
+## Objective
+
+Finalize ERP workflow philosophy.
+
+---
+
+# MUST DEFINE
+
+## Workflow Structure
+
+```txt id="p0q"
+states
+transitions
+guards
+actions
+permissions
 ```
 
 ---
 
-# FINAL VALIDATION COMMANDS
+# Example
 
-Developer must run:
-
-```bash id="t1ae"
-pnpm lint
-pnpm typecheck
-pnpm build
-```
-
-Expected:
-
-```txt id="t1af"
-All commands pass successfully
+```txt id="p0r"
+Draft
+→ Completed
+→ Approved
+→ Closed
 ```
 
 ---
 
-# OUTPUT OF T1
+# MUST DEFINE
 
-After T1 we should have:
+## Transition Strategy
 
-```txt id="t1ag"
-Enterprise-ready React foundation
+Transitions may:
+
+* trigger actions
+* trigger validations
+* update inventory
+* send notifications
+
+---
+
+# Acceptance Criteria
+
+* workflow runtime structure finalized
+
+---
+
+# P0.9 — Freeze Permission Strategy
+
+## Objective
+
+Define ERP security architecture.
+
+---
+
+# MUST SUPPORT
+
+| Level  | Example          |
+| ------ | ---------------- |
+| module | sales access     |
+| menu   | menu visibility  |
+| view   | screen access    |
+| field  | readonly amount  |
+| action | approve button   |
+| row    | own records only |
+
+---
+
+# MUST DEFINE
+
+## Permission Resolution Order
+
+```txt id="p0s"
+User
+→ Roles
+→ Permissions
+→ Metadata Rules
+→ Runtime Enforcement
+```
+
+---
+
+# Acceptance Criteria
+
+* permission strategy finalized
+
+---
+
+# P0.10 — Freeze Expression Strategy
+
+## Objective
+
+Define runtime expression engine.
+
+---
+
+# MUST FINALIZE
+
+## Engine Choice
+
+```txt id="p0t"
+JSON Logic
+```
+
+---
+
+# Supported Use Cases
+
+```txt id="p0u"
+- visibility
+- readonly
+- formulas
+- validations
+- workflow guards
+- conditional layouts
+```
+
+---
+
+# Example
+
+```json id="p0v"
+{
+  ">": [
+    { "var": "amount" },
+    1000
+  ]
+}
+```
+
+---
+
+# Acceptance Criteria
+
+* expression engine standardized
+
+---
+
+# P0.11 — Freeze ERP Module Strategy
+
+## Objective
+
+Define initial business module evolution.
+
+---
+
+# FIRST MODULES
+
+| Module                | Purpose             |
+| --------------------- | ------------------- |
+| Product               | inventory base      |
+| Business Partner      | customer/vendor     |
+| Warehouse             | inventory structure |
+| Sales Order           | transactional flow  |
+| Inventory Transaction | stock movement      |
+
+---
+
+# WHY THESE FIRST?
+
+They validate:
+
+* relations
+* nested forms
+* grids
+* workflows
+* permissions
+* inventory logic
+
+---
+
+# Acceptance Criteria
+
+* initial module roadmap frozen
+
+---
+
+# P0.12 — Freeze Plugin Architecture
+
+## Objective
+
+Prepare long-term extensibility.
+
+---
+
+# Plugins Must Support
+
+```txt id="p0w"
+- models
+- fields
+- views
+- workflows
+- menus
+- actions
+- permissions
+```
+
+---
+
+# Plugin Structure
+
+Recommended:
+
+```txt id="p0x"
+plugin.json
+metadata/
+backend/
+frontend/
+```
+
+---
+
+# Acceptance Criteria
+
+* extension points identified
+
+---
+
+# P0.13 — Freeze Multi-Tenant Strategy
+
+## Objective
+
+Prepare future tenant scaling.
+
+---
+
+# MUST DECIDE
+
+| Strategy              | Decision     |
+| --------------------- | ------------ |
+| DB per tenant         | no           |
+| Schema per tenant     | maybe future |
+| Shared DB + tenant_id | YES          |
+
+---
+
+# Acceptance Criteria
+
+* tenant strategy frozen
+
+---
+
+# P0.14 — Freeze Audit Strategy
+
+## Objective
+
+Prepare enterprise traceability.
+
+---
+
+# MUST TRACK
+
+```txt id="p0y"
+- createdBy
+- updatedBy
+- workflow history
+- field changes
+- actions executed
+```
+
+---
+
+# Acceptance Criteria
+
+* audit strategy finalized
+
+---
+
+# P0.15 — Freeze Testing Strategy
+
+## Objective
+
+Define testing philosophy early.
+
+---
+
+# MUST DEFINE
+
+| Type                | Tool           |
+| ------------------- | -------------- |
+| Frontend Unit       | Vitest         |
+| Frontend E2E        | Playwright     |
+| Backend Unit        | JUnit          |
+| Backend Integration | Testcontainers |
+| API Testing         | REST Assured   |
+
+---
+
+# Acceptance Criteria
+
+* testing standards frozen
+
+---
+
+# FINAL ACCEPTANCE CRITERIA FOR PHASE 0
+
+Phase 0 is DONE only when:
+
+```txt id="p0z"
+✓ Runtime philosophy frozen
+✓ Metadata architecture frozen
+✓ Frontend architecture frozen
+✓ Backend architecture frozen
+✓ API standards frozen
+✓ Naming conventions frozen
+✓ Relation strategy frozen
+✓ Workflow strategy frozen
+✓ Permission strategy frozen
+✓ Expression strategy frozen
+✓ ERP module roadmap frozen
+✓ Plugin strategy frozen
+✓ Multi-tenant strategy frozen
+✓ Audit strategy frozen
+✓ Testing strategy frozen
+```
+
+---
+
+# OUTPUT OF PHASE 0
+
+After Phase 0:
+
+```txt id="p0aa"
+Stable ERP Runtime Architecture Blueprint
 ```
