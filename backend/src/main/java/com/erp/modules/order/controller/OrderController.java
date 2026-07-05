@@ -1,10 +1,12 @@
 package com.erp.modules.order.controller;
 
 import com.erp.config.ApiVersionConfig;
+import com.erp.common.api.ApiResponse;
 import com.erp.modules.order.dto.OrderRequestDTO;
 import com.erp.modules.order.dto.OrderResponseDTO;
 import com.erp.modules.order.dto.OrderLineRequestDTO;
 import com.erp.modules.order.dto.OrderLineResponseDTO;
+import com.erp.modules.order.dto.SalesOrderCreateRequestDto;
 import com.erp.modules.order.entity.Order;
 import com.erp.modules.order.entity.OrderLine;
 import com.erp.modules.order.service.OrderService;
@@ -50,6 +52,35 @@ public class OrderController {
 
     OrderResponseDTO response = mapToResponse(saved);
     return ResponseEntity.ok(response);
+  }
+
+  /**
+   * Create a new sales order with nested lines in a single request.
+   * POST /api/v1/orders/sales-orders/nested
+   * M2 requirement: header + lines saved together in one transaction
+   */
+  @PostMapping("/sales-orders/nested")
+  public ResponseEntity<ApiResponse<UUID>> createSalesOrderNested(
+      @RequestBody SalesOrderCreateRequestDto requestDto) {
+    try {
+      UUID orderId = orderService.createSalesOrderWithLines(requestDto);
+      return ResponseEntity.ok(
+          new ApiResponse<>(
+              true,
+              orderId,
+              "Sales order created successfully with lines",
+              null,
+              null));
+    } catch (Exception e) {
+      return ResponseEntity.badRequest()
+          .body(
+              new ApiResponse<>(
+                  false,
+                  null,
+                  "Failed to create sales order",
+                  "ORDER_CREATE_ERROR",
+                  e.getMessage()));
+    }
   }
 
   /**

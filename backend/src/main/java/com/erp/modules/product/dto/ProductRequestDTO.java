@@ -1,95 +1,56 @@
 package com.erp.modules.product.dto;
 
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.PositiveOrZero;
+import java.util.UUID;
 
-/**
- * Product Request DTO.
- */
 public class ProductRequestDTO {
+
+    @NotNull
+    private String code;
 
     @NotNull
     private String name;
 
-    @NotNull
-    private String sku;
-
     private String description;
-
-    private String category;
-
+    private String sku;
+    private String barcode;
     private String uom;
+    private String productType;
+    private Boolean isStocked;
+    private Boolean isSold;
+    private Boolean isPurchased;
+    private UUID categoryId;
 
-    private String type;
+    public String getCode() { return code; }
+    public void setCode(String code) { this.code = code; }
 
-    @PositiveOrZero
-    private Double costPrice;
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
 
-    @PositiveOrZero
-    private Double salePrice;
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
 
-    // Getters and setters
-    public String getName() {
-        return name;
-    }
+    public String getSku() { return sku; }
+    public void setSku(String sku) { this.sku = sku; }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+    public String getBarcode() { return barcode; }
+    public void setBarcode(String barcode) { this.barcode = barcode; }
 
-    public String getSku() {
-        return sku;
-    }
+    public String getUom() { return uom; }
+    public void setUom(String uom) { this.uom = uom; }
 
-    public void setSku(String sku) {
-        this.sku = sku;
-    }
+    public String getProductType() { return productType; }
+    public void setProductType(String productType) { this.productType = productType; }
 
-    public String getDescription() {
-        return description;
-    }
+    public Boolean getIsStocked() { return isStocked; }
+    public void setIsStocked(Boolean isStocked) { this.isStocked = isStocked; }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
+    public Boolean getIsSold() { return isSold; }
+    public void setIsSold(Boolean isSold) { this.isSold = isSold; }
 
-    public String getCategory() {
-        return category;
-    }
+    public Boolean getIsPurchased() { return isPurchased; }
+    public void setIsPurchased(Boolean isPurchased) { this.isPurchased = isPurchased; }
 
-    public void setCategory(String category) {
-        this.category = category;
-    }
-
-    public String getUom() {
-        return uom;
-    }
-
-    public void setUom(String uom) {
-        this.uom = uom;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public Double getCostPrice() {
-        return costPrice;
-    }
-
-    public void setCostPrice(Double costPrice) {
-        this.costPrice = costPrice;
-    }
-
-    public Double getSalePrice() {
-        return salePrice;
-    }
-
-    public void setSalePrice(Double salePrice) {
-        this.salePrice = salePrice;
-    }
+    public UUID getCategoryId() { return categoryId; }
+    public void setCategoryId(UUID categoryId) { this.categoryId = categoryId; }
 }

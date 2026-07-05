@@ -2,6 +2,7 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 
 import { LoginPage } from './auth/LoginPage';
 import { DashboardPage } from './dashboard/DashboardPage';
+import { RuntimePage } from './runtime/RuntimePage';
 
 import { GuestRoute } from '@/core/router/guards/GuestRoute';
 import { ProtectedRoute } from '@/core/router/guards/ProtectedRoute';
@@ -62,6 +63,7 @@ export function AppRoutes() {
             </div>
           }
         />
+        <Route path="runtime" element={<RuntimePage />} />
       </Route>
 
       {/* Fallback route */}

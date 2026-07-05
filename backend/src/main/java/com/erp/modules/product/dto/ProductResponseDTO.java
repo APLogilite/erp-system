@@ -3,118 +3,66 @@ package com.erp.modules.product.dto;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-/**
- * Product Response DTO.
- */
 public class ProductResponseDTO {
 
     private UUID id;
+    private String code;
     private String name;
-    private String sku;
     private String description;
-    private String category;
+    private String sku;
+    private String barcode;
     private String uom;
-    private String type;
-    private Double costPrice;
-    private Double salePrice;
+    private String productType;
+    private Boolean isStocked;
+    private Boolean isSold;
+    private Boolean isPurchased;
+    private Boolean isActive;
+    private UUID categoryId;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-    private Boolean isActive;
 
-    // Getters and setters
-    public UUID getId() {
-        return id;
-    }
+    public UUID getId() { return id; }
+    public void setId(UUID id) { this.id = id; }
 
-    public void setId(UUID id) {
-        this.id = id;
-    }
+    public String getCode() { return code; }
+    public void setCode(String code) { this.code = code; }
 
-    public String getName() {
-        return name;
-    }
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
 
-    public String getSku() {
-        return sku;
-    }
+    public String getSku() { return sku; }
+    public void setSku(String sku) { this.sku = sku; }
 
-    public void setSku(String sku) {
-        this.sku = sku;
-    }
+    public String getBarcode() { return barcode; }
+    public void setBarcode(String barcode) { this.barcode = barcode; }
 
-    public String getDescription() {
-        return description;
-    }
+    public String getUom() { return uom; }
+    public void setUom(String uom) { this.uom = uom; }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
+    public String getProductType() { return productType; }
+    public void setProductType(String productType) { this.productType = productType; }
 
-    public String getCategory() {
-        return category;
-    }
+    public Boolean getIsStocked() { return isStocked; }
+    public void setIsStocked(Boolean isStocked) { this.isStocked = isStocked; }
 
-    public void setCategory(String category) {
-        this.category = category;
-    }
+    public Boolean getIsSold() { return isSold; }
+    public void setIsSold(Boolean isSold) { this.isSold = isSold; }
 
-    public String getUom() {
-        return uom;
-    }
+    public Boolean getIsPurchased() { return isPurchased; }
+    public void setIsPurchased(Boolean isPurchased) { this.isPurchased = isPurchased; }
 
-    public void setUom(String uom) {
-        this.uom = uom;
-    }
+    public Boolean getIsActive() { return isActive; }
+    public void setIsActive(Boolean isActive) { this.isActive = isActive; }
 
-    public String getType() {
-        return type;
-    }
+    public UUID getCategoryId() { return categoryId; }
+    public void setCategoryId(UUID categoryId) { this.categoryId = categoryId; }
 
-    public void setType(String type) {
-        this.type = type;
-    }
+    public LocalDateTime getCreatedAt() { return createdAt; }
+    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
 
-    public Double getCostPrice() {
-        return costPrice;
-    }
-
-    public void setCostPrice(Double costPrice) {
-        this.costPrice = costPrice;
-    }
-
-    public Double getSalePrice() {
-        return salePrice;
-    }
-
-    public void setSalePrice(Double salePrice) {
-        this.salePrice = salePrice;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
-    public Boolean getIsActive() {
-        return isActive;
-    }
-
-    public void setIsActive(Boolean isActive) {
-        this.isActive = isActive;
-    }
+    public LocalDateTime getUpdatedAt() { return updatedAt; }
+    public void setUpdatedAt(LocalDateTime updatedAt) { this.updatedAt = updatedAt; }
 }

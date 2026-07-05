@@ -5,6 +5,7 @@ import com.erp.modules.order.entity.Order;
 import com.erp.modules.order.entity.OrderLine;
 import com.erp.modules.order.repository.OrderRepository;
 import com.erp.modules.order.repository.OrderLineRepository;
+import com.erp.modules.order.dto.SalesOrderCreateRequestDto;
 import com.erp.modules.inventory.entity.StockMovement;
 import com.erp.modules.inventory.repository.StockMovementRepository;
 import java.time.LocalDateTime;
@@ -185,5 +186,50 @@ public class OrderService extends BaseService<Order> {
     long nextNumber = orders.size() + 1;
 
     return String.format("%s-%04d", prefix, nextNumber);
+  }
+
+  /**
+   * Create sales order with nested lines in a single transaction.
+   * This implements the M2 nested form requirement: header + lines saved together.
+   */
+  @Transactional
+  public UUID createSalesOrderWithLines(SalesOrderCreateRequestDto requestDto) {
+    // Create and save order header
+    Order order = new Order();
+    order.setOrderType("SALES");
+    order.setPartyId(requestDto.getCustomerId());
+    order.setOrderDate(
+        requestDto.getOrderDate() != null ? requestDto.getOrderDate() : LocalDateTime.now());
+    order.setStatus(requestDto.getStatus() != null ? requestDto.getStatus() : "DRAFT");
+
+    // beforeCreate hook sets orderNumber and totalAmount
+    beforeCreate(order);
+    Order savedOrder = orderRepository.save(order);
+
+    // Create and save order lines
+    if (requestDto.getLines() != null && !requestDto.getLines().isEmpty()) {
+      double totalAmount = 0.0;
+      for (SalesOrderCreateRequestDto.OrderLineCreateDto lineDto : requestDto.getLines()) {
+        OrderLine line = new OrderLine();
+        line.setOrderId(savedOrder.getId());
+        line.setProductId(lineDto.getProductId());
+        line.setQuantity(lineDto.getQuantity());
+        line.setUnitPrice(lineDto.getUnitPrice());
+        line.setLineTotal(lineDto.getQuantity() * lineDto.getUnitPrice());
+
+        if (line.getQuantity() <= 0) {
+          throw new IllegalArgumentException("Quantity must be greater than 0");
+        }
+
+        totalAmount += line.getLineTotal();
+        orderLineRepository.save(line);
+      }
+
+      // Update order total
+      savedOrder.setTotalAmount(totalAmount);
+      orderRepository.save(savedOrder);
+    }
+
+    return savedOrder.getId();
   }
 }

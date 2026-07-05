@@ -581,3 +581,161 @@ Our testing strategy ensures that platform components work seamlessly together, 
 * **Frontend End-to-End Testing:** Playwright (covers critical workflow processes like creating sales orders, adding lines, and completing approvals).
 * **Backend Unit Testing:** JUnit 5, Mockito.
 * **Backend Integration Testing:** Spring Boot Test + Testcontainers (PostgreSQL instances spun up locally inside Docker).
+
+
+
+P0  Architecture Freeze
+│
+├── TG0 Architecture Validation
+│      ✓ Metadata contracts frozen
+│      ✓ API contracts frozen
+│      ✓ Naming conventions frozen
+│      ✓ Runtime philosophy approved
+│
+├── T1 Frontend Project Structure
+├── T2 UI Foundation
+├── T3 State Management
+│
+├── TG1 Frontend Foundation Validation
+│      ✓ Login page loads
+│      ✓ Routing works
+│      ✓ Theme works
+│      ✓ React Query works
+│      ✓ Zustand works
+│      ✓ Notifications work
+│
+├── B1 Metadata API Foundation
+├── T4 Metadata Schema
+├── T5 Registry System
+├── T6 Runtime Renderer
+│
+├── TG2 Runtime Engine Validation
+│      ✓ Dynamic form rendering
+│      ✓ Dynamic grids
+│      ✓ Dynamic layouts
+│      ✓ Metadata loading
+│      ✓ Runtime actions
+│      ✓ Component registry
+│
+├── B2 Runtime CRUD Engine
+├── B3 Relation Engine
+├── B4 Workflow Engine
+├── B5 Permission Engine
+│
+├── TG3 Platform Core Validation
+│      ✓ Generic CRUD
+│      ✓ Relations
+│      ✓ Workflow transitions
+│      ✓ Permissions
+│      ✓ Authentication
+│      ✓ Authorization
+│
+├── M1 Foundation Modules
+│      Product
+│      Business Partner
+│      Warehouse
+│
+├── TG4 Foundation Module Validation
+│      ✓ Product CRUD
+│      ✓ Customer CRUD
+│      ✓ Warehouse CRUD
+│      ✓ Tree relations
+│      ✓ Metadata rendering
+│      ✓ Search & filters
+│
+├── M2 Sales & Inventory
+│
+├── TG5 Transaction Validation
+│      ✓ Sales Order
+│      ✓ Nested forms
+│      ✓ Child grids
+│      ✓ Inventory transactions
+│      ✓ Document workflows
+│      ✓ Permissions
+│
+├── M3 Purchasing & Advanced Inventory
+│
+├── TG6 Inventory Validation
+│      ✓ Purchase Orders
+│      ✓ Goods Receipt
+│      ✓ Stock Reservation
+│      ✓ ATP Calculation
+│      ✓ Allocation Engine
+│      ✓ Inventory balances
+│
+├── M4 Accounting Foundation
+│
+├── TG7 Finance Validation
+│      ✓ Journal Entries
+│      ✓ Posting Engine
+│      ✓ Ledger
+│      ✓ Financial balances
+│      ✓ Document integration
+│
+├── M5 Manufacturing & MRP
+│
+├── TG8 Manufacturing Validation
+│      ✓ BOM
+│      ✓ Production Orders
+│      ✓ Material Planning
+│      ✓ Consumption
+│      ✓ Production Posting
+│
+├── M6 Enterprise Modules
+│
+├── TG9 Enterprise Validation
+│      ✓ CRM
+│      ✓ Projects
+│      ✓ Service
+│      ✓ HR
+│      ✓ Payroll
+│      ✓ Assets
+│
+├── M7 Reporting & Analytics
+│
+├── TG10 Analytics Validation
+│      ✓ Dashboards
+│      ✓ Reports
+│      ✓ Pivot Engine
+│      ✓ KPIs
+│      ✓ Scheduled Reports
+│
+├── M8 Platform Features
+│
+├── TG11 Platform Validation
+│      ✓ Notifications
+│      ✓ Email
+│      ✓ Attachments
+│      ✓ Comments
+│      ✓ Activities
+│      ✓ Global Search
+│
+├── M9 Integration Platform
+│
+├── TG12 Integration Validation
+│      ✓ REST APIs
+│      ✓ Webhooks
+│      ✓ Import/Export
+│      ✓ ETL
+│      ✓ External Integrations
+│
+├── M10 Plugin Ecosystem
+│
+├── TG13 Plugin Validation
+│      ✓ Plugin install
+│      ✓ Plugin metadata
+│      ✓ Plugin backend
+│      ✓ Plugin frontend
+│      ✓ Dynamic module loading
+│
+├── M11 Multi-Tenant & Scale
+│
+└── TG14 Production Validation
+       ✓ Multi-tenant
+       ✓ Multi-company
+       ✓ Localization
+       ✓ Currency engine
+       ✓ Tax engine
+       ✓ Horizontal scaling
+       ✓ Backup & recovery
+       ✓ Production deployment

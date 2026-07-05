@@ -21,7 +21,7 @@ public class CodeGenerator {
         // List of entity classes to generate for
         List<Class<? extends BaseEntity>> entities = Arrays.asList(
             com.erp.modules.product.entity.Product.class,
-            com.erp.modules.inventory.entity.Warehouse.class,
+            com.erp.modules.warehouse.entity.Warehouse.class,
             com.erp.modules.order.entity.Order.class,
             com.erp.modules.order.entity.OrderLine.class,
             com.erp.modules.inventory.entity.StockMovement.class

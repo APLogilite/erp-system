@@ -4,99 +4,69 @@ import com.erp.common.base.BaseEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.persistence.Column;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.PositiveOrZero;
+import java.util.UUID;
 
-/**
- * Product entity (Odoo-inspired product.product).
- */
 @Entity
 @Table(name = "products")
 public class Product extends BaseEntity {
 
-    @NotNull
+    @Column(nullable = false, unique = true)
+    private String code;
+
     @Column(nullable = false)
     private String name;
 
-    @Column(unique = true, nullable = false)
-    private String sku;
-
+    @Column(columnDefinition = "TEXT")
     private String description;
 
-    private String category;
+    @Column(unique = true)
+    private String sku;
 
-    private String uom; // unit of measure
+    private String barcode;
 
-    private String type; // STOCKABLE / SERVICE
+    private String uom;
 
-    @PositiveOrZero
-    private Double costPrice;
+    @Column(nullable = false)
+    private String productType;
 
-    @PositiveOrZero
-    private Double salePrice;
+    private Boolean isStocked = true;
 
-    // Getters and setters
-    public String getName() {
-        return name;
-    }
+    private Boolean isSold = true;
 
-    public void setName(String name) {
-        this.name = name;
-    }
+    private Boolean isPurchased = false;
 
-    public String getSku() {
-        return sku;
-    }
+    private UUID categoryId;
 
-    public void setSku(String sku) {
-        this.sku = sku;
-    }
+    public String getCode() { return code; }
+    public void setCode(String code) { this.code = code; }
 
-    public String getDescription() {
-        return description;
-    }
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
 
-    public String getCategory() {
-        return category;
-    }
+    public String getSku() { return sku; }
+    public void setSku(String sku) { this.sku = sku; }
 
-    public void setCategory(String category) {
-        this.category = category;
-    }
+    public String getBarcode() { return barcode; }
+    public void setBarcode(String barcode) { this.barcode = barcode; }
 
-    public String getUom() {
-        return uom;
-    }
+    public String getUom() { return uom; }
+    public void setUom(String uom) { this.uom = uom; }
 
-    public void setUom(String uom) {
-        this.uom = uom;
-    }
+    public String getProductType() { return productType; }
+    public void setProductType(String productType) { this.productType = productType; }
 
-    public String getType() {
-        return type;
-    }
+    public Boolean getIsStocked() { return isStocked; }
+    public void setIsStocked(Boolean isStocked) { this.isStocked = isStocked; }
 
-    public void setType(String type) {
-        this.type = type;
-    }
+    public Boolean getIsSold() { return isSold; }
+    public void setIsSold(Boolean isSold) { this.isSold = isSold; }
 
-    public Double getCostPrice() {
-        return costPrice;
-    }
+    public Boolean getIsPurchased() { return isPurchased; }
+    public void setIsPurchased(Boolean isPurchased) { this.isPurchased = isPurchased; }
 
-    public void setCostPrice(Double costPrice) {
-        this.costPrice = costPrice;
-    }
-
-    public Double getSalePrice() {
-        return salePrice;
-    }
-
-    public void setSalePrice(Double salePrice) {
-        this.salePrice = salePrice;
-    }
+    public UUID getCategoryId() { return categoryId; }
+    public void setCategoryId(UUID categoryId) { this.categoryId = categoryId; }
 }

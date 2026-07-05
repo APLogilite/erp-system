@@ -16,90 +16,89 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping(ApiVersionConfig.API_V1 + "/products")
 public class ProductController {
 
-  private final ProductService productService;
+    private final ProductService productService;
 
-  public ProductController(ProductService productService) {
-    this.productService = productService;
-  }
-
-  @PostMapping
-  public ResponseEntity<ApiResponse<ProductResponseDTO>> createProduct(@RequestBody ProductRequestDTO dto) {
-    Product product = mapToEntity(dto);
-    Product saved = productService.create(product);
-    ProductResponseDTO response = mapToResponse(saved);
-    return ResponseEntity.ok(ApiResponse.success(response, "Product created successfully."));
-  }
-
-  @GetMapping
-  public ResponseEntity<ApiResponse<List<ProductResponseDTO>>> getProducts() {
-    List<Product> products = productService.findAll().stream()
-        .filter(Product::getIsActive)
-        .collect(Collectors.toList());
-    List<ProductResponseDTO> responses = products.stream()
-        .map(this::mapToResponse)
-        .collect(Collectors.toList());
-    return ResponseEntity.ok(ApiResponse.success(responses, "Product list retrieved."));
-  }
-
-  @GetMapping("/{id}")
-  public ResponseEntity<ApiResponse<ProductResponseDTO>> getProduct(@PathVariable UUID id) {
-    Product product = productService.findById(id).orElseThrow(() -> new RuntimeException("Product not found"));
-    if (!product.getIsActive()) {
-      throw new RuntimeException("Product not found");
+    public ProductController(ProductService productService) {
+        this.productService = productService;
     }
-    ProductResponseDTO response = mapToResponse(product);
-    return ResponseEntity.ok(ApiResponse.success(response, "Product retrieved."));
-  }
 
-  @PutMapping("/{id}")
-  public ResponseEntity<ApiResponse<ProductResponseDTO>> updateProduct(@PathVariable UUID id, @RequestBody ProductRequestDTO dto) {
-    Product existing = productService.findById(id).orElseThrow(() -> new RuntimeException("Product not found"));
-    existing.setName(dto.getName());
-    existing.setSku(dto.getSku());
-    existing.setDescription(dto.getDescription());
-    existing.setCategory(dto.getCategory());
-    existing.setUom(dto.getUom());
-    existing.setType(dto.getType());
-    existing.setCostPrice(dto.getCostPrice());
-    existing.setSalePrice(dto.getSalePrice());
-    Product updated = productService.update(existing);
-    ProductResponseDTO response = mapToResponse(updated);
-    return ResponseEntity.ok(ApiResponse.success(response, "Product updated successfully."));
-  }
+    @PostMapping
+    public ResponseEntity<ApiResponse<ProductResponseDTO>> create(@RequestBody ProductRequestDTO dto) {
+        Product entity = mapToEntity(dto);
+        Product saved = productService.create(entity);
+        return ResponseEntity.ok(ApiResponse.success(mapToResponse(saved), "Product created."));
+    }
 
-  @DeleteMapping("/{id}")
-  public ResponseEntity<ApiResponse<Void>> deleteProduct(@PathVariable UUID id) {
-    productService.delete(id);
-    return ResponseEntity.ok(ApiResponse.successMessage("Product deleted successfully."));
-  }
+    @GetMapping
+    public ResponseEntity<ApiResponse<List<ProductResponseDTO>>> getAll() {
+        List<ProductResponseDTO> list = productService.findAll().stream()
+                .map(this::mapToResponse).collect(Collectors.toList());
+        return ResponseEntity.ok(ApiResponse.success(list, "Products retrieved."));
+    }
 
-  private Product mapToEntity(ProductRequestDTO dto) {
-    Product product = new Product();
-    product.setName(dto.getName());
-    product.setSku(dto.getSku());
-    product.setDescription(dto.getDescription());
-    product.setCategory(dto.getCategory());
-    product.setUom(dto.getUom());
-    product.setType(dto.getType());
-    product.setCostPrice(dto.getCostPrice());
-    product.setSalePrice(dto.getSalePrice());
-    return product;
-  }
+    @GetMapping("/{id}")
+    public ResponseEntity<ApiResponse<ProductResponseDTO>> getById(@PathVariable UUID id) {
+        Product entity = productService.findByIdOrThrow(id);
+        return ResponseEntity.ok(ApiResponse.success(mapToResponse(entity), "Product retrieved."));
+    }
 
-  private ProductResponseDTO mapToResponse(Product product) {
-    ProductResponseDTO dto = new ProductResponseDTO();
-    dto.setId(product.getId());
-    dto.setName(product.getName());
-    dto.setSku(product.getSku());
-    dto.setDescription(product.getDescription());
-    dto.setCategory(product.getCategory());
-    dto.setUom(product.getUom());
-    dto.setType(product.getType());
-    dto.setCostPrice(product.getCostPrice());
-    dto.setSalePrice(product.getSalePrice());
-    dto.setCreatedAt(product.getCreatedAt());
-    dto.setUpdatedAt(product.getUpdatedAt());
-    dto.setIsActive(product.getIsActive());
-    return dto;
-  }
+    @PutMapping("/{id}")
+    public ResponseEntity<ApiResponse<ProductResponseDTO>> update(@PathVariable UUID id, @RequestBody ProductRequestDTO dto) {
+        Product existing = productService.findByIdOrThrow(id);
+        existing.setCode(dto.getCode());
+        existing.setName(dto.getName());
+        existing.setDescription(dto.getDescription());
+        existing.setSku(dto.getSku());
+        existing.setBarcode(dto.getBarcode());
+        existing.setUom(dto.getUom());
+        existing.setProductType(dto.getProductType());
+        existing.setIsStocked(dto.getIsStocked());
+        existing.setIsSold(dto.getIsSold());
+        existing.setIsPurchased(dto.getIsPurchased());
+        existing.setCategoryId(dto.getCategoryId());
+        Product updated = productService.update(existing);
+        return ResponseEntity.ok(ApiResponse.success(mapToResponse(updated), "Product updated."));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<ApiResponse<Void>> delete(@PathVariable UUID id) {
+        productService.delete(id);
+        return ResponseEntity.ok(ApiResponse.successMessage("Product deleted."));
+    }
+
+    private Product mapToEntity(ProductRequestDTO dto) {
+        Product entity = new Product();
+        entity.setCode(dto.getCode());
+        entity.setName(dto.getName());
+        entity.setDescription(dto.getDescription());
+        entity.setSku(dto.getSku());
+        entity.setBarcode(dto.getBarcode());
+        entity.setUom(dto.getUom());
+        entity.setProductType(dto.getProductType());
+        entity.setIsStocked(dto.getIsStocked());
+        entity.setIsSold(dto.getIsSold());
+        entity.setIsPurchased(dto.getIsPurchased());
+        entity.setCategoryId(dto.getCategoryId());
+        return entity;
+    }
+
+    private ProductResponseDTO mapToResponse(Product entity) {
+        ProductResponseDTO dto = new ProductResponseDTO();
+        dto.setId(entity.getId());
+        dto.setCode(entity.getCode());
+        dto.setName(entity.getName());
+        dto.setDescription(entity.getDescription());
+        dto.setSku(entity.getSku());
+        dto.setBarcode(entity.getBarcode());
+        dto.setUom(entity.getUom());
+        dto.setProductType(entity.getProductType());
+        dto.setIsStocked(entity.getIsStocked());
+        dto.setIsSold(entity.getIsSold());
+        dto.setIsPurchased(entity.getIsPurchased());
+        dto.setIsActive(entity.getIsActive());
+        dto.setCategoryId(entity.getCategoryId());
+        dto.setCreatedAt(entity.getCreatedAt());
+        dto.setUpdatedAt(entity.getUpdatedAt());
+        return dto;
+    }
 }

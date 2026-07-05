@@ -1,62 +1,48 @@
-# T4 — Metadata Schema Design
+# AI Code Agent Prompt — T4 Metadata Schema Design
 
-## Objective
+You are a principal ERP architect.
 
-Design the complete metadata contract system for the ERP runtime engine.
+Your task is to design and implement the definitive metadata schema for the ERP Runtime Platform.
 
-This is the MOST important phase of the entire architecture.
+IMPORTANT:
 
-Everything depends on this:
+This is NOT feature development.
 
-* forms
-* grids
-* layouts
-* workflows
-* permissions
-* actions
-* relations
-* plugins
-* runtime rendering
+This is NOT UI development.
 
-If T4 is designed badly:
-the entire platform becomes unstable later.
+This is NOT CRUD development.
 
----
+This is the permanent metadata contract between:
 
-# CORE PRINCIPLE
+Backend Runtime Engine
+↔
+Metadata APIs
+↔
+Frontend Registry System
+↔
+Runtime Renderer
 
-We are NOT building:
+This schema becomes one of the most important architectural assets in the system.
 
-```txt id="t4a"
-hardcoded React screens
-```
+Think carefully.
 
-We ARE building:
-
-```txt id="t4b"
-a runtime rendering engine
-```
-
-Meaning:
-
-* backend sends metadata
-* frontend interprets metadata
-* runtime generates UI dynamically
+Future modules must be buildable almost entirely through metadata.
 
 ---
 
-# FINAL ARCHITECTURE DECISION
+# ARCHITECTURE CONTEXT
 
-We will use:
+Already completed:
 
-| Area            | Approach                  |
-| --------------- | ------------------------- |
-| Metadata Format | JSON                      |
-| Validation      | Zod                       |
-| Type Safety     | TypeScript                |
-| Storage         | PostgreSQL JSONB + tables |
-| Runtime         | Metadata-driven           |
-| Extensibility   | Plugin-ready              |
+✓ Phase 0 Architecture Freeze
+✓ T1 Project Structure
+✓ T2 UI Foundation
+✓ T3 State Management
+✓ B1 Metadata API Foundation
+
+Current Goal:
+
+Freeze Runtime Metadata Contract v1.
 
 ---
 
@@ -64,935 +50,632 @@ We will use:
 
 After T4:
 
-```txt id="t4c"
 ✓ Metadata contracts finalized
-✓ Runtime schemas validated
-✓ TypeScript interfaces ready
-✓ Zod validators ready
-✓ Relation contracts ready
-✓ View system ready
-✓ Layout schema ready
-✓ Action schema ready
-✓ Workflow schema ready
-✓ Permission schema ready
-✓ Plugin extension points prepared
+✓ Metadata validation schemas created
+✓ Runtime renderer contract established
+✓ Registry contract established
+✓ Workflow contract established
+✓ Relation contract established
+✓ Permission contract established
+✓ Expression contract established
+
+---
+
+# PACKAGE STRUCTURE
+
+Frontend:
+
+```txt
+src/core/metadata/schema/
+
+├── model/
+├── field/
+├── view/
+├── layout/
+├── workflow/
+├── action/
+├── permission/
+├── expression/
+├── relation/
+├── validators/
+└── index.ts
 ```
 
----
+Backend equivalent:
 
-# MOST IMPORTANT DESIGN RULE
-
-We separate:
-
-| Concept    | Responsibility      |
-| ---------- | ------------------- |
-| Model      | Data structure      |
-| Field      | Data definition     |
-| View       | Rendering structure |
-| Layout     | UI arrangement      |
-| Action     | Runtime behavior    |
-| Workflow   | State machine       |
-| Permission | Access rules        |
-
-This separation is critical.
-
----
-
-# STEP-BY-STEP TASKS
-
----
-
-# T4.1 — Create Metadata Module Structure
-
-## Objective
-
-Create centralized metadata architecture.
-
----
-
-## Required Structure
-
-```txt id="t4d"
-src/core/metadata/
- ├── schemas/
- │    ├── model.schema.ts
- │    ├── field.schema.ts
- │    ├── view.schema.ts
- │    ├── layout.schema.ts
- │    ├── action.schema.ts
- │    ├── workflow.schema.ts
- │    └── permission.schema.ts
- │
- ├── types/
- │    ├── model.types.ts
- │    ├── field.types.ts
- │    ├── view.types.ts
- │    └── common.types.ts
- │
- ├── validators/
- ├── parsers/
- └── registry/
+```txt
+com.erp.core.metadata.schema
 ```
 
----
-
-## Acceptance Criteria
-
-* metadata structure modularized
-* schemas isolated cleanly
+Both sides must represent the same contract.
 
 ---
 
-# T4.2 — Define Core Base Metadata Types
+# T4.1 — Base Metadata Definition
 
-## Objective
+Create common metadata foundation.
 
-Create reusable metadata foundations.
+Required:
+
+```ts
+BaseMetadata
+```
+
+Fields:
+
+```ts
+id: string
+code: string
+name: string
+description?: string
+
+version: number
+
+active: boolean
+
+properties?: Record<string, unknown>
+```
+
+All metadata definitions inherit from this.
 
 ---
 
-## Required Base Fields
+# T4.2 — Model Definition
 
-All metadata entities should support:
+Create:
 
-```ts id="t4e"
-id
-name
+```ts
+ModelDefinition
+```
+
+Purpose:
+
+Represents ERP business object.
+
+Examples:
+
+```txt
+business_partner
+product
+sales_order
+warehouse
+```
+
+Required:
+
+```ts
 code
-label
+name
 description
-version
-isActive
-module
+
+tableName
+
+auditable
+workflowEnabled
+tenantAware
+
+fields: FieldDefinition[]
+```
+
+Must support:
+
+```txt
+dynamic CRUD
+runtime forms
+runtime grids
+runtime workflows
 ```
 
 ---
 
-## Create Shared Types
+# T4.3 — Field Definition
 
-Example:
+Create:
 
-```ts id="t4f"
-interface BaseMetadata {
-  id: string;
-  code: string;
-  label: string;
-}
+```ts
+FieldDefinition
+```
+
+Supported field types:
+
+```txt
+TEXT
+TEXTAREA
+NUMBER
+DECIMAL
+BOOLEAN
+DATE
+DATETIME
+EMAIL
+PHONE
+SELECT
+MULTI_SELECT
+MANY_TO_ONE
+ONE_TO_MANY
+MANY_TO_MANY
+TREE
+JSON
+```
+
+Required fields:
+
+```ts
+code
+name
+type
+
+required
+readonly
+hidden
+
+defaultValue
+
+searchable
+filterable
+sortable
+```
+
+Validation:
+
+```ts
+minLength
+maxLength
+minValue
+maxValue
+pattern
+```
+
+UI:
+
+```ts
+placeholder
+helperText
+```
+
+Expressions:
+
+```ts
+visibleWhen
+readonlyWhen
+requiredWhen
 ```
 
 ---
 
-## Acceptance Criteria
+# T4.4 — Relation Definition
 
-* base metadata reusable
-* common typing standardized
+Create:
 
----
-
-# T4.3 — Design Model Metadata Schema
-
-## Objective
-
-Define business entity structure.
-
----
-
-## Example
-
-```json id="t4g"
-{
-  "name": "customer",
-  "table": "customers",
-  "label": "Customer",
-  "fields": []
-}
+```ts
+RelationDefinition
 ```
 
----
+Supported:
 
-## Required Properties
-
-```txt id="t4h"
-- name
-- table
-- label
-- description
-- fields
-- primaryKey
-- timestamps
-- softDelete
-- auditEnabled
-```
-
----
-
-## Requirements
-
-Support:
-
-* standard models
-* custom models
-* plugin models
-* tenant-specific extensions
-
----
-
-## Acceptance Criteria
-
-* models validate correctly
-* extensible architecture supported
-
----
-
-## Test Cases
-
-### TC-1
-
-Load valid model.
-
-Expected:
-
-```txt id="t4i"
-Schema validation succeeds
-```
-
----
-
-### TC-2
-
-Missing required field.
-
-Expected:
-
-```txt id="t4j"
-Validation error returned
-```
-
----
-
-# T4.4 — Design Field Metadata Schema
-
-## Objective
-
-Define field rendering + behavior contracts.
-
----
-
-# THIS IS ONE OF THE MOST IMPORTANT TASKS
-
-Fields drive:
-
-* forms
-* grids
-* validation
-* relations
-* workflows
-* permissions
-
----
-
-## Example
-
-```json id="t4k"
-{
-  "name": "customer_name",
-  "type": "text",
-  "label": "Customer Name",
-  "required": true,
-  "readonly": false
-}
-```
-
----
-
-## Required Field Types
-
-```txt id="t4l"
-text
-textarea
-number
-currency
-boolean
-date
-datetime
-email
-phone
-password
-select
-multiselect
+```txt
 many2one
 one2many
 many2many
-json
-file
-image
-richtext
+tree
+```
+
+Required:
+
+```ts
+relationType
+
+targetModel
+
+displayField
+
+valueField
+
+cascadeSave
+```
+
+Loading strategy:
+
+```ts
+LAZY
+EAGER
+PAGINATED
+```
+
+Must support future lookup APIs.
+
+---
+
+# T4.5 — View Definition
+
+Create:
+
+```ts
+ViewDefinition
+```
+
+Supported:
+
+```txt
+FORM
+GRID
+KANBAN
+DETAIL
+DASHBOARD
+```
+
+Required:
+
+```ts
+code
+modelCode
+viewType
+title
+
+layout
+```
+
+Purpose:
+
+Entry point for runtime rendering.
+
+---
+
+# T4.6 — Layout Definition
+
+Create recursive layout engine.
+
+Supported layout types:
+
+```txt
+PAGE
+SECTION
+GROUP
+ROW
+COLUMN
+TABS
+TAB
+GRID
+PANEL
+```
+
+Required:
+
+```ts
+type
+
+children
+
+config
+```
+
+Must support:
+
+```txt
+deep recursion
+responsive layouts
+dynamic visibility
 ```
 
 ---
 
-## Required Properties
+# T4.7 — Workflow Definition
 
-```txt id="t4m"
-- name
-- label
-- type
-- required
-- readonly
-- hidden
-- defaultValue
-- validations
-- relation
-- ui
-- permissions
+Create:
+
+```ts
+WorkflowDefinition
+```
+
+Required:
+
+```ts
+states
+transitions
+```
+
+State:
+
+```ts
+code
+name
+initial
+final
+```
+
+Transition:
+
+```ts
+code
+
+fromState
+toState
+
+guardExpression
+
+actions
+
+permissions
+```
+
+Must support:
+
+```txt
+approval flows
+inventory flows
+document lifecycle
 ```
 
 ---
 
-## Acceptance Criteria
+# T4.8 — Action Definition
 
-* all field types supported
-* future extensibility possible
+Create:
 
----
+```ts
+ActionDefinition
+```
 
-## Test Cases
+Supported:
 
-### TC-1
+```txt
+BUTTON
+SERVER_ACTION
+NAVIGATION
+WORKFLOW
+CUSTOM
+```
 
-Load relation field.
+Required:
 
-Expected:
+```ts
+code
+name
 
-```txt id="t4n"
-Relation metadata validates
+actionType
+
+icon
+
+visibleWhen
+
+enabledWhen
+```
+
+Future:
+
+```txt
+plugin actions
 ```
 
 ---
 
-# T4.5 — Design Relation Metadata Schema
+# T4.9 — Permission Definition
 
-## Objective
+Create:
 
-Define ERP relation architecture.
-
----
-
-# THIS IS CRITICAL
-
-ERP systems become difficult here.
-
----
-
-## Supported Relations
-
-| Type      | Example            |
-| --------- | ------------------ |
-| many2one  | customer           |
-| one2many  | order lines        |
-| many2many | tags               |
-| tree      | category hierarchy |
-
----
-
-## Example
-
-```json id="t4o"
-{
-  "type": "many2one",
-  "relation": "customer",
-  "displayField": "name"
-}
+```ts
+PermissionDefinition
 ```
 
----
+Supported levels:
 
-## Required Properties
-
-```txt id="t4p"
-- relationModel
-- displayField
-- valueField
-- lazy
-- searchable
-- cascade
+```txt
+MODULE
+MENU
+VIEW
+FIELD
+ACTION
+ROW
 ```
 
----
+Required:
 
-## Acceptance Criteria
+```ts
+resource
+permissionType
 
-* relation contracts reusable
-* nested relations supported
-
----
-
-# T4.6 — Design View Metadata Schema
-
-## Objective
-
-Define runtime screen rendering.
-
----
-
-## Supported Views
-
-```txt id="t4q"
-- form
-- list
-- kanban
-- dashboard
-- detail
-- wizard
+expression
 ```
 
----
+Purpose:
 
-## Example
-
-```json id="t4r"
-{
-  "type": "form",
-  "model": "customer",
-  "layout": {}
-}
-```
+Runtime permission evaluation.
 
 ---
 
-## Requirements
+# T4.10 — Expression Definition
 
-Views should reference:
+Engine:
 
-* layouts
-* actions
-* permissions
-* workflows
-
----
-
-## Acceptance Criteria
-
-* views modularized
-* runtime rendering supported
-
----
-
-# T4.7 — Design Layout Metadata Schema
-
-## Objective
-
-Define visual UI arrangement.
-
----
-
-## Supported Layouts
-
-```txt id="t4s"
-- tabs
-- sections
-- grids
-- accordions
-- split layouts
-- cards
-```
-
----
-
-## Example
-
-```json id="t4t"
-{
-  "type": "tabs",
-  "tabs": []
-}
-```
-
----
-
-## Requirements
-
-Support:
-
-* nested layouts
-* responsive layouts
-* conditional layouts
-
----
-
-## Acceptance Criteria
-
-* recursive layouts supported
-
----
-
-# T4.8 — Design Validation Schema
-
-## Objective
-
-Define runtime validation contracts.
-
----
-
-## Supported Validations
-
-```txt id="t4u"
-- required
-- regex
-- min/max
-- length
-- conditional
-- expression-based
-```
-
----
-
-## Example
-
-```json id="t4v"
-{
-  "type": "regex",
-  "value": "^[A-Z]+$"
-}
-```
-
----
-
-## Acceptance Criteria
-
-* validations serializable
-* frontend/backend reusable
-
----
-
-# T4.9 — Design Action Metadata Schema
-
-## Objective
-
-Define runtime actions.
-
----
-
-## Supported Actions
-
-```txt id="t4w"
-- save
-- delete
-- approve
-- reject
-- submit
-- API action
-- dialog action
-- navigation action
-```
-
----
-
-## Example
-
-```json id="t4x"
-{
-  "name": "approve",
-  "type": "api",
-  "endpoint": "/orders/approve"
-}
-```
-
----
-
-## Acceptance Criteria
-
-* actions dynamically executable
-
----
-
-# T4.10 — Design Workflow Metadata Schema
-
-## Objective
-
-Define state machine architecture.
-
----
-
-## Example
-
-```json id="t4y"
-{
-  "states": ["draft", "approved"],
-  "transitions": []
-}
-```
-
----
-
-## Required Properties
-
-```txt id="t4z"
-- states
-- transitions
-- guards
-- actions
-- permissions
-```
-
----
-
-## Acceptance Criteria
-
-* workflow transitions configurable
-
----
-
-# T4.11 — Design Permission Metadata Schema
-
-## Objective
-
-Define access control contracts.
-
----
-
-## Supported Levels
-
-```txt id="t4aa"
-- module
-- view
-- field
-- action
-- row
-```
-
----
-
-## Example
-
-```json id="t4ab"
-{
-  "field": "amount",
-  "readonlyRoles": ["sales"]
-}
-```
-
----
-
-## Acceptance Criteria
-
-* permission system extensible
-
----
-
-# T4.12 — Design UI Metadata Schema
-
-## Objective
-
-Allow UI customization separately from business logic.
-
----
-
-## Examples
-
-```txt id="t4ac"
-- width
-- placeholder
-- icons
-- colors
-- density
-- alignment
-```
-
----
-
-## Acceptance Criteria
-
-* UI concerns isolated cleanly
-
----
-
-# T4.13 — Design Expression Metadata Schema
-
-## Objective
-
-Support runtime dynamic logic.
-
----
-
-## Engine Choice
-
-Use:
-
-```txt id="t4ad"
+```txt
 JSON Logic
 ```
 
----
+Create:
 
-## Supported Use Cases
-
-```txt id="t4ae"
-- visibility
-- readonly
-- formulas
-- validation
-- conditional actions
+```ts
+ExpressionDefinition
 ```
 
----
+Supported usage:
 
-## Example
+```txt
+visibility
+readonly
+validation
+workflow guards
+permissions
+calculated fields
+```
 
-```json id="t4af"
+Example:
+
+```json
 {
-  "if": [
-    { ">": [ { "var": "amount" }, 1000 ] },
-    true,
-    false
+  ">": [
+    { "var": "amount" },
+    1000
   ]
 }
 ```
 
 ---
 
-## Acceptance Criteria
-
-* expressions serializable
-* frontend/backend compatible
-
----
-
-# T4.14 — Design Menu Metadata Schema
-
-## Objective
-
-Prepare dynamic navigation.
-
----
-
-## Required Properties
-
-```txt id="t4ag"
-- label
-- route
-- icon
-- parent
-- permissions
-- sequence
-```
-
----
-
-## Acceptance Criteria
-
-* nested menus supported
-
----
-
-# T4.15 — Design Plugin Metadata Schema
-
-## Objective
-
-Prepare installable ERP modules.
-
----
-
-## Plugin Can Register
-
-```txt id="t4ah"
-- models
-- views
-- actions
-- menus
-- workflows
-- permissions
-```
-
----
-
-## Acceptance Criteria
-
-* plugin extension points ready
-
----
-
-# T4.16 — Create Zod Validators
-
-## Objective
-
-Runtime metadata validation.
-
----
-
-## Requirements
-
-Every schema must have:
-
-* TypeScript interface
-* Zod validator
-
----
-
-## Acceptance Criteria
-
-* invalid metadata blocked safely
-
----
-
-## Test Cases
-
-### TC-1
-
-Load malformed metadata.
-
-Expected:
-
-```txt id="t4ai"
-Validation fails safely
-```
-
----
-
-# T4.17 — Create Metadata Parser Layer
-
-## Objective
-
-Prepare runtime interpretation.
-
----
-
-## Responsibilities
-
-Parser should:
-
-* validate
-* normalize
-* enrich defaults
-* resolve references
-
----
-
-## Acceptance Criteria
-
-* metadata normalized consistently
-
----
-
-# T4.18 — Create Sample Metadata Definitions
-
-## Objective
-
-Validate architecture using real examples.
-
----
-
-## Required Samples
+# T4.11 — Runtime Metadata Bundle
 
 Create:
 
-* customer form
-* sales order form
-* product grid
-* approval workflow
+```ts
+RuntimeMetadataBundle
+```
+
+Contains:
+
+```ts
+model
+
+views
+
+workflow
+
+actions
+
+permissions
+```
+
+Purpose:
+
+Single payload delivered from B1.
 
 ---
 
-## Acceptance Criteria
+# T4.12 — Zod Validation Schemas
 
-* real ERP scenarios supported
+Create validation schema for EVERY metadata definition.
 
----
+Required:
 
-# T4.19 — Define Metadata Versioning Strategy
+```ts
+ModelDefinitionSchema
+FieldDefinitionSchema
+ViewDefinitionSchema
+LayoutDefinitionSchema
+WorkflowDefinitionSchema
+ActionDefinitionSchema
+PermissionDefinitionSchema
+ExpressionDefinitionSchema
+```
 
-## Objective
+Requirements:
 
-Prepare future migrations safely.
-
----
-
-## Requirements
-
-Support:
-
-* schema versioning
-* backward compatibility
-* migration preparation
-
----
-
-## Acceptance Criteria
-
-* metadata evolution supported
+```txt
+strict validation
+safe parsing
+runtime validation
+```
 
 ---
 
-# T4.20 — Create Metadata Documentation
+# T4.13 — Metadata Registry Contracts
 
-## Objective
+Define contracts for T5.
 
-Document runtime contracts.
+Create interfaces only.
 
----
+```ts
+FieldRegistry
+LayoutRegistry
+ActionRegistry
+WorkflowRegistry
+```
 
-## Requirements
+Do NOT implement.
 
-Document:
-
-* all schemas
-* field types
-* layout types
-* action types
-* relation behavior
-
----
-
-## Acceptance Criteria
-
-* developers can extend safely
+Only define contracts.
 
 ---
 
-# FINAL ACCEPTANCE CRITERIA FOR T4
+# T4.14 — Sample Metadata
+
+Create complete sample metadata for:
+
+```txt
+business_partner
+```
+
+Include:
+
+```txt
+model
+form view
+grid view
+layout
+workflow
+actions
+permissions
+```
+
+This becomes the reference implementation.
+
+---
+
+# ACCEPTANCE CRITERIA
 
 Developer is DONE only when:
 
-```txt id="t4aj"
-✓ Model schema complete
-✓ Field schema complete
-✓ Relation schema complete
-✓ View schema complete
-✓ Layout schema complete
-✓ Workflow schema complete
-✓ Action schema complete
-✓ Permission schema complete
-✓ Expression schema complete
-✓ Zod validators operational
-✓ Metadata parser operational
-✓ Sample metadata working
-✓ Runtime contracts finalized
+```txt
+✓ ModelDefinition complete
+✓ FieldDefinition complete
+✓ RelationDefinition complete
+✓ ViewDefinition complete
+✓ LayoutDefinition complete
+✓ WorkflowDefinition complete
+✓ ActionDefinition complete
+✓ PermissionDefinition complete
+✓ ExpressionDefinition complete
+✓ RuntimeMetadataBundle complete
+✓ Zod schemas complete
+✓ Registry contracts complete
+✓ Sample metadata complete
 ```
 
 ---
 
-# FINAL VALIDATION TESTS
+# CODE QUALITY REQUIREMENTS
 
-Developer must validate:
+Use:
 
-```txt id="t4ak"
-✓ Customer form metadata
-✓ Sales order metadata
-✓ Relation metadata
-✓ Workflow metadata
-✓ Nested layouts
-✓ Conditional expressions
-✓ Permission rules
-```
+- TypeScript strict mode
+- Zod
+- discriminated unions where useful
+- strong typing
+- future plugin support
+- immutable contracts
 
-All must parse successfully.
+Avoid:
+
+- UI-specific logic
+- module-specific assumptions
+- hardcoded workflows
+- hardcoded permissions
 
 ---
 
-# OUTPUT OF T4
+# FINAL DELIVERABLE
 
-After T4 we will have:
+Produce:
 
-```txt id="t4al"
-Complete ERP Runtime Metadata Foundation
-```
+ERP Runtime Metadata Contract v1
+
+This contract must support:
+
+✓ Dynamic Forms
+✓ Dynamic Grids
+✓ Dynamic Layouts
+✓ Dynamic Workflows
+✓ Dynamic Permissions
+✓ Dynamic Actions
+✓ Dynamic Relations
+✓ Multi-module ERP Growth
+✓ Plugin Extensions
+
+The output should become the permanent metadata language of the ERP platform.
