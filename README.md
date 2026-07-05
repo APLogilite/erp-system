@@ -1,28 +1,86 @@
-# ERP System
+# Dynamic ERP System
 
-Modular ERP system built with Spring Boot and React, designed for scalability, AI-assisted development, and future mobile integration.
+A comprehensive Enterprise Resource Planning (ERP) system built with modern technologies for managing business operations.
+
+## Project Structure
+
+This repository is organized into separate backend and frontend applications:
+
+- `backend/` - Spring Boot Java application
+- `frontend/` - React TypeScript application with Vite
+- `docs/` - Documentation and development prompts
+
+## Getting Started
+
+You can set up both the frontend and backend environments using the top-level full-stack setup script or manually set up each folder.
+
+### 🚀 Full-Stack Setup (Recommended)
+
+Run the root-level setup script from the root directory to sequentially configure the backend (downloads and compiles Maven resources) and the frontend (downloads local Node.js and `pnpm` tools locally without requiring global permissions):
+
+```bash
+# Run full-stack setup
+./setup.sh
+```
+
+---
+
+### 💻 Backend Setup & Execution
+
+#### Prerequisites:
+- **Java 17** (or higher)
+- **Maven 3.6+**
+- **PostgreSQL** database (running on port `5432` with a database named `erp_db`)
+
+#### Installation:
+```bash
+cd backend
+./setup.sh
+```
+
+#### Run Backend Server:
+Start the backend Spring Boot server on port `8081` using either the quickstart start script or manual maven task:
+```bash
+cd backend
+./start.sh          # Quickstart wrapper
+# OR
+mvn spring-boot:run # Manual maven command
+```
+
+---
+
+### 🎨 Frontend Setup & Execution
+
+#### Prerequisites:
+- Node.js 22+ & pnpm (managed automatically by local setup script)
+
+#### Installation:
+```bash
+cd frontend
+./setup.sh
+```
+
+#### Run Frontend Server:
+Start the development server on port `5173` using either the quickstart start script or passing PATH parameters:
+```bash
+cd frontend
+./start.sh                              # Quickstart wrapper (highly recommended)
+# OR
+PATH=./.local/nodejs/bin:$PATH pnpm dev # Manual command using local Node.js binary
+```
 
 ## Features
-- Modular architecture (Auth, Product, Inventory, Sales)
-- REST API based backend
-- PostgreSQL database
-- AI-assisted development workflow
-- Future-ready for mobile and microservices
 
-## Tech Stack
-- Backend: Spring Boot (Java)
-- Frontend: React
-- Database: PostgreSQL
-- Build Tool: Maven
+- **Authentication & User Management**
+- **Inventory Management**
+- **Order Processing**
+- **Product Management**
+- **Warehouse Management**
 
-## Architecture
-- Modular Monolith (Phase 1)
-- Microservices-ready design
+## Development
 
-## Development Approach
-- AI-assisted coding (Cursor + Claude)
-- Clean architecture (Controller → Service → Repository)
-- DTO-based API design
+See individual README files in `backend/` and `frontend/` for detailed setup and development instructions.
 
-## Status
-🚧 In active development
+## Documentation
+
+Development prompts and additional documentation are available in the `docs/` folder.

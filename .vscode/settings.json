@@ -1,0 +1,14 @@
+{
+    "java.configuration.updateBuildConfiguration": "interactive",
+    "java.compile.nullAnalysis.mode": "automatic",
+    "chat.tools.terminal.autoApprove": {
+        "/^cd /mnt/EXT_LL1/erp-system/frontend && npm run typecheck$/": {
+            "approve": true,
+            "matchCommandLine": true
+        },
+        "/^cd /mnt/EXT_LL1/erp-system/backend && mvn -q compile$/": {
+            "approve": true,
+            "matchCommandLine": true
+        }
+    }
+}
