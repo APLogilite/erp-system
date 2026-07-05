@@ -6,22 +6,40 @@ export interface LoginPayload {
   password?: string;
 }
 
-export interface LoginResponse {
+export interface BackendLoginData {
   token: string;
   refreshToken: string;
   user: {
     id: string;
-    email: string;
     username: string;
+    email: string;
+    firstName?: string;
+    lastName?: string;
+    displayName?: string;
+    avatarUrl?: string;
+    status?: string;
     roles: string[];
     permissions: string[];
   };
 }
 
+export interface ApiResponse<T> {
+  success: boolean;
+  data?: T;
+  message?: string;
+  errorCode?: string;
+}
+
 export const authService = {
-  login: async (payload: LoginPayload): Promise<LoginResponse> => {
-    const response = await apiClient.post<LoginResponse>(ENDPOINTS.auth.login, payload);
-    return response.data;
+  login: async (payload: LoginPayload): Promise<BackendLoginData> => {
+    const response = await apiClient.post<ApiResponse<BackendLoginData>>(
+      ENDPOINTS.auth.login,
+      payload
+    );
+    if (!response.data.success || !response.data.data) {
+      throw new Error(response.data.message || 'Login failed');
+    }
+    return response.data.data;
   },
 
   logout: async (): Promise<void> => {
@@ -31,15 +49,31 @@ export const authService = {
   refreshSession: async (
     refreshToken: string
   ): Promise<{ token: string; refreshToken: string }> => {
-    const response = await apiClient.post<{ token: string; refreshToken: string }>(
+    const response = await apiClient.post<ApiResponse<{ token: string; refreshToken: string }>>(
       ENDPOINTS.auth.refresh,
       { refreshToken }
     );
-    return response.data;
+    if (!response.data.success || !response.data.data) {
+      throw new Error(response.data.message || 'Token refresh failed');
+    }
+    return response.data.data;
   },
 
-  getCurrentUser: async (): Promise<LoginResponse['user']> => {
-    const response = await apiClient.get<LoginResponse['user']>(ENDPOINTS.auth.me);
-    return response.data;
+  getCurrentUser: async (): Promise<BackendLoginData['user']> => {
+    const response = await apiClient.get<ApiResponse<BackendLoginData['user']>>(ENDPOINTS.auth.me);
+    if (!response.data.success || !response.data.data) {
+      throw new Error(response.data.message || 'Failed to fetch user');
+    }
+    return response.data.data;
+  },
+
+  changePassword: async (currentPassword: string, newPassword: string): Promise<void> => {
+    const response = await apiClient.post<ApiResponse<void>>(ENDPOINTS.auth.changePassword, {
+      currentPassword,
+      newPassword,
+    });
+    if (!response.data.success) {
+      throw new Error(response.data.message || 'Password change failed');
+    }
   },
 };

@@ -2,7 +2,7 @@
 
 References aLL file in :
 
-- backend/planning/*.md
+- backend/planning/\*.md
 
 ## Phase 1 — Foundation
 

@@ -1,4 +1,20 @@
-import { Dashboard, Inventory, ShoppingCart, People, Settings } from '@mui/icons-material';
+import {
+  Dashboard,
+  Inventory,
+  ShoppingCart,
+  People,
+  Settings,
+  Business,
+  CorporateFare,
+  Store,
+  AccountTree,
+  Group,
+  VpnKey,
+  Security,
+  Devices,
+  History,
+  Person,
+} from '@mui/icons-material';
 import {
   Drawer,
   List,
@@ -10,23 +26,46 @@ import {
   useTheme,
   Box,
   Divider,
+  Typography,
+  ListSubheader,
 } from '@mui/material';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 const drawerWidth = 280;
 
-const menuItems = [
+interface NavItem {
+  text: string;
+  icon: React.ElementType;
+  path: string;
+}
+
+const moduleItems: NavItem[] = [
   { text: 'Dashboard', icon: Dashboard, path: '/app/dashboard' },
   { text: 'Products', icon: Inventory, path: '/app/products' },
   { text: 'Orders', icon: ShoppingCart, path: '/app/orders' },
-  { text: 'Users', icon: People, path: '/app/users' },
-  { text: 'Settings', icon: Settings, path: '/app/settings' },
 ];
 
-type SidebarProps = {
-  mobileOpen?: boolean;
-  onMobileClose?: () => void;
-};
+const identityItems: NavItem[] = [
+  { text: 'Profile', icon: Person, path: '/app/profile' },
+  { text: 'Preferences', icon: Settings, path: '/app/preferences' },
+  { text: 'Change Password', icon: VpnKey, path: '/app/change-password' },
+  { text: 'Sessions', icon: Devices, path: '/app/sessions' },
+];
+
+const adminItems: NavItem[] = [
+  { text: 'Tenants', icon: Business, path: '/app/admin/tenants' },
+  { text: 'Organizations', icon: CorporateFare, path: '/app/admin/organizations' },
+  { text: 'Companies', icon: Store, path: '/app/admin/companies' },
+  { text: 'Branches', icon: AccountTree, path: '/app/admin/branches' },
+  { text: 'Departments', icon: AccountTree, path: '/app/admin/departments' },
+  { text: 'Users', icon: People, path: '/app/admin/users' },
+  { text: 'Roles', icon: Group, path: '/app/admin/roles' },
+  { text: 'Permissions', icon: Security, path: '/app/admin/permissions' },
+  { text: 'Sessions', icon: Devices, path: '/app/admin/sessions' },
+  { text: 'Audit Log', icon: History, path: '/app/admin/audit' },
+];
+
+type SidebarProps = { mobileOpen?: boolean; onMobileClose?: () => void };
 
 export function Sidebar({ mobileOpen = false, onMobileClose }: SidebarProps) {
   const theme = useTheme();
@@ -36,71 +75,83 @@ export function Sidebar({ mobileOpen = false, onMobileClose }: SidebarProps) {
 
   const handleNavigate = (path: string) => {
     navigate(path);
-    if (isMobile && onMobileClose) {
-      onMobileClose();
-    }
+    if (isMobile && onMobileClose) onMobileClose();
   };
 
   const drawer = (
     <Box sx={{ width: drawerWidth, pt: 2 }}>
       <Box sx={{ px: 2, py: 1 }}>
-        <Box
-          component="img"
-          src="/logo.svg"
-          alt="ERP Logo"
-          sx={{
-            height: 40,
-            width: 'auto',
-            filter: theme.palette.mode === 'dark' ? 'invert(1)' : 'none',
-          }}
-          onError={(e) => {
-            // Fallback if logo doesn't exist
-            e.currentTarget.style.display = 'none';
-          }}
-        />
+        <Typography variant="h6" fontWeight={700} color="primary">
+          ERP System
+        </Typography>
       </Box>
       <Divider sx={{ my: 1 }} />
-      <List>
-        {menuItems.map((item) => {
-          const isActive = location.pathname === item.path;
-          return (
-            <ListItem key={item.text} disablePadding>
-              <ListItemButton
-                onClick={() => handleNavigate(item.path)}
-                selected={isActive}
+
+      <ListSubheader sx={{ fontWeight: 600, fontSize: 11, lineHeight: '28px' }}>
+        MODULES
+      </ListSubheader>
+      <List dense>
+        {moduleItems.map((item) => (
+          <ListItem key={item.text} disablePadding>
+            <ListItemButton
+              onClick={() => handleNavigate(item.path)}
+              selected={location.pathname.startsWith(item.path)}
+              sx={{ mx: 1, mb: 0.3, borderRadius: 1 }}
+            >
+              <ListItemIcon
                 sx={{
-                  mx: 1,
-                  mb: 0.5,
-                  borderRadius: 1,
-                  '&.Mui-selected': {
-                    backgroundColor: theme.palette.primary.main + '20',
-                    '&:hover': {
-                      backgroundColor: theme.palette.primary.main + '30',
-                    },
-                  },
+                  minWidth: 36,
+                  color: location.pathname.startsWith(item.path) ? 'primary.main' : undefined,
                 }}
               >
-                <ListItemIcon
-                  sx={{
-                    color: isActive ? theme.palette.primary.main : 'inherit',
-                    minWidth: 40,
-                  }}
-                >
-                  <item.icon />
-                </ListItemIcon>
-                <ListItemText
-                  primary={item.text}
-                  sx={{
-                    '& .MuiListItemText-primary': {
-                      fontWeight: isActive ? 600 : 400,
-                      color: isActive ? theme.palette.primary.main : 'inherit',
-                    },
-                  }}
-                />
-              </ListItemButton>
-            </ListItem>
-          );
-        })}
+                <item.icon fontSize="small" />
+              </ListItemIcon>
+              <ListItemText primary={item.text} primaryTypographyProps={{ fontSize: 14 }} />
+            </ListItemButton>
+          </ListItem>
+        ))}
+      </List>
+
+      <Divider sx={{ my: 1 }} />
+      <ListSubheader sx={{ fontWeight: 600, fontSize: 11, lineHeight: '28px' }}>
+        IDENTITY
+      </ListSubheader>
+      <List dense>
+        {identityItems.map((item) => (
+          <ListItem key={item.text} disablePadding>
+            <ListItemButton
+              onClick={() => handleNavigate(item.path)}
+              selected={location.pathname === item.path}
+              sx={{ mx: 1, mb: 0.3, borderRadius: 1 }}
+            >
+              <ListItemIcon sx={{ minWidth: 36 }}>
+                <item.icon fontSize="small" />
+              </ListItemIcon>
+              <ListItemText primary={item.text} primaryTypographyProps={{ fontSize: 14 }} />
+            </ListItemButton>
+          </ListItem>
+        ))}
+      </List>
+
+      <Divider sx={{ my: 1 }} />
+      <ListSubheader sx={{ fontWeight: 600, fontSize: 11, lineHeight: '28px' }}>
+        ADMINISTRATION
+      </ListSubheader>
+      <List dense>
+        {adminItems.map((item) => (
+          <ListItem key={item.text} disablePadding>
+            <ListItemButton
+              onClick={() => handleNavigate(item.path)}
+              selected={location.pathname === item.path}
+              sx={{ mx: 1, mb: 0.3, borderRadius: 1 }}
+            >
+              <ListItemIcon sx={{ minWidth: 36 }}>
+                <item.icon fontSize="small" />
+              </ListItemIcon>
+              <ListItemText primary={item.text} primaryTypographyProps={{ fontSize: 14 }} />
+            </ListItemButton>
+          </ListItem>
+        ))}
       </List>
     </Box>
   );
@@ -111,15 +162,10 @@ export function Sidebar({ mobileOpen = false, onMobileClose }: SidebarProps) {
         variant="temporary"
         open={mobileOpen}
         onClose={onMobileClose}
-        ModalProps={{
-          keepMounted: true, // Better open performance on mobile.
-        }}
+        ModalProps={{ keepMounted: true }}
         sx={{
           display: { xs: 'block', md: 'none' },
-          '& .MuiDrawer-paper': {
-            boxSizing: 'border-box',
-            width: drawerWidth,
-          },
+          '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
         }}
       >
         {drawer}

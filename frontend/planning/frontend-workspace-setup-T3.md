@@ -6,12 +6,12 @@ Create the application-wide state architecture for the ERP runtime.
 
 This task establishes:
 
-* global UI state
-* metadata state
-* auth state
-* server state handling
-* caching strategy
-* runtime state management
+- global UI state
+- metadata state
+- auth state
+- server state handling
+- caching strategy
+- runtime state management
 
 This becomes the backbone of the frontend runtime engine.
 
@@ -45,21 +45,21 @@ from
 
 ## Zustand handles:
 
-* sidebar state
-* theme state
-* current module
-* auth session
-* runtime UI behavior
+- sidebar state
+- theme state
+- current module
+- auth session
+- runtime UI behavior
 
 ---
 
 ## React Query handles:
 
-* API data
-* metadata loading
-* caching
-* CRUD mutations
-* background refetching
+- API data
+- metadata loading
+- caching
+- CRUD mutations
+- background refetching
 
 This separation is critical.
 
@@ -114,8 +114,8 @@ pnpm add @tanstack/react-query-devtools
 
 ## Acceptance Criteria
 
-* packages installed
-* app builds successfully
+- packages installed
+- app builds successfully
 
 ---
 
@@ -160,10 +160,10 @@ src/core/query/
 
 Configure:
 
-* stale time
-* retry logic
-* cache time
-* error handling
+- stale time
+- retry logic
+- cache time
+- error handling
 
 ---
 
@@ -179,9 +179,9 @@ refetchOnWindowFocus: false
 
 ## Acceptance Criteria
 
-* React Query available globally
-* Devtools integrated
-* Query cache operational
+- React Query available globally
+- Devtools integrated
+- Query cache operational
 
 ---
 
@@ -223,18 +223,18 @@ src/core/api/
 
 Configure:
 
-* base URL
-* auth headers
-* request interceptors
-* response interceptors
-* error normalization
+- base URL
+- auth headers
+- request interceptors
+- response interceptors
+- error normalization
 
 ---
 
 ## Acceptance Criteria
 
-* API requests centralized
-* interceptors working
+- API requests centralized
+- interceptors working
 
 ---
 
@@ -310,8 +310,8 @@ src/core/auth/
 
 ## Acceptance Criteria
 
-* auth updates reactively
-* persisted session supported
+- auth updates reactively
+- persisted session supported
 
 ---
 
@@ -322,7 +322,7 @@ src/core/auth/
 Call:
 
 ```ts id="t3o"
-login(user)
+login(user);
 ```
 
 Expected:
@@ -378,8 +378,8 @@ src/core/store/ui/
 
 ## Acceptance Criteria
 
-* UI updates globally
-* no prop drilling required
+- UI updates globally
+- no prop drilling required
 
 ---
 
@@ -433,16 +433,16 @@ src/core/metadata/
 
 Support:
 
-* runtime caching
-* metadata invalidation
-* lazy loading
+- runtime caching
+- metadata invalidation
+- lazy loading
 
 ---
 
 ## Acceptance Criteria
 
-* metadata accessible globally
-* cache works correctly
+- metadata accessible globally
+- cache works correctly
 
 ---
 
@@ -472,21 +472,21 @@ Persist critical state safely.
 
 Persist:
 
-* auth session
-* theme mode
-* sidebar state
+- auth session
+- theme mode
+- sidebar state
 
 Do NOT persist:
 
-* temporary runtime state
-* active forms
-* API cache
+- temporary runtime state
+- active forms
+- API cache
 
 ---
 
 ## Acceptance Criteria
 
-* required state survives reload
+- required state survives reload
 
 ---
 
@@ -528,15 +528,15 @@ queryKeys = {
   models: {},
   forms: {},
   grids: {},
-}
+};
 ```
 
 ---
 
 ## Acceptance Criteria
 
-* query keys standardized
-* invalidation predictable
+- query keys standardized
+- invalidation predictable
 
 ---
 
@@ -552,15 +552,15 @@ Centralize API/runtime errors.
 
 Create:
 
-* API error parser
-* user-friendly error mapping
-* future logging hooks
+- API error parser
+- user-friendly error mapping
+- future logging hooks
 
 ---
 
 ## Acceptance Criteria
 
-* errors normalized globally
+- errors normalized globally
 
 ---
 
@@ -590,16 +590,16 @@ Standardize loading behavior.
 
 Support:
 
-* page loading
-* table loading
-* button loading
-* metadata loading
+- page loading
+- table loading
+- button loading
+- metadata loading
 
 ---
 
 ## Acceptance Criteria
 
-* loading states predictable
+- loading states predictable
 
 ---
 
@@ -615,16 +615,16 @@ Prepare centralized notification handling.
 
 Support:
 
-* success messages
-* warnings
-* errors
-* info messages
+- success messages
+- warnings
+- errors
+- info messages
 
 ---
 
 ## Acceptance Criteria
 
-* notifications trigger globally
+- notifications trigger globally
 
 ---
 
@@ -651,15 +651,15 @@ src/core/api/services/
 
 Services should:
 
-* wrap axios
-* normalize responses
-* isolate endpoints
+- wrap axios
+- normalize responses
+- isolate endpoints
 
 ---
 
 ## Acceptance Criteria
 
-* no direct axios calls in components
+- no direct axios calls in components
 
 ---
 
@@ -702,15 +702,15 @@ Protect authenticated ERP routes.
 
 Create:
 
-* AuthGuard
-* guest routes
-* protected routes
+- AuthGuard
+- guest routes
+- protected routes
 
 ---
 
 ## Acceptance Criteria
 
-* unauthorized access blocked
+- unauthorized access blocked
 
 ---
 
@@ -740,7 +740,7 @@ Enable runtime debugging.
 
 Add:
 
-* React Query Devtools
+- React Query Devtools
 
 Development only.
 
@@ -748,7 +748,7 @@ Development only.
 
 ## Acceptance Criteria
 
-* query cache inspectable
+- query cache inspectable
 
 ---
 

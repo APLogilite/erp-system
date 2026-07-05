@@ -15,13 +15,13 @@ No business module should need to hardcode forms, grids, layouts, or workflows.
 Architecture:
 
 Backend Metadata
-        ↓
+↓
 Metadata Store
-        ↓
+↓
 Registry Resolution
-        ↓
+↓
 Runtime Renderer
-        ↓
+↓
 React UI
 
 ---
@@ -105,7 +105,7 @@ src/runtime/
 The renderer receives:
 
 ```ts
-RuntimeMetadataBundle
+RuntimeMetadataBundle;
 ```
 
 and produces:
@@ -132,19 +132,19 @@ Renderer must be completely generic.
 Create:
 
 ```ts
-RuntimeContext
+RuntimeContext;
 ```
 
 Responsibilities:
 
 ```ts
-metadata
-model
-view
-record
-workflow
-permissions
-loading
+metadata;
+model;
+view;
+record;
+workflow;
+permissions;
+loading;
 ```
 
 Must support nested rendering.
@@ -234,7 +234,7 @@ Requirements:
 Input:
 
 ```ts
-FieldDefinition
+FieldDefinition;
 ```
 
 Responsibilities:
@@ -328,7 +328,7 @@ Create integration layer and hooks.
 Create:
 
 ```ts
-formState
+formState;
 ```
 
 Responsibilities:
@@ -403,11 +403,11 @@ DIALOG
 Create:
 
 ```ts
-useRuntime()
-useRuntimeRecord()
-useRuntimeActions()
-useRuntimeWorkflow()
-useRuntimePermissions()
+useRuntime();
+useRuntimeRecord();
+useRuntimeActions();
+useRuntimeWorkflow();
+useRuntimePermissions();
 ```
 
 ---
@@ -439,9 +439,9 @@ React Components
 Create:
 
 ```ts
-RuntimeRenderError
-MissingMetadataError
-MissingRegistryComponentError
+RuntimeRenderError;
+MissingMetadataError;
+MissingRegistryComponentError;
 ```
 
 Provide fallback UI.

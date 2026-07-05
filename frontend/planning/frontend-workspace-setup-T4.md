@@ -98,7 +98,7 @@ Create common metadata foundation.
 Required:
 
 ```ts
-BaseMetadata
+BaseMetadata;
 ```
 
 Fields:
@@ -125,7 +125,7 @@ All metadata definitions inherit from this.
 Create:
 
 ```ts
-ModelDefinition
+ModelDefinition;
 ```
 
 Purpose:
@@ -173,7 +173,7 @@ runtime workflows
 Create:
 
 ```ts
-FieldDefinition
+FieldDefinition;
 ```
 
 Supported field types:
@@ -200,44 +200,44 @@ JSON
 Required fields:
 
 ```ts
-code
-name
-type
+code;
+name;
+type;
 
-required
-readonly
-hidden
+required;
+readonly;
+hidden;
 
-defaultValue
+defaultValue;
 
-searchable
-filterable
-sortable
+searchable;
+filterable;
+sortable;
 ```
 
 Validation:
 
 ```ts
-minLength
-maxLength
-minValue
-maxValue
-pattern
+minLength;
+maxLength;
+minValue;
+maxValue;
+pattern;
 ```
 
 UI:
 
 ```ts
-placeholder
-helperText
+placeholder;
+helperText;
 ```
 
 Expressions:
 
 ```ts
-visibleWhen
-readonlyWhen
-requiredWhen
+visibleWhen;
+readonlyWhen;
+requiredWhen;
 ```
 
 ---
@@ -247,7 +247,7 @@ requiredWhen
 Create:
 
 ```ts
-RelationDefinition
+RelationDefinition;
 ```
 
 Supported:
@@ -262,23 +262,23 @@ tree
 Required:
 
 ```ts
-relationType
+relationType;
 
-targetModel
+targetModel;
 
-displayField
+displayField;
 
-valueField
+valueField;
 
-cascadeSave
+cascadeSave;
 ```
 
 Loading strategy:
 
 ```ts
-LAZY
-EAGER
-PAGINATED
+LAZY;
+EAGER;
+PAGINATED;
 ```
 
 Must support future lookup APIs.
@@ -290,7 +290,7 @@ Must support future lookup APIs.
 Create:
 
 ```ts
-ViewDefinition
+ViewDefinition;
 ```
 
 Supported:
@@ -306,12 +306,12 @@ DASHBOARD
 Required:
 
 ```ts
-code
-modelCode
-viewType
-title
+code;
+modelCode;
+viewType;
+title;
 
-layout
+layout;
 ```
 
 Purpose:
@@ -341,11 +341,11 @@ PANEL
 Required:
 
 ```ts
-type
+type;
 
-children
+children;
 
-config
+config;
 ```
 
 Must support:
@@ -363,38 +363,38 @@ dynamic visibility
 Create:
 
 ```ts
-WorkflowDefinition
+WorkflowDefinition;
 ```
 
 Required:
 
 ```ts
-states
-transitions
+states;
+transitions;
 ```
 
 State:
 
 ```ts
-code
-name
-initial
-final
+code;
+name;
+initial;
+final;
 ```
 
 Transition:
 
 ```ts
-code
+code;
 
-fromState
-toState
+fromState;
+toState;
 
-guardExpression
+guardExpression;
 
-actions
+actions;
 
-permissions
+permissions;
 ```
 
 Must support:
@@ -412,7 +412,7 @@ document lifecycle
 Create:
 
 ```ts
-ActionDefinition
+ActionDefinition;
 ```
 
 Supported:
@@ -428,16 +428,16 @@ CUSTOM
 Required:
 
 ```ts
-code
-name
+code;
+name;
 
-actionType
+actionType;
 
-icon
+icon;
 
-visibleWhen
+visibleWhen;
 
-enabledWhen
+enabledWhen;
 ```
 
 Future:
@@ -453,7 +453,7 @@ plugin actions
 Create:
 
 ```ts
-PermissionDefinition
+PermissionDefinition;
 ```
 
 Supported levels:
@@ -470,10 +470,10 @@ ROW
 Required:
 
 ```ts
-resource
-permissionType
+resource;
+permissionType;
 
-expression
+expression;
 ```
 
 Purpose:
@@ -493,7 +493,7 @@ JSON Logic
 Create:
 
 ```ts
-ExpressionDefinition
+ExpressionDefinition;
 ```
 
 Supported usage:
@@ -511,10 +511,7 @@ Example:
 
 ```json
 {
-  ">": [
-    { "var": "amount" },
-    1000
-  ]
+  ">": [{ "var": "amount" }, 1000]
 }
 ```
 
@@ -525,21 +522,21 @@ Example:
 Create:
 
 ```ts
-RuntimeMetadataBundle
+RuntimeMetadataBundle;
 ```
 
 Contains:
 
 ```ts
-model
+model;
 
-views
+views;
 
-workflow
+workflow;
 
-actions
+actions;
 
-permissions
+permissions;
 ```
 
 Purpose:
@@ -555,14 +552,14 @@ Create validation schema for EVERY metadata definition.
 Required:
 
 ```ts
-ModelDefinitionSchema
-FieldDefinitionSchema
-ViewDefinitionSchema
-LayoutDefinitionSchema
-WorkflowDefinitionSchema
-ActionDefinitionSchema
-PermissionDefinitionSchema
-ExpressionDefinitionSchema
+ModelDefinitionSchema;
+FieldDefinitionSchema;
+ViewDefinitionSchema;
+LayoutDefinitionSchema;
+WorkflowDefinitionSchema;
+ActionDefinitionSchema;
+PermissionDefinitionSchema;
+ExpressionDefinitionSchema;
 ```
 
 Requirements:
@@ -582,10 +579,10 @@ Define contracts for T5.
 Create interfaces only.
 
 ```ts
-FieldRegistry
-LayoutRegistry
-ActionRegistry
-WorkflowRegistry
+FieldRegistry;
+LayoutRegistry;
+ActionRegistry;
+WorkflowRegistry;
 ```
 
 Do NOT implement.

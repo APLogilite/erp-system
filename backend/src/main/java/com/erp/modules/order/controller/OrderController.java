@@ -62,25 +62,14 @@ public class OrderController {
   @PostMapping("/sales-orders/nested")
   public ResponseEntity<ApiResponse<UUID>> createSalesOrderNested(
       @RequestBody SalesOrderCreateRequestDto requestDto) {
-    try {
-      UUID orderId = orderService.createSalesOrderWithLines(requestDto);
-      return ResponseEntity.ok(
-          new ApiResponse<>(
-              true,
-              orderId,
-              "Sales order created successfully with lines",
-              null,
-              null));
-    } catch (Exception e) {
-      return ResponseEntity.badRequest()
-          .body(
-              new ApiResponse<>(
-                  false,
-                  null,
-                  "Failed to create sales order",
-                  "ORDER_CREATE_ERROR",
-                  e.getMessage()));
-    }
+    UUID orderId = orderService.createSalesOrderWithLines(requestDto);
+    return ResponseEntity.ok(
+        new ApiResponse<>(
+            true,
+            orderId,
+            "Sales order created successfully with lines",
+            null,
+            null));
   }
 
   /**

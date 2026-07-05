@@ -15,13 +15,13 @@ This is the resolution engine that converts metadata into actual React component
 Architecture Flow:
 
 Backend Metadata
-        ↓
+↓
 Metadata Store
-        ↓
+↓
 Registry Resolution
-        ↓
+↓
 Runtime Renderer
-        ↓
+↓
 React Components
 
 The registry system must be extensible, plugin-friendly, and support future ERP growth.
@@ -191,13 +191,13 @@ JSON
 Registry contract:
 
 ```ts
-registerField()
+registerField();
 
-resolveField()
+resolveField();
 
-hasField()
+hasField();
 
-getFields()
+getFields();
 ```
 
 Must support:
@@ -319,8 +319,8 @@ runtime overrides
 Create:
 
 ```ts
-RegistryNotFoundError
-DuplicateRegistrationError
+RegistryNotFoundError;
+DuplicateRegistrationError;
 ```
 
 Examples:
@@ -352,11 +352,7 @@ Highest priority wins.
 Requirements:
 
 ```ts
-register(
-  key,
-  component,
-  priority
-)
+register(key, component, priority);
 ```
 
 ---
@@ -386,10 +382,10 @@ Only support registration.
 Support future:
 
 ```ts
-plugin.registerFields()
-plugin.registerLayouts()
-plugin.registerActions()
-plugin.registerViews()
+plugin.registerFields();
+plugin.registerLayouts();
+plugin.registerActions();
+plugin.registerViews();
 ```
 
 Do NOT implement plugins.
@@ -455,11 +451,11 @@ Use placeholder components if necessary.
 Create hooks:
 
 ```ts
-useFieldRegistry()
-useLayoutRegistry()
-useActionRegistry()
-useWorkflowRegistry()
-useViewRegistry()
+useFieldRegistry();
+useLayoutRegistry();
+useActionRegistry();
+useWorkflowRegistry();
+useViewRegistry();
 ```
 
 Requirements:
@@ -477,7 +473,7 @@ Test:
 ## Field Registration
 
 ```ts
-registerField("TEXT", TextField)
+registerField('TEXT', TextField);
 ```
 
 Expected:
