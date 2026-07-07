@@ -78,6 +78,7 @@ public class UserAdminService {
     u.setEmployeeId(req.getEmployeeId());
     u.setAddress(req.getAddress());
     if (req.getEmailVerified() != null) u.setEmailVerified(req.getEmailVerified());
+    if (req.getStatus() != null) u.setStatus(req.getStatus());
     return userRepository.save(u);
   }
 

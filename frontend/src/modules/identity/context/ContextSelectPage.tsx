@@ -1,4 +1,5 @@
 import {
+  ArrowBack,
   Business,
   CorporateFare,
   Store,
@@ -71,6 +72,16 @@ export function ContextSelectPage() {
   const [selectedCompany, setSelectedCompany] = useState('');
   const [selectedBranch, setSelectedBranch] = useState('');
   const [switchError, setSwitchError] = useState('');
+
+  const { data: current } = useQuery({
+    queryKey: ['context', 'current'],
+    queryFn: async () => {
+      const res = await apiClient.get(ENDPOINTS.context.current);
+      return res.data.data || res.data;
+    },
+  });
+
+  const hasCurrentContext = !!(current?.roles?.length || current?.organizationId);
 
   const {
     data: options,
@@ -213,6 +224,13 @@ export function ContextSelectPage() {
     },
   });
 
+  // Pre-populate from existing context (e.g. when coming from "Change Workspace")
+  useEffect(() => {
+    if (!current || !options) return;
+    const role = current.roles?.[0];
+    if (role && options.roles?.includes(role) && !selectedRole) setSelectedRole(role);
+  }, [current, options, selectedRole]);
+
   // Auto-select single-option levels as they become available
   useEffect(() => {
     if (options?.roles?.length === 1 && !selectedRole) setSelectedRole(options.roles[0]);
@@ -271,14 +289,6 @@ export function ContextSelectPage() {
   const coSingle = filteredCompanies.length === 1;
   const brSingle = filteredBranches.length === 1;
 
-  const missingLevels: string[] = [];
-  if ((options?.roles?.length ?? 0) > 0 && !selectedRole) missingLevels.push('Role');
-  if (selectedRole && filteredOrgs.length > 0 && !selectedOrg) missingLevels.push('Organization');
-  if (selectedOrg && filteredCompanies.length > 0 && !selectedCompany)
-    missingLevels.push('Company');
-  if (selectedCompany && filteredBranches.length > 0 && !selectedBranch)
-    missingLevels.push('Branch');
-
   return (
     <Box
       sx={{
@@ -296,6 +306,15 @@ export function ContextSelectPage() {
       <Card sx={{ width: '100%', maxWidth: 520, borderRadius: 4, overflow: 'hidden' }}>
         <Box sx={{ height: 6, background: 'linear-gradient(90deg, #1976d2 0%, #82b1ff 100%)' }} />
         <CardContent sx={{ p: 4 }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', mb: 2, ml: -1 }}>
+            <Button
+              startIcon={<ArrowBack />}
+              onClick={() => navigate(hasCurrentContext ? '/app/dashboard' : '/login', { replace: true })}
+              sx={{ textTransform: 'none', color: 'text.secondary' }}
+            >
+              Back
+            </Button>
+          </Box>
           <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mb: 3 }}>
             <Avatar sx={{ width: 56, height: 56, bgcolor: 'primary.main', mb: 2, fontSize: 24 }}>
               {user?.displayName?.charAt(0)?.toUpperCase() ?? 'U'}
@@ -312,12 +331,6 @@ export function ContextSelectPage() {
           {(cascadingSwitch.isError || switchMutation.isError || switchError) && (
             <Alert severity="error" sx={{ mb: 3, borderRadius: 2 }}>
               {switchError || 'Failed to set workspace. Please try again.'}
-            </Alert>
-          )}
-
-          {missingLevels.length > 0 && (
-            <Alert severity="warning" sx={{ mb: 3, borderRadius: 2 }}>
-              Please select: <strong>{missingLevels.join(', ')}</strong>
             </Alert>
           )}
 
@@ -404,7 +417,7 @@ export function ContextSelectPage() {
               variant="contained"
               size="large"
               onClick={() => cascadingSwitch.mutate()}
-              disabled={cascadingSwitch.isPending || !selectedRole || missingLevels.length > 0}
+              disabled={cascadingSwitch.isPending || !selectedRole}
               endIcon={
                 cascadingSwitch.isPending ? (
                   <CircularProgress size={18} color="inherit" />

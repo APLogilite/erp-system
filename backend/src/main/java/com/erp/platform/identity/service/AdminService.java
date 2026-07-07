@@ -112,7 +112,7 @@ public class AdminService {
     }
     return companyRepository.save(c);
   }
-  @Transactional public Company updateCompany(UUID id, Company req) { getCompany(id); Company c = getCompany(id); c.setName(req.getName()); c.setTaxId(req.getTaxId()); c.setAddress(req.getAddress()); c.setPhone(req.getPhone()); c.setEmail(req.getEmail()); c.setCurrency(req.getCurrency()); if (req.getOrganization() != null) c.setOrganization(req.getOrganization()); return companyRepository.save(c); }
+  @Transactional public Company updateCompany(UUID id, Company req) { getCompany(id); Company c = getCompany(id); c.setName(req.getName()); c.setTaxId(req.getTaxId()); c.setRegistrationNumber(req.getRegistrationNumber()); c.setAddress(req.getAddress()); c.setPhone(req.getPhone()); c.setEmail(req.getEmail()); c.setCurrency(req.getCurrency()); if (req.getOrganization() != null) c.setOrganization(req.getOrganization()); return companyRepository.save(c); }
   @Transactional public void deleteCompany(UUID id) { getCompany(id); companyRepository.deleteById(id); }
   public List<Company> getCompaniesByOrganization(UUID orgId) {
     List<Company> all = companyRepository.findByOrganizationId(orgId);

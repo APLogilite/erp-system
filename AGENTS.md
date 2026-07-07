@@ -30,7 +30,7 @@ Profile `local` is auto-imported from `application-local.properties` (gitignored
 cd frontend
 ./setup.sh            # download Node.js 22 + pnpm locally into .local/
 ./start.sh            # uses local Node.js from .local/nodejs/bin
-pnpm dev              # start dev server (manual alternative)
+pnpm dev              # start dev server
 pnpm build            # runs typecheck first, then vite build
 pnpm lint             # ESLint --max-warnings=0
 pnpm typecheck        # tsc --noEmit
@@ -38,40 +38,35 @@ pnpm format           # Prettier --write .
 pnpm preview          # vite preview (production build)
 ```
 
-**Pre-commit check order:** `lint` → `typecheck → build`. Husky + lint-staged runs `eslint --fix` + `prettier --write` on staged `*.{ts,tsx}`.
+**Pre-commit:** Husky runs `lint-staged → typecheck`. `lint-staged` runs `eslint --fix` + `prettier --write` on staged `*.{ts,tsx}` and Prettier on `*.{json,md,css,scss}`.
 
 ## Key conventions
 
-- **Frontend path alias:** `@/` → `src/` (configured in both vite.config.ts and tsconfig.json paths)
-- **API envelope:** Every Spring endpoint returns `ApiResponse<T>` (`{ success, data, message, errorCode, details }`)
-- **Backend persistence:** JPA `ddl-auto=update` in prod; `BaseEntity` provides UUID id, soft-delete, timestamps; `BaseService<T>` provides generic CRUD
+- **Frontend path alias:** `@/` → `src/` (configured in vite.config.ts and tsconfig.json)
+- **API envelope:** Every endpoint returns `ApiResponse<T>` (`{ success, data, message, errorCode, details }`)
+- **API base:** `/api/v1` (defined in `ApiVersionConfig.java`; frontend `VITE_API_URL` defaults to `http://localhost:8081/api/v1`)
+- **Backend persistence:** JPA `ddl-auto=update` in prod; `BaseEntity` provides UUID id, soft-delete, timestamps; `BaseService<T>` provides generic CRUD with lifecycle hooks
+- **Multi-tenancy:** Data isolated by `Tenant → Org → Company → Branch → Dept` hierarchy, enforced via Hibernate `@Filter` annotations. The `sys_admin` role bypasses all filters.
+- **Auth:** JWT tokens in Zustand `authStore`; axios interceptor injects Bearer token; 401 triggers auto-logout
+- **Flyway** is disabled by default (`spring.flyway.enabled=false`); JPA `ddl-auto=update` handles schema
 - **Test DB:** H2 in PostgreSQL compatibility mode (`jdbc:h2:mem:testdb;MODE=PostgreSQL`)
-- **Auth:** JWT tokens stored in Zustand `authStore`; axios interceptor injects Bearer token; 401 triggers auto-logout
-- **API base:** `VITE_API_URL` env var (defaults to `http://localhost:3000/api` — note port mismatch with backend at 8081)
+- **Demo users** seeded on startup; see `README.md` for credentials
 
 ## Architecture
 
-This is a **metadata-driven ERP runtime platform**, not a hardcoded CRUD app:
-
-- **Backend:** metadata generation, dynamic CRUD, workflow execution, permission enforcement
-- **Frontend:** metadata-driven runtime renderer with registries (field/layout/action/workflow/view)
-- **Metadata schema** defined in `src/core/metadata/schema/` (Zod-validated); `engine/` is placeholder for dynamic renderers
-- **Code generator** `CodeGenerator.java` handles DTO + Service scaffolding for new entities
-- Full architectural blueprint at `docs/workspace-agent-prompt-P0.md` (885 lines) — read this before major decisions
+- **Backend:** `platform/identity/` is the dominant module (auth, RBAC, multi-tenant admin hierarchy). Other modules under `modules/` (inventory, order, product, warehouse, etc.) are thin CRUD layers.
+- **Frontend:** metadata-driven runtime renderer with registries (field/layout/action/workflow/view). Metadata schema in `src/core/metadata/schema/` (Zod-validated); `engine/` contains placeholder renderers. The `app/` layer wires `QueryProvider + ThemeProvider + RegistryProvider + BrowserRouter`.
+- **Code generator** (`CodeGenerator.java`) scaffolds DTO + Service for 5 hardcoded entities (Product, Warehouse, Order, OrderLine, StockMovement) — extend the list in its `main()` method.
 
 ## Test status
 
-- **Backend:** 1 test (`DatabaseConnectionTest.java`), minimal coverage
-- **Frontend:** No test framework configured (`pnpm test` echoes placeholder)
+- **Backend:** 5 tests — `DatabaseConnectionTest` (1 file) + `platform/identity` unit tests (JwtProvider, PasswordService, PermissionCache, PermissionEvaluator)
+- **Frontend:** No test framework (`pnpm test` echoes placeholder)
 
 ## Gotchas
 
-- `.env` files and `application-local.properties` are in `.gitignore` — don't commit secrets
-- Backend `VITE_API_URL` in `.env` points to `localhost:3000` but the real backend runs on `8081` — update `.env.development` if proxying directly
-- `db-setup.sql` is gitignored; schema template at `backend/db-setup-template.sql`
+- `.env*` files and `application-local.properties` are in `.gitignore` — don't commit secrets
+- `db-setup.sql` is gitignored; template at `backend/db-setup-template.sql`
 - `.m2/` is gitignored — local Maven repo cache lives in workspace
-
-## References worth preserving
-
-- `docs/architecture-blueprint-P0.md`
-- `docs/workspace-agent-prompt-P0.md`
+- Frontend `.env*` files exist on disk as defaults but are gitignored; Vite's `loadEnv` loads them directly
+- `mvn exec:java` only generates code for the 5 entities hardcoded in `CodeGenerator.java`

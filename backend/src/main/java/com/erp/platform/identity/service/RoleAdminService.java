@@ -47,6 +47,7 @@ public class RoleAdminService {
     Role r = getRole(id);
     r.setName(req.getName());
     r.setDescription(req.getDescription());
+    if (req.getIsSystem() != null) r.setIsSystem(req.getIsSystem());
     return roleRepository.save(r);
   }
 
