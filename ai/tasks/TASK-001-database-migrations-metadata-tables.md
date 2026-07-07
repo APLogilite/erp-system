@@ -9,13 +9,13 @@ status: READY_FOR_TEST
 
 priority: High
 
-owner: developer
+owner: planner
 
-assigned_to: AI Developer Agent
+assigned_to:
 
-assigned_branch: feature/TASK-001
+assigned_branch:
 
-locked: true
+locked: false
 
 created: 2026-07-07
 
@@ -32,6 +32,10 @@ actual_hours: 0.5
 parent_prd: PRD-001
 
 prd_version: 1.5.0
+prd_branch: prd/PRD-001-dynamic-form-configuration
+base_branch: prd/PRD-001-dynamic-form-configuration
+merge_target: prd/PRD-001-dynamic-form-configuration
+merge_strategy: merge
 
 parent_task:
 

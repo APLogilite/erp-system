@@ -32,6 +32,10 @@ actual_hours:
 parent_prd: PRD-001
 
 prd_version: 1.6.0
+prd_branch: prd/PRD-001-dynamic-form-configuration
+base_branch: prd/PRD-001-dynamic-form-configuration
+merge_target: prd/PRD-001-dynamic-form-configuration
+merge_strategy: merge
 
 parent_task:
 

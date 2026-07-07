@@ -21,6 +21,12 @@ project: Dynamic ERP Platform
 
 repository: erp-system
 
+prd_branch: prd/PRD-001-dynamic-form-configuration
+
+target_branch: main
+
+merge_strategy: merge
+
 tech_stack:
   - Spring Boot 3.3.4
   - Java 17
