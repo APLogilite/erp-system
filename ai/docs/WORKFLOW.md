@@ -317,29 +317,200 @@ This prevents multiple agents from working on the same task.
 
 # Git Workflow
 
-Every implementation task uses its own branch.
+Every approved PRD owns its own integration branch.
 
-Feature
+The PRD branch is the working integration branch for all implementation tasks.
+
+```
+main
+    │
+    ▼
+prd/PRD-001-<short-name>
+    │
+    ├── feature/TASK-001
+    │       │
+    │       └── Merge → prd/PRD-001-<short-name>
+    │
+    ├── feature/TASK-002
+    │       │
+    │       └── Merge → prd/PRD-001-<short-name>
+    │
+    ├── bugfix/BUG-001
+    │       │
+    │       └── Merge → prd/PRD-001-<short-name>
+    │
+    ├── enhancement/TASK-015
+    │       │
+    │       └── Merge → prd/PRD-001-<short-name>
+    │
+    ▼
+QA validates the PRD branch
+    │
+    ▼
+Merge PRD branch → main
+```
+
+## Branch Types
+
+### Main Branch
+
+```
+main
+```
+
+Contains only production-ready code.
+
+Direct development on `main` is never allowed.
+
+---
+
+### PRD Branch
+
+One branch is created for every approved PRD.
+
+Example:
+
+```
+prd/PRD-001-dynamic-form
+```
+
+The PRD branch is the integration branch for that feature.
+
+All implementation, bug fixes, and enhancements for the PRD are merged into this branch.
+
+---
+
+### Task Branch
+
+Every implementation task creates its own branch from the PRD branch.
+
+Example:
 
 ```
 feature/TASK-001
 ```
 
-Bug
+Base Branch:
 
 ```
-bugfix/BUG-003
+prd/PRD-001-dynamic-form
 ```
 
-Enhancement
+After implementation and validation:
 
 ```
-enhancement/TASK-014
+feature/TASK-001
+        │
+        ▼
+Merge
+        │
+        ▼
+prd/PRD-001-dynamic-form
 ```
 
-Developer never merges branches.
+Task branches should not be merged directly into `main`.
 
-Merge happens after successful testing.
+---
+
+### Bug Branch
+
+Bug fixes also start from the PRD branch.
+
+Example:
+
+```
+bugfix/BUG-004
+```
+
+Base Branch:
+
+```
+prd/PRD-001-dynamic-form
+```
+
+After validation they are merged back into the PRD branch.
+
+---
+
+### Enhancement Branch
+
+Enhancement tasks also start from the PRD branch.
+
+Example:
+
+```
+enhancement/TASK-015
+```
+
+Base Branch:
+
+```
+prd/PRD-001-dynamic-form
+```
+
+After validation they are merged back into the PRD branch.
+
+---
+
+## Merge Rules
+
+Software Engineer
+
+- Creates the task branch from the PRD branch.
+- Implements the assigned task.
+- Runs all required validation.
+- Merges the completed task branch back into the PRD branch.
+- Updates PROJECT_BOARD.md.
+- Updates the Task document.
+- Generates the Change Report.
+
+Software Engineer never merges directly into `main`.
+
+---
+
+QA Engineer
+
+QA always validates the PRD branch.
+
+QA never validates individual task branches unless specifically requested.
+
+---
+
+Release
+
+When every task under the PRD has passed testing:
+
+```
+prd/PRD-001-dynamic-form
+        │
+        ▼
+Merge
+        │
+        ▼
+main
+```
+
+Only the completed PRD branch may be merged into `main`.
+
+---
+
+# Branch Ownership
+
+| Branch | Owner |
+|---------|-------|
+| main | Release / Supervisor |
+| prd/* | Software Engineer (during development), QA (during testing) |
+| feature/* | Software Engineer |
+| bugfix/* | Software Engineer |
+| enhancement/* | Software Engineer |
+
+Rules:
+
+- Only one active task branch may exist for a task.
+- Every task branch must originate from its PRD branch.
+- Every completed task branch must be merged into its PRD branch before the next task begins.
+- QA always tests the latest PRD branch.
+- Only a fully tested PRD branch may be merged into `main`.
 
 ---
 
