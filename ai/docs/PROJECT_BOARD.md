@@ -42,8 +42,8 @@ last_updated: 2026-07-07
 
 | Task | Title | Priority | Depends On | Status |
 |------|-------|----------|------------|--------|
-| TASK-003 | DDL Executor Service | High | TASK-002 | 🟢 READY_FOR_DEV |
-| TASK-004 | Table Designer CRUD APIs | High | TASK-002, TASK-003 | 🟤 PLANNED |
+| TASK-003 | DDL Executor Service | High | TASK-002 | 🟣 READY_FOR_TEST |
+| TASK-004 | Table Designer CRUD APIs | High | TASK-002, TASK-003 | 🟢 READY_FOR_DEV |
 | TASK-005 | Schema History Service | Low | TASK-002 | 🟣 READY_FOR_TEST |
 
 ## Phase 3: Table Designer Frontend
@@ -57,15 +57,15 @@ last_updated: 2026-07-07
 | Task | Title | Priority | Depends On | Status |
 |------|-------|----------|------------|--------|
 | TASK-007 | Form Designer CRUD APIs | High | TASK-002 | 🟣 READY_FOR_TEST |
-| TASK-008 | Form Rules & Validation APIs | High | TASK-007 | 🟤 PLANNED |
-| TASK-009 | Sub-Form Configuration APIs | High | TASK-007 | 🟤 PLANNED |
-| TASK-010 | Per-Tenant Role Assignment APIs | High | TASK-007 | 🟤 PLANNED |
+| TASK-008 | Form Rules & Validation APIs | High | TASK-007 | 🟢 READY_FOR_DEV |
+| TASK-009 | Sub-Form Configuration APIs | High | TASK-007 | 🟢 READY_FOR_DEV |
+| TASK-010 | Per-Tenant Role Assignment APIs | High | TASK-007 | 🟢 READY_FOR_DEV |
 
 ## Phase 5: Form Designer Frontend
 
 | Task | Title | Priority | Depends On | Status |
 |------|-------|----------|------------|--------|
-| TASK-011 | Form Designer Admin UI — Core | High | TASK-007 | 🟤 PLANNED |
+| TASK-011 | Form Designer Admin UI — Core | High | TASK-007 | 🟢 READY_FOR_DEV |
 | TASK-012 | Form Designer — Rules & Validation UI | High | TASK-008, TASK-011 | 🟤 PLANNED |
 | TASK-013 | Form Designer — Sub-Forms & Global Forms UI | Medium | TASK-009, TASK-011 | 🟤 PLANNED |
 | TASK-014 | Global Forms Role Access UI (System Admin) | Medium | TASK-010 | 🟤 PLANNED |
@@ -75,7 +75,7 @@ last_updated: 2026-07-07
 | Task | Title | Priority | Depends On | Status |
 |------|-------|----------|------------|--------|
 | TASK-015 | Dynamic CRUD Service | Critical | TASK-002 | 🟣 READY_FOR_TEST |
-| TASK-016 | Form Definition Bundle API | Critical | TASK-007, TASK-015 | 🟤 PLANNED |
+| TASK-016 | Form Definition Bundle API | Critical | TASK-007, TASK-015 | 🟢 READY_FOR_DEV |
 | TASK-017 | Record Data APIs | Critical | TASK-015, TASK-016 | 🟤 PLANNED |
 | TASK-018 | Breadcrumb & Parent Context Service | Medium | TASK-016 | 🟤 PLANNED |
 
@@ -101,8 +101,8 @@ last_updated: 2026-07-07
 |--------|-------|-------|
 | Total Tasks | 27 | TASK-001 to TASK-027 |
 | 🟣 READY_FOR_TEST | 6 | TASK-001, TASK-002, TASK-003, TASK-005, TASK-007, TASK-015 |
-| 🟤 PLANNED | 21 | TASK-004, TASK-006, TASK-008 to TASK-014, TASK-016 to TASK-027 |
-| 🟢 READY_FOR_DEV | 0 | — |
+| 🟤 PLANNED | 15 | TASK-006, TASK-012, TASK-013, TASK-014, TASK-017 to TASK-027 |
+| 🟢 READY_FOR_DEV | 6 | TASK-004, TASK-008, TASK-009, TASK-010, TASK-011, TASK-016 |
 | 🟡 IN_DEVELOPMENT | 0 | — |
 | 🔵 PLANNING | 0 | — |
 | 🔴 BLOCKED | 0 | — |
