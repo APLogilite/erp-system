@@ -21,6 +21,15 @@ public class MetadataModel extends BaseEntity {
   @Column(name = "plural_label", nullable = false, length = 100)
   private String pluralLabel;
 
+  @Column(name = "table_type", length = 20)
+  private String tableType;
+
+  @Column(name = "table_name", length = 100)
+  private String tableName;
+
+  @Column(name = "description", columnDefinition = "TEXT")
+  private String description;
+
   @JdbcTypeCode(SqlTypes.JSON)
   @Column(name = "definition", columnDefinition = "jsonb", nullable = false)
   private Map<String, Object> definition;
@@ -47,6 +56,30 @@ public class MetadataModel extends BaseEntity {
 
   public void setPluralLabel(String pluralLabel) {
     this.pluralLabel = pluralLabel;
+  }
+
+  public String getTableType() {
+    return tableType;
+  }
+
+  public void setTableType(String tableType) {
+    this.tableType = tableType;
+  }
+
+  public String getTableName() {
+    return tableName;
+  }
+
+  public void setTableName(String tableName) {
+    this.tableName = tableName;
+  }
+
+  public String getDescription() {
+    return description;
+  }
+
+  public void setDescription(String description) {
+    this.description = description;
   }
 
   public Map<String, Object> getDefinition() {

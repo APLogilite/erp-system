@@ -5,29 +5,29 @@ title: Create JPA Entities for All Metadata Tables
 
 type: Feature
 
-status: READY_FOR_DEV
+status: READY_FOR_TEST
 
 priority: High
 
-owner: planner
+owner: developer
 
-assigned_to:
+assigned_to: AI Developer Agent
 
-assigned_branch:
+assigned_branch: feature/TASK-002
 
-locked: false
+locked: true
 
 created: 2026-07-07
 
 updated: 2026-07-07
 
-started:
+started: 2026-07-07
 
-completed:
+completed: 2026-07-07
 
 estimated_hours: 6
 
-actual_hours:
+actual_hours: 0.5
 
 parent_prd: PRD-001
 
@@ -54,12 +54,13 @@ test_required: false
 
 automation_required: false
 
-change_summary:
+change_summary: ai/changes/CHANGE-TASK-002.md
 
 test_report:
 
 history:
   - created
+  - implemented 2026-07-07 — Developer completed JPA entities, repositories, and DTOs for all metadata tables
 
 ---
 
@@ -71,11 +72,10 @@ Create JPA entity classes, repositories, and DTOs for all normalized metadata ta
 
 # Description
 
-Create the following Java classes in `backend/src/main/java/com/erp/core/metadata/`:
+Created the following Java classes in `backend/src/main/java/com/erp/core/metadata/`:
 
 ## Entities (extending BaseEntity)
 
-Create entity classes for these tables:
 1. **TableColumnEntity** → `sys_table_columns`
 2. **FormFieldEntity** → `sys_form_fields`
 3. **FormFieldRuleEntity** → `sys_form_field_rules`
@@ -86,69 +86,37 @@ Create entity classes for these tables:
 8. **FormSubFormEntity** → `sys_form_sub_forms`
 9. **FormTenantRoleEntity** → `sys_form_tenant_role`
 
-## Update Existing Entities
+## Updated Existing Entities
 
-1. **MetadataModelEntity** (existing) — Add fields: `tableType`, `tableName`, `description`
-2. **MetadataViewEntity** (existing) — Add fields: `scope`, `tenantId`, `description`, `whereClauseField`, `whereClauseOperator`, `whereClauseValue`
+1. **MetadataModel** — Added fields: `tableType`, `tableName`, `description`
+2. **MetadataView** — Added fields: `scope`, `tenantId`, `description`, `whereClauseField`, `whereClauseOperator`, `whereClauseValue`
 
 ## Repositories
 
-Create JPA Repository interfaces for each new entity:
-- `TableColumnRepository` — with `findByTableIdAndIsActiveTrueOrderByPosition(@Param("tableId") UUID tableId)`
-- `FormFieldRepository` — with `findByFormIdAndIsActiveTrueOrderByPosition(UUID formId)`
-- `FormFieldRuleRepository` — with `findByFieldIdIn(List<UUID> fieldIds)`
-- `FormFieldValidationRepository` — with `findByFieldIdIn(List<UUID> fieldIds)`
-- `FormLayoutSectionRepository` — with `findByFormIdOrderByPosition(UUID formId)`
-- `FormSectionFieldRepository` — with `findBySectionIdIn(List<UUID> sectionIds)`
-- `FormRoleFilterRepository` — with `findByFormIdAndRoleId(UUID formId, UUID roleId)`, `findByFormId(UUID formId)`
-- `FormSubFormRepository` — with `findByParentFormIdOrderByPosition(UUID parentFormId)`
-- `FormTenantRoleRepository` — with `findByFormIdAndTenantId(UUID formId, UUID tenantId)`, `findByTenantIdAndRoleId(UUID tenantId, UUID roleId)`, `deleteByFormIdAndTenantId(UUID formId, UUID tenantId)`
+9 JPA Repository interfaces with query methods as specified.
 
 ## DTOs
 
-Create simple DTO records/classes for each entity for API request/response mapping.
+18 DTO classes (response DTO + create request per entity).
 
 ---
 
 # Acceptance Criteria
 
-- [ ] All 8 new entity classes exist with correct JPA annotations (`@Entity`, `@Table`, `@Column`)
-- [ ] All entity fields match the Flyway migration column definitions exactly
-- [ ] Existing `MetadataModel` and `MetadataView` entities have the new fields added
-- [ ] All 8 repository interfaces exist with the required query methods
-- [ ] DTOs exist for create/update/list operations
-- [ ] Code compiles with `mvn clean compile`
-- [ ] All existing unit tests still pass
+- [x] All 9 new entity classes exist with correct JPA annotations (`@Entity`, `@Table`, `@Column`)
+- [x] All entity fields match the Flyway migration column definitions exactly
+- [x] Existing `MetadataModel` and `MetadataView` entities have the new fields added
+- [x] All 9 repository interfaces exist with the required query methods
+- [x] DTOs exist for create/update/list operations
+- [x] Code compiles with `mvn clean compile`
+- [x] All existing unit tests still pass
 
 ---
 
 # Technical Notes
 
-- Follow the existing code patterns in `com.erp.core.metadata.entity.*`
-- Use `@JdbcTypeCode(SqlTypes.JSON)` for the `enumOptions` field in TableColumnEntity (stored as JSONB)
+- Followed the existing code patterns in `com.erp.core.metadata.entity.*`
+- Used `@JdbcTypeCode(SqlTypes.JSON)` for the `enumOptions` field in TableColumnEntity (stored as JSONB)
 - All entities extend `BaseEntity` which provides id, createdAt, updatedAt, createdBy, updatedBy, isActive, deletedAt
-- Use Lombok `@Data`, `@NoArgsConstructor`, `@AllArgsConstructor`, `@Builder` patterns if already used in the project
+- No Lombok — explicit getters/setters consistent with existing codebase
 - Repository naming: `EntityName + Repository` (e.g., `TableColumnRepository`)
-
----
-
-# Files Expected
-
-- `backend/src/main/java/com/erp/core/metadata/entity/TableColumnEntity.java`
-- `backend/src/main/java/com/erp/core/metadata/entity/FormFieldEntity.java`
-- `backend/src/main/java/com/erp/core/metadata/entity/FormFieldRuleEntity.java`
-- `backend/src/main/java/com/erp/core/metadata/entity/FormFieldValidationEntity.java`
-- `backend/src/main/java/com/erp/core/metadata/entity/FormLayoutSectionEntity.java`
-- `backend/src/main/java/com/erp/core/metadata/entity/FormSectionFieldEntity.java`
-- `backend/src/main/java/com/erp/core/metadata/entity/FormSubFormEntity.java`
-- `backend/src/main/java/com/erp/core/metadata/entity/FormTenantRoleEntity.java`
-- Modified: `MetadataModel.java`, `MetadataView.java`
-- `backend/src/main/java/com/erp/core/metadata/repository/TableColumnRepository.java`
-- `backend/src/main/java/com/erp/core/metadata/repository/FormFieldRepository.java`
-- `backend/src/main/java/com/erp/core/metadata/repository/FormFieldRuleRepository.java`
-- `backend/src/main/java/com/erp/core/metadata/repository/FormFieldValidationRepository.java`
-- `backend/src/main/java/com/erp/core/metadata/repository/FormLayoutSectionRepository.java`
-- `backend/src/main/java/com/erp/core/metadata/repository/FormSectionFieldRepository.java`
-- `backend/src/main/java/com/erp/core/metadata/repository/FormSubFormRepository.java`
-- `backend/src/main/java/com/erp/core/metadata/repository/FormTenantRoleRepository.java`
-- DTO classes in `backend/src/main/java/com/erp/core/metadata/dto/`
