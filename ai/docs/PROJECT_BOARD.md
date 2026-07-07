@@ -124,6 +124,9 @@ last_updated: 2026-07-07
 | TASK-016 | Form Definition Bundle API | Critical | TASK-007, TASK-015 | 🟣 READY_FOR_TEST |
 | TASK-017 | Record Data APIs | Critical | TASK-015, TASK-016 | 🟢 READY_FOR_DEV |
 | TASK-018 | Breadcrumb & Parent Context Service | Medium | TASK-016 | 🟤 PLANNED |
+| TASK-016 | Form Definition Bundle API | Critical | TASK-007, TASK-015 | 🟣 READY_FOR_TEST |
+| TASK-017 | Record Data APIs | Critical | TASK-015, TASK-016 | 🟣 READY_FOR_TEST |
+| TASK-018 | Breadcrumb & Parent Context Service | Medium | TASK-016 | 🟢 READY_FOR_DEV |
 
 ## Phase 7: Runtime Frontend
 
@@ -168,6 +171,9 @@ last_updated: 2026-07-07
 | 🟣 READY_FOR_TEST | 6 | TASK-001, TASK-002, TASK-003, TASK-005, TASK-007, TASK-015 |
 | 🟤 PLANNED | 15 | TASK-006, TASK-012, TASK-013, TASK-014, TASK-017 to TASK-027 |
 | 🟢 READY_FOR_DEV | 6 | TASK-004, TASK-008, TASK-009, TASK-010, TASK-011, TASK-016 |
+| 🟣 READY_FOR_TEST | 8 | TASK-001, TASK-002, TASK-003, TASK-005, TASK-007, TASK-015, TASK-016, TASK-017 |
+| 🟤 PLANNED | 12 | TASK-006, TASK-012, TASK-013, TASK-014, TASK-020 to TASK-027 |
+| 🟢 READY_FOR_DEV | 7 | TASK-004, TASK-008, TASK-009, TASK-010, TASK-011, TASK-018, TASK-019 |
 | 🟡 IN_DEVELOPMENT | 0 | — |
 | 🔵 PLANNING | 0 | — |
 | 🔴 BLOCKED | 0 | — |
