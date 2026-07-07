@@ -42,7 +42,7 @@ last_updated: 2026-07-07
 
 | Task | Title | Priority | Depends On | Status |
 |------|-------|----------|------------|--------|
-| TASK-003 | DDL Executor Service | High | TASK-002 | 🟢 READY_FOR_DEV |
+| TASK-003 | DDL Executor Service | High | TASK-002 | 🟣 READY_FOR_TEST |
 | TASK-004 | Table Designer CRUD APIs | High | TASK-002, TASK-003 | 🟤 PLANNED |
 | TASK-005 | Schema History Service | Low | TASK-002 | 🟣 READY_FOR_TEST |
 
