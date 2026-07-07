@@ -5,7 +5,7 @@ title: Build Form Designer — Sub-Forms & Global Forms UI (Frontend)
 
 type: UI
 
-status: PLANNING
+status: PLANNED
 
 priority: Medium
 
@@ -31,7 +31,7 @@ actual_hours:
 
 parent_prd: PRD-001
 
-prd_version: 1.5.0
+prd_version: 1.6.0
 
 parent_task:
 

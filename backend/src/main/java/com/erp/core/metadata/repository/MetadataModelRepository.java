@@ -9,4 +9,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface MetadataModelRepository extends JpaRepository<MetadataModel, UUID> {
   Optional<MetadataModel> findByName(String name);
+
+  Optional<MetadataModel> findByTableName(String tableName);
 }

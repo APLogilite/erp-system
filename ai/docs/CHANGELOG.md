@@ -36,3 +36,27 @@ last_updated: 2026-07-07
   - Phase 4: Form Designer frontend (TASK-011 to TASK-014)
   - Phase 5: Runtime backend (TASK-015 to TASK-018)
   - Phase 6: Runtime frontend (TASK-019 to TASK-027)
+
+## 2026-07-07 (Workflow Sync)
+
+### WORKFLOW.md Updated
+- New task status `PLANNED` added between `PLANNING` and `READY_FOR_DEV`
+- Automatic task activation: when a task reaches COMPLETED, dependent PLANNED tasks auto-advance to READY_FOR_DEV
+- PROJECT_BOARD.md is now the single source of truth for execution
+- All dependency checks now require COMPLETED (not READY_FOR_TEST)
+- Clearer ownership matrix per status
+
+### Synchronization Actions
+- **PROJECT_BOARD.md** rebuilt (v1.1.0) with correct PLANNED status
+- **24 tasks** moved from PLANNING → PLANNED (all fully defined, awaiting dependencies)
+- **3 tasks** remain at READY_FOR_TEST (TASK-001, TASK-002, TASK-005 — implemented by Developer)
+- **prd_version** updated from 1.5.0 → 1.6.0 on all 24 PLANNED tasks (PRD was updated)
+- **0 tasks** at READY_FOR_DEV (no dependencies are COMPLETED yet)
+- **0 tasks** at PLANNING (no tasks are incomplete in their definition)
+
+## 2026-07-07 (Sync)
+
+### Updated
+- **TASK-001, TASK-002** → READY_FOR_TEST (Developer completed implementation)
+- **TASK-003, TASK-005, TASK-007, TASK-015** → READY_FOR_DEV (dependencies satisfied)
+- Created **PROJECT_BOARD.md** with full task tracking

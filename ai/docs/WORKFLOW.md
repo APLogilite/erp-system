@@ -82,6 +82,8 @@ Implementation tasks follow this lifecycle.
 ```
 PLANNING
       ↓
+PLANNED
+      ↓
 READY_FOR_DEV
       ↓
 IN_DEVELOPMENT
@@ -102,6 +104,22 @@ BLOCKED
 ON_HOLD
 CANCELLED
 ```
+
+## Status Meaning
+
+| Status | Description | Owner |
+|----------|-------------|-------|
+| PLANNING | Task is still being defined. | Planner |
+| PLANNED | Task is complete but waiting for activation. | Planner |
+| READY_FOR_DEV | All dependencies are satisfied and the task is ready for implementation. | Developer |
+| IN_DEVELOPMENT | Developer is actively implementing the task. | Developer |
+| READY_FOR_TEST | Implementation completed and waiting for QA. | Developer |
+| TESTING | QA is executing tests. | Tester |
+| TESTED | QA completed successfully. | Tester |
+| COMPLETED | Task is closed and included in a completed release. | System |
+| BLOCKED | Work cannot continue. | Current Owner |
+| ON_HOLD | Temporarily paused. | Current Owner |
+| CANCELLED | Task will never be implemented. | Planner |
 
 ---
 
@@ -193,41 +211,117 @@ Tester MUST NOT
 
 # Ownership Rules
 
-Only one agent owns a task at any moment.
+Only one agent owns a task at any given time.
 
-| Task Status | Owner |
-|--------------|--------|
-| PLANNING | Planner |
-| READY_FOR_DEV | Developer |
-| IN_DEVELOPMENT | Developer |
-| READY_FOR_TEST | Tester |
-| TESTING | Tester |
-| TESTED | Tester |
-| COMPLETED | System |
+Ownership determines which agent is allowed to modify a task's implementation state.
 
-Agents may only modify tasks they currently own.
+| Task Status | Owner | Responsibilities |
+|--------------|--------|------------------|
+| PLANNING | Planner | Create and refine the task definition. |
+| PLANNED | Planner | Finalize planning and maintain task details until it becomes eligible for development. |
+| READY_FOR_DEV | Developer | Select the task for implementation and begin work. |
+| IN_DEVELOPMENT | Developer | Implement the task and maintain implementation progress. |
+| READY_FOR_TEST | Tester | Accept the completed implementation for testing. |
+| TESTING | Tester | Execute manual and automated testing. |
+| TESTED | Tester | Approve the completed implementation. |
+| COMPLETED | System | Closed task. No further modification unless a new Enhancement or Bug task is created. |
+| BLOCKED | Current Owner | Document the blocker and required action. |
+| ON_HOLD | Current Owner | Pause work until resumed. |
+| CANCELLED | Planner | Task permanently removed from execution. |
+
+## Ownership Rules
+
+- Only one agent may own a task at any time.
+- Agents may modify only tasks they currently own.
+- Completed tasks must never be modified directly.
+- Requirement changes after implementation begins must create an Enhancement Task.
+- Testing failures must create a Bug Task.
+- Ownership transfers only through valid workflow status transitions.
 
 ---
 
 # Task Selection Rules
 
-Developer selects the next task using the following priority:
+PROJECT_BOARD.md is the single source of truth for execution.
+
+Agents must always select work from PROJECT_BOARD.md.
+
+---
+
+## Developer Task Selection
+
+Developer may only select tasks that satisfy ALL of the following:
+
+- Status = READY_FOR_DEV
+- Locked = false
+- Parent PRD = APPROVED
+- Assigned to Developer or Unassigned
+- All dependencies are COMPLETED
+
+Priority order:
 
 1. Highest Priority
-2. No unresolved dependencies
-3. Oldest creation date
+2. Oldest Creation Date
+3. Lowest Estimated Effort (if priorities are equal)
 
-Developer MUST NOT start a task if:
+Before implementation Developer MUST:
 
-- Dependencies are incomplete
-- Status is not READY_FOR_DEV
-- Task is already assigned
+- Lock the task.
+- Assign ownership.
+- Record start time.
+- Create the Git branch.
+- Update PROJECT_BOARD.md.
 
-Tester selects the next task using:
+---
+
+## Automatic Task Activation
+
+Developer is responsible for activating newly available work.
+
+Whenever a task reaches COMPLETED:
+
+Review every task that depends on it.
+
+If ALL dependency tasks are COMPLETED:
+
+AND
+
+- Parent PRD is APPROVED
+- Task Status = PLANNED
+- Task is not BLOCKED
+- Task is not CANCELLED
+
+Then automatically update:
+
+PLANNED
+
+↓
+
+READY_FOR_DEV
+
+Update PROJECT_BOARD.md.
+
+Planner involvement is NOT required.
+
+---
+
+## Tester Task Selection
+
+Tester may only select tasks that satisfy:
+
+- Status = READY_FOR_TEST
+- Locked = false
+
+Priority:
 
 1. Highest Priority
-2. READY_FOR_TEST
-3. Oldest creation date
+2. Oldest Completion Date
+
+Before testing Tester MUST:
+
+- Lock the task.
+- Record start time.
+- Update PROJECT_BOARD.md.
 
 ---
 

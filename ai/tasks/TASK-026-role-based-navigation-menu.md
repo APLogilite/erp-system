@@ -5,7 +5,7 @@ title: Build Role-Based Navigation Menu (Frontend)
 
 type: UI
 
-status: PLANNING
+status: PLANNED
 
 priority: High
 
@@ -31,7 +31,7 @@ actual_hours:
 
 parent_prd: PRD-001
 
-prd_version: 1.5.0
+prd_version: 1.6.0
 
 parent_task:
 
