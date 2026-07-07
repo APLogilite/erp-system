@@ -74,7 +74,7 @@ last_updated: 2026-07-07
 
 | Task | Title | Priority | Depends On | Status |
 |------|-------|----------|------------|--------|
-| TASK-015 | Dynamic CRUD Service | Critical | TASK-002 | 🟢 READY_FOR_DEV |
+| TASK-015 | Dynamic CRUD Service | Critical | TASK-002 | 🟣 READY_FOR_TEST |
 | TASK-016 | Form Definition Bundle API | Critical | TASK-007, TASK-015 | 🟤 PLANNED |
 | TASK-017 | Record Data APIs | Critical | TASK-015, TASK-016 | 🟤 PLANNED |
 | TASK-018 | Breadcrumb & Parent Context Service | Medium | TASK-016 | 🟤 PLANNED |
