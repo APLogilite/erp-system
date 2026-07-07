@@ -4,6 +4,7 @@ import com.erp.common.base.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -49,6 +50,18 @@ public class UserAccount extends BaseEntity {
   @Column(name = "password_changed_at")
   private LocalDateTime passwordChangedAt;
 
+  @Column(name = "birth_date")
+  private LocalDate birthDate;
+
+  @Column(name = "website", length = 500)
+  private String website;
+
+  @Column(name = "employee_id", length = 50)
+  private String employeeId;
+
+  @Column(name = "address", columnDefinition = "TEXT")
+  private String address;
+
   public String getUsername() { return username; }
   public void setUsername(String username) { this.username = username; }
   public String getPasswordHash() { return passwordHash; }
@@ -75,4 +88,12 @@ public class UserAccount extends BaseEntity {
   public void setLockedUntil(LocalDateTime lockedUntil) { this.lockedUntil = lockedUntil; }
   public LocalDateTime getPasswordChangedAt() { return passwordChangedAt; }
   public void setPasswordChangedAt(LocalDateTime passwordChangedAt) { this.passwordChangedAt = passwordChangedAt; }
+  public LocalDate getBirthDate() { return birthDate; }
+  public void setBirthDate(LocalDate birthDate) { this.birthDate = birthDate; }
+  public String getWebsite() { return website; }
+  public void setWebsite(String website) { this.website = website; }
+  public String getEmployeeId() { return employeeId; }
+  public void setEmployeeId(String employeeId) { this.employeeId = employeeId; }
+  public String getAddress() { return address; }
+  public void setAddress(String address) { this.address = address; }
 }

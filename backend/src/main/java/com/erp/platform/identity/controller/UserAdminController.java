@@ -2,8 +2,6 @@ package com.erp.platform.identity.controller;
 
 import com.erp.common.api.ApiResponse;
 import com.erp.platform.identity.entity.UserAccount;
-import com.erp.platform.identity.entity.UserCompany;
-import com.erp.platform.identity.entity.UserOrganization;
 import com.erp.platform.identity.entity.UserPreference;
 import com.erp.platform.identity.entity.UserRole;
 import com.erp.platform.identity.service.UserAdminService;
@@ -38,11 +36,7 @@ public class UserAdminController {
   @PostMapping("/{id}/unlock") public ResponseEntity<ApiResponse<Void>> unlock(@PathVariable UUID id) { userAdminService.unlockUser(id); return ResponseEntity.ok(ApiResponse.successMessage("User unlocked")); }
   @PostMapping("/{id}/roles") public ResponseEntity<ApiResponse<Void>> assignRole(@PathVariable UUID id, @RequestBody Map<String, UUID> body) { userAdminService.assignRole(id, body.get("roleId")); return ResponseEntity.ok(ApiResponse.successMessage("Role assigned")); }
   @DeleteMapping("/{id}/roles/{roleId}") public ResponseEntity<ApiResponse<Void>> removeRole(@PathVariable UUID id, @PathVariable UUID roleId) { userAdminService.removeRole(id, roleId); return ResponseEntity.ok(ApiResponse.successMessage("Role removed")); }
-  @PostMapping("/{id}/organizations") public ResponseEntity<ApiResponse<Void>> assignOrg(@PathVariable UUID id, @RequestBody Map<String, UUID> body) { userAdminService.assignOrganization(id, body.get("organizationId")); return ResponseEntity.ok(ApiResponse.successMessage("Organization assigned")); }
-  @PostMapping("/{id}/companies") public ResponseEntity<ApiResponse<Void>> assignCompany(@PathVariable UUID id, @RequestBody Map<String, UUID> body) { userAdminService.assignCompany(id, body.get("companyId")); return ResponseEntity.ok(ApiResponse.successMessage("Company assigned")); }
   @GetMapping("/{id}/roles") public ResponseEntity<ApiResponse<List<UserRole>>> getRoles(@PathVariable UUID id) { return ResponseEntity.ok(ApiResponse.success(userAdminService.getUserRoles(id), "User roles")); }
-  @GetMapping("/{id}/organizations") public ResponseEntity<ApiResponse<List<UserOrganization>>> getOrgs(@PathVariable UUID id) { return ResponseEntity.ok(ApiResponse.success(userAdminService.getUserOrganizations(id), "User organizations")); }
-  @GetMapping("/{id}/companies") public ResponseEntity<ApiResponse<List<UserCompany>>> getCompanies(@PathVariable UUID id) { return ResponseEntity.ok(ApiResponse.success(userAdminService.getUserCompanies(id), "User companies")); }
   @GetMapping("/{id}/preferences") public ResponseEntity<ApiResponse<UserPreference>> getPrefs(@PathVariable UUID id) { return ResponseEntity.ok(ApiResponse.success(userAdminService.getUserPreferences(id), "Preferences")); }
   @PutMapping("/{id}/preferences") public ResponseEntity<ApiResponse<Void>> updatePrefs(@PathVariable UUID id, @RequestBody Map<String, String> body) { userAdminService.updatePreferences(id, body.get("language"), body.get("timezone"), body.get("dateFormat"), body.get("timeFormat"), body.get("numberFormat"), body.get("currency"), body.get("theme")); return ResponseEntity.ok(ApiResponse.successMessage("Preferences updated")); }
 }

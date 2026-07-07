@@ -32,17 +32,6 @@ public class ContextFilter extends OncePerRequestFilter {
         JwtPrincipal principal = (JwtPrincipal) auth.getPrincipal();
         RuntimeContext context = runtimeContextService.resolve(principal.getUserId());
         RuntimeContextHolder.set(context);
-
-        String path = request.getRequestURI();
-        boolean isContextOrAuthPath = path.startsWith("/api/v1/auth/")
-            || path.startsWith("/api/v1/context/");
-        if (!isContextOrAuthPath && context.getTenantId() == null) {
-          response.setContentType("application/json");
-          response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-          response.getWriter().write(
-              "{\"success\":false,\"message\":\"Context selection required. Please select a workspace first.\",\"errorCode\":\"CONTEXT_REQUIRED\"}");
-          return;
-        }
       }
       filterChain.doFilter(request, response);
     } finally {

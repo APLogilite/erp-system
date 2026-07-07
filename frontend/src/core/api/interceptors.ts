@@ -24,12 +24,16 @@ export function responseInterceptor(response: AxiosResponse): AxiosResponse {
 export async function responseErrorInterceptor(error: AxiosError): Promise<never> {
   const normalizedError = parseApiError(error);
 
-  // Handle 401 Unauthorized globally by clearing auth session
+  // Handle 401 Unauthorized globally by clearing auth session and redirecting
   if (normalizedError.status === 401) {
     try {
       useAuthStore.getState().logout();
     } catch {
       // Fallback
+    }
+    if (window.location.pathname !== '/login') {
+      window.location.href = '/login';
+      return Promise.reject(normalizedError);
     }
   }
 

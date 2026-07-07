@@ -1,25 +1,26 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
 
+import { AdminDashboardPage } from '../modules/identity/admin/AdminDashboardPage';
+import { AuditPage } from '../modules/identity/admin/audit/AuditPage';
+import { BranchesAdminPage } from '../modules/identity/admin/branches/BranchesAdminPage';
+import { CompaniesAdminPage } from '../modules/identity/admin/companies/CompaniesAdminPage';
+import { DepartmentsAdminPage } from '../modules/identity/admin/departments/DepartmentsAdminPage';
+import { OrganizationsAdminPage } from '../modules/identity/admin/organizations/OrganizationsAdminPage';
+import { PermissionsAdminPage } from '../modules/identity/admin/permissions/PermissionsAdminPage';
+import { RolesAdminPage } from '../modules/identity/admin/roles/RolesAdminPage';
+import { SessionsAdminPage } from '../modules/identity/admin/sessions/SessionsAdminPage';
+import { TenantsAdminPage } from '../modules/identity/admin/tenants/TenantsAdminPage';
+import { UsersAdminPage } from '../modules/identity/admin/users/UsersAdminPage';
+import { ContextSelectPage } from '../modules/identity/context/ContextSelectPage';
+import { PreferencesPage } from '../modules/identity/preferences/PreferencesPage';
+import { ProfilePage } from '../modules/identity/profile/ProfilePage';
+import { SessionsPage } from '../modules/identity/sessions/SessionsPage';
+
 import { ChangePasswordPage } from './auth/change-password/ChangePasswordPage';
 import { ForgotPasswordPage } from './auth/forgot-password/ForgotPasswordPage';
 import { LoginPage } from './auth/LoginPage';
 import { ResetPasswordPage } from './auth/reset-password/ResetPasswordPage';
 import { DashboardPage } from './dashboard/DashboardPage';
-import { AdminDashboardPage } from './identity/admin/AdminDashboardPage';
-import { AuditPage } from './identity/admin/audit/AuditPage';
-import { BranchesAdminPage } from './identity/admin/branches/BranchesAdminPage';
-import { CompaniesAdminPage } from './identity/admin/companies/CompaniesAdminPage';
-import { DepartmentsAdminPage } from './identity/admin/departments/DepartmentsAdminPage';
-import { OrganizationsAdminPage } from './identity/admin/organizations/OrganizationsAdminPage';
-import { PermissionsAdminPage } from './identity/admin/permissions/PermissionsAdminPage';
-import { RolesAdminPage } from './identity/admin/roles/RolesAdminPage';
-import { SessionsAdminPage } from './identity/admin/sessions/SessionsAdminPage';
-import { TenantsAdminPage } from './identity/admin/tenants/TenantsAdminPage';
-import { UsersAdminPage } from './identity/admin/users/UsersAdminPage';
-import { ContextSelectPage } from './identity/context/ContextSelectPage';
-import { PreferencesPage } from './identity/preferences/PreferencesPage';
-import { ProfilePage } from './identity/profile/ProfilePage';
-import { SessionsPage } from './identity/sessions/SessionsPage';
 import { RuntimePage } from './runtime/RuntimePage';
 
 import { AdminRoute } from '@/core/router/guards/AdminRoute';

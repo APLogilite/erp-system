@@ -1,6 +1,8 @@
 package com.erp.platform.identity.dto;
 
+import com.erp.platform.identity.service.AccessScopeService.RoleScope;
 import java.util.List;
+import java.util.Map;
 
 public class ContextOptionsResponse {
 
@@ -10,6 +12,7 @@ public class ContextOptionsResponse {
   private List<ContextOption> branches;
   private List<ContextOption> departments;
   private List<String> roles;
+  private Map<String, RoleScope> roleScopes;
 
   public List<ContextOption> getTenants() { return tenants; }
   public void setTenants(List<ContextOption> tenants) { this.tenants = tenants; }
@@ -23,4 +26,6 @@ public class ContextOptionsResponse {
   public void setDepartments(List<ContextOption> departments) { this.departments = departments; }
   public List<String> getRoles() { return roles; }
   public void setRoles(List<String> roles) { this.roles = roles; }
+  public Map<String, RoleScope> getRoleScopes() { return roleScopes; }
+  public void setRoleScopes(Map<String, RoleScope> roleScopes) { this.roleScopes = roleScopes; }
 }

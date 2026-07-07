@@ -9,12 +9,8 @@ import com.erp.platform.identity.entity.Branch;
 import com.erp.platform.identity.entity.Company;
 import com.erp.platform.identity.entity.Department;
 import com.erp.platform.identity.entity.Organization;
-import com.erp.platform.identity.entity.Role;
 import com.erp.platform.identity.entity.Tenant;
 import com.erp.platform.identity.entity.UserAccount;
-import com.erp.platform.identity.entity.UserBranch;
-import com.erp.platform.identity.entity.UserCompany;
-import com.erp.platform.identity.entity.UserOrganization;
 import com.erp.platform.identity.entity.UserPreference;
 import com.erp.platform.identity.entity.UserRole;
 import com.erp.platform.identity.repository.BranchRepository;
@@ -23,13 +19,12 @@ import com.erp.platform.identity.repository.DepartmentRepository;
 import com.erp.platform.identity.repository.OrganizationRepository;
 import com.erp.platform.identity.repository.TenantRepository;
 import com.erp.platform.identity.repository.UserAccountRepository;
-import com.erp.platform.identity.repository.UserCompanyRepository;
-import com.erp.platform.identity.repository.UserBranchRepository;
-import com.erp.platform.identity.repository.UserOrganizationRepository;
 import com.erp.platform.identity.repository.UserPreferenceRepository;
 import com.erp.platform.identity.repository.UserRoleRepository;
+import com.erp.platform.identity.service.AccessScopeService.RoleScope;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
@@ -44,11 +39,9 @@ public class RuntimeContextService {
   private final CompanyRepository companyRepository;
   private final BranchRepository branchRepository;
   private final DepartmentRepository departmentRepository;
-  private final UserOrganizationRepository userOrganizationRepository;
-  private final UserCompanyRepository userCompanyRepository;
   private final UserRoleRepository userRoleRepository;
   private final UserPreferenceRepository userPreferenceRepository;
-  private final UserBranchRepository userBranchRepository;
+  private final AccessScopeService accessScopeService;
 
   public RuntimeContextService(UserAccountRepository userRepository,
                                 TenantRepository tenantRepository,
@@ -56,22 +49,18 @@ public class RuntimeContextService {
                                 CompanyRepository companyRepository,
                                 BranchRepository branchRepository,
                                 DepartmentRepository departmentRepository,
-                                UserBranchRepository userBranchRepository,
-                                UserOrganizationRepository userOrganizationRepository,
-                                UserCompanyRepository userCompanyRepository,
                                 UserRoleRepository userRoleRepository,
-                                UserPreferenceRepository userPreferenceRepository) {
+                                UserPreferenceRepository userPreferenceRepository,
+                                AccessScopeService accessScopeService) {
     this.userRepository = userRepository;
     this.tenantRepository = tenantRepository;
     this.organizationRepository = organizationRepository;
     this.companyRepository = companyRepository;
     this.branchRepository = branchRepository;
     this.departmentRepository = departmentRepository;
-    this.userBranchRepository = userBranchRepository;
-    this.userOrganizationRepository = userOrganizationRepository;
-    this.userCompanyRepository = userCompanyRepository;
     this.userRoleRepository = userRoleRepository;
     this.userPreferenceRepository = userPreferenceRepository;
+    this.accessScopeService = accessScopeService;
   }
 
   @Transactional(readOnly = true)
@@ -96,38 +85,37 @@ public class RuntimeContextService {
         .collect(Collectors.toList());
     ctx.setRoles(roleCodes);
 
-    boolean isSysAdmin = roleCodes.contains("sys_admin");
-
-    List<UserOrganization> userOrgs = userOrganizationRepository.findByUserId(userId);
-    if (!userOrgs.isEmpty()) {
-      Organization firstOrg = userOrgs.get(0).getOrganization();
-      Tenant orgTenant = firstOrg.getTenant();
-      ctx.setTenantId(orgTenant.getId());
-      ctx.setTenantCode(orgTenant.getCode());
-      ctx.setTenantName(orgTenant.getName());
-      ctx.setOrganizationId(firstOrg.getId());
-      ctx.setOrganizationCode(firstOrg.getCode());
-      ctx.setOrganizationName(firstOrg.getName());
-
-      List<UserCompany> userCompanies = userCompanyRepository.findByUserId(userId);
-      if (!userCompanies.isEmpty()) {
-        Company firstCompany = userCompanies.get(0).getCompany();
-        ctx.setCompanyId(firstCompany.getId());
-        ctx.setCompanyCode(firstCompany.getCode());
-        ctx.setCompanyName(firstCompany.getName());
-      }
+    // Baseline: first role → first org → first company → first branch
+    List<UUID> orgIds = accessScopeService.getAccessibleOrganizationIds(userId);
+    if (!orgIds.isEmpty()) {
+      organizationRepository.findById(orgIds.get(0)).ifPresent(org -> {
+        ctx.setOrganizationId(org.getId());
+        ctx.setOrganizationCode(org.getCode());
+        ctx.setOrganizationName(org.getName());
+        if (org.getTenant() != null) {
+          ctx.setTenantId(org.getTenant().getId());
+          ctx.setTenantCode(org.getTenant().getCode());
+          ctx.setTenantName(org.getTenant().getName());
+        }
+      });
     }
 
-    if (isSysAdmin) {
-      ctx.setTenantId(null);
-      ctx.setTenantCode(null);
-      ctx.setTenantName(null);
-      ctx.setOrganizationId(null);
-      ctx.setOrganizationCode(null);
-      ctx.setOrganizationName(null);
-      ctx.setCompanyId(null);
-      ctx.setCompanyCode(null);
-      ctx.setCompanyName(null);
+    List<UUID> coIds = accessScopeService.getAccessibleCompanyIds(userId);
+    if (!coIds.isEmpty()) {
+      companyRepository.findById(coIds.get(0)).ifPresent(co -> {
+        ctx.setCompanyId(co.getId());
+        ctx.setCompanyCode(co.getCode());
+        ctx.setCompanyName(co.getName());
+      });
+    }
+
+    List<UUID> branchIds = accessScopeService.getAccessibleBranchIds(userId);
+    if (!branchIds.isEmpty()) {
+      branchRepository.findById(branchIds.get(0)).ifPresent(b -> {
+        ctx.setBranchId(b.getId());
+        ctx.setBranchCode(b.getCode());
+        ctx.setBranchName(b.getName());
+      });
     }
 
     // Apply persisted context overrides from UserPreference
@@ -203,41 +191,50 @@ public class RuntimeContextService {
   public ContextOptionsResponse getAvailableOptions(UUID userId) {
     ContextOptionsResponse options = new ContextOptionsResponse();
 
-    List<UserOrganization> userOrgs = userOrganizationRepository.findByUserId(userId);
-    List<UUID> userTenantIds = userOrgs.stream()
-        .map(uo -> uo.getOrganization().getTenant().getId())
+    // Roles
+    List<UserRole> userRoles = userRoleRepository.findByUserId(userId);
+    List<String> roleCodes = userRoles.stream()
+        .map(ur -> ur.getRole().getCode())
+        .collect(Collectors.toList());
+    options.setRoles(roleCodes);
+
+    // Access scopes
+    List<UUID> orgIds = accessScopeService.getAccessibleOrganizationIds(userId);
+    List<UUID> coIds = accessScopeService.getAccessibleCompanyIds(userId);
+    List<UUID> branchIds = accessScopeService.getAccessibleBranchIds(userId);
+
+    // Tenants (derived from accessible orgs)
+    List<Organization> accessibleOrgs = organizationRepository.findAllById(orgIds);
+    List<UUID> tenantIds = accessibleOrgs.stream()
+        .map(o -> o.getTenant().getId())
         .distinct()
         .collect(Collectors.toList());
-    List<Tenant> tenants = tenantRepository.findAllById(userTenantIds);
+    List<Tenant> tenants = tenantRepository.findAllById(tenantIds);
     options.setTenants(tenants.stream()
         .map(t -> new ContextOption(t.getId(), "tenant", t.getCode(), t.getName()))
         .collect(Collectors.toList()));
 
-    options.setOrganizations(userOrgs.stream()
-        .map(uo -> new ContextOption(uo.getOrganization().getId(), "organization",
-            uo.getOrganization().getCode(), uo.getOrganization().getName(),
-            uo.getOrganization().getTenant().getId()))
+    // Organizations
+    options.setOrganizations(accessibleOrgs.stream()
+        .map(o -> new ContextOption(o.getId(), "organization",
+            o.getCode(), o.getName(), o.getTenant().getId()))
         .collect(Collectors.toList()));
 
-    List<UserCompany> userCompanies = userCompanyRepository.findByUserId(userId);
-    options.setCompanies(userCompanies.stream()
-        .map(uc -> new ContextOption(uc.getCompany().getId(), "company",
-            uc.getCompany().getCode(), uc.getCompany().getName(),
-            uc.getCompany().getOrganization().getId()))
+    // Companies
+    List<Company> accessibleCompanies = companyRepository.findAllById(coIds);
+    options.setCompanies(accessibleCompanies.stream()
+        .map(c -> new ContextOption(c.getId(), "company",
+            c.getCode(), c.getName(), c.getOrganization().getId()))
         .collect(Collectors.toList()));
 
-    List<UserBranch> userBranches = userBranchRepository.findByUserId(userId);
-    List<Branch> userBranchesResolved = userBranches.stream()
-        .map(UserBranch::getBranch)
-        .collect(Collectors.toList());
-    options.setBranches(userBranchesResolved.stream()
+    // Branches
+    List<Branch> accessibleBranches = branchRepository.findAllById(branchIds);
+    options.setBranches(accessibleBranches.stream()
         .map(b -> new ContextOption(b.getId(), "branch",
             b.getCode(), b.getName(), b.getCompany().getId()))
         .collect(Collectors.toList()));
 
-    List<UUID> branchIds = userBranchesResolved.stream()
-        .map(Branch::getId)
-        .collect(Collectors.toList());
+    // Departments
     if (!branchIds.isEmpty()) {
       List<Department> departments = departmentRepository.findByBranchIdIn(branchIds);
       options.setDepartments(departments.stream()
@@ -246,10 +243,9 @@ public class RuntimeContextService {
           .collect(Collectors.toList()));
     }
 
-    List<UserRole> userRoles = userRoleRepository.findByUserId(userId);
-    options.setRoles(userRoles.stream()
-        .map(ur -> ur.getRole().getCode())
-        .collect(Collectors.toList()));
+    // Role scopes
+    Map<String, RoleScope> roleScopes = accessScopeService.getRoleScopes(userId);
+    options.setRoleScopes(roleScopes);
 
     return options;
   }
@@ -269,11 +265,9 @@ public class RuntimeContextService {
     if (request.getOrganizationId() != null) {
       Organization o = organizationRepository.findById(request.getOrganizationId())
           .orElseThrow(() -> new IllegalArgumentException("Organization not found"));
-      List<UserOrganization> userOrgs = userOrganizationRepository.findByUserId(userId);
-      boolean belongs = userOrgs.stream()
-          .anyMatch(uo -> uo.getOrganization().getId().equals(request.getOrganizationId()));
-      if (!belongs) {
-        throw new SecurityException("User does not belong to this organization");
+      List<UUID> accessibleOrgIds = accessScopeService.getAccessibleOrganizationIds(userId);
+      if (!accessibleOrgIds.contains(request.getOrganizationId())) {
+        throw new SecurityException("Organization not in role scope");
       }
       ctx.setOrganizationId(o.getId());
       ctx.setOrganizationCode(o.getCode());
@@ -283,28 +277,22 @@ public class RuntimeContextService {
     if (request.getCompanyId() != null) {
       Company c = companyRepository.findById(request.getCompanyId())
           .orElseThrow(() -> new IllegalArgumentException("Company not found"));
-      List<UserCompany> userCompanies = userCompanyRepository.findByUserId(userId);
-      boolean belongs = userCompanies.stream()
-          .anyMatch(uc -> uc.getCompany().getId().equals(request.getCompanyId()));
-      if (!belongs) {
-        throw new SecurityException("User does not belong to this company");
+      List<UUID> accessibleCoIds = accessScopeService.getAccessibleCompanyIds(userId);
+      if (!accessibleCoIds.contains(request.getCompanyId())) {
+        throw new SecurityException("Company not in role scope");
       }
       ctx.setCompanyId(c.getId());
       ctx.setCompanyCode(c.getCode());
       ctx.setCompanyName(c.getName());
-
-      List<Branch> branches = branchRepository.findByCompanyId(c.getId());
-      if (branches.size() == 1) {
-        Branch b = branches.get(0);
-        ctx.setBranchId(b.getId());
-        ctx.setBranchCode(b.getCode());
-        ctx.setBranchName(b.getName());
-      }
     }
 
     if (request.getBranchId() != null) {
       Branch b = branchRepository.findById(request.getBranchId())
           .orElseThrow(() -> new IllegalArgumentException("Branch not found"));
+      List<UUID> accessibleBranchIds = accessScopeService.getAccessibleBranchIds(userId);
+      if (!accessibleBranchIds.contains(request.getBranchId())) {
+        throw new SecurityException("Branch not in role scope");
+      }
       ctx.setBranchId(b.getId());
       ctx.setBranchCode(b.getCode());
       ctx.setBranchName(b.getName());
@@ -328,7 +316,7 @@ public class RuntimeContextService {
       ctx.setRoles(Collections.singletonList(request.getRoleCode()));
     }
 
-    // Persist context selection to UserPreference so it survives across sessions
+    // Persist context selection to UserPreference
     userPreferenceRepository.findByUserId(userId).ifPresent(prefs -> {
       prefs.setActiveTenantId(request.getTenantId());
       prefs.setActiveOrganizationId(request.getOrganizationId());

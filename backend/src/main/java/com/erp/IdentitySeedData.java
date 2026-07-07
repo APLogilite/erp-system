@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @Component
 public class IdentitySeedData implements CommandLineRunner {
@@ -24,9 +25,9 @@ public class IdentitySeedData implements CommandLineRunner {
     private final PermissionRepository permissionRepository;
     private final UserRoleRepository userRoleRepository;
     private final RolePermissionRepository rolePermissionRepository;
-    private final UserOrganizationRepository userOrganizationRepository;
-    private final UserCompanyRepository userCompanyRepository;
-    private final UserBranchRepository userBranchRepository;
+    private final RoleOrganizationRepository roleOrganizationRepository;
+    private final RoleCompanyRepository roleCompanyRepository;
+    private final RoleBranchRepository roleBranchRepository;
     private final UserPreferenceRepository userPreferenceRepository;
 
     public IdentitySeedData(TenantRepository tenantRepository,
@@ -39,9 +40,9 @@ public class IdentitySeedData implements CommandLineRunner {
                             PermissionRepository permissionRepository,
                             UserRoleRepository userRoleRepository,
                             RolePermissionRepository rolePermissionRepository,
-                            UserOrganizationRepository userOrganizationRepository,
-                            UserCompanyRepository userCompanyRepository,
-                            UserBranchRepository userBranchRepository,
+                            RoleOrganizationRepository roleOrganizationRepository,
+                            RoleCompanyRepository roleCompanyRepository,
+                            RoleBranchRepository roleBranchRepository,
                             UserPreferenceRepository userPreferenceRepository) {
         this.tenantRepository = tenantRepository;
         this.organizationRepository = organizationRepository;
@@ -53,13 +54,14 @@ public class IdentitySeedData implements CommandLineRunner {
         this.permissionRepository = permissionRepository;
         this.userRoleRepository = userRoleRepository;
         this.rolePermissionRepository = rolePermissionRepository;
-        this.userOrganizationRepository = userOrganizationRepository;
-        this.userCompanyRepository = userCompanyRepository;
-        this.userBranchRepository = userBranchRepository;
+        this.roleOrganizationRepository = roleOrganizationRepository;
+        this.roleCompanyRepository = roleCompanyRepository;
+        this.roleBranchRepository = roleBranchRepository;
         this.userPreferenceRepository = userPreferenceRepository;
     }
 
     @Override
+    @Transactional
     public void run(String... args) {
         if (userAccountRepository.count() > 0) {
             log.info("Identity seed data already exists, skipping.");
@@ -68,341 +70,48 @@ public class IdentitySeedData implements CommandLineRunner {
         log.info("Creating identity seed data...");
 
         // ── Tenants ──
-        Tenant acme = new Tenant();
-        acme.setCode("ACME");
-        acme.setName("Acme Corporation");
-        acme.setDomain("acme.example.com");
-        acme.setDefaultLanguage("en");
-        acme.setDefaultTimezone("America/New_York");
-        acme.setDefaultCurrency("USD");
-        tenantRepository.save(acme);
-
-        Tenant globex = new Tenant();
-        globex.setCode("GLOBEX");
-        globex.setName("Globex Industries");
-        globex.setDomain("globex.example.com");
-        globex.setDefaultLanguage("en");
-        globex.setDefaultTimezone("Europe/London");
-        globex.setDefaultCurrency("EUR");
-        tenantRepository.save(globex);
+        Tenant sysTenant = makeTenant("SYS", "System", "system.erp.local", "en", "UTC", "USD");
+        Tenant acme = makeTenant("ACME", "Acme Corporation", "acme.example.com", "en", "America/New_York", "USD");
+        Tenant globex = makeTenant("GLOBEX", "Globex Industries", "globex.example.com", "en", "Europe/London", "EUR");
 
         // ── Organizations ──
-        Organization acmeGlobal = new Organization();
-        acmeGlobal.setCode("ACME-GLOBAL");
-        acmeGlobal.setName("Acme Global");
-        acmeGlobal.setDescription("Acme Corporation worldwide operations");
-        acmeGlobal.setTenant(acme);
-        acmeGlobal.setLevel(0);
-        acmeGlobal.setPath("/ACME-GLOBAL");
-        organizationRepository.save(acmeGlobal);
-
-        Organization acmeApac = new Organization();
-        acmeApac.setCode("ACME-APAC");
-        acmeApac.setName("Acme APAC");
-        acmeApac.setDescription("Acme Corporation Asia-Pacific operations");
-        acmeApac.setTenant(acme);
-        acmeApac.setLevel(0);
-        acmeApac.setPath("/ACME-APAC");
-        organizationRepository.save(acmeApac);
-
-        Organization globexCorp = new Organization();
-        globexCorp.setCode("GLOBEX-CORP");
-        globexCorp.setName("Globex Corp");
-        globexCorp.setDescription("Globex Industries corporate entity");
-        globexCorp.setTenant(globex);
-        globexCorp.setLevel(0);
-        globexCorp.setPath("/GLOBEX-CORP");
-        organizationRepository.save(globexCorp);
+        Organization sysOrg = makeOrg("SYS-ORG", "System Organization", sysTenant, null, 0, "/SYS-ORG");
+        Organization acmeGlobal = makeOrg("ACME-GLOBAL", "Acme Global", acme, null, 0, "/ACME-GLOBAL");
+        Organization acmeApac = makeOrg("ACME-APAC", "Acme APAC", acme, null, 0, "/ACME-APAC");
+        Organization globexCorp = makeOrg("GLOBEX-CORP", "Globex Corp", globex, null, 0, "/GLOBEX-CORP");
 
         // ── Companies ──
-        Company acmeInc = new Company();
-        acmeInc.setCode("ACME-INC");
-        acmeInc.setName("Acme Inc.");
-        acmeInc.setTaxId("TAX-US-001");
-        acmeInc.setRegistrationNumber("REG-US-001");
-        acmeInc.setAddress("123 Main Street, New York, NY 10001");
-        acmeInc.setPhone("+1-555-0100");
-        acmeInc.setEmail("info@acme-inc.com");
-        acmeInc.setCurrency("USD");
-        acmeInc.setOrganization(acmeGlobal);
-        acmeInc.setTenant(acme);
-        companyRepository.save(acmeInc);
-
-        Company acmeEu = new Company();
-        acmeEu.setCode("ACME-EU");
-        acmeEu.setName("Acme Europe GmbH");
-        acmeEu.setTaxId("TAX-EU-001");
-        acmeEu.setRegistrationNumber("REG-EU-001");
-        acmeEu.setAddress("50 Berliner Strasse, Berlin, Germany");
-        acmeEu.setPhone("+49-30-555-0100");
-        acmeEu.setEmail("info@acme-eu.de");
-        acmeEu.setCurrency("EUR");
-        acmeEu.setOrganization(acmeGlobal);
-        acmeEu.setTenant(acme);
-        companyRepository.save(acmeEu);
-
-        Company apacInc = new Company();
-        apacInc.setCode("APAC-INC");
-        apacInc.setName("Acme APAC Inc.");
-        apacInc.setTaxId("TAX-IN-001");
-        apacInc.setRegistrationNumber("REG-IN-001");
-        apacInc.setAddress("42 Tech Park, Mumbai, India");
-        apacInc.setPhone("+91-22-555-0100");
-        apacInc.setEmail("info@apac-inc.in");
-        apacInc.setCurrency("INR");
-        apacInc.setOrganization(acmeApac);
-        apacInc.setTenant(acme);
-        companyRepository.save(apacInc);
-
-        Company globexLtd = new Company();
-        globexLtd.setCode("GLOBEX-LTD");
-        globexLtd.setName("Globex Ltd.");
-        globexLtd.setTaxId("TAX-UK-001");
-        globexLtd.setRegistrationNumber("REG-UK-001");
-        globexLtd.setAddress("1 London Bridge, London, UK");
-        globexLtd.setPhone("+44-20-555-0100");
-        globexLtd.setEmail("info@globex-ltd.co.uk");
-        globexLtd.setCurrency("GBP");
-        globexLtd.setOrganization(globexCorp);
-        globexLtd.setTenant(globex);
-        companyRepository.save(globexLtd);
+        Company acmeInc = makeCompany("ACME-INC", "Acme Inc.", acmeGlobal, acme, "TAX-US-001", "USD", "123 Main Street, New York, NY 10001");
+        Company acmeEu = makeCompany("ACME-EU", "Acme Europe GmbH", acmeGlobal, acme, "TAX-EU-001", "EUR", "50 Berliner Strasse, Berlin, Germany");
+        Company apacInc = makeCompany("APAC-INC", "Acme APAC Inc.", acmeApac, acme, "TAX-IN-001", "INR", "42 Tech Park, Mumbai, India");
+        Company globexLtd = makeCompany("GLOBEX-LTD", "Globex Ltd.", globexCorp, globex, "TAX-UK-001", "GBP", "1 London Bridge, London, UK");
 
         // ── Branches ──
-        Branch ho = new Branch();
-        ho.setCode("HO");
-        ho.setName("Head Office");
-        ho.setAddress("123 Main Street, New York, NY 10001");
-        ho.setPhone("+1-555-0101");
-        ho.setEmail("ho@acme-inc.com");
-        ho.setIsHeadOffice(true);
-        ho.setCompany(acmeInc);
-        ho.setTenant(acme);
-        branchRepository.save(ho);
-
-        Branch nb = new Branch();
-        nb.setCode("NB");
-        nb.setName("North Branch");
-        nb.setAddress("456 Industrial Ave, Boston, MA 02101");
-        nb.setPhone("+1-555-0102");
-        nb.setEmail("north@acme-inc.com");
-        nb.setIsHeadOffice(false);
-        nb.setCompany(acmeInc);
-        nb.setTenant(acme);
-        branchRepository.save(nb);
-
-        Branch euHq = new Branch();
-        euHq.setCode("EU-HQ");
-        euHq.setName("Europe HQ");
-        euHq.setAddress("50 Berliner Strasse, Berlin, Germany");
-        euHq.setPhone("+49-30-555-0101");
-        euHq.setEmail("hq@acme-eu.de");
-        euHq.setIsHeadOffice(true);
-        euHq.setCompany(acmeEu);
-        euHq.setTenant(acme);
-        branchRepository.save(euHq);
-
-        Branch apacHq = new Branch();
-        apacHq.setCode("APAC-HQ");
-        apacHq.setName("APAC Headquarters");
-        apacHq.setAddress("42 Tech Park, Mumbai, India");
-        apacHq.setPhone("+91-22-555-0101");
-        apacHq.setEmail("hq@apac-inc.in");
-        apacHq.setIsHeadOffice(true);
-        apacHq.setCompany(apacInc);
-        apacHq.setTenant(acme);
-        branchRepository.save(apacHq);
-
-        Branch gxHq = new Branch();
-        gxHq.setCode("GX-HQ");
-        gxHq.setName("Globex HQ");
-        gxHq.setAddress("1 London Bridge, London, UK");
-        gxHq.setPhone("+44-20-555-0101");
-        gxHq.setEmail("hq@globex-ltd.co.uk");
-        gxHq.setIsHeadOffice(true);
-        gxHq.setCompany(globexLtd);
-        gxHq.setTenant(globex);
-        branchRepository.save(gxHq);
+        Branch ho = makeBranch("HO", "Head Office", acmeInc, acme, true);
+        Branch nb = makeBranch("NB", "North Branch", acmeInc, acme, false);
+        Branch euHq = makeBranch("EU-HQ", "Europe HQ", acmeEu, acme, true);
+        Branch apacHq = makeBranch("APAC-HQ", "APAC Headquarters", apacInc, acme, true);
+        Branch gxHq = makeBranch("GX-HQ", "Globex HQ", globexLtd, globex, true);
 
         // ── Departments ──
-        Department eng = new Department();
-        eng.setCode("ENG");
-        eng.setName("Engineering");
-        eng.setDescription("Software engineering department");
-        eng.setCostCenter("CC-ENG");
-        eng.setBranch(ho);
-        eng.setTenant(acme);
-        eng.setLevel(0);
-        departmentRepository.save(eng);
-
-        Department sales = new Department();
-        sales.setCode("SALES");
-        sales.setName("Sales");
-        sales.setDescription("Sales and business development");
-        sales.setCostCenter("CC-SALES");
-        sales.setBranch(ho);
-        sales.setTenant(acme);
-        sales.setLevel(0);
-        departmentRepository.save(sales);
-
-        Department finance = new Department();
-        finance.setCode("FIN");
-        finance.setName("Finance");
-        finance.setDescription("Finance and accounting");
-        finance.setCostCenter("CC-FIN");
-        finance.setBranch(ho);
-        finance.setTenant(acme);
-        finance.setLevel(0);
-        departmentRepository.save(finance);
-
-        Department legal = new Department();
-        legal.setCode("LEGAL");
-        legal.setName("Legal");
-        legal.setDescription("Legal and compliance");
-        legal.setCostCenter("CC-LEGAL");
-        legal.setBranch(ho);
-        legal.setTenant(acme);
-        legal.setLevel(0);
-        departmentRepository.save(legal);
-
-        Department it = new Department();
-        it.setCode("IT");
-        it.setName("Information Technology");
-        it.setDescription("IT infrastructure and support");
-        it.setCostCenter("CC-IT");
-        it.setBranch(ho);
-        it.setTenant(acme);
-        it.setLevel(0);
-        departmentRepository.save(it);
-
-        Department hr = new Department();
-        hr.setCode("HR");
-        hr.setName("Human Resources");
-        hr.setDescription("Human resources and recruitment");
-        hr.setCostCenter("CC-HR");
-        hr.setBranch(ho);
-        hr.setTenant(acme);
-        hr.setLevel(0);
-        departmentRepository.save(hr);
-
-        Department support = new Department();
-        support.setCode("SUPPORT");
-        support.setName("Customer Support");
-        support.setDescription("Customer support and success");
-        support.setCostCenter("CC-SUPPORT");
-        support.setBranch(nb);
-        support.setTenant(acme);
-        support.setLevel(0);
-        departmentRepository.save(support);
-
-        Department logistics = new Department();
-        logistics.setCode("LOGISTICS");
-        logistics.setName("Logistics");
-        logistics.setDescription("Logistics and supply chain");
-        logistics.setCostCenter("CC-LOGISTICS");
-        logistics.setBranch(nb);
-        logistics.setTenant(acme);
-        logistics.setLevel(0);
-        departmentRepository.save(logistics);
-
-        Department service = new Department();
-        service.setCode("SERVICE");
-        service.setName("Field Service");
-        service.setDescription("Field service and maintenance");
-        service.setCostCenter("CC-SERVICE");
-        service.setBranch(nb);
-        service.setTenant(acme);
-        service.setLevel(0);
-        departmentRepository.save(service);
-
-        Department euDev = new Department();
-        euDev.setCode("EU-DEV");
-        euDev.setName("Development");
-        euDev.setDescription("European development team");
-        euDev.setCostCenter("CC-EU-DEV");
-        euDev.setBranch(euHq);
-        euDev.setTenant(acme);
-        euDev.setLevel(0);
-        departmentRepository.save(euDev);
-
-        Department euSales = new Department();
-        euSales.setCode("EU-SALES");
-        euSales.setName("European Sales");
-        euSales.setDescription("European sales team");
-        euSales.setCostCenter("CC-EU-SALES");
-        euSales.setBranch(euHq);
-        euSales.setTenant(acme);
-        euSales.setLevel(0);
-        departmentRepository.save(euSales);
-
-        Department euMarketing = new Department();
-        euMarketing.setCode("EU-MARKETING");
-        euMarketing.setName("European Marketing");
-        euMarketing.setDescription("European marketing team");
-        euMarketing.setCostCenter("CC-EU-MKT");
-        euMarketing.setBranch(euHq);
-        euMarketing.setTenant(acme);
-        euMarketing.setLevel(0);
-        departmentRepository.save(euMarketing);
-
-        Department apacEng = new Department();
-        apacEng.setCode("APAC-ENG");
-        apacEng.setName("APAC Engineering");
-        apacEng.setDescription("APAC engineering team");
-        apacEng.setCostCenter("CC-APAC-ENG");
-        apacEng.setBranch(apacHq);
-        apacEng.setTenant(acme);
-        apacEng.setLevel(0);
-        departmentRepository.save(apacEng);
-
-        Department apacHr = new Department();
-        apacHr.setCode("APAC-HR");
-        apacHr.setName("APAC Human Resources");
-        apacHr.setDescription("APAC HR team");
-        apacHr.setCostCenter("CC-APAC-HR");
-        apacHr.setBranch(apacHq);
-        apacHr.setTenant(acme);
-        apacHr.setLevel(0);
-        departmentRepository.save(apacHr);
-
-        Department gxOps = new Department();
-        gxOps.setCode("GX-OPS");
-        gxOps.setName("Operations");
-        gxOps.setDescription("Globex operations department");
-        gxOps.setCostCenter("CC-GX-OPS");
-        gxOps.setBranch(gxHq);
-        gxOps.setTenant(globex);
-        gxOps.setLevel(0);
-        departmentRepository.save(gxOps);
-
-        Department gxFinance = new Department();
-        gxFinance.setCode("GX-FINANCE");
-        gxFinance.setName("Finance");
-        gxFinance.setDescription("Globex finance department");
-        gxFinance.setCostCenter("CC-GX-FIN");
-        gxFinance.setBranch(gxHq);
-        gxFinance.setTenant(globex);
-        gxFinance.setLevel(0);
-        departmentRepository.save(gxFinance);
-
-        Department gxHr = new Department();
-        gxHr.setCode("GX-HR");
-        gxHr.setName("Human Resources");
-        gxHr.setDescription("Globex HR department");
-        gxHr.setCostCenter("CC-GX-HR");
-        gxHr.setBranch(gxHq);
-        gxHr.setTenant(globex);
-        gxHr.setLevel(0);
-        departmentRepository.save(gxHr);
-
-        Department gxSales = new Department();
-        gxSales.setCode("GX-SALES");
-        gxSales.setName("Sales");
-        gxSales.setDescription("Globex sales department");
-        gxSales.setCostCenter("CC-GX-SALES");
-        gxSales.setBranch(gxHq);
-        gxSales.setTenant(globex);
-        gxSales.setLevel(0);
-        departmentRepository.save(gxSales);
+        makeDept("ENG", "Engineering", ho, acme, "CC-ENG");
+        makeDept("SALES", "Sales", ho, acme, "CC-SALES");
+        makeDept("FIN", "Finance", ho, acme, "CC-FIN");
+        makeDept("LEGAL", "Legal", ho, acme, "CC-LEGAL");
+        makeDept("IT", "Information Technology", ho, acme, "CC-IT");
+        makeDept("HR", "Human Resources", ho, acme, "CC-HR");
+        makeDept("SUPPORT", "Customer Support", nb, acme, "CC-SUPPORT");
+        makeDept("LOGISTICS", "Logistics", nb, acme, "CC-LOGISTICS");
+        makeDept("SERVICE", "Field Service", nb, acme, "CC-SERVICE");
+        makeDept("EU-DEV", "Development", euHq, acme, "CC-EU-DEV");
+        makeDept("EU-SALES", "European Sales", euHq, acme, "CC-EU-SALES");
+        makeDept("EU-MARKETING", "European Marketing", euHq, acme, "CC-EU-MKT");
+        makeDept("APAC-ENG", "APAC Engineering", apacHq, acme, "CC-APAC-ENG");
+        makeDept("APAC-HR", "APAC Human Resources", apacHq, acme, "CC-APAC-HR");
+        makeDept("GX-OPS", "Operations", gxHq, globex, "CC-GX-OPS");
+        makeDept("GX-FINANCE", "Finance", gxHq, globex, "CC-GX-FIN");
+        makeDept("GX-HR", "Human Resources", gxHq, globex, "CC-GX-HR");
+        makeDept("GX-SALES", "Sales", gxHq, globex, "CC-GX-SALES");
 
         // ── Permissions ──
         Permission[][] permGroups = {
@@ -441,376 +150,255 @@ public class IdentitySeedData implements CommandLineRunner {
             { makePerm("settings:admin", "System Settings", "settings", "*", "admin", "system") },
         };
         for (Permission[] group : permGroups) {
-            for (Permission p : group) {
-                permissionRepository.save(p);
-            }
+            for (Permission p : group) { permissionRepository.save(p); }
         }
 
-        // ── Roles ──
-        Role sysAdmin = new Role();
-        sysAdmin.setCode("sys_admin");
-        sysAdmin.setName("System Administrator");
-        sysAdmin.setDescription("Full system access - bypasses all permission checks");
-        sysAdmin.setIsSystem(true);
-        roleRepository.save(sysAdmin);
-
-        Role tntAdmin = new Role();
-        tntAdmin.setCode("tnt_admin");
-        tntAdmin.setName("Tenant Administrator");
-        tntAdmin.setDescription("Tenant-level administrative access");
-        tntAdmin.setIsSystem(true);
-        tntAdmin.setTenant(acme);
-        roleRepository.save(tntAdmin);
-
-        Role user = new Role();
-        user.setCode("user");
-        user.setName("Regular User");
-        user.setDescription("Standard user with basic permissions");
-        user.setIsSystem(true);
-        roleRepository.save(user);
-
-        Role viewer = new Role();
-        viewer.setCode("viewer");
-        viewer.setName("Read Only");
-        viewer.setDescription("Read-only access to assigned resources");
-        viewer.setIsSystem(true);
-        roleRepository.save(viewer);
-
-        Role manager = new Role();
-        manager.setCode("manager");
-        manager.setName("Manager");
-        manager.setDescription("Manager with elevated access");
-        manager.setIsSystem(true);
-        roleRepository.save(manager);
-
-        Role salesExec = new Role();
-        salesExec.setCode("sales_executive");
-        salesExec.setName("Sales Executive");
-        salesExec.setDescription("Sales team member");
-        salesExec.setIsSystem(true);
-        roleRepository.save(salesExec);
-
-        Role warehouseOp = new Role();
-        warehouseOp.setCode("warehouse_op");
-        warehouseOp.setName("Warehouse Operator");
-        warehouseOp.setDescription("Warehouse and inventory operations");
-        warehouseOp.setIsSystem(true);
-        roleRepository.save(warehouseOp);
-
-        Role hrManager = new Role();
-        hrManager.setCode("hr_manager");
-        hrManager.setName("HR Manager");
-        hrManager.setDescription("Human resources manager");
-        hrManager.setIsSystem(true);
-        roleRepository.save(hrManager);
+        // ── Roles (under SYS tenant as templates) ──
+        Role sysAdminRole = makeRole("sys_admin", "System Administrator", "Full system access", true, sysTenant);
+        Role tntAdminRole = makeRole("tnt_admin", "Tenant Administrator", "Tenant-level admin access", true, sysTenant);
+        Role userRole = makeRole("user", "Regular User", "Standard user with basic permissions", true, sysTenant);
+        Role viewerRole = makeRole("viewer", "Read Only", "Read-only access", true, sysTenant);
+        Role managerRole = makeRole("manager", "Manager", "Manager with elevated access", true, sysTenant);
+        Role salesExecRole = makeRole("sales_executive", "Sales Executive", "Sales team member", true, sysTenant);
+        Role warehouseOpRole = makeRole("warehouse_op", "Warehouse Operator", "Warehouse operations", true, sysTenant);
+        Role hrManagerRole = makeRole("hr_manager", "HR Manager", "Human resources manager", true, sysTenant);
 
         // ── Role-Permission assignments ──
         // tnt_admin gets all permissions
         for (Permission[] group : permGroups) {
-            for (Permission p : group) {
-                RolePermission rp = new RolePermission();
-                rp.setRole(tntAdmin);
-                rp.setPermission(p);
-                rolePermissionRepository.save(rp);
-            }
+            for (Permission p : group) { assignRolePermission(tntAdminRole, p); }
         }
         // user gets read + basic
         for (String code : new String[]{"user:read", "role:read", "perm:read", "tenant:read", "org:read",
                 "company:read", "branch:read", "dept:read", "session:read", "report:read", "dashboard:read", "audit:read"}) {
-            permissionRepository.findByCode(code).ifPresent(p -> {
-                RolePermission rp = new RolePermission();
-                rp.setRole(user);
-                rp.setPermission(p);
-                rolePermissionRepository.save(rp);
-            });
+            permissionRepository.findByCode(code).ifPresent(p -> assignRolePermission(userRole, p));
         }
         // viewer gets read-only
         for (String code : new String[]{"user:read", "role:read", "perm:read", "org:read",
                 "company:read", "branch:read", "dept:read", "report:read", "dashboard:read"}) {
-            permissionRepository.findByCode(code).ifPresent(p -> {
-                RolePermission rp = new RolePermission();
-                rp.setRole(viewer);
-                rp.setPermission(p);
-                rolePermissionRepository.save(rp);
-            });
+            permissionRepository.findByCode(code).ifPresent(p -> assignRolePermission(viewerRole, p));
         }
         // manager gets user permissions + more
         for (String code : new String[]{"user:read", "role:read", "perm:read", "org:read",
                 "company:read", "branch:read", "dept:read", "session:read", "report:read",
                 "dashboard:read", "audit:read", "user:create", "user:update"}) {
-            permissionRepository.findByCode(code).ifPresent(p -> {
-                RolePermission rp = new RolePermission();
-                rp.setRole(manager);
-                rp.setPermission(p);
-                rolePermissionRepository.save(rp);
-            });
+            permissionRepository.findByCode(code).ifPresent(p -> assignRolePermission(managerRole, p));
         }
-        // sales_executive gets read + basic
+        // sales_executive gets read
         for (String code : new String[]{"user:read", "role:read", "perm:read", "org:read",
                 "company:read", "branch:read", "dept:read", "report:read", "dashboard:read"}) {
-            permissionRepository.findByCode(code).ifPresent(p -> {
-                RolePermission rp = new RolePermission();
-                rp.setRole(salesExec);
-                rp.setPermission(p);
-                rolePermissionRepository.save(rp);
-            });
+            permissionRepository.findByCode(code).ifPresent(p -> assignRolePermission(salesExecRole, p));
         }
-        // warehouse_op gets read + basic
+        // warehouse_op gets read
         for (String code : new String[]{"user:read", "role:read", "perm:read", "org:read",
                 "company:read", "branch:read", "dept:read", "report:read", "dashboard:read"}) {
-            permissionRepository.findByCode(code).ifPresent(p -> {
-                RolePermission rp = new RolePermission();
-                rp.setRole(warehouseOp);
-                rp.setPermission(p);
-                rolePermissionRepository.save(rp);
-            });
+            permissionRepository.findByCode(code).ifPresent(p -> assignRolePermission(warehouseOpRole, p));
         }
-        // hr_manager gets read + basic (same as viewer for now)
+        // hr_manager gets read
         for (String code : new String[]{"user:read", "role:read", "perm:read", "org:read",
                 "company:read", "branch:read", "dept:read", "report:read", "dashboard:read"}) {
-            permissionRepository.findByCode(code).ifPresent(p -> {
-                RolePermission rp = new RolePermission();
-                rp.setRole(hrManager);
-                rp.setPermission(p);
-                rolePermissionRepository.save(rp);
-            });
+            permissionRepository.findByCode(code).ifPresent(p -> assignRolePermission(hrManagerRole, p));
         }
+
+        // ── Role-Organization scopes (only for roles that need restricted access) ──
+        // sys_admin role → NO RoleOrg → full access to SYS tenant (admin user only)
+        // tnt_admin role → NO RoleOrg → full tenant access (template)
+        // user role → NO RoleOrg → full tenant access (template)
+        // viewer role → NO RoleOrg → full tenant access (template)
+
+        // ── Create ACME-specific roles (clones of templates) ──
+        Role acmeTntAdminRole = makeRole("tnt_admin", "Tenant Administrator", "Full ACME access", false, acme);
+        Role acmeUserRole = makeRole("user", "Regular User", "Standard user for ACME", false, acme);
+        Role acmeViewerRole = makeRole("viewer", "Read Only", "Read-only for ACME", false, acme);
+        Role acmeManagerRole = makeRole("manager", "Manager", "Manager for ACME", false, acme);
+        Role acmeSalesExecRole = makeRole("sales_executive", "Sales Executive", "Sales for ACME", false, acme);
+        Role acmeWarehouseOpRole = makeRole("warehouse_op", "Warehouse Operator", "Warehouse for ACME", false, acme);
+
+        // ACME roles with restricted scopes
+        assignRoleOrg(acmeUserRole, acmeGlobal);
+        assignRoleCo(acmeUserRole, acmeInc);
+        assignRoleBranch(acmeUserRole, ho);
+
+        assignRoleOrg(acmeViewerRole, acmeGlobal);
+
+        assignRoleOrg(acmeManagerRole, acmeGlobal);
+        assignRoleCo(acmeManagerRole, acmeInc);
+        assignRoleBranch(acmeManagerRole, ho);
+
+        assignRoleOrg(acmeSalesExecRole, acmeGlobal);
+        assignRoleCo(acmeSalesExecRole, acmeInc);
+        assignRoleBranch(acmeSalesExecRole, ho);
+
+        assignRoleOrg(acmeWarehouseOpRole, acmeGlobal);
+        assignRoleCo(acmeWarehouseOpRole, acmeInc);
+        assignRoleBranch(acmeWarehouseOpRole, nb);
+
+        // ── Create GLOBEX-specific roles ──
+        Role globexTntAdminRole = makeRole("tnt_admin", "Tenant Administrator", "Full GLOBEX access", false, globex);
+        Role globexUserRole = makeRole("user", "Regular User", "Standard user for GLOBEX", false, globex);
+        Role globexViewerRole = makeRole("viewer", "Read Only", "Read-only for GLOBEX", false, globex);
+
+        assignRoleOrg(globexUserRole, globexCorp);
+        assignRoleCo(globexUserRole, globexLtd);
+        assignRoleBranch(globexUserRole, gxHq);
+
+        assignRoleOrg(globexViewerRole, globexCorp);
 
         // ── Users ──
-        UserAccount admin = makeUser("admin", "Admin@123", "admin@acme.com",
-                "System", "Administrator", "+1-555-1000", null);
-
-        UserAccount john = makeUser("john.doe", "User@123", "john.doe@acme.com",
-                "John", "Doe", "+1-555-1001", "https://api.dicebear.com/7.x/avataaars/svg?seed=john");
-
-        UserAccount jane = makeUser("jane.smith", "User@123", "jane.smith@acme.com",
-                "Jane", "Smith", "+1-555-1002", "https://api.dicebear.com/7.x/avataaars/svg?seed=jane");
-
-        UserAccount bob = makeUser("bob.wilson", "User@123", "bob.wilson@globex.com",
-                "Bob", "Wilson", "+1-555-1003", "https://api.dicebear.com/7.x/avataaars/svg?seed=bob");
-
-        UserAccount alice = makeUser("alice.johnson", "User@123", "alice.johnson@acme.com",
-                "Alice", "Johnson", "+1-555-1004", "https://api.dicebear.com/7.x/avataaars/svg?seed=alice");
-
-        UserAccount charlie = makeUser("charlie.brown", "User@123", "charlie.brown@globex.com",
-                "Charlie", "Brown", "+1-555-1005", "https://api.dicebear.com/7.x/avataaars/svg?seed=charlie");
-
-        UserAccount diana = makeUser("diana.prince", "User@123", "diana.prince@globex.com",
-                "Diana", "Prince", "+1-555-1006", "https://api.dicebear.com/7.x/avataaars/svg?seed=diana");
-
-        // ── New test users ──
-        UserAccount auto = makeUser("auto.user", "User@123", "auto.user@acme.com",
-                "Auto", "User", "+1-555-1010", "https://api.dicebear.com/7.x/avataaars/svg?seed=auto");
-
-        UserAccount superU = makeUser("super.user", "User@123", "super.user@erp.com",
-                "Super", "User", "+1-555-1011", "https://api.dicebear.com/7.x/avataaars/svg?seed=super");
-
-        UserAccount multiOrg = makeUser("multi-org.user", "User@123", "multi-org.user@acme.com",
-                "Multi", "Org", "+1-555-1012", "https://api.dicebear.com/7.x/avataaars/svg?seed=multiorg");
-
-        UserAccount multiCo = makeUser("multi-co.user", "User@123", "multi-co.user@acme.com",
-                "Multi", "Company", "+1-555-1013", "https://api.dicebear.com/7.x/avataaars/svg?seed=multico");
-
-        UserAccount multiBranch = makeUser("multi-branch.user", "User@123", "multi-branch.user@acme.com",
-                "Multi", "Branch", "+1-555-1014", "https://api.dicebear.com/7.x/avataaars/svg?seed=multibranch");
-
-        UserAccount multiRole = makeUser("multi-role.user", "User@123", "multi-role.user@acme.com",
-                "Multi", "Role", "+1-555-1015", "https://api.dicebear.com/7.x/avataaars/svg?seed=multirole");
+        UserAccount admin = makeUserWithBirthDate("admin", "Admin@123", "admin@acme.com", "System", "Administrator", "1985-03-15");
+        UserAccount auto = makeUser("auto.user", "User@123", "auto.user@acme.com", "Auto", "User");
+        UserAccount superU = makeUser("super.user", "User@123", "super.user@erp.com", "Super", "User");
+        UserAccount jane = makeUserWithBirthDate("jane.smith", "User@123", "jane.smith@acme.com", "Jane", "Smith", "1990-07-22");
+        UserAccount john = makeUserWithBirthDate("john.doe", "User@123", "john.doe@acme.com", "John", "Doe", "1988-11-08");
+        UserAccount alice = makeUserWithBirthDate("alice.johnson", "User@123", "alice.johnson@acme.com", "Alice", "Johnson", "1992-05-30");
+        UserAccount multiOrg = makeUser("multi-org.user", "User@123", "multi-org.user@acme.com", "Multi", "Org");
+        UserAccount multiCo = makeUser("multi-co.user", "User@123", "multi-co.user@acme.com", "Multi", "Company");
+        UserAccount multiBranch = makeUser("multi-branch.user", "User@123", "multi-branch.user@acme.com", "Multi", "Branch");
+        UserAccount multiRole = makeUser("multi-role.user", "User@123", "multi-role.user@acme.com", "Multi", "Role");
+        UserAccount bob = makeUser("bob.wilson", "User@123", "bob.wilson@globex.com", "Bob", "Wilson");
+        UserAccount charlie = makeUser("charlie.brown", "User@123", "charlie.brown@globex.com", "Charlie", "Brown");
+        UserAccount diana = makeUserWithBirthDate("diana.prince", "User@123", "diana.prince@globex.com", "Diana", "Prince", "1987-12-01");
 
         // ── User-Role assignments ──
-        assignRole(admin, sysAdmin);
-        assignRole(admin, tntAdmin);
-        assignRole(admin, user);
-        assignRole(admin, viewer);
-        assignRole(john, user);
-        assignRole(jane, tntAdmin);
-        assignRole(bob, viewer);
-        assignRole(alice, user);
-        assignRole(charlie, user);
-        assignRole(diana, tntAdmin);
-        // new users
-        assignRole(auto, user);
-        assignRole(superU, sysAdmin);
-        assignRole(superU, tntAdmin);
-        assignRole(multiOrg, user);
-        assignRole(multiCo, user);
-        assignRole(multiBranch, salesExec);
-        assignRole(multiBranch, warehouseOp);
-        assignRole(multiRole, manager);
-        assignRole(multiRole, user);
-        assignRole(multiRole, viewer);
-
-        // ── User-Organization assignments ──
-        assignOrg(admin, acmeGlobal);
-        assignOrg(admin, acmeApac);
-        assignOrg(admin, globexCorp);
-        assignOrg(john, acmeGlobal);
-        assignOrg(jane, acmeGlobal);
-        assignOrg(bob, globexCorp);
-        assignOrg(alice, acmeGlobal);
-        assignOrg(charlie, globexCorp);
-        assignOrg(diana, globexCorp);
-        // new users
-        assignOrg(auto, acmeGlobal);
-        assignOrg(superU, acmeGlobal);
-        assignOrg(superU, globexCorp);
-        assignOrg(multiOrg, acmeGlobal);
-        assignOrg(multiOrg, acmeApac);
-        assignOrg(multiCo, acmeGlobal);
-        assignOrg(multiBranch, acmeGlobal);
-        assignOrg(multiRole, acmeGlobal);
-
-        // ── User-Company assignments ──
-        assignCompany(admin, acmeInc, true);
-        assignCompany(admin, acmeEu, false);
-        assignCompany(admin, apacInc, false);
-        assignCompany(admin, globexLtd, false);
-        assignCompany(john, acmeInc, true);
-        assignCompany(jane, acmeEu, true);
-        assignCompany(bob, globexLtd, true);
-        assignCompany(alice, acmeInc, true);
-        assignCompany(charlie, globexLtd, true);
-        assignCompany(diana, globexLtd, true);
-        // new users
-        assignCompany(auto, acmeInc, true);
-        assignCompany(superU, acmeInc, true);
-        assignCompany(superU, globexLtd, false);
-        assignCompany(multiOrg, acmeInc, true);
-        assignCompany(multiOrg, apacInc, false);
-        assignCompany(multiCo, acmeInc, true);
-        assignCompany(multiCo, acmeEu, false);
-        assignCompany(multiBranch, acmeInc, true);
-        assignCompany(multiRole, acmeInc, true);
-
-        // ── User-Branch assignments ──
-        assignBranch(admin, ho, true);
-        assignBranch(admin, nb, false);
-        assignBranch(admin, euHq, false);
-        assignBranch(admin, apacHq, false);
-        assignBranch(admin, gxHq, false);
-        assignBranch(john, ho, true);
-        assignBranch(jane, euHq, true);
-        assignBranch(bob, gxHq, true);
-        assignBranch(alice, ho, true);
-        assignBranch(charlie, gxHq, true);
-        assignBranch(diana, gxHq, true);
-        assignBranch(auto, ho, true);
-        assignBranch(superU, ho, true);
-        assignBranch(superU, gxHq, false);
-        assignBranch(multiOrg, ho, true);
-        assignBranch(multiOrg, apacHq, false);
-        assignBranch(multiCo, ho, true);
-        assignBranch(multiCo, euHq, false);
-        assignBranch(multiBranch, ho, true);
-        assignBranch(multiBranch, nb, false);
-        assignBranch(multiRole, ho, true);
+        assignUserRole(admin, sysAdminRole);
+        assignUserRole(auto, acmeUserRole);
+        assignUserRole(superU, sysAdminRole);
+        assignUserRole(jane, acmeTntAdminRole);
+        assignUserRole(john, acmeUserRole);
+        assignUserRole(alice, acmeUserRole);
+        assignUserRole(multiOrg, acmeUserRole);
+        assignUserRole(multiCo, acmeUserRole);
+        assignUserRole(multiBranch, acmeSalesExecRole);
+        assignUserRole(multiBranch, acmeWarehouseOpRole);
+        assignUserRole(multiRole, acmeManagerRole);
+        assignUserRole(multiRole, acmeUserRole);
+        assignUserRole(multiRole, acmeViewerRole);
+        assignUserRole(bob, globexUserRole);
+        assignUserRole(charlie, globexUserRole);
+        assignUserRole(diana, globexTntAdminRole);
 
         // ── User Preferences ──
         makePref(admin, "en", "America/New_York", "YYYY-MM-DD", "HH:mm", "#,##0.00", "USD", "light", 25);
-        makePref(john, "en", "America/New_York", "YYYY-MM-DD", "HH:mm", "#,##0.00", "USD", "light", 25);
-        makePref(jane, "de", "Europe/Berlin", "DD.MM.YYYY", "HH:mm", "#.##0,00", "EUR", "dark", 50);
-        makePref(bob, "en", "Europe/London", "DD/MM/YYYY", "HH:mm", "#,##0.00", "GBP", "light", 25);
-        makePref(alice, "en", "America/New_York", "YYYY-MM-DD", "HH:mm", "#,##0.00", "USD", "light", 25);
-        makePref(charlie, "en", "Europe/London", "DD/MM/YYYY", "HH:mm", "#,##0.00", "GBP", "light", 25);
-        makePref(diana, "en", "Europe/London", "DD/MM/YYYY", "HH:mm", "#,##0.00", "GBP", "dark", 50);
         makePref(auto, "en", "America/New_York", "YYYY-MM-DD", "HH:mm", "#,##0.00", "USD", "light", 25);
         makePref(superU, "en", "America/New_York", "YYYY-MM-DD", "HH:mm", "#,##0.00", "USD", "light", 25);
+        makePref(jane, "de", "Europe/Berlin", "DD.MM.YYYY", "HH:mm", "#.##0,00", "EUR", "dark", 50);
+        makePref(john, "en", "America/New_York", "YYYY-MM-DD", "HH:mm", "#,##0.00", "USD", "light", 25);
+        makePref(alice, "en", "America/New_York", "YYYY-MM-DD", "HH:mm", "#,##0.00", "USD", "light", 25);
         makePref(multiOrg, "en", "Asia/Kolkata", "DD/MM/YYYY", "HH:mm", "#,##0.00", "INR", "light", 25);
         makePref(multiCo, "en", "America/New_York", "YYYY-MM-DD", "HH:mm", "#,##0.00", "USD", "light", 25);
         makePref(multiBranch, "en", "America/New_York", "YYYY-MM-DD", "HH:mm", "#,##0.00", "USD", "light", 25);
         makePref(multiRole, "en", "America/New_York", "YYYY-MM-DD", "HH:mm", "#,##0.00", "USD", "light", 25);
+        makePref(bob, "en", "Europe/London", "DD/MM/YYYY", "HH:mm", "#,##0.00", "GBP", "light", 25);
+        makePref(charlie, "en", "Europe/London", "DD/MM/YYYY", "HH:mm", "#,##0.00", "GBP", "light", 25);
+        makePref(diana, "en", "Europe/London", "DD/MM/YYYY", "HH:mm", "#,##0.00", "GBP", "dark", 50);
 
         log.info("Identity seed data created successfully.");
-
-        log.info("  admin          / Admin@123   - Super-user, all tenants");
-        log.info("  john.doe       / User@123    - ACME regular, ACME-INC, HO");
-        log.info("  jane.smith     / User@123    - ACME tnt_admin, ACME-EU, EU-HQ (German locale)");
-        log.info("  bob.wilson     / User@123    - GLOBEX viewer, GLOBEX-LTD, GX-HQ");
-        log.info("  alice.johnson  / User@123    - ACME regular, ACME-INC, HO");
-        log.info("  charlie.brown  / User@123    - GLOBEX regular, GLOBEX-LTD, GX-HQ");
-        log.info("  diana.prince   / User@123    - GLOBEX tnt_admin, GLOBEX-LTD, GX-HQ");
+        log.info("  admin          / Admin@123   - System admin (SYS tenant only)");
         log.info("  auto.user      / User@123    - Single profile → auto-route");
-        log.info("  super.user     / User@123    - Multi-tenant (ACME + GLOBEX)");
-        log.info("  multi-org.user / User@123    - 2 orgs under ACME (ACME-GLOBAL + ACME-APAC)");
-        log.info("  multi-co.user  / User@123    - 2 companies under ACME-GLOBAL (ACME-INC + ACME-EU)");
-        log.info("  multi-branch.user / User@123 - 2 branches same co (HO + NB), 2 roles");
-        log.info("  multi-role.user / User@123   - 3 roles (manager + user + viewer) same branch");
+        log.info("  super.user     / User@123    - System admin (same as admin)");
+        log.info("  jane.smith     / User@123    - ACME tnt_admin (full ACME access)");
+        log.info("  john.doe       / User@123    - ACME restricted (ACME-GLOBAL → ACME-INC → HO)");
+        log.info("  alice.johnson  / User@123    - ACME restricted (same as john.doe)");
+        log.info("  multi-org.user / User@123    - ACME restricted (ACME-GLOBAL scope)");
+        log.info("  multi-co.user  / User@123    - ACME restricted (2 companies)");
+        log.info("  multi-branch.user / User@123 - 2 roles → HO + NB branches");
+        log.info("  multi-role.user / User@123   - 3 roles, same scope");
+        log.info("  bob.wilson     / User@123    - GLOBEX restricted (GLOBEX-CORP → GLOBEX-LTD → GX-HQ)");
+        log.info("  charlie.brown  / User@123    - GLOBEX restricted (same as bob)");
+        log.info("  diana.prince   / User@123    - GLOBEX tnt_admin (full GLOBEX access)");
     }
 
     // ── Helpers ──
 
+    private Tenant makeTenant(String code, String name, String domain, String lang, String tz, String currency) {
+        Tenant t = new Tenant(); t.setCode(code); t.setName(name); t.setDomain(domain);
+        t.setDefaultLanguage(lang); t.setDefaultTimezone(tz); t.setDefaultCurrency(currency);
+        return tenantRepository.save(t);
+    }
+
+    private Organization makeOrg(String code, String name, Tenant tenant, Organization parent, int level, String path) {
+        Organization o = new Organization(); o.setCode(code); o.setName(name); o.setTenant(tenant);
+        o.setParent(parent); o.setLevel(level); o.setPath(path);
+        return organizationRepository.save(o);
+    }
+
+    private Company makeCompany(String code, String name, Organization org, Tenant tenant, String taxId, String currency, String address) {
+        Company c = new Company(); c.setCode(code); c.setName(name); c.setOrganization(org); c.setTenant(tenant);
+        c.setTaxId(taxId); c.setCurrency(currency); c.setAddress(address);
+        c.setRegistrationNumber("REG-" + code);
+        return companyRepository.save(c);
+    }
+
+    private Branch makeBranch(String code, String name, Company company, Tenant tenant, boolean isHeadOffice) {
+        Branch b = new Branch(); b.setCode(code); b.setName(name); b.setCompany(company); b.setTenant(tenant);
+        b.setIsHeadOffice(isHeadOffice);
+        return branchRepository.save(b);
+    }
+
+    private void makeDept(String code, String name, Branch branch, Tenant tenant, String costCenter) {
+        Department d = new Department(); d.setCode(code); d.setName(name); d.setBranch(branch);
+        d.setTenant(tenant); d.setCostCenter(costCenter); d.setLevel(0);
+        departmentRepository.save(d);
+    }
+
     private Permission makePerm(String code, String name, String resourceType, String resource, String action, String module) {
-        Permission p = new Permission();
-        p.setCode(code);
-        p.setName(name);
-        p.setResourceType(resourceType);
-        p.setResource(resource);
-        p.setAction(action);
-        p.setModule(module);
-        p.setIsSystem(true);
+        Permission p = new Permission(); p.setCode(code); p.setName(name);
+        p.setResourceType(resourceType); p.setResource(resource); p.setAction(action);
+        p.setModule(module); p.setIsSystem(true);
         return p;
     }
 
-    private UserAccount makeUser(String username, String rawPassword, String email,
-                                  String firstName, String lastName, String phone, String avatarUrl) {
-        UserAccount u = new UserAccount();
-        u.setUsername(username);
-        u.setPasswordHash(passwordEncoder.encode(rawPassword));
-        u.setEmail(email);
-        u.setFirstName(firstName);
-        u.setLastName(lastName);
-        u.setPhone(phone);
-        u.setAvatarUrl(avatarUrl);
-        u.setStatus("ACTIVE");
-        u.setEmailVerified(true);
-        u.setFailedAttempts(0);
-        userAccountRepository.save(u);
-        return u;
+    private Role makeRole(String code, String name, String description, boolean isSystem, Tenant tenant) {
+        Role r = new Role(); r.setCode(code); r.setName(name); r.setDescription(description);
+        r.setIsSystem(isSystem); r.setTenant(tenant);
+        return roleRepository.save(r);
     }
 
-    private void assignRole(UserAccount u, Role r) {
-        UserRole ur = new UserRole();
-        ur.setUser(u);
-        ur.setRole(r);
+    private void assignRolePermission(Role role, Permission perm) {
+        RolePermission rp = new RolePermission(); rp.setRole(role); rp.setPermission(perm);
+        rolePermissionRepository.save(rp);
+    }
+
+    private void assignRoleOrg(Role role, Organization org) {
+        RoleOrganization ro = new RoleOrganization(); ro.setRole(role); ro.setOrganization(org);
+        roleOrganizationRepository.save(ro);
+    }
+
+    private void assignRoleCo(Role role, Company company) {
+        RoleCompany rc = new RoleCompany(); rc.setRole(role); rc.setCompany(company);
+        roleCompanyRepository.save(rc);
+    }
+
+    private void assignRoleBranch(Role role, Branch branch) {
+        RoleBranch rb = new RoleBranch(); rb.setRole(role); rb.setBranch(branch);
+        roleBranchRepository.save(rb);
+    }
+
+    private UserAccount makeUser(String username, String rawPassword, String email, String firstName, String lastName) {
+        UserAccount u = new UserAccount(); u.setUsername(username);
+        u.setPasswordHash(passwordEncoder.encode(rawPassword)); u.setEmail(email);
+        u.setFirstName(firstName); u.setLastName(lastName); u.setStatus("ACTIVE");
+        u.setEmailVerified(true); u.setFailedAttempts(0);
+        return userAccountRepository.save(u);
+    }
+
+    private UserAccount makeUserWithBirthDate(String username, String rawPassword, String email, String firstName, String lastName, String birthDate) {
+        UserAccount u = makeUser(username, rawPassword, email, firstName, lastName);
+        if (birthDate != null) u.setBirthDate(java.time.LocalDate.parse(birthDate));
+        return userAccountRepository.save(u);
+    }
+
+    private void assignUserRole(UserAccount u, Role r) {
+        UserRole ur = new UserRole(); ur.setUser(u); ur.setRole(r);
         userRoleRepository.save(ur);
-    }
-
-    private void assignOrg(UserAccount u, Organization o) {
-        UserOrganization uo = new UserOrganization();
-        uo.setUser(u);
-        uo.setOrganization(o);
-        userOrganizationRepository.save(uo);
-    }
-
-    private void assignCompany(UserAccount u, Company c, boolean isDefault) {
-        UserCompany uc = new UserCompany();
-        uc.setUser(u);
-        uc.setCompany(c);
-        uc.setIsDefault(isDefault);
-        userCompanyRepository.save(uc);
-    }
-
-    private void assignBranch(UserAccount u, Branch b, boolean isDefault) {
-        UserBranch ub = new UserBranch();
-        ub.setUser(u);
-        ub.setBranch(b);
-        ub.setIsDefault(isDefault);
-        userBranchRepository.save(ub);
     }
 
     private void makePref(UserAccount u, String lang, String tz, String dateFmt, String timeFmt,
                            String numFmt, String currency, String theme, int itemsPerPage) {
-        UserPreference pref = new UserPreference();
-        pref.setUser(u);
-        pref.setLanguage(lang);
-        pref.setTimezone(tz);
-        pref.setDateFormat(dateFmt);
-        pref.setTimeFormat(timeFmt);
-        pref.setNumberFormat(numFmt);
-        pref.setCurrency(currency);
-        pref.setTheme(theme);
-        pref.setNotificationsEnabled(true);
-        pref.setItemsPerPage(itemsPerPage);
+        UserPreference pref = new UserPreference(); pref.setUser(u);
+        pref.setLanguage(lang); pref.setTimezone(tz); pref.setDateFormat(dateFmt);
+        pref.setTimeFormat(timeFmt); pref.setNumberFormat(numFmt); pref.setCurrency(currency);
+        pref.setTheme(theme); pref.setNotificationsEnabled(true); pref.setItemsPerPage(itemsPerPage);
         userPreferenceRepository.save(pref);
     }
 }

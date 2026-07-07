@@ -25,22 +25,19 @@ public class AuthenticationService {
   private final JwtProvider jwtProvider;
   private final PasswordService passwordService;
   private final UserRoleRepository userRoleRepository;
-  private final UserOrganizationRepository userOrganizationRepository;
   private final PermissionResolver permissionResolver;
 
   public AuthenticationService(UserAccountRepository userRepository,
-                               UserSessionRepository sessionRepository,
-                               JwtProvider jwtProvider,
-                               PasswordService passwordService,
-                               UserRoleRepository userRoleRepository,
-                               UserOrganizationRepository userOrganizationRepository,
-                               PermissionResolver permissionResolver) {
+                                UserSessionRepository sessionRepository,
+                                JwtProvider jwtProvider,
+                                PasswordService passwordService,
+                                UserRoleRepository userRoleRepository,
+                                PermissionResolver permissionResolver) {
     this.userRepository = userRepository;
     this.sessionRepository = sessionRepository;
     this.jwtProvider = jwtProvider;
     this.passwordService = passwordService;
     this.userRoleRepository = userRoleRepository;
-    this.userOrganizationRepository = userOrganizationRepository;
     this.permissionResolver = permissionResolver;
   }
 
@@ -89,16 +86,9 @@ public class AuthenticationService {
         .map(e -> e.getResourceType() + ":" + e.getResource() + ":" + e.getAction())
         .collect(Collectors.toList());
 
-    // Resolve tenant/org context
-    List<UserOrganization> userOrgs = userOrganizationRepository.findByUserId(user.getId());
     UUID tenantId = null;
     UUID orgId = null;
     UUID companyId = null;
-    if (!userOrgs.isEmpty()) {
-      Organization org = userOrgs.get(0).getOrganization();
-      tenantId = org.getTenant().getId();
-      orgId = org.getId();
-    }
 
     UserSession session = createSession(user, ipAddress, userAgent, tenantId, orgId, companyId);
 
@@ -166,15 +156,9 @@ public class AuthenticationService {
         .map(e -> e.getResourceType() + ":" + e.getResource() + ":" + e.getAction())
         .collect(Collectors.toList());
 
-    List<UserOrganization> userOrgs = userOrganizationRepository.findByUserId(user.getId());
     UUID tenantId = null;
     UUID orgId = null;
     UUID companyId = null;
-    if (!userOrgs.isEmpty()) {
-      Organization org = userOrgs.get(0).getOrganization();
-      tenantId = org.getTenant().getId();
-      orgId = org.getId();
-    }
 
     UserSession session = createSession(user, ipAddress, userAgent, tenantId, orgId, companyId);
 

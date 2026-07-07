@@ -1,5 +1,6 @@
 package com.erp.platform.identity.service;
 
+import com.erp.platform.identity.dto.RuntimeContextHolder;
 import com.erp.platform.identity.entity.Branch;
 import com.erp.platform.identity.entity.Company;
 import com.erp.platform.identity.entity.Department;
@@ -10,11 +11,8 @@ import com.erp.platform.identity.repository.CompanyRepository;
 import com.erp.platform.identity.repository.DepartmentRepository;
 import com.erp.platform.identity.repository.OrganizationRepository;
 import com.erp.platform.identity.repository.TenantRepository;
-import com.erp.platform.identity.sdk.annotation.EnableTenantFilter;
 import java.util.List;
 import java.util.UUID;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,20 +24,28 @@ public class AdminService {
   private final CompanyRepository companyRepository;
   private final BranchRepository branchRepository;
   private final DepartmentRepository departmentRepository;
+  private final AccessScopeService accessScopeService;
 
   public AdminService(TenantRepository tenantRepository,
                       OrganizationRepository organizationRepository,
                       CompanyRepository companyRepository,
                       BranchRepository branchRepository,
-                      DepartmentRepository departmentRepository) {
+                      DepartmentRepository departmentRepository,
+                      AccessScopeService accessScopeService) {
     this.tenantRepository = tenantRepository;
     this.organizationRepository = organizationRepository;
     this.companyRepository = companyRepository;
     this.branchRepository = branchRepository;
     this.departmentRepository = departmentRepository;
+    this.accessScopeService = accessScopeService;
   }
 
-  // --- Tenant ---
+  private UUID currentUserId() {
+    var ctx = RuntimeContextHolder.get();
+    return ctx != null ? ctx.getUserId() : null;
+  }
+
+  // ─── Tenant ───
   public List<Tenant> getAllTenants() { return tenantRepository.findAll(); }
   public Tenant getTenant(UUID id) { return tenantRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Tenant not found")); }
   @Transactional public Tenant createTenant(Tenant t) { if (tenantRepository.findByCode(t.getCode()).isPresent()) throw new IllegalArgumentException("Tenant code already exists"); return tenantRepository.save(t); }
@@ -47,10 +53,20 @@ public class AdminService {
   @Transactional public void deactivateTenant(UUID id) { Tenant t = getTenant(id); t.setIsActive(false); tenantRepository.save(t); }
   @Transactional public void deleteTenant(UUID id) { tenantRepository.deleteById(id); }
 
-  // --- Organization ---
-  @EnableTenantFilter
-  public List<Organization> getAllOrganizations() { return organizationRepository.findAllWithTenant(); }
-  public Organization getOrganization(UUID id) { return organizationRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Organization not found")); }
+  // ─── Organization ───
+  public List<Organization> getAllOrganizations() {
+    UUID userId = currentUserId();
+    if (userId == null) return List.of();
+    List<UUID> ids = accessScopeService.getAccessibleOrganizationIds(userId);
+    return ids.isEmpty() ? List.of() : organizationRepository.findByIdInWithTenant(ids);
+  }
+  public Organization getOrganization(UUID id) {
+    Organization o = organizationRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Organization not found"));
+    UUID userId = currentUserId();
+    if (userId != null && !accessScopeService.getAccessibleOrganizationIds(userId).contains(id))
+      throw new SecurityException("Access denied to organization");
+    return o;
+  }
   @Transactional public Organization createOrganization(Organization o) {
     if (organizationRepository.findByCode(o.getCode()).isPresent()) throw new IllegalArgumentException("Organization code already exists");
     if (o.getParent() != null && o.getParent().getId() != null) {
@@ -64,14 +80,30 @@ public class AdminService {
     }
     return organizationRepository.save(o);
   }
-  @Transactional public Organization updateOrganization(UUID id, Organization req) { Organization o = getOrganization(id); o.setName(req.getName()); o.setDescription(req.getDescription()); return organizationRepository.save(o); }
-  @Transactional public void deleteOrganization(UUID id) { organizationRepository.deleteById(id); }
-  public List<Organization> getOrganizationTree(UUID tenantId) { return organizationRepository.findByTenantId(tenantId); }
+  @Transactional public Organization updateOrganization(UUID id, Organization req) { getOrganization(id); Organization o = getOrganization(id); o.setName(req.getName()); o.setDescription(req.getDescription()); if (req.getTenant() != null) o.setTenant(req.getTenant()); if (req.getParent() != null) o.setParent(req.getParent()); return organizationRepository.save(o); }
+  @Transactional public void deleteOrganization(UUID id) { getOrganization(id); organizationRepository.deleteById(id); }
+  public List<Organization> getOrganizationTree(UUID tenantId) {
+    List<Organization> all = organizationRepository.findByTenantId(tenantId);
+    UUID userId = currentUserId();
+    if (userId == null) return List.of();
+    List<UUID> accessibleIds = accessScopeService.getAccessibleOrganizationIds(userId);
+    return all.stream().filter(o -> accessibleIds.contains(o.getId())).toList();
+  }
 
-  // --- Company ---
-  @EnableTenantFilter
-  public List<Company> getAllCompanies() { return companyRepository.findAllWithOrganization(); }
-  public Company getCompany(UUID id) { return companyRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Company not found")); }
+  // ─── Company ───
+  public List<Company> getAllCompanies() {
+    UUID userId = currentUserId();
+    if (userId == null) return List.of();
+    List<UUID> ids = accessScopeService.getAccessibleCompanyIds(userId);
+    return ids.isEmpty() ? List.of() : companyRepository.findByIdInWithOrganization(ids);
+  }
+  public Company getCompany(UUID id) {
+    Company c = companyRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Company not found"));
+    UUID userId = currentUserId();
+    if (userId != null && !accessScopeService.getAccessibleCompanyIds(userId).contains(id))
+      throw new SecurityException("Access denied to company");
+    return c;
+  }
   @Transactional public Company createCompany(Company c) {
     if (companyRepository.findByCode(c.getCode()).isPresent()) throw new IllegalArgumentException("Company code already exists");
     if (c.getTenant() == null && c.getOrganization() != null && c.getOrganization().getId() != null) {
@@ -80,14 +112,30 @@ public class AdminService {
     }
     return companyRepository.save(c);
   }
-  @Transactional public Company updateCompany(UUID id, Company req) { Company c = getCompany(id); c.setName(req.getName()); c.setTaxId(req.getTaxId()); c.setAddress(req.getAddress()); c.setPhone(req.getPhone()); c.setEmail(req.getEmail()); c.setCurrency(req.getCurrency()); return companyRepository.save(c); }
-  @Transactional public void deleteCompany(UUID id) { companyRepository.deleteById(id); }
-  public List<Company> getCompaniesByOrganization(UUID orgId) { return companyRepository.findByOrganizationId(orgId); }
+  @Transactional public Company updateCompany(UUID id, Company req) { getCompany(id); Company c = getCompany(id); c.setName(req.getName()); c.setTaxId(req.getTaxId()); c.setAddress(req.getAddress()); c.setPhone(req.getPhone()); c.setEmail(req.getEmail()); c.setCurrency(req.getCurrency()); if (req.getOrganization() != null) c.setOrganization(req.getOrganization()); return companyRepository.save(c); }
+  @Transactional public void deleteCompany(UUID id) { getCompany(id); companyRepository.deleteById(id); }
+  public List<Company> getCompaniesByOrganization(UUID orgId) {
+    List<Company> all = companyRepository.findByOrganizationId(orgId);
+    UUID userId = currentUserId();
+    if (userId == null) return List.of();
+    List<UUID> accessibleIds = accessScopeService.getAccessibleCompanyIds(userId);
+    return all.stream().filter(c -> accessibleIds.contains(c.getId())).toList();
+  }
 
-  // --- Branch ---
-  @EnableTenantFilter
-  public List<Branch> getAllBranches() { return branchRepository.findAllWithCompany(); }
-  public Branch getBranch(UUID id) { return branchRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Branch not found")); }
+  // ─── Branch ───
+  public List<Branch> getAllBranches() {
+    UUID userId = currentUserId();
+    if (userId == null) return List.of();
+    List<UUID> ids = accessScopeService.getAccessibleBranchIds(userId);
+    return ids.isEmpty() ? List.of() : branchRepository.findByIdInWithCompany(ids);
+  }
+  public Branch getBranch(UUID id) {
+    Branch b = branchRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Branch not found"));
+    UUID userId = currentUserId();
+    if (userId != null && !accessScopeService.getAccessibleBranchIds(userId).contains(id))
+      throw new SecurityException("Access denied to branch");
+    return b;
+  }
   @Transactional public Branch createBranch(Branch b) {
     if (branchRepository.findByCode(b.getCode()).isPresent()) throw new IllegalArgumentException("Branch code already exists");
     if (b.getTenant() == null && b.getCompany() != null && b.getCompany().getId() != null) {
@@ -96,14 +144,33 @@ public class AdminService {
     }
     return branchRepository.save(b);
   }
-  @Transactional public Branch updateBranch(UUID id, Branch req) { Branch b = getBranch(id); b.setName(req.getName()); b.setAddress(req.getAddress()); b.setPhone(req.getPhone()); b.setEmail(req.getEmail()); b.setIsHeadOffice(req.getIsHeadOffice()); return branchRepository.save(b); }
-  @Transactional public void deleteBranch(UUID id) { branchRepository.deleteById(id); }
-  public List<Branch> getBranchesByCompany(UUID companyId) { return branchRepository.findByCompanyId(companyId); }
+  @Transactional public Branch updateBranch(UUID id, Branch req) { getBranch(id); Branch b = getBranch(id); b.setName(req.getName()); b.setAddress(req.getAddress()); b.setPhone(req.getPhone()); b.setEmail(req.getEmail()); b.setIsHeadOffice(req.getIsHeadOffice()); if (req.getCompany() != null) b.setCompany(req.getCompany()); return branchRepository.save(b); }
+  @Transactional public void deleteBranch(UUID id) { getBranch(id); branchRepository.deleteById(id); }
+  public List<Branch> getBranchesByCompany(UUID companyId) {
+    List<Branch> all = branchRepository.findByCompanyId(companyId);
+    UUID userId = currentUserId();
+    if (userId == null) return List.of();
+    List<UUID> accessibleIds = accessScopeService.getAccessibleBranchIds(userId);
+    return all.stream().filter(b -> accessibleIds.contains(b.getId())).toList();
+  }
 
-  // --- Department ---
-  @EnableTenantFilter
-  public List<Department> getAllDepartments() { return departmentRepository.findAllWithBranch(); }
-  public Department getDepartment(UUID id) { return departmentRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Department not found")); }
+  // ─── Department ───
+  public List<Department> getAllDepartments() {
+    UUID userId = currentUserId();
+    if (userId == null) return List.of();
+    List<UUID> ids = accessScopeService.getAccessibleBranchIds(userId);
+    return ids.isEmpty() ? List.of() : departmentRepository.findByBranchIdInWithBranch(ids);
+  }
+  public Department getDepartment(UUID id) {
+    Department d = departmentRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Department not found"));
+    UUID userId = currentUserId();
+    if (userId != null) {
+      List<UUID> branchIds = accessScopeService.getAccessibleBranchIds(userId);
+      if (d.getBranch() != null && !branchIds.contains(d.getBranch().getId()))
+        throw new SecurityException("Access denied to department");
+    }
+    return d;
+  }
   @Transactional public Department createDepartment(Department d) {
     if (departmentRepository.findByCode(d.getCode()).isPresent()) throw new IllegalArgumentException("Department code already exists");
     if (d.getParent() != null && d.getParent().getId() != null) {
@@ -119,7 +186,15 @@ public class AdminService {
     }
     return departmentRepository.save(d);
   }
-  @Transactional public Department updateDepartment(UUID id, Department req) { Department d = getDepartment(id); d.setName(req.getName()); d.setDescription(req.getDescription()); d.setCostCenter(req.getCostCenter()); return departmentRepository.save(d); }
-  @Transactional public void deleteDepartment(UUID id) { departmentRepository.deleteById(id); }
-  public List<Department> getDepartmentsByBranch(UUID branchId) { return departmentRepository.findByBranchId(branchId); }
+  @Transactional public Department updateDepartment(UUID id, Department req) { getDepartment(id); Department d = getDepartment(id); d.setName(req.getName()); d.setDescription(req.getDescription()); d.setCostCenter(req.getCostCenter()); if (req.getBranch() != null) d.setBranch(req.getBranch()); return departmentRepository.save(d); }
+  @Transactional public void deleteDepartment(UUID id) { getDepartment(id); departmentRepository.deleteById(id); }
+  public List<Department> getDepartmentsByBranch(UUID branchId) {
+    List<Department> all = departmentRepository.findByBranchId(branchId);
+    UUID userId = currentUserId();
+    if (userId != null) {
+      List<UUID> accessibleBranchIds = accessScopeService.getAccessibleBranchIds(userId);
+      return all.stream().filter(d -> d.getBranch() == null || accessibleBranchIds.contains(d.getBranch().getId())).toList();
+    }
+    return all;
+  }
 }

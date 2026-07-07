@@ -11,7 +11,7 @@ import {
 
 import { UserMenu } from './UserMenu';
 
-import { ContextSwitcher } from '@/routes/identity/context/ContextSwitcher';
+import { ContextSwitcher } from '@/modules/identity/context/ContextSwitcher';
 
 type HeaderProps = {
   onMobileMenuToggle?: () => void;

@@ -1,27 +1,17 @@
 package com.erp.platform.identity.service;
 
-import com.erp.platform.identity.dto.RuntimeContextHolder;
-import com.erp.platform.identity.entity.Organization;
-import com.erp.platform.identity.entity.UserAccount;
-import com.erp.platform.identity.entity.UserOrganization;
-import com.erp.platform.identity.entity.UserCompany;
-import com.erp.platform.identity.entity.UserRole;
-import com.erp.platform.identity.entity.Company;
 import com.erp.platform.identity.entity.Role;
+import com.erp.platform.identity.entity.UserAccount;
 import com.erp.platform.identity.entity.UserPreference;
-import com.erp.platform.identity.repository.UserAccountRepository;
-import com.erp.platform.identity.repository.UserOrganizationRepository;
-import com.erp.platform.identity.repository.UserCompanyRepository;
-import com.erp.platform.identity.repository.UserRoleRepository;
-import com.erp.platform.identity.repository.UserPreferenceRepository;
+import com.erp.platform.identity.entity.UserRole;
 import com.erp.platform.identity.repository.RoleRepository;
-import com.erp.platform.identity.repository.OrganizationRepository;
-import com.erp.platform.identity.repository.CompanyRepository;
+import com.erp.platform.identity.repository.UserAccountRepository;
+import com.erp.platform.identity.repository.UserPreferenceRepository;
+import com.erp.platform.identity.repository.UserRoleRepository;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,50 +20,24 @@ public class UserAdminService {
 
   private final UserAccountRepository userRepository;
   private final UserRoleRepository userRoleRepository;
-  private final UserOrganizationRepository userOrganizationRepository;
-  private final UserCompanyRepository userCompanyRepository;
   private final UserPreferenceRepository userPreferenceRepository;
   private final RoleRepository roleRepository;
-  private final OrganizationRepository organizationRepository;
-  private final CompanyRepository companyRepository;
   private final PasswordService passwordService;
 
   public UserAdminService(UserAccountRepository userRepository,
                           UserRoleRepository userRoleRepository,
-                          UserOrganizationRepository userOrganizationRepository,
-                          UserCompanyRepository userCompanyRepository,
                           UserPreferenceRepository userPreferenceRepository,
                           RoleRepository roleRepository,
-                          OrganizationRepository organizationRepository,
-                          CompanyRepository companyRepository,
                           PasswordService passwordService) {
     this.userRepository = userRepository;
     this.userRoleRepository = userRoleRepository;
-    this.userOrganizationRepository = userOrganizationRepository;
-    this.userCompanyRepository = userCompanyRepository;
     this.userPreferenceRepository = userPreferenceRepository;
     this.roleRepository = roleRepository;
-    this.organizationRepository = organizationRepository;
-    this.companyRepository = companyRepository;
     this.passwordService = passwordService;
   }
 
   @Transactional(readOnly = true)
   public List<UserAccount> getAllUsers() {
-    var ctx = RuntimeContextHolder.get();
-    if (ctx == null) return userRepository.findAll();
-
-    boolean isSysAdmin = ctx.getRoles() != null && ctx.getRoles().contains("sys_admin");
-    if (isSysAdmin) return userRepository.findAll();
-
-    if (ctx.getTenantId() != null) {
-      List<UserOrganization> userOrgs = userOrganizationRepository.findByOrganizationTenantId(ctx.getTenantId());
-      return userOrgs.stream()
-          .map(uo -> uo.getUser())
-          .distinct()
-          .collect(Collectors.toList());
-    }
-
     return userRepository.findAll();
   }
 
@@ -92,6 +56,7 @@ public class UserAdminService {
     passwordService.validatePasswordPolicy(user.getPasswordHash());
     user.setPasswordHash(passwordService.encode(user.getPasswordHash()));
     if (user.getStatus() == null) user.setStatus("PENDING");
+    if (user.getEmailVerified() == null) user.setEmailVerified(false);
     UserAccount saved = userRepository.save(user);
 
     UserPreference prefs = new UserPreference();
@@ -108,6 +73,11 @@ public class UserAdminService {
     u.setEmail(req.getEmail());
     u.setPhone(req.getPhone());
     u.setAvatarUrl(req.getAvatarUrl());
+    u.setBirthDate(req.getBirthDate());
+    u.setWebsite(req.getWebsite());
+    u.setEmployeeId(req.getEmployeeId());
+    u.setAddress(req.getAddress());
+    if (req.getEmailVerified() != null) u.setEmailVerified(req.getEmailVerified());
     return userRepository.save(u);
   }
 
@@ -164,26 +134,6 @@ public class UserAdminService {
   }
 
   @Transactional
-  public void assignOrganization(UUID userId, UUID orgId) {
-    UserAccount u = getUser(userId);
-    Organization o = organizationRepository.findById(orgId).orElseThrow(() -> new IllegalArgumentException("Organization not found"));
-    UserOrganization uo = new UserOrganization();
-    uo.setUser(u);
-    uo.setOrganization(o);
-    userOrganizationRepository.save(uo);
-  }
-
-  @Transactional
-  public void assignCompany(UUID userId, UUID companyId) {
-    UserAccount u = getUser(userId);
-    Company c = companyRepository.findById(companyId).orElseThrow(() -> new IllegalArgumentException("Company not found"));
-    UserCompany uc = new UserCompany();
-    uc.setUser(u);
-    uc.setCompany(c);
-    userCompanyRepository.save(uc);
-  }
-
-  @Transactional
   public void updatePreferences(UUID userId, String language, String timezone,
                                 String dateFormat, String timeFormat,
                                 String numberFormat, String currency, String theme) {
@@ -209,6 +159,4 @@ public class UserAdminService {
   }
 
   public List<UserRole> getUserRoles(UUID userId) { return userRoleRepository.findByUserId(userId); }
-  public List<UserOrganization> getUserOrganizations(UUID userId) { return userOrganizationRepository.findByUserId(userId); }
-  public List<UserCompany> getUserCompanies(UUID userId) { return userCompanyRepository.findByUserId(userId); }
 }

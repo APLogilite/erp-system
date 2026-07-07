@@ -1,10 +1,13 @@
 import {
   Alert,
   Button,
+  Checkbox,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
+  FormControl,
+  FormControlLabel,
   MenuItem,
   TextField,
 } from '@mui/material';
@@ -19,8 +22,13 @@ interface UserFormData {
   firstName: string;
   lastName: string;
   phone: string;
+  birthDate: string;
+  emailVerified: string;
   status: string;
   password: string;
+  website: string;
+  employeeId: string;
+  address: string;
 }
 
 interface User {
@@ -30,6 +38,11 @@ interface User {
   firstName?: string;
   lastName?: string;
   displayName?: string;
+  birthDate?: string;
+  emailVerified?: boolean;
+  website?: string;
+  employeeId?: string;
+  address?: string;
   status: string;
   roles: string[];
   createdAt: string;
@@ -48,8 +61,13 @@ const emptyForm: UserFormData = {
   firstName: '',
   lastName: '',
   phone: '',
+  birthDate: '',
+  emailVerified: 'true',
   status: 'ACTIVE',
   password: '',
+  website: '',
+  employeeId: '',
+  address: '',
 };
 
 export function UserFormDialog({ open, user, onClose, onSaved }: Props) {
@@ -67,6 +85,11 @@ export function UserFormDialog({ open, user, onClose, onSaved }: Props) {
           firstName: user.firstName ?? '',
           lastName: user.lastName ?? '',
           phone: '',
+          birthDate: user.birthDate ?? '',
+          emailVerified: String(user.emailVerified ?? true),
+          website: user.website ?? '',
+          employeeId: user.employeeId ?? '',
+          address: user.address ?? '',
           status: user.status,
           password: '',
         });
@@ -81,6 +104,11 @@ export function UserFormDialog({ open, user, onClose, onSaved }: Props) {
     setForm((prev) => ({ ...prev, [field]: e.target.value }));
   };
 
+  const handleCheckbox =
+    (field: keyof UserFormData) => (e: React.ChangeEvent<HTMLInputElement>) => {
+      setForm((prev) => ({ ...prev, [field]: e.target.checked ? 'true' : 'false' }));
+    };
+
   const handleSubmit = async () => {
     setSaving(true);
     setError(null);
@@ -91,13 +119,18 @@ export function UserFormDialog({ open, user, onClose, onSaved }: Props) {
         firstName: form.firstName || null,
         lastName: form.lastName || null,
         phone: form.phone || null,
+        birthDate: form.birthDate || null,
+        emailVerified: form.emailVerified === 'true',
+        website: form.website || null,
+        employeeId: form.employeeId || null,
+        address: form.address || null,
         status: form.status,
       };
       if (!isEdit) {
         body.passwordHash = form.password;
       }
       if (isEdit) {
-        await apiClient.put(ENDPOINTS.identity.user(user.id), body);
+        await apiClient.put(ENDPOINTS.identity.user(user!.id), body);
       } else {
         await apiClient.post(ENDPOINTS.identity.users, body);
       }
@@ -157,6 +190,53 @@ export function UserFormDialog({ open, user, onClose, onSaved }: Props) {
           onChange={handleChange('phone')}
           fullWidth
           margin="normal"
+        />
+        <TextField
+          label="Birth Date"
+          type="date"
+          value={form.birthDate}
+          onChange={handleChange('birthDate')}
+          fullWidth
+          margin="normal"
+          InputLabelProps={{ shrink: true }}
+        />
+        <FormControl fullWidth margin="normal">
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={form.emailVerified === 'true'}
+                onChange={handleCheckbox('emailVerified')}
+              />
+            }
+            label="Email Verified"
+          />
+        </FormControl>
+        <TextField
+          label="Website"
+          type="url"
+          value={form.website}
+          onChange={handleChange('website')}
+          fullWidth
+          margin="normal"
+          placeholder="https://example.com"
+        />
+        <TextField
+          label="Employee ID"
+          type="number"
+          value={form.employeeId}
+          onChange={handleChange('employeeId')}
+          fullWidth
+          margin="normal"
+        />
+        <TextField
+          label="Address"
+          value={form.address}
+          onChange={handleChange('address')}
+          fullWidth
+          margin="normal"
+          multiline
+          rows={2}
+          placeholder="Street, City, Country"
         />
         <TextField
           label="Status"

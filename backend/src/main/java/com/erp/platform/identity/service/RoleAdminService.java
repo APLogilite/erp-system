@@ -7,7 +7,6 @@ import com.erp.platform.identity.entity.RolePermission;
 import com.erp.platform.identity.repository.PermissionRepository;
 import com.erp.platform.identity.repository.RolePermissionRepository;
 import com.erp.platform.identity.repository.RoleRepository;
-import com.erp.platform.identity.sdk.annotation.EnableTenantFilter;
 import java.util.List;
 import java.util.UUID;
 import org.springframework.stereotype.Service;
@@ -31,7 +30,6 @@ public class RoleAdminService {
     this.permissionCache = permissionCache;
   }
 
-  @EnableTenantFilter
   @Transactional(readOnly = true)
   public List<Role> getAllRoles() { return roleRepository.findAll(); }
   public Role getRole(UUID id) { return roleRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Role not found")); }

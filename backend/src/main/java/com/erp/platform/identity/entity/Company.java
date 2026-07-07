@@ -7,11 +7,8 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import org.hibernate.annotations.Filter;
-
 @Entity
 @Table(name = "identity_companies")
-@Filter(name = "tenantFilter", condition = "tenant_id = :tenantId")
 public class Company extends BaseEntity {
 
   @Column(name = "code", nullable = false, unique = true, length = 50)
