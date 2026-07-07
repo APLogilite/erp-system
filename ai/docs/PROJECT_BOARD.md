@@ -57,6 +57,8 @@ last_updated: 2026-07-07
 | TASK-004 | Table Designer CRUD APIs | High | TASK-002, TASK-003 | 🟤 PLANNED |
 | TASK-004 | Table Designer CRUD APIs | High | TASK-002, TASK-003 | 🔵 PLANNING |
 | TASK-004 | Table Designer CRUD APIs | High | TASK-002, TASK-003 | 🟢 READY_FOR_DEV |
+| TASK-003 | DDL Executor Service | High | TASK-002 | 🟢 READY_FOR_DEV |
+| TASK-004 | Table Designer CRUD APIs | High | TASK-002, TASK-003 | 🟤 PLANNED |
 | TASK-005 | Schema History Service | Low | TASK-002 | 🟣 READY_FOR_TEST |
 
 ## Phase 3: Table Designer Frontend

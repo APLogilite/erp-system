@@ -6,6 +6,7 @@ title: Implement Form Designer CRUD APIs (Backend)
 type: API
 
 status: READY_FOR_TEST
+status: PLANNED
 
 priority: High
 
@@ -31,7 +32,7 @@ actual_hours:
 
 parent_prd: PRD-001
 
-prd_version: 1.5.0
+prd_version: 1.6.0
 
 parent_task:
 

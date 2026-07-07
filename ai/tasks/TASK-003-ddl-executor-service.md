@@ -6,6 +6,7 @@ title: Implement DDL Executor Service for Dynamic Table Creation
 type: Feature
 
 status: READY_FOR_TEST
+status: PLANNED
 
 priority: High
 
