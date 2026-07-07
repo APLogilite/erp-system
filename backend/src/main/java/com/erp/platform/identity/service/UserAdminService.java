@@ -1,5 +1,6 @@
 package com.erp.platform.identity.service;
 
+import com.erp.platform.identity.dto.RuntimeContextHolder;
 import com.erp.platform.identity.entity.Organization;
 import com.erp.platform.identity.entity.UserAccount;
 import com.erp.platform.identity.entity.UserOrganization;
@@ -17,8 +18,10 @@ import com.erp.platform.identity.repository.RoleRepository;
 import com.erp.platform.identity.repository.OrganizationRepository;
 import com.erp.platform.identity.repository.CompanyRepository;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -55,7 +58,24 @@ public class UserAdminService {
     this.passwordService = passwordService;
   }
 
-  public List<UserAccount> getAllUsers() { return userRepository.findAll(); }
+  @Transactional(readOnly = true)
+  public List<UserAccount> getAllUsers() {
+    var ctx = RuntimeContextHolder.get();
+    if (ctx == null) return userRepository.findAll();
+
+    boolean isSysAdmin = ctx.getRoles() != null && ctx.getRoles().contains("sys_admin");
+    if (isSysAdmin) return userRepository.findAll();
+
+    if (ctx.getTenantId() != null) {
+      List<UserOrganization> userOrgs = userOrganizationRepository.findByOrganizationTenantId(ctx.getTenantId());
+      return userOrgs.stream()
+          .map(uo -> uo.getUser())
+          .distinct()
+          .collect(Collectors.toList());
+    }
+
+    return userRepository.findAll();
+  }
 
   public UserAccount getUser(UUID id) {
     return userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("User not found"));

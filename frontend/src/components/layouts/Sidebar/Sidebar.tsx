@@ -1,5 +1,6 @@
 import {
   Dashboard,
+  Dashboard as DashboardIcon,
   Inventory,
   ShoppingCart,
   People,
@@ -14,6 +15,7 @@ import {
   Devices,
   History,
   Person,
+  AdminPanelSettings,
 } from '@mui/icons-material';
 import {
   Drawer,
@@ -30,6 +32,8 @@ import {
   ListSubheader,
 } from '@mui/material';
 import { useNavigate, useLocation } from 'react-router-dom';
+
+import { useAuthStore } from '@/core/auth/authStore';
 
 const drawerWidth = 280;
 
@@ -53,6 +57,7 @@ const identityItems: NavItem[] = [
 ];
 
 const adminItems: NavItem[] = [
+  { text: 'Overview', icon: DashboardIcon, path: '/app/admin' },
   { text: 'Tenants', icon: Business, path: '/app/admin/tenants' },
   { text: 'Organizations', icon: CorporateFare, path: '/app/admin/organizations' },
   { text: 'Companies', icon: Store, path: '/app/admin/companies' },
@@ -72,6 +77,8 @@ export function Sidebar({ mobileOpen = false, onMobileClose }: SidebarProps) {
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const navigate = useNavigate();
   const location = useLocation();
+  const user = useAuthStore((s) => s.user);
+  const isAdmin = user?.roles?.some((r) => r === 'sys_admin' || r === 'tnt_admin');
 
   const handleNavigate = (path: string) => {
     navigate(path);
@@ -114,7 +121,7 @@ export function Sidebar({ mobileOpen = false, onMobileClose }: SidebarProps) {
 
       <Divider sx={{ my: 1 }} />
       <ListSubheader sx={{ fontWeight: 600, fontSize: 11, lineHeight: '28px' }}>
-        IDENTITY
+        IDENTITY & ADMINISTRATION
       </ListSubheader>
       <List dense>
         {identityItems.map((item) => (
@@ -131,27 +138,36 @@ export function Sidebar({ mobileOpen = false, onMobileClose }: SidebarProps) {
             </ListItemButton>
           </ListItem>
         ))}
-      </List>
-
-      <Divider sx={{ my: 1 }} />
-      <ListSubheader sx={{ fontWeight: 600, fontSize: 11, lineHeight: '28px' }}>
-        ADMINISTRATION
-      </ListSubheader>
-      <List dense>
-        {adminItems.map((item) => (
-          <ListItem key={item.text} disablePadding>
-            <ListItemButton
-              onClick={() => handleNavigate(item.path)}
-              selected={location.pathname === item.path}
-              sx={{ mx: 1, mb: 0.3, borderRadius: 1 }}
-            >
-              <ListItemIcon sx={{ minWidth: 36 }}>
-                <item.icon fontSize="small" />
-              </ListItemIcon>
-              <ListItemText primary={item.text} primaryTypographyProps={{ fontSize: 14 }} />
-            </ListItemButton>
-          </ListItem>
-        ))}
+        {isAdmin && <Divider sx={{ my: 0.5, mx: 2 }} />}
+        {isAdmin &&
+          adminItems.map((item) => (
+            <ListItem key={item.text} disablePadding>
+              <ListItemButton
+                onClick={() => handleNavigate(item.path)}
+                selected={
+                  item.path === '/app/admin'
+                    ? location.pathname === '/app/admin'
+                    : location.pathname.startsWith(item.path)
+                }
+                sx={{ mx: 1, mb: 0.3, borderRadius: 1 }}
+              >
+                <ListItemIcon sx={{ minWidth: 36 }}>
+                  {item.text === 'Overview' ? (
+                    <AdminPanelSettings fontSize="small" color="primary" />
+                  ) : (
+                    <item.icon fontSize="small" />
+                  )}
+                </ListItemIcon>
+                <ListItemText
+                  primary={item.text}
+                  primaryTypographyProps={{
+                    fontSize: 14,
+                    fontWeight: item.text === 'Overview' ? 600 : 400,
+                  }}
+                />
+              </ListItemButton>
+            </ListItem>
+          ))}
       </List>
     </Box>
   );

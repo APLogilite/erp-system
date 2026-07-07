@@ -77,11 +77,27 @@ Run the SQL scripts in `src/main/resources/db/` to set up the database schema an
 
 API endpoints are documented in the `docs/api-endpoints.md` file.
 
+## Demo Users
+
+On first startup, `IdentitySeedData` creates test users for development:
+
+| Username | Password | Role | Tenant | Scope |
+|----------|----------|------|--------|-------|
+| `admin` | `Admin@123` | `sys_admin` | All tenants | Full cross-tenant access |
+| `jane.smith` | `User@123` | `tnt_admin` | ACME | ACME tenant administration |
+| `diana.prince` | `User@123` | `tnt_admin` | Globex | Globex tenant administration |
+| `john.doe` | `User@123` | `user` | ACME | Regular ACME user |
+| `alice.johnson` | `User@123` | `user` | ACME | Regular ACME user |
+| `bob.wilson` | `User@123` | `viewer` | Globex | Read-only Globex user |
+| `charlie.brown` | `User@123` | `user` | Globex | Regular Globex user |
+
+**Data isolation:** All API endpoints enforce tenant-scoped access via Hibernate `@Filter` annotations. Users only see entities belonging to their tenant. The `sys_admin` role bypasses all filters.
+
 ## Modules
 
 ### Authentication (`auth`)
 - User login/logout
-- JWT token management
+- JWT token management (includes tenant/org context)
 - Role-based access control
 
 ### Inventory (`inventory`)

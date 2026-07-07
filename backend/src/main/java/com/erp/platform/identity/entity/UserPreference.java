@@ -43,6 +43,24 @@ public class UserPreference extends BaseEntity {
   @Column(name = "items_per_page")
   private Integer itemsPerPage = 25;
 
+  @Column(name = "active_tenant_id")
+  private java.util.UUID activeTenantId;
+
+  @Column(name = "active_organization_id")
+  private java.util.UUID activeOrganizationId;
+
+  @Column(name = "active_company_id")
+  private java.util.UUID activeCompanyId;
+
+  @Column(name = "active_branch_id")
+  private java.util.UUID activeBranchId;
+
+  @Column(name = "active_department_id")
+  private java.util.UUID activeDepartmentId;
+
+  @Column(name = "active_role_code", length = 50)
+  private String activeRoleCode;
+
   public UserAccount getUser() { return user; }
   public void setUser(UserAccount user) { this.user = user; }
   public String getLanguage() { return language; }
@@ -63,4 +81,16 @@ public class UserPreference extends BaseEntity {
   public void setNotificationsEnabled(Boolean notificationsEnabled) { this.notificationsEnabled = notificationsEnabled; }
   public Integer getItemsPerPage() { return itemsPerPage; }
   public void setItemsPerPage(Integer itemsPerPage) { this.itemsPerPage = itemsPerPage; }
+  public java.util.UUID getActiveTenantId() { return activeTenantId; }
+  public void setActiveTenantId(java.util.UUID activeTenantId) { this.activeTenantId = activeTenantId; }
+  public java.util.UUID getActiveOrganizationId() { return activeOrganizationId; }
+  public void setActiveOrganizationId(java.util.UUID activeOrganizationId) { this.activeOrganizationId = activeOrganizationId; }
+  public java.util.UUID getActiveCompanyId() { return activeCompanyId; }
+  public void setActiveCompanyId(java.util.UUID activeCompanyId) { this.activeCompanyId = activeCompanyId; }
+  public java.util.UUID getActiveBranchId() { return activeBranchId; }
+  public void setActiveBranchId(java.util.UUID activeBranchId) { this.activeBranchId = activeBranchId; }
+  public java.util.UUID getActiveDepartmentId() { return activeDepartmentId; }
+  public void setActiveDepartmentId(java.util.UUID activeDepartmentId) { this.activeDepartmentId = activeDepartmentId; }
+  public String getActiveRoleCode() { return activeRoleCode; }
+  public void setActiveRoleCode(String activeRoleCode) { this.activeRoleCode = activeRoleCode; }
 }

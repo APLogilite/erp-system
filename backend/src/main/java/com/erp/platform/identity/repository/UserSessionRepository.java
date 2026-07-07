@@ -12,5 +12,6 @@ public interface UserSessionRepository extends JpaRepository<UserSession, UUID> 
   Optional<UserSession> findByToken(String token);
   List<UserSession> findByUserId(UUID userId);
   List<UserSession> findByUserIdAndIsActiveTrue(UUID userId);
+  List<UserSession> findByTenantIdAndIsActiveTrue(UUID tenantId);
   void deleteByUserId(UUID userId);
 }

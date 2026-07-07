@@ -1,5 +1,6 @@
 package com.erp.platform.identity.service;
 
+import com.erp.platform.identity.dto.RuntimeContextHolder;
 import com.erp.platform.identity.entity.UserSession;
 import com.erp.platform.identity.repository.UserSessionRepository;
 import java.util.List;
@@ -17,6 +18,10 @@ public class SessionAdminService {
   }
 
   public List<UserSession> getActiveSessions() {
+    var ctx = RuntimeContextHolder.get();
+    if (ctx != null && ctx.getTenantId() != null) {
+      return sessionRepository.findByTenantIdAndIsActiveTrue(ctx.getTenantId());
+    }
     return sessionRepository.findAll().stream()
         .filter(s -> s.getIsActive() != null && s.getIsActive())
         .toList();

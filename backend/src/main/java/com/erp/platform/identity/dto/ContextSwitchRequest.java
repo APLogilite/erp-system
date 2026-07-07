@@ -8,6 +8,7 @@ public class ContextSwitchRequest {
   private UUID organizationId;
   private UUID companyId;
   private UUID branchId;
+  private UUID departmentId;
   private String roleCode;
 
   public UUID getTenantId() { return tenantId; }
@@ -18,6 +19,8 @@ public class ContextSwitchRequest {
   public void setCompanyId(UUID companyId) { this.companyId = companyId; }
   public UUID getBranchId() { return branchId; }
   public void setBranchId(UUID branchId) { this.branchId = branchId; }
+  public UUID getDepartmentId() { return departmentId; }
+  public void setDepartmentId(UUID departmentId) { this.departmentId = departmentId; }
   public String getRoleCode() { return roleCode; }
   public void setRoleCode(String roleCode) { this.roleCode = roleCode; }
 }

@@ -14,7 +14,7 @@ import {
 } from '@mui/material';
 import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
-import { useNavigate, useLocation, Link as RouterLink } from 'react-router-dom';
+import { useNavigate, Link as RouterLink } from 'react-router-dom';
 
 import { authService } from '@/core/api/services/authService';
 import { useAuthStore } from '@/core/auth/authStore';
@@ -22,19 +22,16 @@ import { useAuthStore } from '@/core/auth/authStore';
 export function LoginPage() {
   const theme = useTheme();
   const navigate = useNavigate();
-  const location = useLocation();
   const loginAction = useAuthStore((s) => s.login);
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
 
-  const state = location.state as { from?: { pathname?: string } } | null;
-  const from = state?.from?.pathname || '/app/dashboard';
-
   const { mutate, isPending, error } = useMutation({
     mutationFn: () => authService.login({ username, password }),
     onSuccess: (data) => {
+      console.log('[LoginPage] login success, user:', data.user.username);
       loginAction(
         {
           id: data.user.id,
@@ -48,10 +45,11 @@ export function LoginPage() {
           roles: data.user.roles,
           permissions: data.user.permissions,
         },
-        data.token,
+        data.accessToken,
         data.refreshToken
       );
-      navigate(from, { replace: true });
+      console.log('[LoginPage] navigating to /select-context');
+      navigate('/select-context', { replace: true });
     },
   });
 

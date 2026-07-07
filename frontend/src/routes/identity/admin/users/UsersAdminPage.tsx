@@ -1,8 +1,10 @@
-import { Avatar, Chip, Box } from '@mui/material';
-import { useQuery } from '@tanstack/react-query';
+import { Avatar, Box, Chip } from '@mui/material';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useState } from 'react';
 
 import { AdminListPage, ColumnDef } from '../AdminListPage';
 
+import { UserFormDialog } from '@/components/dialogs/UserFormDialog';
 import { apiClient } from '@/core/api/client';
 import { ENDPOINTS } from '@/core/api/endpoints';
 
@@ -51,7 +53,7 @@ const columns: ColumnDef<User>[] = [
     width: 200,
     render: (u) => (
       <Box sx={{ display: 'flex', gap: 0.3, flexWrap: 'wrap' }}>
-        {u.roles.map((r) => (
+        {(u.roles ?? []).map((r) => (
           <Chip key={r} label={r} size="small" variant="outlined" sx={{ fontSize: 11 }} />
         ))}
       </Box>
@@ -60,6 +62,7 @@ const columns: ColumnDef<User>[] = [
 ];
 
 export function UsersAdminPage() {
+  const queryClient = useQueryClient();
   const { data, isLoading, error, refetch } = useQuery<User[]>({
     queryKey: ['identity', 'users'],
     queryFn: async () => {
@@ -67,14 +70,53 @@ export function UsersAdminPage() {
       return res.data.data || res.data;
     },
   });
+
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [editingUser, setEditingUser] = useState<User | null>(null);
+
+  const handleCreate = () => {
+    setEditingUser(null);
+    setDialogOpen(true);
+  };
+
+  const handleEdit = (user: User) => {
+    setEditingUser(user);
+    setDialogOpen(true);
+  };
+
+  const handleDelete = async (user: User) => {
+    if (!window.confirm(`Delete user "${user.username}"?`)) return;
+    try {
+      await apiClient.delete(ENDPOINTS.identity.user(user.id));
+      queryClient.invalidateQueries({ queryKey: ['identity', 'users'] });
+    } catch {
+      // error handled by the API interceptor
+    }
+  };
+
+  const handleSaved = () => {
+    queryClient.invalidateQueries({ queryKey: ['identity', 'users'] });
+  };
+
   return (
-    <AdminListPage
-      title="Users"
-      columns={columns}
-      data={data}
-      isLoading={isLoading}
-      error={error as Error | null}
-      onRefresh={refetch}
-    />
+    <>
+      <AdminListPage
+        title="Users"
+        columns={columns}
+        data={data}
+        isLoading={isLoading}
+        error={error as Error | null}
+        onRefresh={refetch}
+        onCreate={handleCreate}
+        onEdit={handleEdit}
+        onDelete={handleDelete}
+      />
+      <UserFormDialog
+        open={dialogOpen}
+        user={editingUser}
+        onClose={() => setDialogOpen(false)}
+        onSaved={handleSaved}
+      />
+    </>
   );
 }

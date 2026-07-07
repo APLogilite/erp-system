@@ -7,9 +7,11 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import org.hibernate.annotations.Filter;
 
 @Entity
 @Table(name = "identity_branches")
+@Filter(name = "tenantFilter", condition = "tenant_id = :tenantId")
 public class Branch extends BaseEntity {
 
   @Column(name = "code", nullable = false, unique = true, length = 50)
@@ -34,6 +36,10 @@ public class Branch extends BaseEntity {
   @JoinColumn(name = "company_id", nullable = false)
   private Company company;
 
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "tenant_id", nullable = false)
+  private Tenant tenant;
+
   public String getCode() { return code; }
   public void setCode(String code) { this.code = code; }
   public String getName() { return name; }
@@ -48,4 +54,6 @@ public class Branch extends BaseEntity {
   public void setIsHeadOffice(Boolean isHeadOffice) { this.isHeadOffice = isHeadOffice; }
   public Company getCompany() { return company; }
   public void setCompany(Company company) { this.company = company; }
+  public Tenant getTenant() { return tenant; }
+  public void setTenant(Tenant tenant) { this.tenant = tenant; }
 }

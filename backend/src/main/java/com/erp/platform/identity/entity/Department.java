@@ -7,9 +7,11 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import org.hibernate.annotations.Filter;
 
 @Entity(name = "IdentityDepartment")
 @Table(name = "identity_departments")
+@Filter(name = "tenantFilter", condition = "tenant_id = :tenantId")
 public class Department extends BaseEntity {
 
   @Column(name = "code", nullable = false, unique = true, length = 50)
@@ -32,6 +34,10 @@ public class Department extends BaseEntity {
   @JoinColumn(name = "parent_id")
   private Department parent;
 
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "tenant_id", nullable = false)
+  private Tenant tenant;
+
   @Column(name = "level", nullable = false)
   private Integer level = 0;
 
@@ -49,4 +55,6 @@ public class Department extends BaseEntity {
   public void setParent(Department parent) { this.parent = parent; }
   public Integer getLevel() { return level; }
   public void setLevel(Integer level) { this.level = level; }
+  public Tenant getTenant() { return tenant; }
+  public void setTenant(Tenant tenant) { this.tenant = tenant; }
 }

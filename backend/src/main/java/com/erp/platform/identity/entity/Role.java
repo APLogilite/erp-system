@@ -7,9 +7,11 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import org.hibernate.annotations.Filter;
 
 @Entity
 @Table(name = "identity_roles")
+@Filter(name = "tenantFilter", condition = "tenant_id = :tenantId OR tenant_id IS NULL")
 public class Role extends BaseEntity {
 
   @Column(name = "code", nullable = false, unique = true, length = 50)

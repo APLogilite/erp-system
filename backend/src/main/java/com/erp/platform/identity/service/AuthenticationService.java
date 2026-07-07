@@ -5,14 +5,15 @@ import com.erp.platform.identity.dto.LoginRequest;
 import com.erp.platform.identity.dto.LoginResponse;
 import com.erp.platform.identity.dto.LoginResponse.UserInfo;
 import com.erp.platform.identity.dto.UserInfoResponse;
-import com.erp.platform.identity.entity.UserAccount;
-import com.erp.platform.identity.entity.UserSession;
-import com.erp.platform.identity.repository.UserAccountRepository;
-import com.erp.platform.identity.repository.UserSessionRepository;
+import com.erp.platform.identity.authorization.PermissionCache.PermissionEntry;
+import com.erp.platform.identity.authorization.PermissionResolver;
+import com.erp.platform.identity.entity.*;
+import com.erp.platform.identity.repository.*;
 import com.erp.platform.identity.security.JwtProvider;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,15 +24,24 @@ public class AuthenticationService {
   private final UserSessionRepository sessionRepository;
   private final JwtProvider jwtProvider;
   private final PasswordService passwordService;
+  private final UserRoleRepository userRoleRepository;
+  private final UserOrganizationRepository userOrganizationRepository;
+  private final PermissionResolver permissionResolver;
 
   public AuthenticationService(UserAccountRepository userRepository,
                                UserSessionRepository sessionRepository,
                                JwtProvider jwtProvider,
-                               PasswordService passwordService) {
+                               PasswordService passwordService,
+                               UserRoleRepository userRoleRepository,
+                               UserOrganizationRepository userOrganizationRepository,
+                               PermissionResolver permissionResolver) {
     this.userRepository = userRepository;
     this.sessionRepository = sessionRepository;
     this.jwtProvider = jwtProvider;
     this.passwordService = passwordService;
+    this.userRoleRepository = userRoleRepository;
+    this.userOrganizationRepository = userOrganizationRepository;
+    this.permissionResolver = permissionResolver;
   }
 
   @Transactional
@@ -67,12 +77,35 @@ public class AuthenticationService {
     user.setLastLoginAt(LocalDateTime.now());
     userRepository.save(user);
 
-    UserSession session = createSession(user, ipAddress, userAgent);
+    // Resolve roles
+    List<UserRole> userRoles = userRoleRepository.findByUserId(user.getId());
+    List<String> roleCodes = userRoles.stream()
+        .map(ur -> ur.getRole().getCode())
+        .collect(Collectors.toList());
+
+    // Resolve permissions from roles
+    List<PermissionEntry> permEntries = permissionResolver.resolveUserPermissions(user.getId());
+    List<String> permissions = permEntries.stream()
+        .map(e -> e.getResourceType() + ":" + e.getResource() + ":" + e.getAction())
+        .collect(Collectors.toList());
+
+    // Resolve tenant/org context
+    List<UserOrganization> userOrgs = userOrganizationRepository.findByUserId(user.getId());
+    UUID tenantId = null;
+    UUID orgId = null;
+    UUID companyId = null;
+    if (!userOrgs.isEmpty()) {
+      Organization org = userOrgs.get(0).getOrganization();
+      tenantId = org.getTenant().getId();
+      orgId = org.getId();
+    }
+
+    UserSession session = createSession(user, ipAddress, userAgent, tenantId, orgId, companyId);
 
     String accessToken = jwtProvider.generateAccessToken(
         user.getId(), user.getUsername(), user.getEmail(),
-        null, null, null, null, null,
-        session.getId(), List.of());
+        tenantId, null, orgId, companyId, null,
+        session.getId(), roleCodes);
 
     String refreshToken = jwtProvider.generateRefreshToken(user.getId(), session.getId());
 
@@ -91,6 +124,8 @@ public class AuthenticationService {
     userInfo.setFirstName(user.getFirstName());
     userInfo.setLastName(user.getLastName());
     userInfo.setDisplayName(buildDisplayName(user));
+    userInfo.setRoles(roleCodes);
+    userInfo.setPermissions(permissions);
     response.setUser(userInfo);
 
     return response;
@@ -121,12 +156,32 @@ public class AuthenticationService {
       sessionRepository.save(oldSession);
     }
 
-    UserSession session = createSession(user, ipAddress, userAgent);
+    List<UserRole> userRoles = userRoleRepository.findByUserId(user.getId());
+    List<String> roleCodes = userRoles.stream()
+        .map(ur -> ur.getRole().getCode())
+        .collect(Collectors.toList());
+
+    List<PermissionEntry> permEntries = permissionResolver.resolveUserPermissions(user.getId());
+    List<String> permissions = permEntries.stream()
+        .map(e -> e.getResourceType() + ":" + e.getResource() + ":" + e.getAction())
+        .collect(Collectors.toList());
+
+    List<UserOrganization> userOrgs = userOrganizationRepository.findByUserId(user.getId());
+    UUID tenantId = null;
+    UUID orgId = null;
+    UUID companyId = null;
+    if (!userOrgs.isEmpty()) {
+      Organization org = userOrgs.get(0).getOrganization();
+      tenantId = org.getTenant().getId();
+      orgId = org.getId();
+    }
+
+    UserSession session = createSession(user, ipAddress, userAgent, tenantId, orgId, companyId);
 
     String accessToken = jwtProvider.generateAccessToken(
         user.getId(), user.getUsername(), user.getEmail(),
-        null, null, null, null, null,
-        session.getId(), List.of());
+        tenantId, null, orgId, companyId, null,
+        session.getId(), roleCodes);
 
     String newRefreshToken = jwtProvider.generateRefreshToken(user.getId(), session.getId());
 
@@ -143,6 +198,8 @@ public class AuthenticationService {
     userInfo.setFirstName(user.getFirstName());
     userInfo.setLastName(user.getLastName());
     userInfo.setDisplayName(buildDisplayName(user));
+    userInfo.setRoles(roleCodes);
+    userInfo.setPermissions(permissions);
     response.setUser(userInfo);
 
     return response;
@@ -197,7 +254,8 @@ public class AuthenticationService {
     return response;
   }
 
-  private UserSession createSession(UserAccount user, String ipAddress, String userAgent) {
+  private UserSession createSession(UserAccount user, String ipAddress, String userAgent,
+                                     UUID tenantId, UUID organizationId, UUID companyId) {
     UserSession session = new UserSession();
     session.setUser(user);
     session.setToken(UUID.randomUUID().toString());
@@ -206,6 +264,9 @@ public class AuthenticationService {
     session.setUserAgent(userAgent);
     session.setExpiresAt(LocalDateTime.now().plusDays(7));
     session.setLastActivityAt(LocalDateTime.now());
+    session.setTenantId(tenantId);
+    session.setOrganizationId(organizationId);
+    session.setCompanyId(companyId);
     return sessionRepository.save(session);
   }
 

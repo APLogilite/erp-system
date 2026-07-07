@@ -43,3 +43,38 @@ Pre-existing `DatabaseConnectionTest` fails because `@EntityScan` only covers `c
 Migration scripts (`V1__init_identity_schema.sql`, `V2__identity_audit_events.sql`) exist but Flyway is disabled (`spring.flyway.enabled=false`). Schema is created via JPA `ddl-auto=update`.
 
 **Note:** Re-enable Flyway if migrating to managed schema versioning. Ensure identity tables use `identity_*` naming to avoid conflict with modules tables.
+
+## Tenant Data Isolation (Hibernate Filters)
+
+Added server-side tenant data isolation to prevent cross-tenant data leaks.
+
+### Entities with `@Filter(name = "tenantFilter")`
+- `Organization` — filters by `tenant_id`
+- `Company` — added `tenant_id` column + `@Filter`
+- `Branch` — added `tenant_id` column + `@Filter`
+- `Department` — added `tenant_id` column + `@Filter`
+- `Role` — filters by `tenant_id = :tenantId OR tenant_id IS NULL` (shows tenant roles + system-wide roles)
+
+### `TenantFilter.java` Fix
+Changed `@ParamDef` type from `String.class` to `UUID.class` to match actual UUID columns.
+
+### `RuntimeContextService.resolve()` Fix
+- Context now resolves from user's **actual org/company memberships** (`UserOrganization`, `UserCompany`)
+- **sys_admin** users get `null` tenant context → Hibernate filters skip → see everything
+- Other users get their first org's tenant context → filters apply
+
+### Service Methods with `@EnableTenantFilter`
+- `AdminService`: `getAllOrganizations()`, `getAllCompanies()`, `getAllBranches()`, `getAllDepartments()`
+- `RoleAdminService`: `getAllRoles()`
+- `UserAdminService.getAllUsers()`: manual tenant filtering via `UserOrganization.findByOrganizationTenantId()`
+- `SessionAdminService.getActiveSessions()`: filters by `tenantId` from context
+
+### Login Response
+- `LoginResponse.UserInfo` now includes `roles` and `permissions` lists
+- `AuthenticationService` injects `PermissionResolver` to compute effective permissions
+- JWT tokens now carry `tenantId`, `organizationId`, `companyId` claims
+- `UserSession` records have `tenantId`, `organizationId`, `companyId` populated at login
+
+### Seed Data
+- All Company, Branch, Department records now set `tenant` relationship
+- Added 3 new test users with different scopes (see README)

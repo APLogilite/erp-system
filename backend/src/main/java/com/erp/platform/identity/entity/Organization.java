@@ -8,9 +8,16 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.util.UUID;
+import org.hibernate.annotations.Filter;
+import org.hibernate.annotations.FilterDef;
+import org.hibernate.annotations.ParamDef;
 
 @Entity
 @Table(name = "identity_organizations")
+@FilterDef(name = "tenantFilter", parameters = @ParamDef(name = "tenantId", type = UUID.class))
+@FilterDef(name = "organizationFilter", parameters = @ParamDef(name = "organizationId", type = UUID.class))
+@FilterDef(name = "companyFilter", parameters = @ParamDef(name = "companyId", type = UUID.class))
+@Filter(name = "tenantFilter", condition = "tenant_id = :tenantId")
 public class Organization extends BaseEntity {
 
   @Column(name = "code", nullable = false, unique = true, length = 50)

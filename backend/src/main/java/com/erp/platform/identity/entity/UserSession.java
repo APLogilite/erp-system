@@ -45,6 +45,15 @@ public class UserSession extends BaseEntity {
   @Column(name = "company_id")
   private UUID companyId;
 
+  @Column(name = "branch_id")
+  private UUID branchId;
+
+  @Column(name = "department_id")
+  private UUID departmentId;
+
+  @Column(name = "role_code", length = 50)
+  private String roleCode;
+
   public UserAccount getUser() { return user; }
   public void setUser(UserAccount user) { this.user = user; }
   public String getToken() { return token; }
@@ -65,4 +74,10 @@ public class UserSession extends BaseEntity {
   public void setOrganizationId(UUID organizationId) { this.organizationId = organizationId; }
   public UUID getCompanyId() { return companyId; }
   public void setCompanyId(UUID companyId) { this.companyId = companyId; }
+  public UUID getBranchId() { return branchId; }
+  public void setBranchId(UUID branchId) { this.branchId = branchId; }
+  public UUID getDepartmentId() { return departmentId; }
+  public void setDepartmentId(UUID departmentId) { this.departmentId = departmentId; }
+  public String getRoleCode() { return roleCode; }
+  public void setRoleCode(String roleCode) { this.roleCode = roleCode; }
 }

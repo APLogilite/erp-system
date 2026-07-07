@@ -7,9 +7,11 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import org.hibernate.annotations.Filter;
 
 @Entity
 @Table(name = "identity_companies")
+@Filter(name = "tenantFilter", condition = "tenant_id = :tenantId")
 public class Company extends BaseEntity {
 
   @Column(name = "code", nullable = false, unique = true, length = 50)
@@ -40,6 +42,10 @@ public class Company extends BaseEntity {
   @JoinColumn(name = "organization_id", nullable = false)
   private Organization organization;
 
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "tenant_id", nullable = false)
+  private Tenant tenant;
+
   public String getCode() { return code; }
   public void setCode(String code) { this.code = code; }
   public String getName() { return name; }
@@ -58,4 +64,6 @@ public class Company extends BaseEntity {
   public void setCurrency(String currency) { this.currency = currency; }
   public Organization getOrganization() { return organization; }
   public void setOrganization(Organization organization) { this.organization = organization; }
+  public Tenant getTenant() { return tenant; }
+  public void setTenant(Tenant tenant) { this.tenant = tenant; }
 }

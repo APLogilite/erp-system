@@ -4,6 +4,8 @@ import com.erp.common.api.ApiErrorDetail;
 import com.erp.common.api.ApiResponse;
 import com.erp.core.metadata.exception.MetadataNotFoundException;
 import com.erp.core.metadata.exception.MetadataValidationException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -16,6 +18,8 @@ import java.util.stream.Collectors;
 
 @RestControllerAdvice
 public class GlobalApiExceptionHandler {
+
+  private static final Logger log = LoggerFactory.getLogger(GlobalApiExceptionHandler.class);
 
   @ExceptionHandler(MetadataNotFoundException.class)
   public ResponseEntity<ApiResponse<Void>> handleMetadataNotFound(MetadataNotFoundException exception) {
@@ -60,6 +64,7 @@ public class GlobalApiExceptionHandler {
 
   @ExceptionHandler(Exception.class)
   public ResponseEntity<ApiResponse<Void>> handleGenericException(Exception exception) {
+    log.error("Unhandled exception: {}", exception.getMessage(), exception);
     return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
         .body(ApiResponse.error("INTERNAL_ERROR", "Unexpected error occurred. Please contact support."));
   }

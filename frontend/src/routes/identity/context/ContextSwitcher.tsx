@@ -1,28 +1,11 @@
-import { SwapHoriz, Business, CorporateFare, Store, AccountTree } from '@mui/icons-material';
-import {
-  Box,
-  Chip,
-  Menu,
-  MenuItem,
-  ListItemIcon,
-  ListItemText,
-  Typography,
-  IconButton,
-  Divider,
-  Tooltip,
-} from '@mui/material';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { SwapHoriz, Badge, Settings } from '@mui/icons-material';
+import { Box, Chip, Menu, Typography, IconButton, Divider, Tooltip, Button } from '@mui/material';
+import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import { apiClient } from '@/core/api/client';
 import { ENDPOINTS } from '@/core/api/endpoints';
-
-interface ContextOption {
-  type: 'TENANT' | 'ORGANIZATION' | 'COMPANY' | 'BRANCH' | 'DEPARTMENT';
-  id: string;
-  code: string;
-  name: string;
-}
 
 interface ContextCurrent {
   tenantCode?: string;
@@ -35,20 +18,12 @@ interface ContextCurrent {
   branchName?: string;
   departmentCode?: string;
   departmentName?: string;
+  roles?: string[];
 }
-
-const iconMap: Record<string, React.ElementType> = {
-  TENANT: Business,
-  ORGANIZATION: CorporateFare,
-  COMPANY: Store,
-  BRANCH: AccountTree,
-  DEPARTMENT: AccountTree,
-};
 
 export function ContextSwitcher() {
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
-  const [contextType, setContextType] = useState<string | null>(null);
-  const queryClient = useQueryClient();
+  const navigate = useNavigate();
 
   const { data: current } = useQuery<ContextCurrent>({
     queryKey: ['context', 'current'],
@@ -58,40 +33,16 @@ export function ContextSwitcher() {
     },
   });
 
-  const { data: options } = useQuery<ContextOption[]>({
-    queryKey: ['context', 'options'],
-    queryFn: async () => {
-      const res = await apiClient.get(ENDPOINTS.context.options);
-      return res.data.data || res.data;
-    },
-    enabled: !!anchorEl,
-  });
+  const activeRole = current?.roles?.[0];
 
-  const switchMutation = useMutation({
-    mutationFn: async (params: { type: string; id: string }) => {
-      await apiClient.post(ENDPOINTS.context.switch, params);
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['context'] });
-      setAnchorEl(null);
-    },
-  });
-
-  const activeContexts: { label: string; value?: string; type: string }[] = [
-    { label: 'Tenant', value: current?.tenantName || current?.tenantCode, type: 'TENANT' },
-    {
-      label: 'Org',
-      value: current?.organizationName || current?.organizationCode,
-      type: 'ORGANIZATION',
-    },
-    { label: 'Company', value: current?.companyName || current?.companyCode, type: 'COMPANY' },
-    { label: 'Branch', value: current?.branchName || current?.branchCode, type: 'BRANCH' },
-    {
-      label: 'Dept',
-      value: current?.departmentName || current?.departmentCode,
-      type: 'DEPARTMENT',
-    },
+  const activeContexts: { label: string; value?: string }[] = [
+    { label: 'Tenant', value: current?.tenantName || current?.tenantCode },
+    { label: 'Org', value: current?.organizationName || current?.organizationCode },
+    { label: 'Company', value: current?.companyName || current?.companyCode },
+    { label: 'Branch', value: current?.branchName || current?.branchCode },
   ];
+
+  const hasContext = activeContexts.some((c) => c.value);
 
   return (
     <Box>
@@ -104,54 +55,64 @@ export function ContextSwitcher() {
       <Menu
         anchorEl={anchorEl}
         open={!!anchorEl}
-        onClose={() => {
-          setAnchorEl(null);
-          setContextType(null);
-        }}
-        PaperProps={{ sx: { width: 320, maxHeight: 400, p: 1 } }}
+        onClose={() => setAnchorEl(null)}
+        PaperProps={{ sx: { width: 340, p: 1.5 } }}
       >
-        <Typography variant="subtitle2" sx={{ px: 1, mb: 1, color: 'text.secondary' }}>
+        {hasContext && activeRole && (
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1, px: 0.5 }}>
+            <Badge color="primary" sx={{ fontSize: 28 }} />
+            <Box>
+              <Typography variant="subtitle1" fontWeight={700} lineHeight={1.2}>
+                {activeRole}
+              </Typography>
+              <Typography variant="caption" color="text.secondary">
+                Current Role
+              </Typography>
+            </Box>
+          </Box>
+        )}
+
+        <Typography variant="subtitle2" sx={{ color: 'text.secondary', mb: 0.5, px: 0.5 }}>
           Current Context
         </Typography>
-        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5, px: 1, mb: 1 }}>
-          {activeContexts.map((c) =>
-            c.value ? (
-              <Chip
-                key={c.type}
-                label={`${c.label}: ${c.value}`}
-                size="small"
-                variant="outlined"
-                onClick={() => setContextType(contextType === c.type ? null : c.type)}
-              />
-            ) : null
+        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5, mb: 0.5 }}>
+          {hasContext ? (
+            activeContexts.map(
+              (c) =>
+                c.value && (
+                  <Chip
+                    key={c.label}
+                    label={`${c.label}: ${c.value}`}
+                    size="small"
+                    variant="outlined"
+                  />
+                )
+            )
+          ) : (
+            <Chip label="No workspace selected" size="small" color="warning" />
           )}
         </Box>
-
-        {contextType && (
-          <>
-            <Divider sx={{ my: 1 }} />
-            <Typography variant="caption" sx={{ px: 1, color: 'text.secondary' }}>
-              Select {contextType.toLowerCase()}
-            </Typography>
-            {options
-              ?.filter((o) => o.type === contextType)
-              .map((opt) => {
-                const Icon = iconMap[opt.type] || Business;
-                return (
-                  <MenuItem
-                    key={opt.id}
-                    dense
-                    onClick={() => switchMutation.mutate({ type: opt.type, id: opt.id })}
-                  >
-                    <ListItemIcon>
-                      <Icon fontSize="small" />
-                    </ListItemIcon>
-                    <ListItemText primary={opt.name} secondary={opt.code} />
-                  </MenuItem>
-                );
-              })}
-          </>
+        {current?.roles && current.roles.length > 1 && (
+          <Typography variant="caption" color="text.secondary" sx={{ px: 0.5, display: 'block' }}>
+            Other roles: {current.roles.slice(1).join(', ')}
+          </Typography>
         )}
+
+        <Divider sx={{ my: 1.5 }} />
+
+        <Button
+          variant="outlined"
+          fullWidth
+          size="small"
+          startIcon={<Settings />}
+          onClick={() => {
+            setAnchorEl(null);
+            navigate('/select-context');
+          }}
+          sx={{ textTransform: 'none' }}
+        >
+          Change Workspace
+        </Button>
       </Menu>
     </Box>
   );

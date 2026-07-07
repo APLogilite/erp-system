@@ -1,6 +1,7 @@
 package com.erp.platform.identity.dto;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 public class LoginResponse {
@@ -29,6 +30,8 @@ public class LoginResponse {
     private String firstName;
     private String lastName;
     private String displayName;
+    private List<String> roles;
+    private List<String> permissions;
 
     public UUID getId() { return id; }
     public void setId(UUID id) { this.id = id; }
@@ -42,5 +45,9 @@ public class LoginResponse {
     public void setLastName(String lastName) { this.lastName = lastName; }
     public String getDisplayName() { return displayName; }
     public void setDisplayName(String displayName) { this.displayName = displayName; }
+    public List<String> getRoles() { return roles; }
+    public void setRoles(List<String> roles) { this.roles = roles; }
+    public List<String> getPermissions() { return permissions; }
+    public void setPermissions(List<String> permissions) { this.permissions = permissions; }
   }
 }

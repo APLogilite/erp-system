@@ -8,6 +8,7 @@ public class ContextOptionsResponse {
   private List<ContextOption> organizations;
   private List<ContextOption> companies;
   private List<ContextOption> branches;
+  private List<ContextOption> departments;
   private List<String> roles;
 
   public List<ContextOption> getTenants() { return tenants; }
@@ -18,6 +19,8 @@ public class ContextOptionsResponse {
   public void setCompanies(List<ContextOption> companies) { this.companies = companies; }
   public List<ContextOption> getBranches() { return branches; }
   public void setBranches(List<ContextOption> branches) { this.branches = branches; }
+  public List<ContextOption> getDepartments() { return departments; }
+  public void setDepartments(List<ContextOption> departments) { this.departments = departments; }
   public List<String> getRoles() { return roles; }
   public void setRoles(List<String> roles) { this.roles = roles; }
 }

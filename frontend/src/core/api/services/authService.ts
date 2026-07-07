@@ -7,8 +7,10 @@ export interface LoginPayload {
 }
 
 export interface BackendLoginData {
-  token: string;
+  accessToken: string;
   refreshToken: string;
+  expiresAt?: string;
+  sessionId?: string;
   user: {
     id: string;
     username: string;
@@ -48,11 +50,10 @@ export const authService = {
 
   refreshSession: async (
     refreshToken: string
-  ): Promise<{ token: string; refreshToken: string }> => {
-    const response = await apiClient.post<ApiResponse<{ token: string; refreshToken: string }>>(
-      ENDPOINTS.auth.refresh,
-      { refreshToken }
-    );
+  ): Promise<{ accessToken: string; refreshToken: string }> => {
+    const response = await apiClient.post<
+      ApiResponse<{ accessToken: string; refreshToken: string }>
+    >(ENDPOINTS.auth.refresh, { refreshToken });
     if (!response.data.success || !response.data.data) {
       throw new Error(response.data.message || 'Token refresh failed');
     }

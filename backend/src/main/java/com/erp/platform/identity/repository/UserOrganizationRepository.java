@@ -10,4 +10,5 @@ import org.springframework.stereotype.Repository;
 public interface UserOrganizationRepository extends JpaRepository<UserOrganization, UUID> {
   List<UserOrganization> findByUserId(UUID userId);
   List<UserOrganization> findByOrganizationId(UUID organizationId);
+  List<UserOrganization> findByOrganizationTenantId(UUID tenantId);
 }

@@ -1,20 +1,59 @@
-import { ReactNode } from 'react';
-import { Navigate, useLocation } from 'react-router-dom';
+import { CircularProgress, Box } from '@mui/material';
+import { ReactNode, useEffect, useState } from 'react';
+import { Navigate } from 'react-router-dom';
 
-import { selectIsAuthenticated } from '@/core/auth/authSelectors';
 import { useAuthStore } from '@/core/auth/authStore';
 
-type AuthGuardProps = {
-  children?: ReactNode;
-};
+export function AuthGuard({ children }: { children: ReactNode }) {
+  const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
+  const [hydrated, setHydrated] = useState(() => {
+    const h = useAuthStore.persist.hasHydrated();
+    console.log(
+      '[AuthGuard] initial hydrated:',
+      h,
+      'isAuthenticated:',
+      useAuthStore.getState().isAuthenticated
+    );
+    return h;
+  });
 
-export function AuthGuard({ children }: AuthGuardProps) {
-  const isAuthenticated = useAuthStore(selectIsAuthenticated);
-  const location = useLocation();
+  useEffect(() => {
+    if (hydrated) {
+      console.log('[AuthGuard] already hydrated, isAuthenticated:', isAuthenticated);
+      return;
+    }
+    console.log('[AuthGuard] waiting for hydration...');
+    const unsub = useAuthStore.persist.onFinishHydration(() => {
+      console.log(
+        '[AuthGuard] hydration finished, isAuthenticated:',
+        useAuthStore.getState().isAuthenticated
+      );
+      setHydrated(true);
+    });
+    const timeout = setTimeout(() => {
+      console.log('[AuthGuard] hydration timeout fallback');
+      setHydrated(true);
+    }, 2000);
+    return () => {
+      unsub();
+      clearTimeout(timeout);
+    };
+  }, [hydrated, isAuthenticated]);
 
-  if (!isAuthenticated) {
-    return <Navigate to="/login" replace state={{ from: location }} />;
+  if (!hydrated) {
+    return (
+      <Box
+        sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh' }}
+      >
+        <CircularProgress />
+      </Box>
+    );
   }
 
-  return children ? <>{children}</> : null;
+  if (!isAuthenticated) {
+    console.log('[AuthGuard] NOT authenticated, redirecting to login');
+    return <Navigate to="/login" replace />;
+  }
+  console.log('[AuthGuard] authenticated, rendering children');
+  return <>{children}</>;
 }
