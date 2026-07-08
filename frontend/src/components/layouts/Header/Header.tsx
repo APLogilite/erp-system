@@ -11,6 +11,7 @@ import {
 
 import { UserMenu } from './UserMenu';
 
+import { FormSearchBar } from '@/core/runtime/components/FormSearchBar';
 import { ContextSwitcher } from '@/modules/identity/context/ContextSwitcher';
 
 type HeaderProps = {
@@ -48,6 +49,7 @@ export function Header({ onMobileMenuToggle, title = 'ERP System' }: HeaderProps
           {title}
         </Typography>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+          <FormSearchBar />
           <ContextSwitcher />
           <UserMenu />
         </Box>

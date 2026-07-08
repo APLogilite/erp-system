@@ -19,6 +19,7 @@ import { ErrorState } from '@/components/ui/ErrorState';
 import { FieldsTab } from './components/FieldsTab';
 import { LayoutTab } from './components/LayoutTab';
 import { RulesTab } from './components/RulesTab';
+import { SubFormsTab } from './components/SubFormsTab';
 import { ValidationTab } from './components/ValidationTab';
 import { useForm } from './hooks/useFormDesigner';
 import { useFormFields } from './hooks/useFormFields';
@@ -61,6 +62,7 @@ export function FormDesignerPage() {
         <Tab label="Layout" />
         <Tab label="Rules" />
         <Tab label="Validations" />
+        <Tab label="Sub-Forms" />
       </Tabs>
 
       <Card sx={{ borderRadius: 3 }}>
@@ -69,6 +71,7 @@ export function FormDesignerPage() {
           {tab === 1 && formId && <LayoutTab formId={formId} />}
           {tab === 2 && formId && <RulesTab formId={formId} fields={fieldOptions} />}
           {tab === 3 && formId && <ValidationTab formId={formId} fields={fieldOptions} />}
+          {tab === 4 && formId && <SubFormsTab formId={formId} />}
         </CardContent>
       </Card>
     </Box>
