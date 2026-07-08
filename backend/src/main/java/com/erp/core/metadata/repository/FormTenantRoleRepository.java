@@ -12,8 +12,15 @@ public interface FormTenantRoleRepository extends JpaRepository<FormTenantRoleEn
 
   List<FormTenantRoleEntity> findByFormIdAndTenantId(UUID formId, UUID tenantId);
 
+  List<FormTenantRoleEntity> findByFormId(UUID formId);
+
+  List<FormTenantRoleEntity> findByTenantId(UUID tenantId);
+
   List<FormTenantRoleEntity> findByTenantIdAndRoleId(UUID tenantId, UUID roleId);
 
   @Transactional
   void deleteByFormIdAndTenantId(UUID formId, UUID tenantId);
+
+  @Transactional
+  void deleteByFormIdAndTenantIdAndRoleId(UUID formId, UUID tenantId, UUID roleId);
 }

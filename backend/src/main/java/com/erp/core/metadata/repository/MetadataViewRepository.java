@@ -12,4 +12,5 @@ public interface MetadataViewRepository extends JpaRepository<MetadataView, UUID
   Optional<MetadataView> findByName(String name);
   List<MetadataView> findByModelName(String modelName);
   List<MetadataView> findByModelNameAndType(String modelName, String type);
+  List<MetadataView> findByScopeAndTypeAndIsActiveTrue(String scope, String type);
 }
