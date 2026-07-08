@@ -18,17 +18,27 @@ import { ErrorState } from '@/components/ui/ErrorState';
 
 import { FieldsTab } from './components/FieldsTab';
 import { LayoutTab } from './components/LayoutTab';
+import { RulesTab } from './components/RulesTab';
+import { ValidationTab } from './components/ValidationTab';
 import { useForm } from './hooks/useFormDesigner';
+import { useFormFields } from './hooks/useFormFields';
 
 export function FormDesignerPage() {
   const { formId } = useParams<{ formId: string }>();
   const navigate = useNavigate();
   const { data: form, isLoading, error, refetch } = useForm(formId);
+  const { data: fields } = useFormFields(formId);
   const [tab, setTab] = useState(0);
 
   if (isLoading) return <Box sx={{ display: 'flex', justifyContent: 'center', p: 8 }}><CircularProgress /></Box>;
   if (error) return <ErrorState message={(error as Error).message} onRetry={refetch} />;
   if (!form) return null;
+
+  const fieldOptions = (fields ?? []).map((f) => ({
+    fieldId: f.id,
+    columnCode: f.columnCode,
+    label: f.labelOverride || f.columnCode,
+  }));
 
   return (
     <Box sx={{ p: 3 }}>
@@ -46,15 +56,19 @@ export function FormDesignerPage() {
           color={form.scope === 'global' ? 'primary' : 'secondary'} variant="outlined" />
       </Box>
 
-      <Tabs value={tab} onChange={(_, v) => setTab(v)} sx={{ mb: 2 }}>
+      <Tabs value={tab} onChange={(_, v) => setTab(v)} sx={{ mb: 2 }} variant="scrollable">
         <Tab label="Fields" />
         <Tab label="Layout" />
+        <Tab label="Rules" />
+        <Tab label="Validations" />
       </Tabs>
 
       <Card sx={{ borderRadius: 3 }}>
         <CardContent>
           {tab === 0 && formId && <FieldsTab formId={formId} />}
           {tab === 1 && formId && <LayoutTab formId={formId} />}
+          {tab === 2 && formId && <RulesTab formId={formId} fields={fieldOptions} />}
+          {tab === 3 && formId && <ValidationTab formId={formId} fields={fieldOptions} />}
         </CardContent>
       </Card>
     </Box>
