@@ -256,7 +256,7 @@ Developer may only select tasks that satisfy ALL of the following:
 - Locked = false
 - Parent PRD = APPROVED
 - Assigned to Developer or Unassigned
-- All dependencies are COMPLETED
+- All dependencies are READY_FOR_TEST/COMPLETED
 
 Priority order:
 
@@ -278,11 +278,11 @@ Before implementation Developer MUST:
 
 Developer is responsible for activating newly available work.
 
-Whenever a task reaches COMPLETED:
+Whenever a task reaches READY_FOR_TEST/COMPLETED:
 
 Review every task that depends on it.
 
-If ALL dependency tasks are COMPLETED:
+If ALL dependency tasks are READY_FOR_TEST/COMPLETED:
 
 AND
 

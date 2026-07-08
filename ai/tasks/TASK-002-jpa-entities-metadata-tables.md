@@ -31,7 +31,7 @@ actual_hours: 0.5
 
 parent_prd: PRD-001
 
-prd_version: 1.5.0
+prd_version: 1.6.0
 prd_branch: prd/PRD-001-dynamic-form-configuration
 base_branch: prd/PRD-001-dynamic-form-configuration
 merge_target: prd/PRD-001-dynamic-form-configuration
@@ -65,6 +65,7 @@ test_report:
 history:
   - created
   - implemented 2026-07-07 — Developer completed JPA entities, repositories, and DTOs for all metadata tables
+  - 2026-07-08 — Planning audit: prd_version corrected 1.5.0 → 1.6.0 (implementation scope already covered 1.6.0 requirements)
 
 ---
 
