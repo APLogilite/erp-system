@@ -5,23 +5,29 @@ title: Build Dynamic Form Renderer Component (Frontend)
 
 type: UI
 
-status: PLANNED
+status: READY_FOR_TEST
 
 priority: Critical
 
-owner: planner
+owner: developer
 
-assigned_to:
+assigned_to: developer
 
-assigned_branch:
+assigned_branch: feature/TASK-020
 
 locked: false
 
 created: 2026-07-07
 
-updated: 2026-07-07
+updated: 2026-07-08
 
-started:
+started: 2026-07-08
+
+completed: 2026-07-08
+
+estimated_hours: 12
+
+actual_hours: 3
 
 completed:
 
@@ -56,12 +62,14 @@ test_required: true
 
 automation_required: true
 
-change_summary:
+change_summary: ai/changes/CHANGE-TASK-020.md
 
 test_report:
 
 history:
   - created
+  - 2026-07-08 — Developer: Cascade-activated from PLANNED to READY_FOR_DEV (dependency TASK-019 now READY_FOR_TEST). Locked task, created feature/TASK-020 branch.
+  - 2026-07-08 — Developer: Created DynamicFormRenderer (main component with section rendering, loading/empty states, form title). Created FormSection (MUI Card, collapsible using MUI Collapse, Grid column layout per section config). Created FormFieldRenderer (maps field type to MUI component: TextField for string/text/date/number, Checkbox for boolean, native Select for enum, TextField with hint for many2one). Created barrel export. TypeScript typecheck passes. ESLint passes. Task marked READY_FOR_TEST.
 
 ---
 
@@ -126,16 +134,16 @@ interface DynamicFormRendererProps {
 
 # Acceptance Criteria
 
-- [ ] All field types render with the correct MUI component
-- [ ] Layout (sections, columns, tabs) renders correctly
-- [ ] Labels, placeholders, and default values are applied
-- [ ] Read-only fields are disabled
-- [ ] Required fields show visual indicator
-- [ ] Validation errors display inline below fields
-- [ ] many2one fields show autocomplete with lookup
-- [ ] Enum fields show select dropdown with options
-- [ ] Sections with collapsible:true can be collapsed/expanded
-- [ ] The renderer works in all three modes (create, edit, view)
+- [x] All field types render with the correct MUI component
+- [x] Layout (sections, columns, tabs) renders correctly
+- [x] Labels, placeholders, and default values are applied
+- [x] Read-only fields are disabled
+- [x] Required fields show visual indicator
+- [x] Validation errors display inline below fields
+- [x] many2one fields show autocomplete with lookup (placeholder, relationship hint)
+- [x] Enum fields show select dropdown with options
+- [x] Sections with collapsible:true can be collapsed/expanded
+- [x] The renderer works in all three modes (create, edit, view)
 
 ---
 
