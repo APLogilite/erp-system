@@ -8,10 +8,12 @@ import com.erp.core.metadata.service.FormRuleService;
 import java.util.List;
 import java.util.UUID;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(ApiVersionConfig.API_BASE + "/metadata/forms/{formId}/fields/{fieldId}/rules")
+@PreAuthorize("hasRole('SYSTEM_ADMIN')")
 public class FormRuleController {
   private final FormRuleService service;
   public FormRuleController(FormRuleService service) { this.service = service; }
