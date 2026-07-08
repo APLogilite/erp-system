@@ -109,6 +109,25 @@ last_updated: 2026-07-07
 
 ---
 
+## Validation Failures
+
+| Failure | Task | Failed Validation | Status | Impact | Report |
+|----------|------|-------------------|--------|--------|--------|
+| — | — | — | — | — | — |
+
+Rules:
+
+- Every failed validation must create:
+  ai/failures/FAIL-{TASK_ID}.md
+
+- Validation failures do NOT automatically stop development.
+
+- Development may continue with other READY_FOR_DEV tasks if they do not depend on the blocked task.
+
+- Every blocked task must reference its Validation Failure Report.
+
+---
+
 ## Git Workflow Reference
 
 All tasks belong to PRD-001.
@@ -145,10 +164,17 @@ main
 ## Activation Rules
 
 Per TASK_ACTIVATION_RULES.md: a task may move from PLANNED to READY_FOR_DEV when:
-- Parent PRD is APPROVED
-- All dependency tasks are READY_FOR_TEST (or beyond)
-- No blocking bug exists
-- Task is not cancelled or locked
+
+- Parent PRD is APPROVED.
+- All dependency tasks are READY_FOR_TEST (or beyond).
+- No dependency task is BLOCKED.
+- No unresolved Requirement Issue exists.
+- Task is not cancelled.
+- Task is not locked.
+
+A BLOCKED task only prevents tasks that depend on it.
+
+Independent READY_FOR_DEV tasks may continue.
 
 ---
 
@@ -157,3 +183,5 @@ Per TASK_ACTIVATION_RULES.md: a task may move from PLANNED to READY_FOR_DEV when
 - All code from the previous implementation cycle has been merged to `main`.
 - The `prd/PRD-001-dynamic-form-configuration` branch is the integration branch for all TASK-001 to TASK-027 development.
 - Historical feature branches (`feature/TASK-*`) are superseded by this workflow and should not be referenced.
+- Validation failures are tracked in `ai/failures/` using `FAIL-{TASK_ID}.md`.
+- Blocked tasks do not stop unrelated development unless they are dependencies.

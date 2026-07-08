@@ -630,6 +630,38 @@ Every Bug must have:
 
 ---
 
+# Failure Reports
+
+Validation failures must never be silently ignored.
+
+When validation fails:
+
+1. Do not merge the task.
+
+2. Create
+
+ai/failures/FAIL-{TASK_ID}.md
+
+using
+
+ai/docs/FAILURE_TEMPLATE.md
+
+3. Update the Task.
+
+4. Set status to BLOCKED.
+
+5. Link the Failure Report.
+
+6. Determine whether other READY_FOR_DEV tasks may continue.
+
+If another task has no dependency on the failed task,
+
+development continues.
+
+Failure Reports become part of the permanent project history.
+
+---
+
 # File Ownership
 
 Planner manages
