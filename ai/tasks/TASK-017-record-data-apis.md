@@ -5,23 +5,29 @@ title: Implement Record Data APIs with Sub-Form & Breadcrumb Support (Backend)
 
 type: API
 
-status: PLANNED
+status: READY_FOR_TEST
 
 priority: Critical
 
-owner: planner
+owner: developer
 
-assigned_to:
+assigned_to: developer
 
-assigned_branch:
+assigned_branch: feature/TASK-017
 
 locked: false
 
 created: 2026-07-07
 
-updated: 2026-07-07
+updated: 2026-07-08
 
-started:
+started: 2026-07-08
+
+completed: 2026-07-08
+
+estimated_hours: 10
+
+actual_hours: 2
 
 completed:
 
@@ -61,12 +67,14 @@ test_required: true
 
 automation_required: true
 
-change_summary:
+change_summary: ai/changes/CHANGE-TASK-017.md
 
 test_report:
 
 history:
   - created
+  - 2026-07-08 — Developer: Cascade-activated from PLANNED to READY_FOR_DEV (dependencies TASK-015, TASK-016 both READY_FOR_TEST). Locked task, created feature/TASK-017 branch.
+  - 2026-07-08 — Developer: Added GET /api/runtime/forms endpoint (listAccessibleForms) with role-based filtering. Fixed all record endpoints to use RuntimeContext (tenantId, roleCodes, userId). Implemented buildRowFilters() with real FormRoleFilterRepository loading and dynamic variable resolution ({current_user_id}, {current_tenant_id}). Updated RecordCrudService to inject FormRoleFilterRepository and RoleRepository. Added FormRoleFilterRepository.findByFormIdAndRoleIdIn() batch query. Build passes, all non-integration tests pass. Task marked READY_FOR_TEST.
 
 ---
 
@@ -139,16 +147,16 @@ Add endpoints to `RuntimeFormController`.
 
 # Acceptance Criteria
 
-- [ ] `GET /api/runtime/forms` returns only forms the user has role access to
-- [ ] `GET .../records` returns data filtered by where clause AND tenant_id
-- [ ] `GET .../records/{id}` returns record + sub-form child records
-- [ ] Creating a record auto-assigns tenant_id and where clause value
-- [ ] Read-only fields are stripped from update payloads
-- [ ] Backend re-validates required fields and data types
-- [ ] Delete is soft-delete
-- [ ] 403 returned for unauthorized form access
-- [ ] 404 returned for non-existent records (or records from other tenants)
-- [ ] All endpoints use the standard `ApiResponse<T>` envelope
+- [x] `GET /api/runtime/forms` returns only forms the user has role access to
+- [x] `GET .../records` returns data filtered by where clause AND tenant_id
+- [x] `GET .../records/{id}` returns record + sub-form child records
+- [x] Creating a record auto-assigns tenant_id and where clause value
+- [x] Read-only fields are stripped from update payloads
+- [x] Backend re-validates required fields and data types
+- [x] Delete is soft-delete
+- [x] 403 returned for unauthorized form access
+- [x] 404 returned for non-existent records (or records from other tenants)
+- [x] All endpoints use the standard `ApiResponse<T>` envelope
 
 ---
 

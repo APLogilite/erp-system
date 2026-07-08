@@ -23,6 +23,7 @@ Updated By: Planner
 | TASK-009 | PRD-001 | High | planner | | false | TASK-007 |
 | TASK-010 | PRD-001 | High | planner | | false | TASK-007 |
 | TASK-011 | PRD-001 | High | planner | | false | TASK-007 |
+| TASK-018 | PRD-001 | Medium | planner | | false | TASK-016 |
 | ENH-001 | PRD-001 | High | planner | | false | TASK-007 |
 
 ---
@@ -35,8 +36,6 @@ Updated By: Planner
 | TASK-012 | PRD-001 | High | PLANNED | planner | false | TASK-008, TASK-011 |
 | TASK-013 | PRD-001 | Medium | PLANNED | planner | false | TASK-009, TASK-011 |
 | TASK-014 | PRD-001 | Medium | PLANNED | planner | false | TASK-010 |
-| TASK-017 | PRD-001 | Critical | PLANNED | planner | false | TASK-015, TASK-016 |
-| TASK-018 | PRD-001 | Medium | PLANNED | planner | false | TASK-016 |
 | TASK-019 | PRD-001 | Critical | PLANNED | planner | false | TASK-016, TASK-017 |
 | TASK-020 | PRD-001 | Critical | PLANNED | planner | false | TASK-019 |
 | TASK-021 | PRD-001 | High | PLANNED | planner | false | TASK-020 |
@@ -53,7 +52,7 @@ Updated By: Planner
 
 | Task | Branch | Owner | Started | ETA |
 |------|--------|-------|---------|-----|
-| TASK-016 | feature/TASK-016 | developer | 2026-07-08 | 4h |
+| TASK-017 | feature/TASK-017 | developer | 2026-07-08 | 5h |
 
 ---
 
@@ -67,6 +66,7 @@ Updated By: Planner
 | TASK-005 | feature/TASK-005 | ai/changes/CHANGE-TASK-005.md | planner |
 | TASK-007 | feature/TASK-007 | ai/changes/CHANGE-TASK-007.md | planner |
 | TASK-015 | feature/TASK-015 | ai/changes/CHANGE-TASK-015.md | planner |
+| TASK-016 | feature/TASK-016 | ai/changes/CHANGE-TASK-016.md | developer |
 
 ---
 
@@ -118,11 +118,11 @@ Tasks: 27 (TASK-001 to TASK-027)
 
 Completed: 0
 
-In QA: 6 (TASK-001, TASK-002, TASK-003, TASK-005, TASK-007, TASK-015)
+In QA: 7 (TASK-001, TASK-002, TASK-003, TASK-005, TASK-007, TASK-015, TASK-016)
 
-Ready for Dev: 7 (TASK-004, TASK-008, TASK-009, TASK-010, TASK-011, TASK-016, ENH-001)
+Ready for Dev: 8 (TASK-004, TASK-008, TASK-009, TASK-010, TASK-011, TASK-017, TASK-018, ENH-001)
 
-Planning: 14
+Planning: 12
 
 Blocked: 0
 
@@ -130,4 +130,4 @@ Bugs: 0
 
 Enhancements: 1 (ENH-001 — READY_FOR_DEV)
 
-Progress: 0% completed | 22% in QA (6/27) | 26% ready for dev + enhancement (7/27) | 52% awaiting upstream dependencies (14/27)
+Progress: 0% completed | 26% in QA (7/27) | 30% ready for dev + enhancement (8/27) | 44% awaiting upstream dependencies (12/27)
