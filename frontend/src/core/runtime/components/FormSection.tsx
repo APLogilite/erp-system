@@ -4,12 +4,12 @@
  * Layout sections can be collapsible and can arrange fields in 1, 2, or 3 columns.
  */
 
-import type { FieldDefinition, LayoutSection } from '../hooks/useForm.types';
-
-import React, { useState } from 'react';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Card, CardContent, CardHeader, Collapse, Grid, IconButton } from '@mui/material';
+import React, { useState } from 'react';
+
+import type { FieldDefinition, LayoutSection } from '../hooks/useForm.types';
 
 import { FormFieldRenderer } from './FormFieldRenderer';
 

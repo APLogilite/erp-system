@@ -6,7 +6,6 @@
  * many2one, enum.
  */
 
-import React, { useCallback } from 'react';
 import {
   Checkbox,
   FormControl,
@@ -16,6 +15,7 @@ import {
   Select,
   TextField,
 } from '@mui/material';
+import React, { useCallback } from 'react';
 
 import type { FieldDefinition } from '../hooks/useForm.types';
 
