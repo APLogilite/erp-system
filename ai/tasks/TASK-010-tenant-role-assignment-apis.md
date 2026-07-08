@@ -5,29 +5,29 @@ title: Implement Per-Tenant Role Assignment APIs (Backend)
 
 type: API
 
-status: READY_FOR_DEV
+status: READY_FOR_TEST
 
 priority: High
 
-owner: planner
+owner: developer
 
-assigned_to:
+assigned_to: developer
 
-assigned_branch:
+assigned_branch: feature/TASK-010
 
 locked: false
 
 created: 2026-07-07
 
-updated: 2026-07-07
+updated: 2026-07-08
 
-started:
+started: 2026-07-08
 
-completed:
+completed: 2026-07-08
 
 estimated_hours: 4
 
-actual_hours:
+actual_hours: 1
 
 parent_prd: PRD-001
 
