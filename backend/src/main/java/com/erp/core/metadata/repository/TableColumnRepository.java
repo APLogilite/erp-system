@@ -15,4 +15,6 @@ public interface TableColumnRepository extends JpaRepository<TableColumnEntity, 
   List<TableColumnEntity> findByTableIdAndIsActiveTrueOrderByPosition(@Param("tableId") UUID tableId);
 
   List<TableColumnEntity> findByTableIdOrderByPosition(UUID tableId);
+
+  List<TableColumnEntity> findByType(String type);
 }
