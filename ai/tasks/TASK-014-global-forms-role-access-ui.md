@@ -5,7 +5,7 @@ title: Build Global Forms Role Access UI for System Admin (Frontend)
 
 type: UI
 
-status: IN_DEVELOPMENT
+status: READY_FOR_TEST
 
 priority: Medium
 
@@ -15,7 +15,7 @@ assigned_to: developer
 
 assigned_branch: feature/TASK-014
 
-locked: true
+locked: false
 
 created: 2026-07-07
 
@@ -23,11 +23,11 @@ updated: 2026-07-08
 
 started: 2026-07-08
 
-completed:
+completed: 2026-07-08
 
 estimated_hours: 4
 
-actual_hours:
+actual_hours: 2
 
 parent_prd: PRD-001
 
@@ -55,13 +55,14 @@ test_required: true
 
 automation_required: true
 
-change_summary:
+change_summary: ai/changes/CHANGE-TASK-014.md
 
 test_report:
 
 history:
   - created
   - 2026-07-08 — Auto-activated: PLANNED → READY_FOR_DEV. Dependency TASK-010 is READY_FOR_TEST. Per WORKFLOW.md auto-activation rules.
+  - 2026-07-08 — Implemented: GlobalFormTenantAccessTable component, integrated into FormDesignerPage with conditional 'Tenant Access' tab (global forms only, SYSTEM_ADMIN only). Merged into prd/PRD-001-dynamic-form-configuration. Set READY_FOR_TEST.
 
 ---
 
