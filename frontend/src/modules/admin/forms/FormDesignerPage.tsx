@@ -15,8 +15,10 @@ import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import { ErrorState } from '@/components/ui/ErrorState';
+import { useAuthStore } from '@/core/auth/authStore';
 
 import { FieldsTab } from './components/FieldsTab';
+import { GlobalFormTenantAccessTable } from './components/GlobalFormTenantAccessTable';
 import { LayoutTab } from './components/LayoutTab';
 import { RulesTab } from './components/RulesTab';
 import { SubFormsTab } from './components/SubFormsTab';
@@ -30,6 +32,9 @@ export function FormDesignerPage() {
   const { data: form, isLoading, error, refetch } = useForm(formId);
   const { data: fields } = useFormFields(formId);
   const [tab, setTab] = useState(0);
+  const user = useAuthStore((s) => s.user);
+  const isSystemAdmin = user?.roles?.includes('SYSTEM_ADMIN') ?? false;
+  const showTenantAccess = form?.scope === 'global' && isSystemAdmin;
 
   if (isLoading) return <Box sx={{ display: 'flex', justifyContent: 'center', p: 8 }}><CircularProgress /></Box>;
   if (error) return <ErrorState message={(error as Error).message} onRetry={refetch} />;
@@ -63,6 +68,7 @@ export function FormDesignerPage() {
         <Tab label="Rules" />
         <Tab label="Validations" />
         <Tab label="Sub-Forms" />
+        {showTenantAccess && <Tab label="Tenant Access" />}
       </Tabs>
 
       <Card sx={{ borderRadius: 3 }}>
@@ -72,6 +78,7 @@ export function FormDesignerPage() {
           {tab === 2 && formId && <RulesTab formId={formId} fields={fieldOptions} />}
           {tab === 3 && formId && <ValidationTab formId={formId} fields={fieldOptions} />}
           {tab === 4 && formId && <SubFormsTab formId={formId} />}
+          {showTenantAccess && tab === 5 && formId && <GlobalFormTenantAccessTable formId={formId} />}
         </CardContent>
       </Card>
     </Box>

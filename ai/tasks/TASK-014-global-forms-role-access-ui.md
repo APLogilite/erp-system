@@ -5,23 +5,23 @@ title: Build Global Forms Role Access UI for System Admin (Frontend)
 
 type: UI
 
-status: READY_FOR_DEV
+status: IN_DEVELOPMENT
 
 priority: Medium
 
 owner: developer
 
-assigned_to:
+assigned_to: developer
 
-assigned_branch:
+assigned_branch: feature/TASK-014
 
-locked: false
+locked: true
 
 created: 2026-07-07
 
 updated: 2026-07-08
 
-started:
+started: 2026-07-08
 
 completed:
 
