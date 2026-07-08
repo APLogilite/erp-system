@@ -5,23 +5,29 @@ title: Build useForm() Hook with Two-Request Pattern & Caching (Frontend)
 
 type: Feature
 
-status: PLANNED
+status: READY_FOR_TEST
 
 priority: Critical
 
-owner: planner
+owner: developer
 
-assigned_to:
+assigned_to: developer
 
-assigned_branch:
+assigned_branch: feature/TASK-019
 
 locked: false
 
 created: 2026-07-07
 
-updated: 2026-07-07
+updated: 2026-07-08
 
-started:
+started: 2026-07-08
+
+completed: 2026-07-08
+
+estimated_hours: 6
+
+actual_hours: 2
 
 completed:
 
@@ -65,12 +71,14 @@ test_required: true
 
 automation_required: true
 
-change_summary:
+change_summary: ai/changes/CHANGE-TASK-019.md
 
 test_report:
 
 history:
   - created
+  - 2026-07-08 — Developer: Cascade-activated from PLANNED to READY_FOR_DEV (dependencies TASK-016, TASK-017 both READY_FOR_TEST). Locked task, created feature/TASK-019 branch.
+  - 2026-07-08 — Developer: Created useForm.types.ts (FormDefinition, RecordEntry, ListRecordsResponse, SingleRecordResponse, UseFormOptions, UseFormResult). Created runtimeApi.ts (API client with fetchFormDefinition, fetchRecords, fetchRecord, createRecord, updateRecord, deleteRecord). Created useForm.ts (two-request hook with React Query, separate list/single record queries, mutations with auto-invalidation, getRecordLabel helper). Created barrel export index.ts. TypeScript typecheck passes. ESLint passes. Task marked READY_FOR_TEST.
 
 ---
 
@@ -151,14 +159,14 @@ interface UseFormResult {
 
 # Acceptance Criteria
 
-- [ ] `useForm()` returns form definition (cached) and data (fresh) in a single unified result
-- [ ] Definition is not re-fetched when navigating between records in the same form
-- [ ] Data is always re-fetched on navigation
-- [ ] Mutations (create/update/delete) invalidate the data query
-- [ ] Loading state shows when either request is in flight
-- [ ] Error state captures both definition and data errors
-- [ ] `refreshData()` refetches data only
-- [ ] `invalidateDefinition()` refetches form definition (call after admin saves form config)
+- [x] `useForm()` returns form definition (cached) and data (fresh) in a single unified result
+- [x] Definition is not re-fetched when navigating between records in the same form
+- [x] Data is always re-fetched on navigation
+- [x] Mutations (create/update/delete) invalidate the data query
+- [x] Loading state shows when either request is in flight
+- [x] Error state captures both definition and data errors
+- [x] `refreshData()` refetches data only
+- [x] `invalidateDefinition()` refetches form definition (call after admin saves form config)
 
 ---
 

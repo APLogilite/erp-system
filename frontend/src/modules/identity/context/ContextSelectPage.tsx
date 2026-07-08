@@ -309,7 +309,9 @@ export function ContextSelectPage() {
           <Box sx={{ display: 'flex', alignItems: 'center', mb: 2, ml: -1 }}>
             <Button
               startIcon={<ArrowBack />}
-              onClick={() => navigate(hasCurrentContext ? '/app/dashboard' : '/login', { replace: true })}
+              onClick={() =>
+                navigate(hasCurrentContext ? '/app/dashboard' : '/login', { replace: true })
+              }
               sx={{ textTransform: 'none', color: 'text.secondary' }}
             >
               Back
