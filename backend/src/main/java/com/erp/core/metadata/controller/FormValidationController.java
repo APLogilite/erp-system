@@ -8,10 +8,12 @@ import com.erp.core.metadata.service.FormValidationService;
 import java.util.List;
 import java.util.UUID;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(ApiVersionConfig.API_BASE + "/metadata/forms/{formId}/fields/{fieldId}/validations")
+@PreAuthorize("hasRole('SYSTEM_ADMIN')")
 public class FormValidationController {
   private final FormValidationService service;
   public FormValidationController(FormValidationService service) { this.service = service; }

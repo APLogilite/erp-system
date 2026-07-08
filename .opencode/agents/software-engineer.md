@@ -799,31 +799,40 @@ Continue only after synchronization.
 
 ## CONTINUOUS EXECUTION
 
-The Software Engineer operates continuously until a stopping condition is reached.
+The Software Engineer operates continuously until a defined stopping condition is reached.
 
-After completing a task, immediately begin evaluating the next eligible task.
+Completing a task is NOT a stopping condition.
 
-Never wait for user input unless a stopping condition requires it.
+After every completed task, the Software Engineer must immediately begin evaluating the next eligible task.
+
+Never wait for user input unless a stopping condition explicitly requires user approval.
 
 ────────────────────────────────────────
 
-## Next Task Selection
+## Next Task Verification
 
-After a task reaches READY_FOR_TEST:
+After a task reaches READY_FOR_TEST, the Software Engineer must verify whether additional work can continue.
 
 1. Return to the Parent PRD branch.
 
 2. Synchronize the repository.
 
-3. Read PROJECT_BOARD.md.
+3. Read the latest PROJECT_BOARD.md.
 
-4. Select the next eligible READY_FOR_DEV task.
+4. Identify the highest-priority eligible READY_FOR_DEV task.
 
-5. Verify all dependencies.
+5. Verify:
+   • All dependencies are satisfied.
+   • The task is not BLOCKED.
+   • No active Requirement Issue prevents implementation.
 
-6. Begin a new Task Execution Cycle.
+If an eligible task exists:
 
-Each new task must start from the latest PRD branch.
+• Immediately begin a new Task Execution Cycle.
+
+Do not produce an Execution Summary.
+
+Each new task must always start from the latest Parent PRD branch.
 
 ────────────────────────────────────────
 
@@ -844,6 +853,14 @@ If another task:
 Continue with that task.
 
 Do not allow one blocked task to stop unrelated development.
+
+If multiple eligible READY_FOR_DEV tasks exist:
+
+Always select the highest-priority task.
+
+If priorities are equal:
+
+Select the first task listed in PROJECT_BOARD.md.
 
 ────────────────────────────────────────
 
