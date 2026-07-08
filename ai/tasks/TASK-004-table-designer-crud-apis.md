@@ -67,6 +67,7 @@ history:
   - created
   - 2026-07-08 — Planning audit: demoted READY_FOR_DEV → PLANNED (dependencies TASK-002, TASK-003 are READY_FOR_TEST, not COMPLETED; current workflow requires COMPLETED for activation)
   - 2026-07-08 — Re-evaluated: restored PLANNED → READY_FOR_DEV. WORKFLOW.md §Automatic Task Activation allows READY_FOR_TEST or COMPLETED to satisfy dependencies. Dependencies TASK-002, TASK-003 are both READY_FOR_TEST.
+  - 2026-07-08 — Planning audit: status → READY_FOR_TEST. Implementation discovered on disk (TableDesignerController.java 84L, TableDesignerService.java). No change summary found — Developer should create one.
   - 2026-07-08 — Implementation: completed all 10 endpoints with schema history, security, search/filter, type validation. Added 4 new DTOs, 4 controller endpoints, 4 service methods. Enabled @PreAuthorize via @EnableMethodSecurity.
 
 ---

@@ -356,21 +356,17 @@ After implementation completes:
 
 1. Run all required validation.
 
-2. Update:
+2. Complete the Documentation Phase.
 
-   • Task document
+3. Successfully pass Documentation Verification.
 
-   • PROJECT_BOARD.md
+4. Merge the task branch into the Parent PRD branch.
 
-   • Change Report
+5. Verify the merge completed successfully.
 
-3. Merge the task branch into the PRD branch.
+6. Checkout the Parent PRD branch.
 
-4. Verify the merge completed successfully.
-
-5. Checkout the PRD branch.
-
-6. Pull the latest PRD branch.
+7. Pull the latest Parent PRD branch.
 
 Only after these steps may another task begin.
 
@@ -539,6 +535,60 @@ Never bypass required validation.
 
 ────────────────────────────────────────
 
+## Documentation Phase
+
+Documentation is part of implementation.
+
+Implementation is NOT complete until all required project documentation has been created and synchronized.
+
+Before any merge into the Parent PRD branch, the Software Engineer must complete the following:
+
+1. Create or update:
+
+   • ai/changes/CHANGE-{TASK_ID}.md
+
+   using:
+
+   • ai/docs/CHANGE_TEMPLATE.md
+
+2. Update the Task document.
+
+3. Update PROJECT_BOARD.md.
+
+4. Update any Validation Failure Report (if applicable).
+
+Documentation must accurately reflect the final implementation.
+
+Never postpone documentation until after merging.
+
+────────────────────────────────────────
+
+## Documentation Verification
+
+Documentation verification is mandatory before every merge.
+
+Verify all of the following:
+
+✓ CHANGE-{TASK_ID}.md exists.
+
+✓ The Change Report is complete.
+
+✓ The Task document has been updated.
+
+✓ PROJECT_BOARD.md has been synchronized.
+
+✓ All documentation references each other correctly.
+
+If any verification fails:
+
+Stop.
+
+Create or correct the missing documentation.
+
+Do not merge until documentation verification succeeds.
+
+────────────────────────────────────────
+
 ## CHANGE REPORT
 
 Every completed implementation task must create or update a Change Report.
@@ -615,7 +665,7 @@ The report should be understandable without reading the source code.
 
 ## Report Completion
 
-A task may not be marked READY_FOR_TEST until:
+A task MUST NOT be marked READY_FOR_TEST until ALL of the following are complete:
 
 ✓ Change Report is complete.
 
@@ -1172,13 +1222,9 @@ Never independently change:
 Always prioritize:
 
 1. Repository integrity.
-
 2. Correct implementation.
-
 3. Validation success.
-
-4. Documentation accuracy.
-
+4. Complete and synchronized documentation.
 5. Continuous progress.
 
 ────────────────────────────────────────

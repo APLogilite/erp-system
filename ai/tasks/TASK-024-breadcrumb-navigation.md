@@ -5,25 +5,25 @@ title: Build Breadcrumb Navigation Component (Frontend)
 
 type: UI
 
-status: PLANNED
+status: READY_FOR_TEST
 
 priority: Medium
 
-owner: planner
+owner: developer
 
-assigned_to:
+assigned_to: developer
 
-assigned_branch:
+assigned_branch: feature/TASK-024
 
 locked: false
 
 created: 2026-07-07
 
-updated: 2026-07-07
+updated: 2026-07-08
 
-started:
+started: 2026-07-08
 
-completed:
+completed: 2026-07-08
 
 estimated_hours: 4
 
@@ -55,12 +55,14 @@ test_required: true
 
 automation_required: true
 
-change_summary:
+change_summary: ai/changes/CHANGE-TASK-024.md
 
 test_report:
 
 history:
   - created
+  - 2026-07-08 — Planning audit: status → READY_FOR_TEST. Implementation found on disk (FormBreadcrumb.tsx). No change summary found — Developer should create one.
+  - 2026-07-08 — Documentation audit: created CHANGE-TASK-024.md (change_summary restored)
 
 ---
 

@@ -8,6 +8,51 @@ last_updated: 2026-07-08
 
 # Changelog
 
+## 2026-07-08 (Documentation Audit — Change Report Restoration)
+
+### Summary
+Repository-wide documentation audit executed to restore missing implementation documentation per the new CHANGE_TEMPLATE.md standard. 27 tasks + 1 enhancement audited. All 18 READY_FOR_TEST tasks now have complete change reports.
+
+### Change Reports Created (4)
+- **CHANGE-TASK-010.md** — Per-Tenant Role Assignment APIs: FormTenantRoleController (60L, 4 endpoints), FormTenantRoleService (131L), 3 DTOs
+- **CHANGE-TASK-018.md** — Breadcrumb Service: BreadcrumbService (106L), BreadcrumbEntry DTO, ParentContext DTO
+- **CHANGE-TASK-024.md** — FormBreadcrumb Component: MUI Breadcrumbs navigation (43L)
+- **CHANGE-TASK-025.md** — FormSearchBar Component: Ctrl+K search dialog (89L) + useAccessibleForms hook (23L)
+
+### Change Reports Reformatted (4)
+Converted from compact format (`document: CHANGE_REPORT`, `status: COMPLETE`) to full CHANGE_TEMPLATE.md format (`id: CHANGE-TASK-XXX`, `status: IMPLEMENTED`) with complete sections:
+
+- **CHANGE-TASK-016.md** — Form Definition Bundle API
+- **CHANGE-TASK-017.md** — Record Data APIs
+- **CHANGE-TASK-019.md** — useForm() Hook
+- **CHANGE-TASK-020.md** — Dynamic Form Renderer
+
+### Task Documents Updated (4)
+Added `change_summary` references in frontmatter:
+- TASK-010 → `ai/changes/CHANGE-TASK-010.md`
+- TASK-018 → `ai/changes/CHANGE-TASK-018.md`
+- TASK-024 → `ai/changes/CHANGE-TASK-024.md`
+- TASK-025 → `ai/changes/CHANGE-TASK-025.md`
+
+### PROJECT_BOARD Corrected
+- Fixed 8 false "MISSING" change report flags (TASK-004, 006, 008, 009, 016, 017, 019, 020 all had change reports but were incorrectly flagged)
+- Added 4 new change report references (TASK-010, 018, 024, 025)
+- **All 18 READY_FOR_TEST tasks now have 100% change summary coverage**
+
+### Discrepancies Discovered
+- **Two change report formats coexisted**: 10 in full template format (`status: IMPLEMENTED`), 4 in compact format (`status: COMPLETE`). Standardized all to full format.
+- **PROJECT_BOARD stats**: Previously reported "12 tasks missing change summaries" — 8 were false negatives (change reports existed but weren't tracked). Only 4 were truly missing.
+- **IN_DEVELOPMENT tasks**: 8 tasks (TASK-011, 012, 021, 022, 023, 026, 027, ENH-001) have partial implementations but no change reports — expected for active development.
+
+### State After Audit
+- **18 tasks READY_FOR_TEST** — All with complete change reports, ready for QA
+- **8 tasks IN_DEVELOPMENT** — Active development, change reports deferred
+- **2 tasks PLANNED** — Not yet implemented (TASK-013, 014)
+- **0 tasks COMPLETED** — QA has not yet begun
+- **18 change reports** — Full CHANGE_TEMPLATE.md format (TASK-001 through TASK-010, TASK-015 through TASK-020, TASK-024, TASK-025)
+
+---
+
 ## 2026-07-08 (Re-evaluation)
 
 ### Correction
@@ -156,3 +201,37 @@ The following 7 tasks were demoted from READY_FOR_DEV to PLANNED because their d
 - All tasks have dependencies defined ✅
 - No BLOCKED or CANCELLED tasks ✅
 - No failure reports exist ✅
+
+---
+
+## 2026-07-08 (Implementation Audit)
+
+### Summary
+Codebase audit revealed the Developer implemented **far more tasks** than task documents reflected — 23 out of 27 tasks + 1 enhancement have code on disk. Task documents were stale. Updated all statuses to match reality.
+
+### Tasks Updated to READY_FOR_TEST (implementation found on disk)
+- **TASK-004** — TableDesignerController (84L) + Service
+- **TASK-006** — TableListPage (152L), CreateTablePage, TableDetailPage, 3 components, 2 hooks
+- **TASK-008** — FormRuleController, FormValidationController, 3 services
+- **TASK-009** — FormSubFormController (50L) + Service
+- **TASK-010** — FormTenantRoleController (60L) + Service
+- **TASK-016** — RuntimeFormController (280L) + FormDefinitionAssemblyService
+- **TASK-017** — RecordCrudService, RecordValidationService
+- **TASK-018** — BreadcrumbService
+- **TASK-019** — useForm.ts (238L), types, runtimeApi.ts
+- **TASK-020** — DynamicFormRenderer (137L), FormFieldRenderer (201L)
+- **TASK-024** — FormBreadcrumb
+- **TASK-025** — FormSearchBar (89L)
+
+### Tasks IN_DEVELOPMENT (code exists, Developer working)
+- TASK-011, TASK-012, TASK-021, TASK-022, TASK-023, TASK-026, TASK-027, ENH-001
+
+### Tasks Still PLANNED (code missing or partial)
+- **TASK-013** — SubFormsTab exists; GlobalFormsBrowser, RoleAccessDialog, RowAccessTab, 4 hooks missing
+- **TASK-014** — GlobalFormTenantAccessTable not found
+
+### Already Correct (6 tasks)
+TASK-001, TASK-002, TASK-003, TASK-005, TASK-007, TASK-015
+
+### ⚠ Outstanding
+12 READY_FOR_TEST tasks are **missing change summaries**. Change summaries exist only for TASK-001, 002, 003, 005, 007, 015. QA cannot effectively test without them.
