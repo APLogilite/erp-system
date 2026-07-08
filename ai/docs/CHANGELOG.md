@@ -60,3 +60,28 @@ last_updated: 2026-07-07
 - **TASK-001, TASK-002** → READY_FOR_TEST (Developer completed implementation)
 - **TASK-003, TASK-005, TASK-007, TASK-015** → READY_FOR_DEV (dependencies satisfied)
 - Created **PROJECT_BOARD.md** with full task tracking
+
+## 2026-07-07 (Planning Audit)
+
+### Updated
+- **TASK_TEMPLATE.md** — Added `PLANNED`, `TESTING`, `TESTED` statuses; added git workflow fields (`prd_branch`, `base_branch`, `merge_target`, `merge_strategy`)
+- **PROJECT_MEMORY.md** — Filled with project decisions, architecture notes, known limitations
+- **PROJECT_BOARD.md** — Added ENH-001 to Phase 4 and Summary
+
+### Corrected
+- **TASK-003** — Removed duplicate `PLANNED` status line; added `started`, `completed`, `actual_hours`
+- **TASK-005** — Added `actual_hours: 0.5`
+- **TASK-007** — Removed duplicate `PLANNED` status line; added `actual_hours: 0.5`
+- **TASK-015** — Added `actual_hours: 0.5`
+
+### Created
+- **ENH-001** — Enhancement for Form Designer Tenant Authorization (recreated from lost filesystem state)
+
+### Verified (No Changes Needed)
+- **TASK-001, TASK-002** — Frontmatter complete, matches template, change summaries exist ✅
+- **TASK-004, TASK-006, TASK-008-014, TASK-016-027** — All at `PLANNED` with correct `prd_version: 1.6.0` ✅
+- All tasks reference `parent_prd: PRD-001` ✅
+- All tasks have acceptance criteria ✅
+- All tasks have dependencies defined ✅
+- No BLOCKED or CANCELLED tasks ✅
+- No failure reports exist ✅

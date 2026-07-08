@@ -27,7 +27,7 @@ completed: 2026-07-07
 
 estimated_hours: 12
 
-actual_hours:
+actual_hours: 0.5
 
 parent_prd: PRD-001
 

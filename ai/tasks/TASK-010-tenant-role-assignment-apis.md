@@ -5,7 +5,7 @@ title: Implement Per-Tenant Role Assignment APIs (Backend)
 
 type: API
 
-status: PLANNED
+status: READY_FOR_DEV
 
 priority: High
 

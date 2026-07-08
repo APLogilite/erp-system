@@ -8,6 +8,7 @@ type: Feature
 
 status: PLANNING
 # PLANNING
+# PLANNED
 # READY_FOR_DEV
 # IN_DEVELOPMENT
 # READY_FOR_TEST
@@ -51,6 +52,14 @@ actual_hours:
 parent_prd:
 
 prd_version:
+
+prd_branch:
+
+base_branch:
+
+merge_target:
+
+merge_strategy:
 
 parent_task:
 
