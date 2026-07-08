@@ -35,6 +35,7 @@ import {
 import { useNavigate, useLocation } from 'react-router-dom';
 
 import { useAuthStore } from '@/core/auth/authStore';
+import { FormNavigationMenu } from '@/core/runtime/components/FormNavigationMenu';
 
 const drawerWidth = 280;
 
@@ -123,6 +124,9 @@ export function Sidebar({ mobileOpen = false, onMobileClose }: SidebarProps) {
       </List>
 
       <Divider sx={{ my: 1 }} />
+      <FormNavigationMenu />
+      <Divider sx={{ my: 1 }} />
+
       <ListSubheader sx={{ fontWeight: 600, fontSize: 11, lineHeight: '28px' }}>
         IDENTITY & ADMINISTRATION
       </ListSubheader>
