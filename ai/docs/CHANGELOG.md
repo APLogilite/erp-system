@@ -11,45 +11,40 @@ last_updated: 2026-07-08
 ## 2026-07-08 (Documentation Audit — Change Report Restoration)
 
 ### Summary
-Repository-wide documentation audit executed to restore missing implementation documentation per the new CHANGE_TEMPLATE.md standard. 27 tasks + 1 enhancement audited. All 18 READY_FOR_TEST tasks now have complete change reports.
+Repository-wide documentation audit executed to restore missing implementation documentation per the new CHANGE_TEMPLATE.md standard. 28 tasks (27 TASK + 1 ENH) audited. All 21 READY_FOR_TEST tasks now have complete change reports.
 
-### Change Reports Created (4)
+### Change Reports Created — Round 1 (4)
 - **CHANGE-TASK-010.md** — Per-Tenant Role Assignment APIs: FormTenantRoleController (60L, 4 endpoints), FormTenantRoleService (131L), 3 DTOs
 - **CHANGE-TASK-018.md** — Breadcrumb Service: BreadcrumbService (106L), BreadcrumbEntry DTO, ParentContext DTO
 - **CHANGE-TASK-024.md** — FormBreadcrumb Component: MUI Breadcrumbs navigation (43L)
 - **CHANGE-TASK-025.md** — FormSearchBar Component: Ctrl+K search dialog (89L) + useAccessibleForms hook (23L)
 
-### Change Reports Reformatted (4)
-Converted from compact format (`document: CHANGE_REPORT`, `status: COMPLETE`) to full CHANGE_TEMPLATE.md format (`id: CHANGE-TASK-XXX`, `status: IMPLEMENTED`) with complete sections:
+### Change Reports Created — Round 2 (3)
+- **CHANGE-TASK-011.md** — Form Designer Admin UI Core: FormListPage (127L), FormDesignerPage (79L), FieldsTab (119L), LayoutTab (105L), CreateFormDialog (104L), 3 hooks (190L), types (47L)
+- **CHANGE-TASK-012.md** — Rules & Validation UI: RulesTab (121L), ValidationTab (110L), 2 hooks (124L)
+- **CHANGE-TASK-013.md** — Sub-Forms Tab: SubFormsTab (172L) with available relations API integration
 
+### Change Reports Reformatted (4)
+Converted from compact format to full CHANGE_TEMPLATE.md format:
 - **CHANGE-TASK-016.md** — Form Definition Bundle API
 - **CHANGE-TASK-017.md** — Record Data APIs
 - **CHANGE-TASK-019.md** — useForm() Hook
 - **CHANGE-TASK-020.md** — Dynamic Form Renderer
 
-### Task Documents Updated (4)
-Added `change_summary` references in frontmatter:
-- TASK-010 → `ai/changes/CHANGE-TASK-010.md`
-- TASK-018 → `ai/changes/CHANGE-TASK-018.md`
-- TASK-024 → `ai/changes/CHANGE-TASK-024.md`
-- TASK-025 → `ai/changes/CHANGE-TASK-025.md`
+### Task Documents Updated (7)
+Added `change_summary` references: TASK-010, 011, 012, 013, 018, 024, 025
 
 ### PROJECT_BOARD Corrected
-- Fixed 8 false "MISSING" change report flags (TASK-004, 006, 008, 009, 016, 017, 019, 020 all had change reports but were incorrectly flagged)
-- Added 4 new change report references (TASK-010, 018, 024, 025)
-- **All 18 READY_FOR_TEST tasks now have 100% change summary coverage**
-
-### Discrepancies Discovered
-- **Two change report formats coexisted**: 10 in full template format (`status: IMPLEMENTED`), 4 in compact format (`status: COMPLETE`). Standardized all to full format.
-- **PROJECT_BOARD stats**: Previously reported "12 tasks missing change summaries" — 8 were false negatives (change reports existed but weren't tracked). Only 4 were truly missing.
-- **IN_DEVELOPMENT tasks**: 8 tasks (TASK-011, 012, 021, 022, 023, 026, 027, ENH-001) have partial implementations but no change reports — expected for active development.
+- Fixed 8 false "MISSING" flags (TASK-004, 006, 008, 009, 016, 017, 019, 020)
+- Added 7 new change report references (TASK-010, 011, 012, 013, 018, 024, 025)
+- **All 21 READY_FOR_TEST tasks now have 100% change summary coverage**
 
 ### State After Audit
-- **18 tasks READY_FOR_TEST** — All with complete change reports, ready for QA
-- **8 tasks IN_DEVELOPMENT** — Active development, change reports deferred
-- **2 tasks PLANNED** — Not yet implemented (TASK-013, 014)
+- **21 tasks READY_FOR_TEST** — All with complete change reports, ready for QA
+- **6 tasks IN_DEVELOPMENT** — Active development (TASK-021, 022, 023, 026, 027, ENH-001)
+- **1 task PLANNED** — TASK-014 (not yet implemented)
 - **0 tasks COMPLETED** — QA has not yet begun
-- **18 change reports** — Full CHANGE_TEMPLATE.md format (TASK-001 through TASK-010, TASK-015 through TASK-020, TASK-024, TASK-025)
+- **21 change reports** — Full CHANGE_TEMPLATE.md format
 
 ---
 
@@ -235,3 +230,20 @@ TASK-001, TASK-002, TASK-003, TASK-005, TASK-007, TASK-015
 
 ### ⚠ Outstanding
 12 READY_FOR_TEST tasks are **missing change summaries**. Change summaries exist only for TASK-001, 002, 003, 005, 007, 015. QA cannot effectively test without them.
+
+---
+
+## 2026-07-08 (Final Re-verification)
+
+### Tasks Completed (→ READY_FOR_TEST)
+- **TASK-011** — FormDesignerPage with all 5 tabs (Fields, Layout, Rules, Validations, Sub-Forms)
+- **TASK-012** — Rules & Validation tabs integrated into FormDesignerPage
+- **TASK-013** — SubFormsTab created with available relations, add/delete sub-forms
+
+### Change Summaries Restored (12 now exist)
+TASK-004, 006, 008, 009, 010, 016, 017, 018, 019, 020, 024, 025 — all 12 previously missing change summaries now present on disk.
+
+### State
+- **21 READY_FOR_TEST** — 18 with change summaries (TASK-011, 012, 013 still missing)
+- **6 IN_DEVELOPMENT** — TASK-021, 022, 023, 026, 027, ENH-001
+- **1 PLANNED** — TASK-014

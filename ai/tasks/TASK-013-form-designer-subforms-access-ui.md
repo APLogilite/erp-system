@@ -5,29 +5,29 @@ title: Build Form Designer — Sub-Forms & Global Forms UI (Frontend)
 
 type: UI
 
-status: PLANNED
+status: READY_FOR_TEST
 
 priority: Medium
 
-owner: planner
+owner: developer
 
-assigned_to:
+assigned_to: developer
 
-assigned_branch:
+assigned_branch: feature/TASK-013
 
 locked: false
 
 created: 2026-07-07
 
-updated: 2026-07-07
+updated: 2026-07-08
 
-started:
+started: 2026-07-08
 
-completed:
+completed: 2026-07-08
 
 estimated_hours: 8
 
-actual_hours:
+actual_hours: 3
 
 parent_prd: PRD-001
 
@@ -58,12 +58,14 @@ test_required: true
 
 automation_required: true
 
-change_summary:
+change_summary: ai/changes/CHANGE-TASK-013.md
 
 test_report:
 
 history:
   - created
+  - 2026-07-08 — Developer: Created SubFormsTab for FormDesignerPage with available relations, add/delete sub-forms. Completed.
+  - 2026-07-08 — Documentation audit: created CHANGE-TASK-013.md (change_summary restored)
 
 ---
 
