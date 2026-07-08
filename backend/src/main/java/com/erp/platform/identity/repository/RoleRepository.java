@@ -1,6 +1,7 @@
 package com.erp.platform.identity.repository;
 
 import com.erp.platform.identity.entity.Role;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -9,4 +10,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface RoleRepository extends JpaRepository<Role, UUID> {
   Optional<Role> findByCode(String code);
+  List<Role> findByCodeIn(List<String> codes);
 }
