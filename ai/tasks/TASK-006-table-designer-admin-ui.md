@@ -5,7 +5,7 @@ title: Build Table Designer Admin UI (Frontend)
 
 type: UI
 
-status: PLANNED
+status: READY_FOR_DEV
 
 priority: High
 
@@ -19,7 +19,7 @@ locked: false
 
 created: 2026-07-07
 
-updated: 2026-07-07
+updated: 2026-07-08
 
 started:
 

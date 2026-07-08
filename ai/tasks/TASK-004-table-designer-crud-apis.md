@@ -5,29 +5,29 @@ title: Implement Table Designer CRUD APIs (Backend)
 
 type: API
 
-status: READY_FOR_DEV
+status: READY_FOR_TEST
 
 priority: High
 
-owner: planner
+owner: developer
 
-assigned_to:
+assigned_to: developer
 
-assigned_branch:
+assigned_branch: feature/TASK-004
 
 locked: false
 
 created: 2026-07-07
 
-updated: 2026-07-07
+updated: 2026-07-08
 
-started:
+started: 2026-07-08
 
-completed:
+completed: 2026-07-08
 
 estimated_hours: 8
 
-actual_hours:
+actual_hours: 3
 
 parent_prd: PRD-001
 
@@ -59,7 +59,7 @@ test_required: true
 
 automation_required: true
 
-change_summary:
+change_summary: ai/changes/CHANGE-TASK-004.md
 
 test_report:
 
@@ -67,6 +67,7 @@ history:
   - created
   - 2026-07-08 — Planning audit: demoted READY_FOR_DEV → PLANNED (dependencies TASK-002, TASK-003 are READY_FOR_TEST, not COMPLETED; current workflow requires COMPLETED for activation)
   - 2026-07-08 — Re-evaluated: restored PLANNED → READY_FOR_DEV. WORKFLOW.md §Automatic Task Activation allows READY_FOR_TEST or COMPLETED to satisfy dependencies. Dependencies TASK-002, TASK-003 are both READY_FOR_TEST.
+  - 2026-07-08 — Implementation: completed all 10 endpoints with schema history, security, search/filter, type validation. Added 4 new DTOs, 4 controller endpoints, 4 service methods. Enabled @PreAuthorize via @EnableMethodSecurity.
 
 ---
 
@@ -128,14 +129,14 @@ Create `TableDesignerController` and `TableDesignerService` in `com.erp.core.met
 
 # Acceptance Criteria
 
-- [ ] All 10 endpoints work correctly with valid payloads
-- [ ] Creating a table stores metadata AND creates physical PostgreSQL table
-- [ ] Adding/deleting columns alters the physical table
-- [ ] Invalid table/column codes are rejected with clear error messages
-- [ ] Only System Admin can access these endpoints
-- [ ] Pagination and search/filter work on the list endpoint
-- [ ] Schema history is recorded on every table change
-- [ ] All endpoints return the standard `ApiResponse<T>` envelope
+- [x] All 10 endpoints work correctly with valid payloads
+- [x] Creating a table stores metadata AND creates physical PostgreSQL table
+- [x] Adding/deleting columns alters the physical table
+- [x] Invalid table/column codes are rejected with clear error messages
+- [x] Only System Admin can access these endpoints
+- [x] Pagination and search/filter work on the list endpoint
+- [x] Schema history is recorded on every table change
+- [x] All endpoints return the standard `ApiResponse<T>` envelope
 
 ---
 
