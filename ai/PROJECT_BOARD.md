@@ -24,6 +24,10 @@ Updated By: Planner
 | TASK-010 | PRD-001 | High | planner | | false | TASK-007 |
 | TASK-011 | PRD-001 | High | planner | | false | TASK-007 |
 | TASK-018 | PRD-001 | Medium | planner | | false | TASK-016 |
+| TASK-022 | PRD-001 | High | planner | | false | TASK-019 |
+| TASK-024 | PRD-001 | Medium | planner | | false | TASK-019 |
+| TASK-025 | PRD-001 | Medium | planner | | false | TASK-019 |
+| TASK-026 | PRD-001 | High | planner | | false | TASK-019 |
 | ENH-001 | PRD-001 | High | planner | | false | TASK-007 |
 
 ---
@@ -36,13 +40,8 @@ Updated By: Planner
 | TASK-012 | PRD-001 | High | PLANNED | planner | false | TASK-008, TASK-011 |
 | TASK-013 | PRD-001 | Medium | PLANNED | planner | false | TASK-009, TASK-011 |
 | TASK-014 | PRD-001 | Medium | PLANNED | planner | false | TASK-010 |
-| TASK-020 | PRD-001 | Critical | PLANNED | planner | false | TASK-019 |
 | TASK-021 | PRD-001 | High | PLANNED | planner | false | TASK-020 |
-| TASK-022 | PRD-001 | High | PLANNED | planner | false | TASK-019 |
 | TASK-023 | PRD-001 | High | PLANNED | planner | false | TASK-019, TASK-020 |
-| TASK-024 | PRD-001 | Medium | PLANNED | planner | false | TASK-019 |
-| TASK-025 | PRD-001 | Medium | PLANNED | planner | false | TASK-019 |
-| TASK-026 | PRD-001 | High | PLANNED | planner | false | TASK-019 |
 | TASK-027 | PRD-001 | High | PLANNED | planner | false | TASK-019, TASK-022 |
 
 ---
@@ -51,7 +50,7 @@ Updated By: Planner
 
 | Task | Branch | Owner | Started | ETA |
 |------|--------|-------|---------|-----|
-| TASK-019 | feature/TASK-019 | developer | 2026-07-08 | 3h |
+| TASK-020 | feature/TASK-020 | developer | 2026-07-08 | 4h |
 
 ---
 
@@ -67,6 +66,7 @@ Updated By: Planner
 | TASK-015 | feature/TASK-015 | ai/changes/CHANGE-TASK-015.md | planner |
 | TASK-016 | feature/TASK-016 | ai/changes/CHANGE-TASK-016.md | developer |
 | TASK-017 | feature/TASK-017 | ai/changes/CHANGE-TASK-017.md | developer |
+| TASK-019 | feature/TASK-019 | ai/changes/CHANGE-TASK-019.md | developer |
 
 ---
 
@@ -118,11 +118,11 @@ Tasks: 27 (TASK-001 to TASK-027)
 
 Completed: 0
 
-In QA: 8 (TASK-001, TASK-002, TASK-003, TASK-005, TASK-007, TASK-015, TASK-016, TASK-017)
+In QA: 9 (TASK-001, TASK-002, TASK-003, TASK-005, TASK-007, TASK-015, TASK-016, TASK-017, TASK-019)
 
-Ready for Dev: 8 (TASK-004, TASK-008, TASK-009, TASK-010, TASK-011, TASK-018, TASK-019, ENH-001)
+Ready for Dev: 12 (TASK-004, TASK-008, TASK-009, TASK-010, TASK-011, TASK-018, TASK-020, TASK-022, TASK-024, TASK-025, TASK-026, ENH-001)
 
-Planning: 11
+Planning: 6
 
 Blocked: 0
 
@@ -130,4 +130,4 @@ Bugs: 0
 
 Enhancements: 1 (ENH-001 — READY_FOR_DEV)
 
-Progress: 0% completed | 30% in QA (8/27) | 30% ready for dev + enhancement (8/27) | 41% awaiting upstream dependencies (11/27)
+Progress: 0% completed | 33% in QA (9/27) | 44% ready for dev + enhancement (12/27) | 22% awaiting upstream dependencies (6/27)
