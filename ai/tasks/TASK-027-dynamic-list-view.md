@@ -5,17 +5,17 @@ title: Build Dynamic List View with DataGrid (Frontend)
 
 type: UI
 
-status: PLANNED
+status: IN_DEVELOPMENT
 
 priority: High
 
-owner: planner
+owner: developer
 
-assigned_to:
+assigned_to: developer
 
-assigned_branch:
+assigned_branch: feature/TASK-027
 
-locked: false
+locked: true
 
 created: 2026-07-07
 
