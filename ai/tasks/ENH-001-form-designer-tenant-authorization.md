@@ -5,17 +5,17 @@ title: Add Tenant Authorization to Form Designer API
 
 type: Enhancement
 
-status: READY_FOR_DEV
+status: IN_DEVELOPMENT
 
 priority: High
 
-owner: planner
+owner: developer
 
-assigned_to:
+assigned_to: developer
 
-assigned_branch:
+assigned_branch: feature/ENH-001
 
-locked: false
+locked: true
 
 created: 2026-07-07
 

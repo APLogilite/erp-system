@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -36,6 +37,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping(ApiVersionConfig.API_BASE + "/metadata/forms")
+@PreAuthorize("hasAnyRole('SYSTEM_ADMIN','TENANT_ADMIN')")
 public class FormDesignerController {
 
   private final FormDesignerService formDesignerService;

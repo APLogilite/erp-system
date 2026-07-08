@@ -18,6 +18,8 @@ import com.erp.core.metadata.repository.FormFieldValidationRepository;
 import com.erp.core.metadata.repository.FormSubFormRepository;
 import com.erp.core.metadata.repository.MetadataModelRepository;
 import com.erp.core.metadata.repository.MetadataViewRepository;
+import com.erp.platform.identity.dto.RuntimeContext;
+import com.erp.platform.identity.dto.RuntimeContextHolder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -67,6 +69,9 @@ public class FormDesignerService {
    */
   public List<FormDesignDto> listForms(String scope, UUID tenantId) {
     List<MetadataView> views;
+    UUID currentTenantId = getCurrentTenantId();
+    List<String> currentRoles = getCurrentRoles();
+
     if (scope != null && tenantId != null) {
       views = metadataViewRepository.findAll().stream()
           .filter(v -> "form".equals(v.getType()))
@@ -78,6 +83,15 @@ public class FormDesignerService {
           .filter(v -> "form".equals(v.getType()))
           .toList();
     }
+
+    // Tenant Admin: filter to own tenant forms + global forms
+    if (currentTenantId != null && !currentRoles.contains("sys_admin")) {
+      views = views.stream()
+          .filter(v -> v.getTenantId() == null // global
+              || v.getTenantId().equals(currentTenantId))
+          .toList();
+    }
+
     return views.stream().map(this::toFormDesignDto).toList();
   }
 
@@ -87,6 +101,7 @@ public class FormDesignerService {
   public FormDesignDto getForm(UUID formId) {
     MetadataView view = metadataViewRepository.findById(formId)
         .orElseThrow(() -> new IllegalArgumentException("Form not found: " + formId));
+    checkTenantAccess(view);
     return toFormDesignDto(view);
   }
 
@@ -95,9 +110,21 @@ public class FormDesignerService {
    */
   @Transactional
   public FormDesignDto createForm(FormCreateRequest request) {
+    UUID currentTenantId = getCurrentTenantId();
+    List<String> currentRoles = getCurrentRoles();
+
     // Validate unique form code
     if (metadataViewRepository.findByName(request.getName()).isPresent()) {
       throw new IllegalArgumentException("Form code already exists: " + request.getName());
+    }
+
+    // Non-system-admin: enforce tenant scope
+    String scope = request.getScope() != null ? request.getScope() : "tenant";
+    if (currentTenantId != null && !currentRoles.contains("sys_admin")) {
+      if ("global".equals(scope)) {
+        throw new SecurityException("Only System Admin can create global forms");
+      }
+      scope = "tenant";
     }
 
     // Validate model exists
@@ -110,12 +137,17 @@ public class FormDesignerService {
     view.setName(request.getName());
     view.setModelName(request.getModelName());
     view.setType("form");
-    view.setScope(request.getScope() != null ? request.getScope() : "tenant");
+    view.setScope(scope);
     view.setDescription(request.getDescription());
     view.setWhereClauseField(request.getWhereClauseField());
     view.setWhereClauseOperator(request.getWhereClauseOperator());
     view.setWhereClauseValue(request.getWhereClauseValue());
     view.setDefinition(new HashMap<>());
+
+    // Set tenant ID for tenant-scoped forms
+    if ("tenant".equals(scope) && currentTenantId != null) {
+      view.setTenantId(currentTenantId);
+    }
 
     MetadataView saved = metadataViewRepository.save(view);
     return toFormDesignDto(saved);
@@ -128,6 +160,7 @@ public class FormDesignerService {
   public FormDesignDto updateForm(UUID formId, FormUpdateRequest request) {
     MetadataView view = metadataViewRepository.findById(formId)
         .orElseThrow(() -> new IllegalArgumentException("Form not found: " + formId));
+    checkTenantOwnership(view);
 
     if (request.getLabel() != null) {
       view.setName(request.getLabel());
@@ -157,6 +190,7 @@ public class FormDesignerService {
   public void deleteForm(UUID formId) {
     MetadataView view = metadataViewRepository.findById(formId)
         .orElseThrow(() -> new IllegalArgumentException("Form not found: " + formId));
+    checkTenantOwnership(view);
 
     // Cascade delete: sub-forms
     List<FormSubFormEntity> subForms = formSubFormRepository.findByParentFormIdOrderByPosition(formId);
@@ -274,6 +308,41 @@ public class FormDesignerService {
     }
 
     return toFormDesignDto(savedClone);
+  }
+
+  // ---------------------------------------------------------------
+  // Authorization helpers
+  // ---------------------------------------------------------------
+
+  private UUID getCurrentTenantId() {
+    RuntimeContext ctx = RuntimeContextHolder.get();
+    return ctx != null ? ctx.getTenantId() : null;
+  }
+
+  private List<String> getCurrentRoles() {
+    RuntimeContext ctx = RuntimeContextHolder.get();
+    return ctx != null && ctx.getRoles() != null ? ctx.getRoles() : List.of();
+  }
+
+  private void checkTenantAccess(MetadataView view) {
+    UUID currentTenantId = getCurrentTenantId();
+    List<String> roles = getCurrentRoles();
+    if (roles.contains("sys_admin")) return;
+    if (view.getTenantId() == null) return;
+    if (currentTenantId != null && currentTenantId.equals(view.getTenantId())) return;
+    throw new SecurityException("Access denied to form " + view.getName());
+  }
+
+  private void checkTenantOwnership(MetadataView view) {
+    UUID currentTenantId = getCurrentTenantId();
+    List<String> roles = getCurrentRoles();
+    if (roles.contains("sys_admin")) return;
+    if (view.getTenantId() == null) {
+      throw new SecurityException("Cannot modify global form " + view.getName());
+    }
+    if (currentTenantId == null || !currentTenantId.equals(view.getTenantId())) {
+      throw new SecurityException("Cannot modify form " + view.getName());
+    }
   }
 
   /**
