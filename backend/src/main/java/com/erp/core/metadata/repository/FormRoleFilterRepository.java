@@ -12,4 +12,6 @@ public interface FormRoleFilterRepository extends JpaRepository<FormRoleFilterEn
   List<FormRoleFilterEntity> findByFormIdAndRoleId(UUID formId, UUID roleId);
 
   List<FormRoleFilterEntity> findByFormId(UUID formId);
+
+  List<FormRoleFilterEntity> findByFormIdAndRoleIdIn(UUID formId, List<UUID> roleIds);
 }

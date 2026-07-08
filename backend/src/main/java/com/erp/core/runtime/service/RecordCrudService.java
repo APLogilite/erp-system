@@ -1,7 +1,12 @@
 package com.erp.core.runtime.service;
 
+import com.erp.core.metadata.entity.FormRoleFilterEntity;
+import com.erp.core.metadata.repository.FormRoleFilterRepository;
 import com.erp.core.runtime.dto.FieldDefinitionResponse;
 import com.erp.core.runtime.dto.FormDefinitionBundleResponse;
+import com.erp.platform.identity.dto.RuntimeContext;
+import com.erp.platform.identity.entity.Role;
+import com.erp.platform.identity.repository.RoleRepository;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
@@ -17,24 +22,34 @@ import org.springframework.stereotype.Service;
 /**
  * Orchestrates CRUD operations on dynamic form records.
  * Wires form definitions, tenant isolation, where clause enforcement,
- * row filters, sub-form child records, and breadcrumb context.
+ * row filters (with dynamic variable resolution), sub-form child records,
+ * and breadcrumb context.
  */
 @Service
 public class RecordCrudService {
 
   private static final Logger log = LoggerFactory.getLogger(RecordCrudService.class);
 
+  private static final String VAR_CURRENT_USER_ID = "{current_user_id}";
+  private static final String VAR_CURRENT_TENANT_ID = "{current_tenant_id}";
+
   private final DynamicCrudService dynamicCrudService;
   private final FormDefinitionAssemblyService assemblyService;
   private final RecordValidationService validationService;
+  private final FormRoleFilterRepository formRoleFilterRepository;
+  private final RoleRepository roleRepository;
 
   public RecordCrudService(
       DynamicCrudService dynamicCrudService,
       FormDefinitionAssemblyService assemblyService,
-      RecordValidationService validationService) {
+      RecordValidationService validationService,
+      FormRoleFilterRepository formRoleFilterRepository,
+      RoleRepository roleRepository) {
     this.dynamicCrudService = dynamicCrudService;
     this.assemblyService = assemblyService;
     this.validationService = validationService;
+    this.formRoleFilterRepository = formRoleFilterRepository;
+    this.roleRepository = roleRepository;
   }
 
   /**
@@ -43,7 +58,8 @@ public class RecordCrudService {
   public Map<String, Object> listRecords(
       String formCode,
       UUID tenantId,
-      List<UUID> roleIds,
+      List<String> roleCodes,
+      UUID userId,
       int page,
       int size,
       String sortField,
@@ -59,7 +75,8 @@ public class RecordCrudService {
       throw new IllegalArgumentException("Form has no associated table: " + formCode);
     }
 
-    List<DynamicCrudService.RowFilter> rowFilters = buildRowFilters(def.getFormId(), roleIds);
+    List<DynamicCrudService.RowFilter> rowFilters = buildRowFilters(
+        def.getFormId(), roleCodes, tenantId, userId);
 
     return dynamicCrudService.listRecords(
         tableName,
@@ -80,7 +97,8 @@ public class RecordCrudService {
       String formCode,
       UUID recordId,
       UUID tenantId,
-      List<UUID> roleIds) {
+      List<String> roleCodes,
+      UUID userId) {
 
     FormDefinitionBundleResponse def = assemblyService.assembleDefinition(formCode, null, null);
     if (def == null) {
@@ -88,7 +106,8 @@ public class RecordCrudService {
     }
 
     String tableName = def.getTableName();
-    List<DynamicCrudService.RowFilter> rowFilters = buildRowFilters(def.getFormId(), roleIds);
+    List<DynamicCrudService.RowFilter> rowFilters = buildRowFilters(
+        def.getFormId(), roleCodes, tenantId, userId);
 
     // Get the main record
     Map<String, Object> record = dynamicCrudService.getRecord(tableName, recordId, tenantId, rowFilters);
@@ -102,13 +121,14 @@ public class RecordCrudService {
       for (var subForm : def.getSubForms()) {
         FormDefinitionBundleResponse childDef = assemblyService.assembleDefinition(subForm.getChildFormCode(), null, null);
         if (childDef != null && childDef.getTableName() != null) {
-          List<DynamicCrudService.RowFilter> childFilters = buildRowFilters(childDef.getFormId(), roleIds);
+          List<DynamicCrudService.RowFilter> childFilters = buildRowFilters(
+              childDef.getFormId(), roleCodes, tenantId, userId);
           List<Map<String, Object>> children = dynamicCrudService.getChildRecords(
               childDef.getTableName(),
               subForm.getRelationCode(),
               recordId,
               tenantId);
-          // Filter children with row filters
+          // Apply row filters to children
           List<Map<String, Object>> filtered = new ArrayList<>();
           for (Map<String, Object> child : children) {
             Map<String, Object> filteredChild = dynamicCrudService.getRecord(
@@ -141,7 +161,7 @@ public class RecordCrudService {
       Map<String, Object> data,
       UUID tenantId,
       UUID userId,
-      List<UUID> roleIds) {
+      List<String> roleCodes) {
 
     FormDefinitionBundleResponse def = assemblyService.assembleDefinition(formCode, null, null);
     if (def == null) {
@@ -172,7 +192,7 @@ public class RecordCrudService {
       Map<String, Object> data,
       UUID tenantId,
       UUID userId,
-      List<UUID> roleIds) {
+      List<String> roleCodes) {
 
     FormDefinitionBundleResponse def = assemblyService.assembleDefinition(formCode, null, null);
     if (def == null) {
@@ -212,11 +232,80 @@ public class RecordCrudService {
   // Private helpers
   // ---------------------------------------------------------------
 
-  private List<DynamicCrudService.RowFilter> buildRowFilters(UUID formId, List<UUID> roleIds) {
-    // Row filters would be loaded from sys_form_role_filters.
-    // For now, return empty list. Full implementation requires
-    // FormRoleFilterRepository and JWT variable resolution.
-    return Collections.emptyList();
+  /**
+   * Builds row filter conditions by loading configured filters from
+   * sys_form_role_filters and resolving dynamic variables against
+   * the current user's context.
+   */
+  private List<DynamicCrudService.RowFilter> buildRowFilters(
+      UUID formId,
+      List<String> roleCodes,
+      UUID tenantId,
+      UUID userId) {
+
+    if (roleCodes == null || roleCodes.isEmpty()) {
+      return Collections.emptyList();
+    }
+
+    // Convert role codes to role UUIDs
+    List<Role> userRoles = roleRepository.findByCodeIn(roleCodes);
+    List<UUID> userRoleIds = userRoles.stream().map(Role::getId).collect(Collectors.toList());
+    if (userRoleIds.isEmpty()) {
+      return Collections.emptyList();
+    }
+
+    // Load row filters for this form + user's roles
+    List<FormRoleFilterEntity> filters = formRoleFilterRepository
+        .findByFormIdAndRoleIdIn(formId, userRoleIds);
+
+    if (filters.isEmpty()) {
+      return Collections.emptyList();
+    }
+
+    // Sort by position and resolve dynamic variables
+    List<DynamicCrudService.RowFilter> rowFilters = filters.stream()
+        .sorted((a, b) -> Integer.compare(
+            a.getPosition() != null ? a.getPosition() : 0,
+            b.getPosition() != null ? b.getPosition() : 0))
+        .map(f -> {
+          String resolvedValue = resolveDynamicVariables(
+              f.getConditionValue(), tenantId, userId);
+          return new DynamicCrudService.RowFilter(
+              f.getConditionField(),
+              f.getConditionOperator(),
+              resolvedValue);
+        })
+        .collect(Collectors.toList());
+
+    log.debug("Resolved {} row filters for formId={}, user roles={}",
+        rowFilters.size(), formId, roleCodes);
+
+    return rowFilters;
+  }
+
+  /**
+   * Resolves dynamic variable placeholders in filter condition values.
+   *
+   * <p>Supported variables:
+   * <ul>
+   *   <li>{@code {current_user_id}} — replaced with the user's UUID</li>
+   *   <li>{@code {current_tenant_id}} — replaced with the tenant UUID</li>
+   * </ul>
+   *
+   * <p>Unsupported variables are left as-is (will not match any data).
+   */
+  private String resolveDynamicVariables(String value, UUID tenantId, UUID userId) {
+    if (value == null) {
+      return null;
+    }
+    String resolved = value;
+    if (userId != null) {
+      resolved = resolved.replace(VAR_CURRENT_USER_ID, userId.toString());
+    }
+    if (tenantId != null) {
+      resolved = resolved.replace(VAR_CURRENT_TENANT_ID, tenantId.toString());
+    }
+    return resolved;
   }
 
   private List<Map<String, Object>> buildBreadcrumb(
