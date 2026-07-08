@@ -11,4 +11,5 @@ import org.springframework.stereotype.Repository;
 public interface MetadataViewRepository extends JpaRepository<MetadataView, UUID> {
   Optional<MetadataView> findByName(String name);
   List<MetadataView> findByModelName(String modelName);
+  List<MetadataView> findByModelNameAndType(String modelName, String type);
 }
