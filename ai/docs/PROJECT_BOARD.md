@@ -44,13 +44,14 @@ last_updated: 2026-07-07
 |------|-------|----------|------------|--------|------------|
 | TASK-003 | DDL Executor Service | High | TASK-002 | READY_FOR_TEST | prd/PRD-001 |
 | TASK-004 | Table Designer CRUD APIs | High | TASK-002, TASK-003 | READY_FOR_DEV | prd/PRD-001 |
+| TASK-004 | Table Designer CRUD APIs | High | TASK-002, TASK-003 | READY_FOR_TEST | prd/PRD-001 |
 | TASK-005 | Schema History Service | Low | TASK-002 | READY_FOR_TEST | prd/PRD-001 |
 
 ## Phase 3: Table Designer Frontend
 
 | Task | Title | Priority | Depends On | Status | PRD Branch |
 |------|-------|----------|------------|--------|------------|
-| TASK-006 | Table Designer Admin UI | High | TASK-004 | PLANNED | prd/PRD-001 |
+| TASK-006 | Table Designer Admin UI | High | TASK-004 | READY_FOR_DEV | prd/PRD-001 |
 
 ## Phase 4: Form Designer Backend
 
@@ -61,6 +62,9 @@ last_updated: 2026-07-07
 | TASK-008 | Form Rules & Validation APIs | High | TASK-007 | READY_FOR_DEV | prd/PRD-001 |
 | TASK-009 | Sub-Form Configuration APIs | High | TASK-007 | READY_FOR_DEV | prd/PRD-001 |
 | TASK-010 | Per-Tenant Role Assignment APIs | High | TASK-007 | READY_FOR_DEV | prd/PRD-001 |
+| TASK-008 | Form Rules & Validation APIs | High | TASK-007 | READY_FOR_TEST | prd/PRD-001 |
+| TASK-009 | Sub-Form Configuration APIs | High | TASK-007 | READY_FOR_TEST | prd/PRD-001 |
+| TASK-010 | Per-Tenant Role Assignment APIs | High | TASK-007 | READY_FOR_TEST | prd/PRD-001 |
 
 ## Phase 5: Form Designer Frontend
 
@@ -69,7 +73,7 @@ last_updated: 2026-07-07
 | TASK-011 | Form Designer Admin UI — Core | High | TASK-007 | READY_FOR_DEV | prd/PRD-001 |
 | TASK-012 | Form Designer — Rules & Validation UI | High | TASK-008, TASK-011 | PLANNED | prd/PRD-001 |
 | TASK-013 | Form Designer — Sub-Forms & Global Forms UI | Medium | TASK-009, TASK-011 | PLANNED | prd/PRD-001 |
-| TASK-014 | Global Forms Role Access UI (System Admin) | Medium | TASK-010 | PLANNED | prd/PRD-001 |
+| TASK-014 | Global Forms Role Access UI (System Admin) | Medium | TASK-010 | READY_FOR_DEV | prd/PRD-001 |
 
 ## Phase 6: Runtime Backend
 
@@ -79,12 +83,15 @@ last_updated: 2026-07-07
 | TASK-016 | Form Definition Bundle API | Critical | TASK-007, TASK-015 | READY_FOR_DEV | prd/PRD-001 |
 | TASK-017 | Record Data APIs | Critical | TASK-015, TASK-016 | PLANNED | prd/PRD-001 |
 | TASK-018 | Breadcrumb & Parent Context Service | Medium | TASK-016 | PLANNED | prd/PRD-001 |
+| TASK-016 | Form Definition Bundle API | Critical | TASK-007, TASK-015 | READY_FOR_TEST | prd/PRD-001 |
+| TASK-017 | Record Data APIs | Critical | TASK-015, TASK-016 | READY_FOR_TEST | prd/PRD-001 |
+| TASK-018 | Breadcrumb & Parent Context Service | Medium | TASK-016 | READY_FOR_TEST | prd/PRD-001 |
 
 ## Phase 7: Runtime Frontend
 
 | Task | Title | Priority | Depends On | Status | PRD Branch |
 |------|-------|----------|------------|--------|------------|
-| TASK-019 | useForm() Hook | Critical | TASK-016, TASK-017 | PLANNED | prd/PRD-001 |
+| TASK-019 | useForm() Hook | Critical | TASK-016, TASK-017 | READY_FOR_DEV | prd/PRD-001 |
 | TASK-020 | Dynamic Form Renderer | Critical | TASK-019 | PLANNED | prd/PRD-001 |
 | TASK-021 | Client-Side Rules Engine | High | TASK-020 | PLANNED | prd/PRD-001 |
 | TASK-022 | Form Toolbar | High | TASK-019 | PLANNED | prd/PRD-001 |
@@ -104,6 +111,10 @@ last_updated: 2026-07-07
 | 🟣 READY_FOR_TEST | 6 | TASK-001, TASK-002, TASK-003, TASK-005, TASK-007, TASK-015 |
 | 🟤 PLANNED | 15 | TASK-006, TASK-012, TASK-013, TASK-014, TASK-017 to TASK-027 |
 | 🟢 READY_FOR_DEV | 7 | TASK-004, TASK-008, TASK-009, TASK-010, TASK-011, TASK-016, ENH-001 |
+| Total Tasks | 27 | TASK-001 to TASK-027 |
+| 🟣 READY_FOR_TEST | 13 | TASK-001 to TASK-005, TASK-007 to TASK-010, TASK-015 to TASK-018 |
+| 🟤 PLANNED | 10 | TASK-012, TASK-013, TASK-020 to TASK-027 |
+| 🟢 READY_FOR_DEV | 4 | TASK-006, TASK-011, TASK-014, TASK-019 |
 | 🟡 IN_DEVELOPMENT | 0 | — |
 | 🔵 PLANNING | 0 | — |
 | 🔴 BLOCKED | 0 | — |
