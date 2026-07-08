@@ -16,6 +16,7 @@ import {
   History,
   Person,
   AdminPanelSettings,
+  TableChart,
 } from '@mui/icons-material';
 import {
   Drawer,
@@ -68,6 +69,7 @@ const adminItems: NavItem[] = [
   { text: 'Permissions', icon: Security, path: '/app/admin/permissions' },
   { text: 'Sessions', icon: Devices, path: '/app/admin/sessions' },
   { text: 'Audit Log', icon: History, path: '/app/admin/audit' },
+  { text: 'Table Designer', icon: TableChart, path: '/app/admin/tables' },
 ];
 
 type SidebarProps = { mobileOpen?: boolean; onMobileClose?: () => void };

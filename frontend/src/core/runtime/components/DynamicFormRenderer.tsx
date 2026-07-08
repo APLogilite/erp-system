@@ -7,10 +7,10 @@
  * Supports three modes: create, edit, view.
  */
 
-import type { FieldDefinition, FormDefinition, LayoutSection } from '../hooks/useForm.types';
-
-import React, { useCallback, useMemo } from 'react';
 import { Alert, Box, CircularProgress, Stack, Typography } from '@mui/material';
+import React, { useCallback, useMemo } from 'react';
+
+import type { FieldDefinition, FormDefinition, LayoutSection } from '../hooks/useForm.types';
 
 import { FormSection } from './FormSection';
 

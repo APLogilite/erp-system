@@ -42,6 +42,14 @@ export const ENDPOINTS = {
     models: '/metadata/models',
     views: '/metadata/views',
     workflows: '/metadata/workflows',
+    tables: {
+      base: '/metadata/tables',
+      detail: (id: string) => `/metadata/tables/${id}`,
+      columns: (tableId: string) => `/metadata/tables/${tableId}/columns`,
+      column: (tableId: string, colId: string) => `/metadata/tables/${tableId}/columns/${colId}`,
+      reorder: (tableId: string) => `/metadata/tables/${tableId}/columns/reorder`,
+      history: (tableId: string) => `/metadata/tables/${tableId}/history`,
+    },
   },
   customers: {
     base: '/customers',

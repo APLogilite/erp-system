@@ -5,15 +5,15 @@ title: Build Table Designer Admin UI (Frontend)
 
 type: UI
 
-status: READY_FOR_DEV
+status: READY_FOR_TEST
 
 priority: High
 
-owner: planner
+owner: developer
 
-assigned_to:
+assigned_to: developer
 
-assigned_branch:
+assigned_branch: feature/TASK-006
 
 locked: false
 
@@ -21,13 +21,13 @@ created: 2026-07-07
 
 updated: 2026-07-08
 
-started:
+started: 2026-07-08
 
-completed:
+completed: 2026-07-08
 
 estimated_hours: 12
 
-actual_hours:
+actual_hours: 4
 
 parent_prd: PRD-001
 
@@ -55,12 +55,14 @@ test_required: true
 
 automation_required: true
 
-change_summary:
+change_summary: ai/changes/CHANGE-TASK-006.md
 
 test_report:
 
 history:
   - created
+  - 2026-07-08 — Auto-activated PLANNED → READY_FOR_DEV (dependency TASK-004 completed)
+  - 2026-07-08 — Implementation: built 3 pages (TableListPage, CreateTablePage, TableDetailPage), 3 components (ColumnList, ColumnFormDialog, SchemaHistoryTimeline), 2 hooks (useTables, useColumns), type definitions, route/sidebar integration
 
 ---
 
@@ -108,14 +110,14 @@ Create React components for the Table Designer section of the admin panel.
 
 # Acceptance Criteria
 
-- [ ] System Admin can create a table with columns through the UI
-- [ ] Table creation shows loading state, success/error feedback
-- [ ] Columns can be added, edited, deleted, and reordered
-- [ ] Deleting a column warns about forms using it
-- [ ] Schema history is viewable
-- [ ] UI is responsive (works on tablet+)
-- [ ] Navigation: left sidebar has "Table Designer" link
-- [ ] All form validations work client-side before API call
+- [x] System Admin can create a table with columns through the UI
+- [x] Table creation shows loading state, success/error feedback
+- [x] Columns can be added, edited, deleted, and reordered
+- [x] Deleting a column warns about forms using it
+- [x] Schema history is viewable
+- [x] UI is responsive (works on tablet+)
+- [x] Navigation: left sidebar has "Table Designer" link
+- [x] All form validations work client-side before API call
 
 ---
 
