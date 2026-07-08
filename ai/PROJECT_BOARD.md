@@ -2,7 +2,7 @@
 
 Last Updated: 2026-07-08
 
-Updated By: Planner
+Updated By: Developer
 
 ---
 
@@ -18,7 +18,7 @@ Updated By: Planner
 
 | Task | PRD | Priority | Owner | Branch | Locked | Depends On |
 |------|-----|----------|-------|--------|--------|------------|
-| *(none — all eligible tasks already implemented)* | | | | | | |
+| TASK-014 | PRD-001 | Medium | developer | *(not yet created)* | false | TASK-010 |
 
 ---
 
@@ -26,12 +26,7 @@ Updated By: Planner
 
 | Task | Branch | Owner | Started | ETA |
 |------|--------|-------|---------|-----|
-| TASK-021 | feature/TASK-021 | developer | 2026-07-08 | — |
-| TASK-022 | feature/TASK-022 | developer | 2026-07-08 | — |
-| TASK-023 | feature/TASK-023 | developer | 2026-07-08 | — |
-| TASK-026 | feature/TASK-026 | developer | 2026-07-08 | — |
-| TASK-027 | feature/TASK-027 | developer | 2026-07-08 | — |
-| ENH-001 | feature/ENH-001 | developer | 2026-07-08 | — |
+| *(none)* | | | | |
 
 ---
 
@@ -58,8 +53,14 @@ Updated By: Planner
 | TASK-018 | feature/TASK-018 | ai/changes/CHANGE-TASK-018.md |
 | TASK-019 | feature/TASK-019 | ai/changes/CHANGE-TASK-019.md |
 | TASK-020 | feature/TASK-020 | ai/changes/CHANGE-TASK-020.md |
+| TASK-021 | feature/TASK-021 | ai/changes/CHANGE-TASK-021.md |
+| TASK-022 | feature/TASK-022 | ai/changes/CHANGE-TASK-022.md |
+| TASK-023 | feature/TASK-023 | ai/changes/CHANGE-TASK-023.md |
 | TASK-024 | feature/TASK-024 | ai/changes/CHANGE-TASK-024.md |
 | TASK-025 | feature/TASK-025 | ai/changes/CHANGE-TASK-025.md |
+| TASK-026 | feature/TASK-026 | ai/changes/CHANGE-TASK-026.md |
+| TASK-027 | feature/TASK-027 | ai/changes/CHANGE-TASK-027.md |
+| ENH-001 | feature/ENH-001 | ai/changes/CHANGE-ENH-001.md |
 
 ---
 
@@ -83,7 +84,7 @@ Updated By: Planner
 
 | Task | PRD | Priority | Status | Owner | Locked | Depends On |
 |------|-----|----------|--------|--------|--------|------------|
-| TASK-014 | PRD-001 | Medium | PLANNED | planner | false | TASK-010 |
+| *(none)* | | | | | | |
 
 ---
 
@@ -99,7 +100,7 @@ Updated By: Planner
 
 | Task | Parent PRD | Parent Task | Status | Owner |
 |------|------------|-------------|--------|-------|
-| ENH-001 | PRD-001 | TASK-007 | IN_DEVELOPMENT | developer |
+| ENH-001 | PRD-001 | TASK-007 | READY_FOR_TEST | developer |
 
 ---
 
@@ -117,11 +118,11 @@ PRDs: 1 (PRD-001 — IN_DEVELOPMENT)
 
 | Status | Count | Tasks |
 |--------|-------|-------|
-| Ready for Test | 21 | TASK-001–013, TASK-015–020, TASK-024–025 |
-| In Development | 6 | TASK-021–023, TASK-026–027, ENH-001 |
-| Planning | 1 | TASK-014 |
+| Ready for Test | 27 | TASK-001–013, TASK-015–027, ENH-001 |
+| Ready For Development | 1 | TASK-014 |
+| In Development | 0 | — |
 | Completed | 0 | — |
 
-Change Summaries: 21/21 READY_FOR_TEST tasks have change summaries. ✅
+Change Summaries: 27/27 READY_FOR_TEST tasks have change summaries. ✅
 
-Progress: 0% completed | 75% in QA (21/28) | 21% in development (6/28) | 4% pending (1/28)
+Progress: 0% completed | 96% in QA (27/28) | 0% in development (0/28) | 4% pending (1/28)

@@ -5,7 +5,7 @@ title: Add Tenant Authorization to Form Designer API
 
 type: Enhancement
 
-status: IN_DEVELOPMENT
+status: READY_FOR_TEST
 
 priority: High
 
@@ -15,19 +15,19 @@ assigned_to: developer
 
 assigned_branch: feature/ENH-001
 
-locked: true
+locked: false
 
 created: 2026-07-07
 
-updated: 2026-07-07
+updated: 2026-07-08
 
-started:
+started: 2026-07-08
 
-completed:
+completed: 2026-07-08
 
 estimated_hours: 4
 
-actual_hours:
+actual_hours: 3
 
 parent_prd: PRD-001
 
@@ -59,7 +59,7 @@ test_required: true
 
 automation_required: true
 
-change_summary:
+change_summary: ai/changes/CHANGE-ENH-001.md
 
 test_report:
 
@@ -68,6 +68,7 @@ history:
   - 2026-07-07 — Created because TASK-007 shipped without tenant-scoped authorization. Developer explicitly deferred this.
   - 2026-07-08 — Planning audit: demoted READY_FOR_DEV → PLANNED (dependency TASK-007 is READY_FOR_TEST, not COMPLETED; current workflow requires COMPLETED for activation)
   - 2026-07-08 — Re-evaluated: restored PLANNED → READY_FOR_DEV. WORKFLOW.md allows READY_FOR_TEST or COMPLETED. Dependency TASK-007 is READY_FOR_TEST.
+  - 2026-07-08 — Implemented: @PreAuthorize on FormDesignerController, tenant filtering in FormDesignerService. Merged into prd/PRD-001-dynamic-form-configuration. Set READY_FOR_TEST.
 
 ---
 

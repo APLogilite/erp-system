@@ -5,7 +5,7 @@ title: Build Dynamic List View with DataGrid (Frontend)
 
 type: UI
 
-status: IN_DEVELOPMENT
+status: READY_FOR_TEST
 
 priority: High
 
@@ -15,19 +15,19 @@ assigned_to: developer
 
 assigned_branch: feature/TASK-027
 
-locked: true
+locked: false
 
 created: 2026-07-07
 
-updated: 2026-07-07
+updated: 2026-07-08
 
-started:
+started: 2026-07-08
 
-completed:
+completed: 2026-07-08
 
 estimated_hours: 8
 
-actual_hours:
+actual_hours: 5
 
 parent_prd: PRD-001
 
@@ -57,12 +57,13 @@ test_required: true
 
 automation_required: true
 
-change_summary:
+change_summary: ai/changes/CHANGE-TASK-027.md
 
 test_report:
 
 history:
   - created
+  - 2026-07-08 — Implemented: DynamicListView, useRecordList. Merged into prd/PRD-001-dynamic-form-configuration. Set READY_FOR_TEST.
 
 ---
 

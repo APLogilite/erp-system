@@ -5,11 +5,11 @@ title: Build Global Forms Role Access UI for System Admin (Frontend)
 
 type: UI
 
-status: PLANNED
+status: READY_FOR_DEV
 
 priority: Medium
 
-owner: planner
+owner: developer
 
 assigned_to:
 
@@ -19,7 +19,7 @@ locked: false
 
 created: 2026-07-07
 
-updated: 2026-07-07
+updated: 2026-07-08
 
 started:
 
@@ -61,6 +61,7 @@ test_report:
 
 history:
   - created
+  - 2026-07-08 — Auto-activated: PLANNED → READY_FOR_DEV. Dependency TASK-010 is READY_FOR_TEST. Per WORKFLOW.md auto-activation rules.
 
 ---
 
