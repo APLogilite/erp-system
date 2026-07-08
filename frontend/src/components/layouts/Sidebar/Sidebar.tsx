@@ -70,6 +70,7 @@ const adminItems: NavItem[] = [
   { text: 'Sessions', icon: Devices, path: '/app/admin/sessions' },
   { text: 'Audit Log', icon: History, path: '/app/admin/audit' },
   { text: 'Table Designer', icon: TableChart, path: '/app/admin/tables' },
+  { text: 'Form Designer', icon: Dashboard, path: '/app/admin/forms' },
 ];
 
 type SidebarProps = { mobileOpen?: boolean; onMobileClose?: () => void };

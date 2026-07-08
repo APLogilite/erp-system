@@ -3,6 +3,8 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 import { CreateTablePage } from '../modules/admin/tables/CreateTablePage';
 import { TableDetailPage } from '../modules/admin/tables/TableDetailPage';
 import { TableListPage } from '../modules/admin/tables/TableListPage';
+import { FormDesignerPage } from '../modules/admin/forms/FormDesignerPage';
+import { FormListPage } from '../modules/admin/forms/FormListPage';
 import { AdminDashboardPage } from '../modules/identity/admin/AdminDashboardPage';
 import { AuditPage } from '../modules/identity/admin/audit/AuditPage';
 import { BranchesAdminPage } from '../modules/identity/admin/branches/BranchesAdminPage';
@@ -103,6 +105,9 @@ export function AppRoutes() {
             <Route path="tables" element={<TableListPage />} />
             <Route path="tables/create" element={<CreateTablePage />} />
             <Route path="tables/:tableId" element={<TableDetailPage />} />
+            {/* Form Designer routes */}
+            <Route path="forms" element={<FormListPage />} />
+            <Route path="forms/:formId" element={<FormDesignerPage />} />
           </Route>
 
           {/* Legacy placeholders */}
