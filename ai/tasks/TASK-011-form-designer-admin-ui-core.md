@@ -5,23 +5,23 @@ title: Build Form Designer Admin UI — Core (Frontend)
 
 type: UI
 
-status: READY_FOR_DEV
+status: IN_DEVELOPMENT
 
 priority: High
 
-owner: planner
+owner: developer
 
-assigned_to:
+assigned_to: developer
 
-assigned_branch:
+assigned_branch: feature/TASK-011
 
-locked: false
+locked: true
 
 created: 2026-07-07
 
-updated: 2026-07-07
+updated: 2026-07-08
 
-started:
+started: 2026-07-08
 
 completed:
 
