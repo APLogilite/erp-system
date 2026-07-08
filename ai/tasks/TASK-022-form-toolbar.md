@@ -5,23 +5,23 @@ title: Build Form Toolbar with Record Actions & Keyboard Shortcuts (Frontend)
 
 type: UI
 
-status: PLANNED
+status: IN_DEVELOPMENT
 
 priority: High
 
-owner: planner
+owner: developer
 
-assigned_to:
+assigned_to: developer
 
-assigned_branch:
+assigned_branch: feature/TASK-022
 
-locked: false
+locked: true
 
 created: 2026-07-07
 
-updated: 2026-07-07
+updated: 2026-07-08
 
-started:
+started: 2026-07-08
 
 completed:
 
