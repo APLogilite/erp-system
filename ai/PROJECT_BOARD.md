@@ -23,7 +23,6 @@ Updated By: Planner
 | TASK-009 | PRD-001 | High | planner | | false | TASK-007 |
 | TASK-010 | PRD-001 | High | planner | | false | TASK-007 |
 | TASK-011 | PRD-001 | High | planner | | false | TASK-007 |
-| TASK-016 | PRD-001 | Critical | planner | | false | TASK-007, TASK-015 |
 | ENH-001 | PRD-001 | High | planner | | false | TASK-007 |
 
 ---
@@ -54,7 +53,7 @@ Updated By: Planner
 
 | Task | Branch | Owner | Started | ETA |
 |------|--------|-------|---------|-----|
-| *(none)* | | | | |
+| TASK-016 | feature/TASK-016 | developer | 2026-07-08 | 4h |
 
 ---
 

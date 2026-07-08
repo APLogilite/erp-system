@@ -10,6 +10,11 @@ public class SubFormDefinitionResponse {
   private String label;
   private String displayAs;
   private Integer position;
+  // One-level-deep child form definition info (FR-014)
+  private UUID childFormId;
+  private String childFormLabel;
+  private String childFormModelName;
+  private String childFormTableName;
 
   public SubFormDefinitionResponse() {}
 
@@ -25,4 +30,12 @@ public class SubFormDefinitionResponse {
   public void setDisplayAs(String displayAs) { this.displayAs = displayAs; }
   public Integer getPosition() { return position; }
   public void setPosition(Integer position) { this.position = position; }
+  public UUID getChildFormId() { return childFormId; }
+  public void setChildFormId(UUID childFormId) { this.childFormId = childFormId; }
+  public String getChildFormLabel() { return childFormLabel; }
+  public void setChildFormLabel(String childFormLabel) { this.childFormLabel = childFormLabel; }
+  public String getChildFormModelName() { return childFormModelName; }
+  public void setChildFormModelName(String childFormModelName) { this.childFormModelName = childFormModelName; }
+  public String getChildFormTableName() { return childFormTableName; }
+  public void setChildFormTableName(String childFormTableName) { this.childFormTableName = childFormTableName; }
 }

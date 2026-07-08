@@ -49,7 +49,7 @@ public class RecordCrudService {
       String sortField,
       String sortDir) {
 
-    FormDefinitionBundleResponse def = assemblyService.assembleDefinition(formCode);
+    FormDefinitionBundleResponse def = assemblyService.assembleDefinition(formCode, null, null);
     if (def == null) {
       throw new IllegalArgumentException("Form not found: " + formCode);
     }
@@ -82,7 +82,7 @@ public class RecordCrudService {
       UUID tenantId,
       List<UUID> roleIds) {
 
-    FormDefinitionBundleResponse def = assemblyService.assembleDefinition(formCode);
+    FormDefinitionBundleResponse def = assemblyService.assembleDefinition(formCode, null, null);
     if (def == null) {
       throw new IllegalArgumentException("Form not found: " + formCode);
     }
@@ -100,7 +100,7 @@ public class RecordCrudService {
     Map<String, Object> subFormRecords = new LinkedHashMap<>();
     if (def.getSubForms() != null) {
       for (var subForm : def.getSubForms()) {
-        FormDefinitionBundleResponse childDef = assemblyService.assembleDefinition(subForm.getChildFormCode());
+        FormDefinitionBundleResponse childDef = assemblyService.assembleDefinition(subForm.getChildFormCode(), null, null);
         if (childDef != null && childDef.getTableName() != null) {
           List<DynamicCrudService.RowFilter> childFilters = buildRowFilters(childDef.getFormId(), roleIds);
           List<Map<String, Object>> children = dynamicCrudService.getChildRecords(
@@ -143,7 +143,7 @@ public class RecordCrudService {
       UUID userId,
       List<UUID> roleIds) {
 
-    FormDefinitionBundleResponse def = assemblyService.assembleDefinition(formCode);
+    FormDefinitionBundleResponse def = assemblyService.assembleDefinition(formCode, null, null);
     if (def == null) {
       throw new IllegalArgumentException("Form not found: " + formCode);
     }
@@ -174,7 +174,7 @@ public class RecordCrudService {
       UUID userId,
       List<UUID> roleIds) {
 
-    FormDefinitionBundleResponse def = assemblyService.assembleDefinition(formCode);
+    FormDefinitionBundleResponse def = assemblyService.assembleDefinition(formCode, null, null);
     if (def == null) {
       throw new IllegalArgumentException("Form not found: " + formCode);
     }
@@ -201,7 +201,7 @@ public class RecordCrudService {
    * Soft-delete a record.
    */
   public void deleteRecord(String formCode, UUID recordId, UUID tenantId) {
-    FormDefinitionBundleResponse def = assemblyService.assembleDefinition(formCode);
+    FormDefinitionBundleResponse def = assemblyService.assembleDefinition(formCode, null, null);
     if (def == null) {
       throw new IllegalArgumentException("Form not found: " + formCode);
     }
