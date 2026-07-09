@@ -5,21 +5,21 @@ title: Implement Record Data APIs with Sub-Form & Breadcrumb Support (Backend)
 
 type: API
 
-status: READY_FOR_TEST
+status: TESTED
 
 priority: Critical
 
 owner: developer
 
-assigned_to: developer
+assigned_to: QA Engineer
 
 assigned_branch: feature/TASK-017
 
-locked: false
+locked: true
 
 created: 2026-07-07
 
-updated: 2026-07-08
+updated: 2026-07-09
 
 started: 2026-07-08
 
@@ -69,7 +69,7 @@ automation_required: true
 
 change_summary: ai/changes/CHANGE-TASK-017.md
 
-test_report:
+test_report: ai/tests/TEST-TASK-017.md
 
 history:
   - created

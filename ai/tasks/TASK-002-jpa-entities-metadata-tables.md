@@ -5,21 +5,21 @@ title: Create JPA Entities for All Metadata Tables
 
 type: Feature
 
-status: READY_FOR_TEST
+status: TESTED
 
 priority: High
 
 owner: planner
 
-assigned_to:
+assigned_to: QA Engineer
 
 assigned_branch:
 
-locked: false
+locked: true
 
 created: 2026-07-07
 
-updated: 2026-07-07
+updated: 2026-07-09
 
 started: 2026-07-07
 
@@ -60,12 +60,14 @@ automation_required: false
 
 change_summary: ai/changes/CHANGE-TASK-002.md
 
-test_report:
+test_report: ai/tests/TEST-TASK-002.md
 
 history:
   - created
   - implemented 2026-07-07 — Developer completed JPA entities, repositories, and DTOs for all metadata tables
   - 2026-07-08 — Planning audit: prd_version corrected 1.5.0 → 1.6.0 (implementation scope already covered 1.6.0 requirements)
+  - 2026-07-09 (13:20) — QA Engineer locked task, began testing (status: READY_FOR_TEST → TESTING)
+  - 2026-07-09 (13:25) — QA verification complete; all entities, repositories, DTOs verified; status: TESTING → TESTED
 
 ---
 

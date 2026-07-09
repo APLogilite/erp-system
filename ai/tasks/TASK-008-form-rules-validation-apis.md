@@ -5,21 +5,21 @@ title: Implement Form Rules & Validation APIs (Backend)
 
 type: API
 
-status: READY_FOR_TEST
+status: TESTED
 
 priority: High
 
 owner: developer
 
-assigned_to: developer
+assigned_to: QA Engineer
 
 assigned_branch: feature/TASK-008
 
-locked: false
+locked: true
 
 created: 2026-07-07
 
-updated: 2026-07-08
+updated: 2026-07-09
 
 started: 2026-07-08
 
@@ -58,13 +58,14 @@ automation_required: true
 
 change_summary: ai/changes/CHANGE-TASK-008.md
 
-test_report:
+test_report: ai/tests/TEST-TASK-008.md
 
 history:
   - created
   - 2026-07-08 — Planning audit: demoted READY_FOR_DEV → PLANNED
   - 2026-07-08 — Re-evaluated: restored to READY_FOR_DEV
   - 2026-07-08 — Implementation: added ExpressionValidationService + ExpressionController with 4 endpoints (validate expression, validate action, validate pattern, evaluate). Added operator/action validation to FormRuleService. Added @PreAuthorize to FormRuleController, FormValidationController, ExpressionController.
+  - 2026-07-09 — QA verified; all files present; compilation PASS; status: TESTED
 
 ---
 

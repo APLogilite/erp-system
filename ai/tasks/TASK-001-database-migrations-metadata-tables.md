@@ -5,21 +5,21 @@ title: Create Flyway Migrations for Normalized Metadata Storage
 
 type: Database
 
-status: READY_FOR_TEST
+status: TESTED
 
 priority: High
 
 owner: planner
 
-assigned_to:
+assigned_to: QA Engineer
 
 assigned_branch:
 
-locked: false
+locked: true
 
 created: 2026-07-07
 
-updated: 2026-07-07
+updated: 2026-07-09
 
 started: 2026-07-07
 
@@ -57,12 +57,14 @@ automation_required: false
 
 change_summary: ai/changes/CHANGE-TASK-001.md
 
-test_report:
+test_report: ai/tests/TEST-TASK-001.md
 
 history:
   - created
   - implemented 2026-07-07 — Developer completed migration files V3–V13 with rollback scripts U3–U13
   - 2026-07-08 — Planning audit: prd_version corrected 1.5.0 → 1.6.0 (implementation scope already covered 1.6.0 requirements)
+  - 2026-07-09 (13:00) — QA Engineer locked task, began testing (status: READY_FOR_TEST → TESTING)
+  - 2026-07-09 (13:15) — QA verification complete; all migration files verified; status: TESTING → TESTED
 
 ---
 

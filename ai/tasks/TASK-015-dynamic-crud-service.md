@@ -5,21 +5,21 @@ title: Implement Dynamic CRUD Service (Backend)
 
 type: Feature
 
-status: READY_FOR_TEST
+status: TESTED
 
 priority: Critical
 
 owner: planner
 
-assigned_to:
+assigned_to: QA Engineer
 
 assigned_branch:
 
-locked: false
+locked: true
 
 created: 2026-07-07
 
-updated: 2026-07-07
+updated: 2026-07-09
 
 started: 2026-07-07
 
@@ -60,7 +60,7 @@ automation_required: true
 
 change_summary: ai/changes/CHANGE-TASK-015.md
 
-test_report:
+test_report: ai/tests/TEST-TASK-015.md
 
 history:
   - created

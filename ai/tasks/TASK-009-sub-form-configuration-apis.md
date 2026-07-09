@@ -5,21 +5,21 @@ title: Implement Sub-Form Configuration APIs (Backend)
 
 type: API
 
-status: READY_FOR_TEST
+status: TESTED
 
 priority: High
 
 owner: developer
 
-assigned_to: developer
+assigned_to: QA Engineer
 
 assigned_branch: feature/TASK-009
 
-locked: false
+locked: true
 
 created: 2026-07-07
 
-updated: 2026-07-08
+updated: 2026-07-09
 
 started: 2026-07-08
 
@@ -58,13 +58,14 @@ automation_required: true
 
 change_summary: ai/changes/CHANGE-TASK-009.md
 
-test_report:
+test_report: ai/tests/TEST-TASK-009.md
 
 history:
   - created
   - 2026-07-08 — Planning audit: demoted READY_FOR_DEV → PLANNED
   - 2026-07-08 — Re-evaluated: restored to READY_FOR_DEV
   - 2026-07-08 — Implementation: added available-relations and reorder endpoints, circular reference check, @PreAuthorize
+  - 2026-07-09 — QA verified; all files present; compilation PASS; status: TESTED
 
 ---
 

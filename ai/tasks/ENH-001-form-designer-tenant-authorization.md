@@ -5,21 +5,21 @@ title: Add Tenant Authorization to Form Designer API
 
 type: Enhancement
 
-status: READY_FOR_TEST
+status: TESTED
 
 priority: High
 
 owner: developer
 
-assigned_to: developer
+assigned_to: QA Engineer
 
 assigned_branch: feature/ENH-001
 
-locked: false
+locked: true
 
 created: 2026-07-07
 
-updated: 2026-07-08
+updated: 2026-07-09
 
 started: 2026-07-08
 
@@ -61,7 +61,7 @@ automation_required: true
 
 change_summary: ai/changes/CHANGE-ENH-001.md
 
-test_report:
+test_report: ai/tests/TEST-ENH-001.md
 
 history:
   - created

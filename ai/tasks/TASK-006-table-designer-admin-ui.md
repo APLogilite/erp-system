@@ -5,21 +5,21 @@ title: Build Table Designer Admin UI (Frontend)
 
 type: UI
 
-status: READY_FOR_TEST
+status: TESTED
 
 priority: High
 
 owner: developer
 
-assigned_to: developer
+assigned_to: QA Engineer
 
 assigned_branch: feature/TASK-006
 
-locked: false
+locked: true
 
 created: 2026-07-07
 
-updated: 2026-07-08
+updated: 2026-07-09
 
 started: 2026-07-08
 
@@ -57,9 +57,12 @@ automation_required: true
 
 change_summary: ai/changes/CHANGE-TASK-006.md
 
-test_report:
+test_report: ai/tests/TEST-TASK-006.md
 
 history:
+  - created
+  - 2026-07-08 — Implemented Table Designer Admin UI
+  - 2026-07-09 — QA verified; all pages/components/hooks present; typecheck PASS; status: READY_FOR_TEST → TESTED; typecheck PASS; status: READY_FOR_TEST → TESTED
   - created
   - 2026-07-08 — Auto-activated PLANNED → READY_FOR_DEV (dependency TASK-004 completed)
   - 2026-07-08 — Implementation: built 3 pages (TableListPage, CreateTablePage, TableDetailPage), 3 components (ColumnList, ColumnFormDialog, SchemaHistoryTimeline), 2 hooks (useTables, useColumns), type definitions, route/sidebar integration

@@ -5,21 +5,21 @@ title: Implement Table Designer CRUD APIs (Backend)
 
 type: API
 
-status: READY_FOR_TEST
+status: TESTED
 
 priority: High
 
 owner: developer
 
-assigned_to: developer
+assigned_to: QA Engineer
 
 assigned_branch: feature/TASK-004
 
-locked: false
+locked: true
 
 created: 2026-07-07
 
-updated: 2026-07-08
+updated: 2026-07-09
 
 started: 2026-07-08
 
@@ -61,7 +61,7 @@ automation_required: true
 
 change_summary: ai/changes/CHANGE-TASK-004.md
 
-test_report:
+test_report: ai/tests/TEST-TASK-004.md
 
 history:
   - created
@@ -69,6 +69,8 @@ history:
   - 2026-07-08 — Re-evaluated: restored PLANNED → READY_FOR_DEV. WORKFLOW.md §Automatic Task Activation allows READY_FOR_TEST or COMPLETED to satisfy dependencies. Dependencies TASK-002, TASK-003 are both READY_FOR_TEST.
   - 2026-07-08 — Planning audit: status → READY_FOR_TEST. Implementation discovered on disk (TableDesignerController.java 84L, TableDesignerService.java). No change summary found — Developer should create one.
   - 2026-07-08 — Implementation: completed all 10 endpoints with schema history, security, search/filter, type validation. Added 4 new DTOs, 4 controller endpoints, 4 service methods. Enabled @PreAuthorize via @EnableMethodSecurity.
+  - 2026-07-09 (13:40) — QA Engineer locked task, began testing (status: READY_FOR_TEST → TESTING)
+  - 2026-07-09 (13:45) — QA verification complete; all 10 endpoints, DTOs, security config verified; status: TESTING → TESTED
 
 ---
 

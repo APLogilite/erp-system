@@ -5,21 +5,21 @@ title: Implement Schema History Service
 
 type: Feature
 
-status: READY_FOR_TEST
+status: TESTED
 
 priority: Low
 
 owner: planner
 
-assigned_to:
+assigned_to: QA Engineer
 
 assigned_branch:
 
-locked: false
+locked: true
 
 created: 2026-07-07
 
-updated: 2026-07-07
+updated: 2026-07-09
 
 started: 2026-07-07
 
@@ -57,12 +57,13 @@ automation_required: false
 
 change_summary: ai/changes/CHANGE-TASK-005.md
 
-test_report:
+test_report: ai/tests/TEST-TASK-005.md
 
 history:
   - created
   - implemented 2026-07-07 — Developer completed Schema History Service
   - 2026-07-08 — Planning audit: prd_version corrected 1.5.0 → 1.6.0 (metadata synchronization)
+  - 2026-07-09 — QA Engineer verified; all 3 methods present; status: READY_FOR_TEST → TESTED
 
 ---
 

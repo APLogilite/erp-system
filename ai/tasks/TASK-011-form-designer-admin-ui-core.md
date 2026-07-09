@@ -5,21 +5,21 @@ title: Build Form Designer Admin UI — Core (Frontend)
 
 type: UI
 
-status: READY_FOR_TEST
+status: TESTED
 
 priority: High
 
 owner: developer
 
-assigned_to: developer
+assigned_to: QA Engineer
 
 assigned_branch: feature/TASK-011
 
-locked: false
+locked: true
 
 created: 2026-07-07
 
-updated: 2026-07-08
+updated: 2026-07-09
 
 started: 2026-07-08
 
@@ -59,7 +59,7 @@ automation_required: true
 
 change_summary: ai/changes/CHANGE-TASK-011.md
 
-test_report:
+test_report: ai/tests/TEST-TASK-011.md
 
 history:
   - created

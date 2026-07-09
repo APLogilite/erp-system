@@ -5,21 +5,21 @@ title: Implement Per-Tenant Role Assignment APIs (Backend)
 
 type: API
 
-status: READY_FOR_TEST
+status: TESTED
 
 priority: High
 
 owner: developer
 
-assigned_to: developer
+assigned_to: QA Engineer
 
 assigned_branch: feature/TASK-010
 
-locked: false
+locked: true
 
 created: 2026-07-07
 
-updated: 2026-07-08
+updated: 2026-07-09
 
 started: 2026-07-08
 
@@ -58,13 +58,14 @@ automation_required: true
 
 change_summary: ai/changes/CHANGE-TASK-010.md
 
-test_report:
+test_report: ai/tests/TEST-TASK-010.md
 
 history:
   - created
   - 2026-07-08 — Planning audit: demoted READY_FOR_DEV → PLANNED (dependency TASK-007 is READY_FOR_TEST, not COMPLETED; current workflow requires COMPLETED for activation)
   - 2026-07-08 — Re-evaluated: restored PLANNED → READY_FOR_DEV. WORKFLOW.md allows READY_FOR_TEST or COMPLETED. Dependency TASK-007 is READY_FOR_TEST.
   - 2026-07-08 — Documentation audit: created CHANGE-TASK-010.md (change_summary restored)
+  - 2026-07-09 — QA verified; all files present; compilation PASS; status: TESTED
 
 ---
 

@@ -324,29 +324,46 @@ The main branch only receives changes after the PRD has been fully tested and ap
 
 For every implementation task:
 
-1. Checkout the PRD branch.
+1. Checkout the Parent PRD branch.
 
-2. Update the PRD branch to the latest version.
+2. Pull or synchronize the Parent PRD branch to the latest repository state.
 
-3. Create a NEW feature branch.
+3. Verify:
 
-Branch name:
+   ✓ Current branch is the Parent PRD branch.
 
-feature/TASK-XXX
+   ✓ Working tree is clean.
 
-Implementation Bug:
+   ✓ Parent PRD branch is synchronized.
 
-bugfix/BUG-XXX
+4. Create a NEW task branch.
 
-Enhancement:
+Branch naming:
 
-enhancement/TASK-XXX
+• Implementation Task:
+  feature/TASK-XXX
 
-Every task uses a new branch.
+• Implementation Bug:
+  bugfix/BUG-XXX
 
-Never reuse an existing task branch.
+• Approved Enhancement:
+  enhancement/TASK-XXX
 
-Never continue another task on the current feature branch.
+5. Verify:
+
+   ✓ Current branch is the newly created task branch.
+
+   ✓ Branch name matches the assigned Task or Bug ID.
+
+Every task must use a newly created branch from the latest synchronized Parent PRD branch.
+
+Never:
+
+• Reuse an existing task branch.
+
+• Create a task branch from another task branch.
+
+• Continue a previous task on the current feature branch.
 
 ────────────────────────────────────────
 
@@ -422,6 +439,18 @@ Report the blocker.
 
 Never attempt to bypass Git failures.
 
+────────────────────────────────────────
+
+## Git Synchronization Standard
+
+The Parent PRD branch is the single source of truth for all implementation work.
+
+Every task must begin from the latest synchronized Parent PRD branch.
+
+Always synchronize the Parent PRD branch before creating a new task branch.
+
+Never assume the local PRD branch is current.
+
 
 ────────────────────────────────────────
 
@@ -445,7 +474,11 @@ Before implementation begins verify:
 
 Before creating a task branch verify:
 
-✓ Current branch is the PRD branch.
+✓ Current branch is the Parent PRD branch.
+
+✓ Parent PRD branch is synchronized with the latest repository state.
+
+✓ Working tree is clean.
 
 After creating the task branch verify:
 
