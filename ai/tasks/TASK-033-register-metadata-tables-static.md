@@ -72,6 +72,7 @@ automation_required: false
 change_summary: CHANGE-TASK-033
 
 test_report: TEST-TASK-033
+ntest_script: ai/scripts/verify-prd-002-data.sql
 
 history:
   - 2026-07-10 — Planner — Created task from PRD-002 v1.0.0
