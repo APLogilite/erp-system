@@ -38,7 +38,9 @@ tech_stack:
   - React Query
   - Vite
 
-related_prds: []
+related_prds:
+  - PRD-002 (Admin Configuration Forms)
+  - PRD-003 (ERP Order Flow — Transaction Forms)
 
 related_tasks:
   - TASK-001

@@ -3,10 +3,86 @@ document: CHANGELOG
 version: 1.0.0
 status: ACTIVE
 owner: Planner
-last_updated: 2026-07-08
+last_updated: 2026-07-10
 ---
 
 # Changelog
+
+## 2026-07-10 (PRD-002 Created — Admin Configuration Forms)
+
+### Summary
+New PRD-002 created for Admin Configuration Forms — dynamic forms that manage PRD-001's own metadata tables. Enables administrators to use the runtime form renderer to view/edit table definitions, columns, form configs, fields, rules, validations, layouts, sub-forms, and role access.
+
+### PRD Created
+- **PRD-002** — Admin Configuration Forms — Metadata Table Management (v1.0.0, DRAFT)
+  - Register 11 metadata tables in sys_metadata_models as static tables
+  - Create ~14 CRUD forms for metadata entities
+  - Sub-form links for parent-child relationships (Table → Columns, Form → Fields)
+  - Pending user review — 4 open questions
+
+### State
+- PRD-002: 11 static tables registered, ~11 admin forms, 3 tasks (TASK-033 READY_FOR_DEV, 2 PLANNED)
+- PRD-003: 14 tables, 17 forms, 5 tasks (TASK-028 READY_FOR_DEV, 4 PLANNED)
+- 2 tasks available for development immediately (TASK-028, TASK-033)
+
+---
+
+## 2026-07-10 (PRD Renumbering — PRD-002 → PRD-003)
+
+### Summary
+Renumbered the ERP Order Flow Transaction Forms PRD from PRD-002 to PRD-003. New PRD-002 will be Admin Configuration Forms (forms for managing PRD-001's metadata entities).
+
+### Changes
+- **PRD-003** (was PRD-002) — ERP Order Flow — Transaction Forms v1.0.0 APPROVED
+- All 5 tasks (TASK-028 to TASK-032) updated: `parent_prd: PRD-003`, `prd_branch`, `merge_target`
+- PROJECT_BOARD.md and PRD-001 updated to reference PRD-003
+- Old PRD-002 file retained for reference; new PRD-003 file created with full content
+
+### State
+- PRD-003: 14 tables, 17 forms, 5 tasks (TASK-028 READY_FOR_DEV, 4 PLANNED)
+- PRD-002: To be created — Admin Configuration Forms
+
+---
+
+## 2026-07-10 (PRD-002 Created — ERP Order Flow Transaction Forms)
+
+### Summary
+New PRD created to seed the platform with standard ERP transaction forms using PRD-001's dynamic form engine. Pure metadata approach — zero new code, only Flyway migrations. 14 tables, 17 forms.
+
+### PRD Created
+- **PRD-002** — ERP Order Flow — Transaction Forms (v1.0.0, APPROVED)
+  - 5 master data tables: Business Partner, Product, UOM, UOM Conversion, Warehouse
+  - 9 transaction tables: Order, Order Line, Invoice, Invoice Line, Payment, Shipment, Shipment Line, Material Receipt, MR Line
+  - 17 forms with CRUD via PRD-001's runtime renderer
+  - Purchase/Sales variants via form-level where_clause
+  - Header-line sub-form tabs with breadcrumb navigation
+  - All implementation via Flyway migrations — no new Java/TypeScript code
+
+### Tasks Generated (5)
+- **TASK-028** — Seed Master Data Tables (Flyway migration: DDL + metadata for 5 tables)
+- **TASK-029** — Seed Transaction Tables (Flyway migration: DDL + metadata for 9 tables)
+- **TASK-030** — Seed Master Data Forms (Flyway migration: form definitions for 5 master data forms)
+- **TASK-031** — Seed Transaction Header Forms (Flyway migration: 9 header forms with layouts and where_clause)
+- **TASK-032** — Seed Line Forms and Sub-Form Configs (Flyway migration: 4 line forms + 7 sub-form links)
+
+### Dependencies
+```
+TASK-028 ──┬── TASK-029 ──┬── TASK-031 ── TASK-032
+           │              │
+           └── TASK-030 ──┘
+```
+
+### State
+- All 5 tasks at **PLANNED** — awaiting PRD-001 completion before activation
+- No tasks at READY_FOR_DEV (PRD-001 must reach COMPLETED first)
+- PRD-002 APPROVED — requirements final, tasks ready for activation
+
+### Notes
+- PRD-002 depends on PRD-001 (runtime engine + metadata tables)
+- Tasks will auto-activate to READY_FOR_DEV when PRD-001 is COMPLETED
+- Flyway must be temporarily enabled (`spring.flyway.enabled=true`) for migrations
+
+---
 
 ## 2026-07-08 (Documentation Audit — Change Report Restoration)
 

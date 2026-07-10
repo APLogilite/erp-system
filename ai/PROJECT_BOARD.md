@@ -1,8 +1,8 @@
 # Project Board
 
-Last Updated: 2026-07-09
+Last Updated: 2026-07-10
 
-Updated By: QA Engineer
+Updated By: Planner
 
 ---
 
@@ -11,12 +11,17 @@ Updated By: QA Engineer
 | PRD | Title | Version | Status | Priority |
 |-----|-------|---------|--------|----------|
 | PRD-001 | Dynamic Form Configuration System | 1.6.0 | TESTING | High |
+| PRD-002 | Admin Configuration Forms | 1.0.0 | APPROVED | High |
+| PRD-003 | ERP Order Flow — Transaction Forms | 1.0.0 | APPROVED | High |
 
 ---
 
 ## Ready For Development
 
-*(none — all tasks implemented)*
+| Task | PRD | Priority | Owner | Branch | Locked | Depends On |
+|------|-----|----------|-------|--------|--------|------------|
+| TASK-028 | PRD-003 | High | Developer | — | false | — |
+| TASK-033 | PRD-002 | High | Developer | — | false | — |
 
 ---
 
@@ -28,7 +33,7 @@ Updated By: QA Engineer
 
 ## Ready For Test
 
-*(none — all tasks tested)*
+*(none)*
 
 ---
 
@@ -74,7 +79,14 @@ Updated By: QA Engineer
 
 ## Planning
 
-*(none)*
+| Task | PRD | Priority | Status | Owner | Locked | Depends On |
+|------|-----|----------|--------|--------|--------|------------|
+| TASK-029 | PRD-003 | High | PLANNED | Planner | false | TASK-028 |
+| TASK-030 | PRD-003 | High | PLANNED | Planner | false | TASK-028 |
+| TASK-031 | PRD-003 | High | PLANNED | Planner | false | TASK-029, TASK-030 |
+| TASK-032 | PRD-003 | High | PLANNED | Planner | false | TASK-031 |
+| TASK-034 | PRD-002 | High | PLANNED | Planner | false | TASK-033 |
+| TASK-035 | PRD-002 | High | PLANNED | Planner | false | TASK-034 |
 
 ---
 
@@ -102,9 +114,13 @@ Updated By: QA Engineer
 
 | Status | Count |
 |--------|-------|
-| Ready for Test | 0 |
-| Completed (TESTED) | 28 (27 tasks + 1 enhancement) |
-| Change Summaries | 28/28 ✅ |
-| PRD Status | TESTING |
+| PRDs | 3 (PRD-001 TESTING, PRD-002 APPROVED, PRD-003 APPROVED) |
+| Ready For Dev | 2 tasks (TASK-028, TASK-033) |
+| Planning | 6 tasks (TASK-029-032, TASK-034-035) |
+| Completed (PRD-001) | 28 (27 tasks + 1 enhancement) |
+| Total Tasks | 36 (28 completed + 8 planned/ready) |
+| PRD-001 Status | TESTING |
+| PRD-002 Status | APPROVED |
+| PRD-003 Status | APPROVED |
 
-**100% of QA verification complete. All 28 items passed structural verification. Ready for integration testing / PostgreSQL validation.**
+**TASK-028 (PRD-003) and TASK-033 (PRD-002) ready for development.**
