@@ -213,80 +213,80 @@ AND NOT EXISTS (SELECT 1 FROM sys_form_fields ff WHERE ff.form_id = sys_metadata
 -- Uses 3-way JOIN (section → form → field) matching V16/V17 pattern.
 -- ============================================================
 
-INSERT INTO sys_form_section_fields (id, section_id, field_id, position, created_at, updated_at)
-SELECT gen_random_uuid(), s.id, f.id, f.position, now(), now()
+INSERT INTO sys_form_section_fields (id, section_id, field_id, position, is_active, created_at, updated_at)
+SELECT gen_random_uuid(), s.id, f.id, f.position, true, now(), now()
 FROM sys_form_layout_sections s
 JOIN sys_metadata_views v ON v.id = s.form_id
 JOIN sys_form_fields f ON f.form_id = v.id
 WHERE v.name = 'admin_table_column' AND s.code = 'details' AND f.column_code = 'tenant_id'
 AND NOT EXISTS (SELECT 1 FROM sys_form_section_fields sf WHERE sf.section_id = s.id AND sf.field_id = f.id);
 
-INSERT INTO sys_form_section_fields (id, section_id, field_id, position, created_at, updated_at)
-SELECT gen_random_uuid(), s.id, f.id, f.position, now(), now()
+INSERT INTO sys_form_section_fields (id, section_id, field_id, position, is_active, created_at, updated_at)
+SELECT gen_random_uuid(), s.id, f.id, f.position, true, now(), now()
 FROM sys_form_layout_sections s
 JOIN sys_metadata_views v ON v.id = s.form_id
 JOIN sys_form_fields f ON f.form_id = v.id
 WHERE v.name = 'admin_form_definition' AND s.code = 'details' AND f.column_code = 'tenant_id'
 AND NOT EXISTS (SELECT 1 FROM sys_form_section_fields sf WHERE sf.section_id = s.id AND sf.field_id = f.id);
 
-INSERT INTO sys_form_section_fields (id, section_id, field_id, position, created_at, updated_at)
-SELECT gen_random_uuid(), s.id, f.id, f.position, now(), now()
+INSERT INTO sys_form_section_fields (id, section_id, field_id, position, is_active, created_at, updated_at)
+SELECT gen_random_uuid(), s.id, f.id, f.position, true, now(), now()
 FROM sys_form_layout_sections s
 JOIN sys_metadata_views v ON v.id = s.form_id
 JOIN sys_form_fields f ON f.form_id = v.id
 WHERE v.name = 'admin_form_field' AND s.code = 'details' AND f.column_code = 'tenant_id'
 AND NOT EXISTS (SELECT 1 FROM sys_form_section_fields sf WHERE sf.section_id = s.id AND sf.field_id = f.id);
 
-INSERT INTO sys_form_section_fields (id, section_id, field_id, position, created_at, updated_at)
-SELECT gen_random_uuid(), s.id, f.id, f.position, now(), now()
+INSERT INTO sys_form_section_fields (id, section_id, field_id, position, is_active, created_at, updated_at)
+SELECT gen_random_uuid(), s.id, f.id, f.position, true, now(), now()
 FROM sys_form_layout_sections s
 JOIN sys_metadata_views v ON v.id = s.form_id
 JOIN sys_form_fields f ON f.form_id = v.id
 WHERE v.name = 'admin_field_rule' AND s.code = 'details' AND f.column_code = 'tenant_id'
 AND NOT EXISTS (SELECT 1 FROM sys_form_section_fields sf WHERE sf.section_id = s.id AND sf.field_id = f.id);
 
-INSERT INTO sys_form_section_fields (id, section_id, field_id, position, created_at, updated_at)
-SELECT gen_random_uuid(), s.id, f.id, f.position, now(), now()
+INSERT INTO sys_form_section_fields (id, section_id, field_id, position, is_active, created_at, updated_at)
+SELECT gen_random_uuid(), s.id, f.id, f.position, true, now(), now()
 FROM sys_form_layout_sections s
 JOIN sys_metadata_views v ON v.id = s.form_id
 JOIN sys_form_fields f ON f.form_id = v.id
 WHERE v.name = 'admin_field_validation' AND s.code = 'details' AND f.column_code = 'tenant_id'
 AND NOT EXISTS (SELECT 1 FROM sys_form_section_fields sf WHERE sf.section_id = s.id AND sf.field_id = f.id);
 
-INSERT INTO sys_form_section_fields (id, section_id, field_id, position, created_at, updated_at)
-SELECT gen_random_uuid(), s.id, f.id, f.position, now(), now()
+INSERT INTO sys_form_section_fields (id, section_id, field_id, position, is_active, created_at, updated_at)
+SELECT gen_random_uuid(), s.id, f.id, f.position, true, now(), now()
 FROM sys_form_layout_sections s
 JOIN sys_metadata_views v ON v.id = s.form_id
 JOIN sys_form_fields f ON f.form_id = v.id
 WHERE v.name = 'admin_layout_section' AND s.code = 'details' AND f.column_code = 'tenant_id'
 AND NOT EXISTS (SELECT 1 FROM sys_form_section_fields sf WHERE sf.section_id = s.id AND sf.field_id = f.id);
 
-INSERT INTO sys_form_section_fields (id, section_id, field_id, position, created_at, updated_at)
-SELECT gen_random_uuid(), s.id, f.id, f.position, now(), now()
+INSERT INTO sys_form_section_fields (id, section_id, field_id, position, is_active, created_at, updated_at)
+SELECT gen_random_uuid(), s.id, f.id, f.position, true, now(), now()
 FROM sys_form_layout_sections s
 JOIN sys_metadata_views v ON v.id = s.form_id
 JOIN sys_form_fields f ON f.form_id = v.id
 WHERE v.name = 'admin_section_field' AND s.code = 'details' AND f.column_code = 'tenant_id'
 AND NOT EXISTS (SELECT 1 FROM sys_form_section_fields sf WHERE sf.section_id = s.id AND sf.field_id = f.id);
 
-INSERT INTO sys_form_section_fields (id, section_id, field_id, position, created_at, updated_at)
-SELECT gen_random_uuid(), s.id, f.id, f.position, now(), now()
+INSERT INTO sys_form_section_fields (id, section_id, field_id, position, is_active, created_at, updated_at)
+SELECT gen_random_uuid(), s.id, f.id, f.position, true, now(), now()
 FROM sys_form_layout_sections s
 JOIN sys_metadata_views v ON v.id = s.form_id
 JOIN sys_form_fields f ON f.form_id = v.id
 WHERE v.name = 'admin_sub_form_config' AND s.code = 'details' AND f.column_code = 'tenant_id'
 AND NOT EXISTS (SELECT 1 FROM sys_form_section_fields sf WHERE sf.section_id = s.id AND sf.field_id = f.id);
 
-INSERT INTO sys_form_section_fields (id, section_id, field_id, position, created_at, updated_at)
-SELECT gen_random_uuid(), s.id, f.id, f.position, now(), now()
+INSERT INTO sys_form_section_fields (id, section_id, field_id, position, is_active, created_at, updated_at)
+SELECT gen_random_uuid(), s.id, f.id, f.position, true, now(), now()
 FROM sys_form_layout_sections s
 JOIN sys_metadata_views v ON v.id = s.form_id
 JOIN sys_form_fields f ON f.form_id = v.id
 WHERE v.name = 'admin_tenant_role_access' AND s.code = 'details' AND f.column_code = 'tenant_id'
 AND NOT EXISTS (SELECT 1 FROM sys_form_section_fields sf WHERE sf.section_id = s.id AND sf.field_id = f.id);
 
-INSERT INTO sys_form_section_fields (id, section_id, field_id, position, created_at, updated_at)
-SELECT gen_random_uuid(), s.id, f.id, f.position, now(), now()
+INSERT INTO sys_form_section_fields (id, section_id, field_id, position, is_active, created_at, updated_at)
+SELECT gen_random_uuid(), s.id, f.id, f.position, true, now(), now()
 FROM sys_form_layout_sections s
 JOIN sys_metadata_views v ON v.id = s.form_id
 JOIN sys_form_fields f ON f.form_id = v.id

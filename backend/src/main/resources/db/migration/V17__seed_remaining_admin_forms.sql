@@ -319,82 +319,82 @@ SELECT gen_random_uuid(), id, 'position',           'Position',        true, fal
 -- Part 6 — Insert Layout Sections (sys_form_layout_sections)
 -- ============================================================
 
-INSERT INTO sys_form_layout_sections (id, form_id, code, label, collapsible, columns, position, created_at, updated_at)
-SELECT gen_random_uuid(), id, 'details', 'Rule Details',       false, 2, 1, now(), now() FROM sys_metadata_views WHERE name = 'admin_field_rule';
+INSERT INTO sys_form_layout_sections (id, form_id, code, label, collapsible, columns, position, is_active, created_at, updated_at)
+SELECT gen_random_uuid(), id, 'details', 'Rule Details',       false, 2, 1, true, now(), now() FROM sys_metadata_views WHERE name = 'admin_field_rule';
 
-INSERT INTO sys_form_layout_sections (id, form_id, code, label, collapsible, columns, position, created_at, updated_at)
-SELECT gen_random_uuid(), id, 'details', 'Validation Details', false, 2, 1, now(), now() FROM sys_metadata_views WHERE name = 'admin_field_validation';
+INSERT INTO sys_form_layout_sections (id, form_id, code, label, collapsible, columns, position, is_active, created_at, updated_at)
+SELECT gen_random_uuid(), id, 'details', 'Validation Details', false, 2, 1, true, now(), now() FROM sys_metadata_views WHERE name = 'admin_field_validation';
 
-INSERT INTO sys_form_layout_sections (id, form_id, code, label, collapsible, columns, position, created_at, updated_at)
-SELECT gen_random_uuid(), id, 'details', 'Section Details',    false, 2, 1, now(), now() FROM sys_metadata_views WHERE name = 'admin_layout_section';
+INSERT INTO sys_form_layout_sections (id, form_id, code, label, collapsible, columns, position, is_active, created_at, updated_at)
+SELECT gen_random_uuid(), id, 'details', 'Section Details',    false, 2, 1, true, now(), now() FROM sys_metadata_views WHERE name = 'admin_layout_section';
 
-INSERT INTO sys_form_layout_sections (id, form_id, code, label, collapsible, columns, position, created_at, updated_at)
-SELECT gen_random_uuid(), id, 'details', 'Mapping Details',    false, 1, 1, now(), now() FROM sys_metadata_views WHERE name = 'admin_section_field';
+INSERT INTO sys_form_layout_sections (id, form_id, code, label, collapsible, columns, position, is_active, created_at, updated_at)
+SELECT gen_random_uuid(), id, 'details', 'Mapping Details',    false, 1, 1, true, now(), now() FROM sys_metadata_views WHERE name = 'admin_section_field';
 
-INSERT INTO sys_form_layout_sections (id, form_id, code, label, collapsible, columns, position, created_at, updated_at)
-SELECT gen_random_uuid(), id, 'details', 'Sub-Form Details',   false, 2, 1, now(), now() FROM sys_metadata_views WHERE name = 'admin_sub_form_config';
+INSERT INTO sys_form_layout_sections (id, form_id, code, label, collapsible, columns, position, is_active, created_at, updated_at)
+SELECT gen_random_uuid(), id, 'details', 'Sub-Form Details',   false, 2, 1, true, now(), now() FROM sys_metadata_views WHERE name = 'admin_sub_form_config';
 
-INSERT INTO sys_form_layout_sections (id, form_id, code, label, collapsible, columns, position, created_at, updated_at)
-SELECT gen_random_uuid(), id, 'details', 'Role Access',        false, 1, 1, now(), now() FROM sys_metadata_views WHERE name = 'admin_tenant_role_access';
+INSERT INTO sys_form_layout_sections (id, form_id, code, label, collapsible, columns, position, is_active, created_at, updated_at)
+SELECT gen_random_uuid(), id, 'details', 'Role Access',        false, 1, 1, true, now(), now() FROM sys_metadata_views WHERE name = 'admin_tenant_role_access';
 
-INSERT INTO sys_form_layout_sections (id, form_id, code, label, collapsible, columns, position, created_at, updated_at)
-SELECT gen_random_uuid(), id, 'details', 'Filter Details',     false, 2, 1, now(), now() FROM sys_metadata_views WHERE name = 'admin_row_filter';
+INSERT INTO sys_form_layout_sections (id, form_id, code, label, collapsible, columns, position, is_active, created_at, updated_at)
+SELECT gen_random_uuid(), id, 'details', 'Filter Details',     false, 2, 1, true, now(), now() FROM sys_metadata_views WHERE name = 'admin_row_filter';
 
 -- ============================================================
 -- Part 7 — Insert Section-Field Mappings (sys_form_section_fields)
 -- ============================================================
 
 -- admin_field_rule → details section
-INSERT INTO sys_form_section_fields (id, section_id, field_id, position, created_at, updated_at)
-SELECT gen_random_uuid(), s.id, f.id, f.position, now(), now()
+INSERT INTO sys_form_section_fields (id, section_id, field_id, position, is_active, created_at, updated_at)
+SELECT gen_random_uuid(), s.id, f.id, f.position, true, now(), now()
 FROM sys_form_layout_sections s
 JOIN sys_metadata_views v ON v.id = s.form_id
 JOIN sys_form_fields f ON f.form_id = v.id
 WHERE v.name = 'admin_field_rule' AND s.code = 'details';
 
 -- admin_field_validation → details section
-INSERT INTO sys_form_section_fields (id, section_id, field_id, position, created_at, updated_at)
-SELECT gen_random_uuid(), s.id, f.id, f.position, now(), now()
+INSERT INTO sys_form_section_fields (id, section_id, field_id, position, is_active, created_at, updated_at)
+SELECT gen_random_uuid(), s.id, f.id, f.position, true, now(), now()
 FROM sys_form_layout_sections s
 JOIN sys_metadata_views v ON v.id = s.form_id
 JOIN sys_form_fields f ON f.form_id = v.id
 WHERE v.name = 'admin_field_validation' AND s.code = 'details';
 
 -- admin_layout_section → details section
-INSERT INTO sys_form_section_fields (id, section_id, field_id, position, created_at, updated_at)
-SELECT gen_random_uuid(), s.id, f.id, f.position, now(), now()
+INSERT INTO sys_form_section_fields (id, section_id, field_id, position, is_active, created_at, updated_at)
+SELECT gen_random_uuid(), s.id, f.id, f.position, true, now(), now()
 FROM sys_form_layout_sections s
 JOIN sys_metadata_views v ON v.id = s.form_id
 JOIN sys_form_fields f ON f.form_id = v.id
 WHERE v.name = 'admin_layout_section' AND s.code = 'details';
 
 -- admin_section_field → details section
-INSERT INTO sys_form_section_fields (id, section_id, field_id, position, created_at, updated_at)
-SELECT gen_random_uuid(), s.id, f.id, f.position, now(), now()
+INSERT INTO sys_form_section_fields (id, section_id, field_id, position, is_active, created_at, updated_at)
+SELECT gen_random_uuid(), s.id, f.id, f.position, true, now(), now()
 FROM sys_form_layout_sections s
 JOIN sys_metadata_views v ON v.id = s.form_id
 JOIN sys_form_fields f ON f.form_id = v.id
 WHERE v.name = 'admin_section_field' AND s.code = 'details';
 
 -- admin_sub_form_config → details section
-INSERT INTO sys_form_section_fields (id, section_id, field_id, position, created_at, updated_at)
-SELECT gen_random_uuid(), s.id, f.id, f.position, now(), now()
+INSERT INTO sys_form_section_fields (id, section_id, field_id, position, is_active, created_at, updated_at)
+SELECT gen_random_uuid(), s.id, f.id, f.position, true, now(), now()
 FROM sys_form_layout_sections s
 JOIN sys_metadata_views v ON v.id = s.form_id
 JOIN sys_form_fields f ON f.form_id = v.id
 WHERE v.name = 'admin_sub_form_config' AND s.code = 'details';
 
 -- admin_tenant_role_access → details section
-INSERT INTO sys_form_section_fields (id, section_id, field_id, position, created_at, updated_at)
-SELECT gen_random_uuid(), s.id, f.id, f.position, now(), now()
+INSERT INTO sys_form_section_fields (id, section_id, field_id, position, is_active, created_at, updated_at)
+SELECT gen_random_uuid(), s.id, f.id, f.position, true, now(), now()
 FROM sys_form_layout_sections s
 JOIN sys_metadata_views v ON v.id = s.form_id
 JOIN sys_form_fields f ON f.form_id = v.id
 WHERE v.name = 'admin_tenant_role_access' AND s.code = 'details';
 
 -- admin_row_filter → details section
-INSERT INTO sys_form_section_fields (id, section_id, field_id, position, created_at, updated_at)
-SELECT gen_random_uuid(), s.id, f.id, f.position, now(), now()
+INSERT INTO sys_form_section_fields (id, section_id, field_id, position, is_active, created_at, updated_at)
+SELECT gen_random_uuid(), s.id, f.id, f.position, true, now(), now()
 FROM sys_form_layout_sections s
 JOIN sys_metadata_views v ON v.id = s.form_id
 JOIN sys_form_fields f ON f.form_id = v.id
@@ -405,23 +405,23 @@ WHERE v.name = 'admin_row_filter' AND s.code = 'details';
 -- ============================================================
 
 -- Form Definition → Form Fields (form_id FK exists directly on sys_form_fields)
-INSERT INTO sys_form_sub_forms (id, parent_form_id, relation_code, child_form_code, label, display_as, position, created_at, updated_at)
-SELECT gen_random_uuid(), parent.id, 'form_id', 'admin_form_field', 'Fields', 'tab', 1, now(), now()
+INSERT INTO sys_form_sub_forms (id, parent_form_id, relation_code, child_form_code, label, display_as, position, is_active, created_at, updated_at)
+SELECT gen_random_uuid(), parent.id, 'form_id', 'admin_form_field', 'Fields', 'tab', 1, true, now(), now()
 FROM sys_metadata_views parent WHERE parent.name = 'admin_form_definition';
 
 -- Form Definition → Field Rules (via VIEW v_admin_field_rules which exposes form_id)
-INSERT INTO sys_form_sub_forms (id, parent_form_id, relation_code, child_form_code, label, display_as, position, created_at, updated_at)
-SELECT gen_random_uuid(), parent.id, 'form_id', 'admin_field_rule', 'Rules', 'tab', 2, now(), now()
+INSERT INTO sys_form_sub_forms (id, parent_form_id, relation_code, child_form_code, label, display_as, position, is_active, created_at, updated_at)
+SELECT gen_random_uuid(), parent.id, 'form_id', 'admin_field_rule', 'Rules', 'tab', 2, true, now(), now()
 FROM sys_metadata_views parent WHERE parent.name = 'admin_form_definition';
 
 -- Form Definition → Field Validations (via VIEW v_admin_field_validations which exposes form_id)
-INSERT INTO sys_form_sub_forms (id, parent_form_id, relation_code, child_form_code, label, display_as, position, created_at, updated_at)
-SELECT gen_random_uuid(), parent.id, 'form_id', 'admin_field_validation', 'Validations', 'tab', 3, now(), now()
+INSERT INTO sys_form_sub_forms (id, parent_form_id, relation_code, child_form_code, label, display_as, position, is_active, created_at, updated_at)
+SELECT gen_random_uuid(), parent.id, 'form_id', 'admin_field_validation', 'Validations', 'tab', 3, true, now(), now()
 FROM sys_metadata_views parent WHERE parent.name = 'admin_form_definition';
 
 -- Layout Section → Section Fields (section_id FK exists directly on sys_form_section_fields)
-INSERT INTO sys_form_sub_forms (id, parent_form_id, relation_code, child_form_code, label, display_as, position, created_at, updated_at)
-SELECT gen_random_uuid(), parent.id, 'section_id', 'admin_section_field', 'Field Mappings', 'tab', 1, now(), now()
+INSERT INTO sys_form_sub_forms (id, parent_form_id, relation_code, child_form_code, label, display_as, position, is_active, created_at, updated_at)
+SELECT gen_random_uuid(), parent.id, 'section_id', 'admin_section_field', 'Field Mappings', 'tab', 1, true, now(), now()
 FROM sys_metadata_views parent WHERE parent.name = 'admin_layout_section';
 
 -- ============================================================
