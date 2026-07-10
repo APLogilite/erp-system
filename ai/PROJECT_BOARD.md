@@ -11,7 +11,7 @@ Updated By: QA Engineer
 | PRD | Title | Version | Status | Priority |
 |-----|-------|---------|--------|----------|
 | PRD-001 | Dynamic Form Configuration System | 1.6.0 | TESTING | High |
-| PRD-002 | Admin Configuration Forms | 1.0.0 | TESTING | High |
+| PRD-002 | Admin Configuration Forms | 1.1.0 | TESTING | High |
 | PRD-003 | ERP Order Flow — Transaction Forms | 1.0.0 | APPROVED | High |
 
 ---
@@ -20,6 +20,7 @@ Updated By: QA Engineer
 
 | Task | PRD | Priority | Owner | Branch | Locked | Depends On |
 |------|-----|----------|-------|--------|--------|------------|
+| ENH-002 | PRD-002 | Critical | Developer | — | false | TASK-033, TASK-034, TASK-035 |
 | TASK-028 | PRD-003 | High | Developer | — | false | — |
 
 ---
@@ -98,9 +99,10 @@ Updated By: QA Engineer
 
 ## Enhancements
 
-| Task | Parent PRD | Parent Task | Status |
-|------|------------|-------------|--------|
-| ENH-001 | PRD-001 | TASK-007 | TESTED |
+| Task | Parent PRD | Parent Task | Reason | Status |
+|------|------------|-------------|--------|--------|
+| ENH-001 | PRD-001 | TASK-007 | Form Designer API tenant authorization | TESTED |
+| ENH-002 | PRD-002 | TASK-034, TASK-035 | Add tenant_id to all admin forms (REQ-ISSUE-001) | READY_FOR_DEV |
 
 ---
 
@@ -114,16 +116,16 @@ Updated By: QA Engineer
 
 | Status | Count |
 |--------|-------|
-| PRDs | 3 (PRD-001 TESTING, PRD-002 IN_DEVELOPMENT, PRD-003 APPROVED) |
-| Ready For Dev | 1 task (TASK-028) |
+| PRDs | 3 (PRD-001 TESTING, PRD-002 TESTING, PRD-003 APPROVED) |
+| Ready For Dev | 2 tasks (ENH-002, TASK-028) |
 | Ready For Test | 0 tasks |
 | In Testing | 0 tasks |
 | Planning | 4 tasks (TASK-029-032) |
-| Completed (PRD-001) | 27 tasks + 1 enhancement |
+| Completed (PRD-001) | 27 tasks + 1 enhancement (ENH-001) |
 | Completed (PRD-002) | 3 tasks (TASK-033, TASK-034, TASK-035) |
-| Total Tasks | 36 (30 completed + 1 ready for dev + 4 planning + 1 enhancement) |
+| Total Tasks | 37 (30 completed + 2 ready for dev + 4 planning + 1 enhancement) |
 | PRD-001 Status | TESTING |
-| PRD-002 Status | TESTING |
+| PRD-002 Status | TESTING (v1.1.0 — ENH-002 pending) |
 | PRD-003 Status | APPROVED |
 
-**PRD-002 QA complete — all 3 tasks TESTED (52 structural tests, 0 failures). 1 Requirement Issue identified (tenant_id visibility). Ready for PostgreSQL validation.**
+**PRD-002 QA complete (3 tasks TESTED). PRD-002 v1.1.0 — ENH-002 (tenant_id correction) ready for development. TASK-028 (PRD-003) ready for development.**

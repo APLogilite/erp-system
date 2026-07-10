@@ -3,7 +3,7 @@ id: PRD-002
 
 title: Admin Configuration Forms — Metadata Table Management
 
-version: 1.0.0
+version: 1.1.0
 
 status: APPROVED
 
@@ -44,6 +44,9 @@ related_tasks:
   - TASK-034
   - TASK-035
 
+related_enhancements:
+  - ENH-002 (tenant_id field visibility correction)
+
 related_bugs: []
 
 dependencies:
@@ -52,6 +55,7 @@ dependencies:
 
 change_log:
   - 1.0.0 — Initial Draft: Admin forms for metadata tables
+  - 1.1.0 — Strengthened tenant_id requirement: all 11 admin forms MUST display tenant_id (read-only) for tenant isolation auditability. QA identified 10 forms missing the field (REQ-ISSUE-001). Enhancement ENH-002 created for correction.
 
 ---
 
@@ -262,7 +266,11 @@ All questions resolved during planning:
 
 1. **Static table registration:** Flyway migration (same approach as PRD-003). INSERT into sys_metadata_models + sys_table_columns. No DDL — tables already exist.
 
-2. **Column visibility:** System columns hidden (id, created_at, created_by, updated_at, deleted_at). `tenant_id` shown as read-only on forms where relevant. Only user-meaningful columns displayed.
+2. **Column visibility:** System columns hidden (id, created_at, created_by, updated_at, deleted_at). 
+
+   **CRITICAL — tenant_id:** `tenant_id` MUST be displayed as **read-only** on EVERY admin form. Rationale: This is a multi-tenant platform where tenant isolation is enforced at the database row level. An administrator viewing a config record without tenant context creates a data-leakage risk. Every admin form must make tenant ownership unambiguously visible. The field shall be read-only (auto-managed by the runtime) and positioned as the last visible field in each form.
+
+   **No exceptions.** Even sub-forms and single-field forms must display tenant_id. This is a non-negotiable tenant-isolation safeguard.
 
 3. **Admin UI overlap:** Coexist with PRD-001's Table Designer / Form Designer. Admin forms placed under "Administration" navigation section to avoid confusion.
 
@@ -307,7 +315,7 @@ Visible: relation_code, child_form_code, label, display_as, position, tenant_id 
 Hidden: parent_form_id (sub-form context), id, created_at, updated_at
 
 **admin_tenant_role_access** (sys_form_tenant_role):
-Visible: tenant_id, role_id, tenant_id (parent context)
+Visible: tenant_id (read-only), role_id
 Hidden: form_id (sub-form context), id, created_at, updated_at
 
 **admin_row_filter** (sys_form_role_filters):
@@ -325,6 +333,7 @@ All admin forms grouped under **"Administration"** section in the runtime naviga
 | Version | Reason | Date |
 |---------|--------|------|
 | 1.0.0 | Initial Draft → Approved. Column visibility rules, navigation grouping, Flyway approach confirmed. | 2026-07-10 |
+| 1.1.0 | Strengthened tenant_id requirement — all 11 admin forms MUST display tenant_id (read-only) for tenant isolation auditability. QA identified REQ-ISSUE-001: 10 forms missing the field. Enhancement ENH-002 created for correction. Fixed duplicate tenant_id in admin_tenant_role_access spec. | 2026-07-10 |
 
 ---
 

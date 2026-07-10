@@ -8,6 +8,37 @@ last_updated: 2026-07-10
 
 # Changelog
 
+## 2026-07-10 (PRD-002 QA Complete + ENH-002 Created)
+
+### Summary
+QA completed structural verification of all 3 PRD-002 tasks (52 tests, 0 failures). Identified REQ-ISSUE-001: tenant_id field missing from 10 of 11 admin forms — a tenant-isolation concern in a multi-tenant platform. PRD-002 updated to v1.1.0 with strengthened tenant_id requirement. ENH-002 created for correction.
+
+### PRD Updated
+- **PRD-002** — Admin Configuration Forms v1.0.0 → v1.1.0
+  - Strengthened tenant_id requirement: ALL 11 admin forms MUST display tenant_id (read-only) for tenant isolation auditability
+  - Fixed ambiguous language ("where relevant" → mandatory on every form)
+  - Fixed duplicate tenant_id spec on admin_tenant_role_access
+
+### Tasks Tested
+- **TASK-033** (Register Metadata Tables — V15): TESTED — 16/16 structural tests passed
+- **TASK-034** (Core Admin Forms — V16): TESTED — 15/15 structural tests passed
+- **TASK-035** (Remaining Admin Forms — V17): TESTED — 21/21 structural tests passed
+- Test reports: `ai/tests/TEST-TASK-033.md`, `TEST-TASK-034.md`, `TEST-TASK-035.md`
+
+### Enhancement Created
+- **ENH-002** — Add tenant_id Field to All Admin Forms (Critical, READY_FOR_DEV)
+  - Parent PRD: PRD-002 v1.1.0
+  - Parent Tasks: TASK-034, TASK-035
+  - Scope: 1 Flyway migration (V18) adding 11 column registrations + 10 form fields + 10 section-field mappings
+
+### State
+- PRD-002: 3 tasks TESTED, 1 enhancement pending (ENH-002)
+- PRD-002 v1.1.0: tenant_id requirement now mandatory on all admin forms
+- PRD-003: TASK-028 ready for development
+- 2 tasks available for development: ENH-002 (Critical), TASK-028 (High)
+
+---
+
 ## 2026-07-10 (PRD-002 Created — Admin Configuration Forms)
 
 ### Summary
