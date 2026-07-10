@@ -21,7 +21,6 @@ Updated By: Software Engineer
 | Task | PRD | Priority | Owner | Branch | Locked | Depends On |
 |------|-----|----------|-------|--------|--------|------------|
 | TASK-028 | PRD-003 | High | Developer | — | false | — |
-| TASK-035 | PRD-002 | High | Developer | — | false | TASK-034 |
 
 ---
 
@@ -37,6 +36,7 @@ Updated By: Software Engineer
 |------|-----|----------|-------|--------|--------|------------|
 | TASK-033 | PRD-002 | High | QA Engineer | prd/PRD-002-admin-configuration-forms | false | — |
 | TASK-034 | PRD-002 | High | QA Engineer | prd/PRD-002-admin-configuration-forms | false | TASK-033 |
+| TASK-035 | PRD-002 | High | QA Engineer | prd/PRD-002-admin-configuration-forms | false | TASK-034 |
 
 ---
 
@@ -116,8 +116,8 @@ Updated By: Software Engineer
 | Status | Count |
 |--------|-------|
 | PRDs | 3 (PRD-001 TESTING, PRD-002 IN_DEVELOPMENT, PRD-003 APPROVED) |
-| Ready For Dev | 2 tasks (TASK-028, TASK-035) |
-| Ready For Test | 2 tasks (TASK-033, TASK-034) |
+| Ready For Dev | 1 task (TASK-028) |
+| Ready For Test | 3 tasks (TASK-033, TASK-034, TASK-035) |
 | Planning | 4 tasks (TASK-029-032) |
 | Completed (PRD-001) | 28 (27 tasks + 1 enhancement) |
 | Total Tasks | 36 (28 completed + 8 planned/ready/test) |
@@ -125,4 +125,4 @@ Updated By: Software Engineer
 | PRD-002 Status | IN_DEVELOPMENT |
 | PRD-003 Status | APPROVED |
 
-**TASK-028 (PRD-003) and TASK-035 (PRD-002) ready for development. TASK-033 and TASK-034 ready for QA.**
+**PRD-002 implementation complete — all 3 tasks ready for QA. TASK-028 (PRD-003) ready for development.**
