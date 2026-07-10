@@ -5,29 +5,29 @@ title: Register Metadata Tables as Static (Flyway Migration)
 
 type: Database
 
-status: READY_FOR_DEV
+status: READY_FOR_TEST
 
 priority: High
 
 owner: developer
 
-assigned_to:
+assigned_to: Software Engineer
 
-assigned_branch:
+assigned_branch: feature/TASK-033
 
-locked: false
+locked: true
 
 created: 2026-07-10
 
 updated: 2026-07-10
 
-started:
+started: 2026-07-10
 
-completed:
+completed: 2026-07-10
 
 estimated_hours: 2
 
-actual_hours:
+actual_hours: 1
 
 parent_prd: PRD-002
 
@@ -63,12 +63,14 @@ test_required: true
 
 automation_required: false
 
-change_summary:
+change_summary: CHANGE-TASK-033
 
 test_report:
 
 history:
   - 2026-07-10 — Planner — Created task from PRD-002 v1.0.0
+  - 2026-07-10 — Software Engineer — Locked task, created feature/TASK-033 branch, started implementation
+  - 2026-07-10 — Software Engineer — Created V15 Flyway migration (351 lines, 11 tables, 63 columns). Build passes.
 
 ---
 
@@ -231,13 +233,13 @@ For columns that act as foreign keys (many2one), register them with `type = 'str
 
 # Acceptance Criteria
 
-- [ ] Flyway migration file exists at `V{next}__register_metadata_tables_static.sql`
-- [ ] Migration cleans existing static registrations before inserting (idempotent)
-- [ ] 11 rows inserted into `sys_metadata_models` with `table_type = 'static'`
-- [ ] All column metadata inserted into `sys_table_columns` (~50 rows total)
-- [ ] No DDL executed — tables already exist in PostgreSQL
-- [ ] Column types correctly map existing PG types (UUID → string, VARCHAR → string, TEXT → text, BOOLEAN → boolean, TIMESTAMP → datetime, JSONB → text)
-- [ ] Migration runs successfully
+- [x] Flyway migration file exists at `V{next}__register_metadata_tables_static.sql` → V15
+- [x] Migration cleans existing static registrations before inserting (idempotent)
+- [x] 11 rows inserted into `sys_metadata_models` with `table_type = 'static'`
+- [x] All column metadata inserted into `sys_table_columns` (63 rows total)
+- [x] No DDL executed — tables already exist in PostgreSQL
+- [x] Column types correctly map existing PG types (UUID → string, VARCHAR → string, TEXT → text, BOOLEAN → boolean, TIMESTAMP → datetime, JSONB → text)
+- [ ] Migration runs successfully (requires PostgreSQL with metadata tables)
 - [ ] After migration, static tables are queryable via PRD-001's runtime
 - [ ] `GET /api/runtime/forms` does NOT yet show admin forms (forms not created until TASK-034)
 
@@ -264,7 +266,15 @@ Foreign key columns (form_id, table_id, field_id, etc.) store UUIDs. For simplic
 
 # Developer Notes
 
-*(maintained by Software Engineer)*
+- Created Flyway migration `V15__register_metadata_tables_static.sql` (351 lines)
+- 11 tables registered in `sys_metadata_models` with `table_type = 'static'`
+- 63 columns registered across all 11 tables in `sys_table_columns`
+- Used `ON CONFLICT (name) DO UPDATE` on model insert for extra idempotency beyond the DELETE cleanup
+- FK columns (table_id, form_id, field_id, etc.) registered as `type = 'string'` per task spec (no `relation_table` set to avoid circular dependency)
+- `is_active` registered only for tables that had it in original DDL: sys_metadata_models, sys_table_columns, sys_metadata_views, sys_form_fields
+- Column positions and labels match PRD-002 section "Column Visibility per Form"
+- Verified column names against actual entity Java classes and Flyway DDL
+- Build (`mvn clean compile`) passes cleanly
 
 ---
 

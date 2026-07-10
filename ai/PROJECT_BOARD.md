@@ -2,7 +2,7 @@
 
 Last Updated: 2026-07-10
 
-Updated By: Planner
+Updated By: Software Engineer
 
 ---
 
@@ -21,13 +21,14 @@ Updated By: Planner
 | Task | PRD | Priority | Owner | Branch | Locked | Depends On |
 |------|-----|----------|-------|--------|--------|------------|
 | TASK-028 | PRD-003 | High | Developer | — | false | — |
-| TASK-033 | PRD-002 | High | Developer | — | false | — |
 
 ---
 
 ## In Development
 
-*(none)*
+| Task | PRD | Priority | Owner | Branch | Locked | Depends On |
+|------|-----|----------|-------|--------|--------|------------|
+| TASK-033 | PRD-002 | High | Software Engineer | feature/TASK-033 | true | — |
 
 ---
 
@@ -115,7 +116,8 @@ Updated By: Planner
 | Status | Count |
 |--------|-------|
 | PRDs | 3 (PRD-001 TESTING, PRD-002 APPROVED, PRD-003 APPROVED) |
-| Ready For Dev | 2 tasks (TASK-028, TASK-033) |
+| Ready For Dev | 1 task (TASK-028) |
+| In Development | 1 task (TASK-033) |
 | Planning | 6 tasks (TASK-029-032, TASK-034-035) |
 | Completed (PRD-001) | 28 (27 tasks + 1 enhancement) |
 | Total Tasks | 36 (28 completed + 8 planned/ready) |
