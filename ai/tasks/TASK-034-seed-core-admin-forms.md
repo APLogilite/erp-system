@@ -5,29 +5,29 @@ title: Seed Core Admin Forms — Tables, Columns, Forms, Fields (Flyway Migratio
 
 type: Database
 
-status: PLANNED
+status: READY_FOR_TEST
 
 priority: High
 
-owner: planner
+owner: developer
 
-assigned_to:
+assigned_to: Software Engineer
 
-assigned_branch:
+assigned_branch: feature/TASK-034
 
-locked: false
+locked: true
 
 created: 2026-07-10
 
 updated: 2026-07-10
 
-started:
+started: 2026-07-10
 
-completed:
+completed: 2026-07-10
 
 estimated_hours: 3
 
-actual_hours:
+actual_hours: 1
 
 parent_prd: PRD-002
 
@@ -64,12 +64,14 @@ test_required: true
 
 automation_required: false
 
-change_summary:
+change_summary: CHANGE-TASK-034
 
 test_report:
 
 history:
   - 2026-07-10 — Planner — Created task from PRD-002 v1.0.0
+  - 2026-07-10 — Software Engineer — Auto-activated from PLANNED (TASK-033 completed). Locked, created feature/TASK-034 branch, started implementation.
+  - 2026-07-10 — Software Engineer — Created V16 Flyway migration (256 lines, 4 forms, 38 fields, 4 sections, 1 sub-form). Build passes.
 
 ---
 
@@ -193,17 +195,17 @@ This links the Table Definition form to its Column sub-form via the `table_id` F
 
 # Acceptance Criteria
 
-- [ ] Flyway migration file exists
-- [ ] Migration is idempotent
-- [ ] 4 form rows inserted into `sys_metadata_views`
-- [ ] ~38 field rows inserted into `sys_form_fields`
-- [ ] 4 layout section rows inserted
-- [ ] All section-field mappings complete
-- [ ] 1 sub-form config: admin_table_definition → admin_table_column via table_id
-- [ ] `tenant_id` field on admin_table_definition marked `read_only=true`
-- [ ] System columns excluded from forms (id, created_at, updated_at, created_by, updated_by, deleted_at)
-- [ ] After migration + restart, forms appear in `GET /api/runtime/forms`
-- [ ] Opening admin_table_definition shows a "Columns" tab with the table's column records
+- [x] Flyway migration file exists → V16 (256 lines)
+- [x] Migration is idempotent (DELETE-before-INSERT + ON CONFLICT)
+- [x] 4 form rows inserted into `sys_metadata_views`
+- [x] 38 field rows inserted into `sys_form_fields`
+- [x] 4 layout section rows inserted
+- [x] All section-field mappings complete (4 joins, one per form)
+- [x] 1 sub-form config: admin_table_definition → admin_table_column via table_id
+- [x] `tenant_id` field on admin_table_definition marked `read_only=true`
+- [x] System columns excluded from forms (id, created_at, updated_at, created_by, updated_by, deleted_at)
+- [ ] After migration + restart, forms appear in `GET /api/runtime/forms` (requires PostgreSQL runtime)
+- [ ] Opening admin_table_definition shows a "Columns" tab with the table's column records (requires PostgreSQL runtime)
 
 ---
 
