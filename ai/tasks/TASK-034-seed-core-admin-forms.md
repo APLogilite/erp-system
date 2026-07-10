@@ -5,13 +5,13 @@ title: Seed Core Admin Forms — Tables, Columns, Forms, Fields (Flyway Migratio
 
 type: Database
 
-status: READY_FOR_TEST
+status: TESTED
 
 priority: High
 
-owner: developer
+owner: QA Engineer
 
-assigned_to: Software Engineer
+assigned_to: QA Engineer
 
 assigned_branch: feature/TASK-034
 
@@ -24,6 +24,8 @@ updated: 2026-07-10
 started: 2026-07-10
 
 completed: 2026-07-10
+
+qa_started: 2026-07-10
 
 estimated_hours: 3
 
@@ -66,12 +68,15 @@ automation_required: false
 
 change_summary: CHANGE-TASK-034
 
-test_report:
+test_report: TEST-TASK-034
+
+qa_completed: 2026-07-10
 
 history:
   - 2026-07-10 — Planner — Created task from PRD-002 v1.0.0
   - 2026-07-10 — Software Engineer — Auto-activated from PLANNED (TASK-033 completed). Locked, created feature/TASK-034 branch, started implementation.
   - 2026-07-10 — Software Engineer — Created V16 Flyway migration (256 lines, 4 forms, 38 fields, 4 sections, 1 sub-form). Build passes.
+  - 2026-07-10 — QA Engineer — Locked for testing. 15/15 structural tests passed. Identified tenant_id field visibility discrepancy between PRD-002 and task spec (Requirement Issue — Product Manager review needed).
 
 ---
 
