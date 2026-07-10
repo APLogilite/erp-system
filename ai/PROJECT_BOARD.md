@@ -20,7 +20,6 @@ Updated By: QA Engineer
 
 | Task | PRD | Priority | Owner | Branch | Locked | Depends On |
 |------|-----|----------|-------|--------|--------|------------|
-| ENH-002 | PRD-002 | Critical | Developer | — | false | TASK-033, TASK-034, TASK-035 |
 | TASK-028 | PRD-003 | High | Developer | — | false | — |
 
 ---
@@ -28,6 +27,14 @@ Updated By: QA Engineer
 ## In Development
 
 *(none)*
+
+---
+
+## Ready For Test
+
+| Task | PRD | Priority | Owner | Branch | Locked | Depends On |
+|------|-----|----------|-------|--------|--------|------------|
+| ENH-002 | PRD-002 | Critical | QA Engineer | prd/PRD-002-admin-configuration-forms | false | — |
 
 ---
 

@@ -5,21 +5,29 @@ title: Add tenant_id Field to All Admin Forms (Tenant Isolation Safeguard)
 
 type: Enhancement
 
-status: READY_FOR_DEV
+status: READY_FOR_TEST
 
 priority: Critical
 
-owner: Software Engineer
+owner: QA Engineer
 
-assigned_to: Software Engineer
+assigned_to: QA Engineer
 
-assigned_branch:
+assigned_branch: enhancement/ENH-002
 
-locked: false
+locked: true
 
 created: 2026-07-10
 
 updated: 2026-07-10
+
+started: 2026-07-10
+
+completed: 2026-07-10
+
+estimated_hours: 2
+
+actual_hours: 1.5
 
 estimated_hours: 2
 
@@ -74,12 +82,13 @@ test_required: true
 
 automation_required: false
 
-change_summary:
+change_summary: CHANGE-ENH-002
 
 test_report:
 
 history:
   - 2026-07-10 — Planner — Created ENH-002 from PRD-002 v1.1.0 (REQ-ISSUE-001). Parent tasks: TASK-034, TASK-035.
+  - 2026-07-10 — Software Engineer — Locked, created enhancement/ENH-002 branch, implemented V18 migration (320 lines: 13 column registrations + 10 form fields + 10 section-field mappings). Build passes, tests unchanged (36 total, 0 new failures).
 ---
 
 # Goal
