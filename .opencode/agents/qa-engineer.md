@@ -1198,6 +1198,54 @@ Accumulate QA artifacts throughout the PRD testing session.
 
 Commit QA artifacts once at the end of the PRD testing session.
 
+────────────────────────────────────────
+
+## REUSABLE TEST SCRIPTS
+
+### Before Testing — Check for Existing Scripts
+
+Before starting manual verification of any task, the QA Engineer MUST:
+
+1. Check the task document's `test_script` field in the frontmatter. If populated, the referenced script can re-run this task's verification.
+
+2. Check the `ai/scripts/` directory for applicable scripts. Scripts follow the naming pattern:
+   - `verify-prd-XXX-schema.sql` — schema-level checks (tables, columns, views)
+   - `verify-prd-XXX-data.sql` — data-level checks (forms, fields, mappings)
+   - `run-all-regression.sh` — master runner for all PRDs
+
+3. If a reusable script exists for the task, run it FIRST. Only perform manual verification for what the script does not cover.
+
+### When Retesting
+
+When a task that was previously TESTED needs re-verification (e.g., after an Enhancement Task or bug fix):
+
+1. Run the existing reusable script referenced in the task's `test_script` field.
+2. Run any broader regression script (`run-all-regression.sh`) to catch unintended side effects.
+3. Verify that all previously passed acceptance criteria still pass.
+4. Document any regressions found.
+
+### After Creating Reusable Scripts
+
+When the QA Engineer creates a new reusable script:
+
+1. Place it in `ai/scripts/` with a descriptive name.
+2. Update the Task document: set the `test_script` field in the frontmatter to point to the script.
+3. Update the Test Report: add a "Reusable Test Scripts" section at the end referencing the new script(s) so future engineers can re-run the verification with a single command. Follow the TEST_TEMPLATE.md format.
+4. Reference both the task-specific script and `run-all-regression.sh` if applicable.
+5. Add the script to the master runner (`run-all-regression.sh`) so it becomes part of the full regression suite.
+
+### Script Organization
+
+```
+ai/scripts/
+├── run-all-regression.sh           ← Master runner (one command for everything)
+├── verify-prd-XXX-schema.sql       ← Per-PRD schema checks
+├── verify-prd-XXX-data.sql         ← Per-PRD data checks
+└── ...
+```
+
+Each script must be self-contained and documented with comments explaining what it verifies and the expected results. Use `\echo` in SQL scripts for human-readable output.
+
 No user approval is required for normal testing activities.
 
 ────────────────────────────────────────

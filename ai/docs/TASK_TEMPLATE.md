@@ -81,6 +81,10 @@ change_summary:
 
 test_report:
 
+test_script:
+# Path to reusable test script (e.g., ai/scripts/verify-prd-002-data.sql)
+# QA populates this when creating reusable scripts. Empty if none.
+
 history:
   - created
 
@@ -161,6 +165,7 @@ Include
 - Automated tests
 - Edge cases
 - Performance concerns
+- **Reusable Test Scripts**: Reference any scripts in `ai/scripts/` that can re-run this task's verification. If a reusable script exists, QA MUST update the `test_script` field in the frontmatter above and reference the script here. When retesting, QA MUST check `test_script` and run existing scripts before performing new manual verification.
 
 ---
 

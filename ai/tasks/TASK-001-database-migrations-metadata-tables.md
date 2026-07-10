@@ -58,6 +58,7 @@ automation_required: false
 change_summary: ai/changes/CHANGE-TASK-001.md
 
 test_report: ai/tests/TEST-TASK-001.md
+ntest_script: ai/scripts/verify-prd-001-schema.sql
 
 history:
   - created

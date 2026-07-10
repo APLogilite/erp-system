@@ -199,7 +199,7 @@ None. All acceptance criteria met.
 
 ## Test Summary
 
-| Metric | Count |
+| Metric | Value |
 |--------|-------|
 | Test Cases Executed | 11 |
 | Passed | 11 |
@@ -207,3 +207,15 @@ None. All acceptance criteria met.
 | Skipped | 0 |
 | Bugs Created | 0 |
 | Regression Status | Clean (no new failures) |
+
+---
+
+## Reusable Test Scripts
+
+```bash
+# Targeted verification:
+psql -U erp_user -h localhost -d erp_db -f ai/scripts/verify-prd-001-schema.sql
+
+# Full regression suite:
+./ai/scripts/run-all-regression.sh
+```
