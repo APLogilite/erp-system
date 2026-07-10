@@ -5,29 +5,29 @@ title: Seed Remaining Admin Forms — Rules, Validations, Layout, Role Access (F
 
 type: Database
 
-status: PLANNED
+status: READY_FOR_TEST
 
 priority: High
 
-owner: planner
+owner: developer
 
-assigned_to:
+assigned_to: Software Engineer
 
-assigned_branch:
+assigned_branch: feature/TASK-035
 
-locked: false
+locked: true
 
 created: 2026-07-10
 
 updated: 2026-07-10
 
-started:
+started: 2026-07-10
 
-completed:
+completed: 2026-07-10
 
 estimated_hours: 3
 
-actual_hours:
+actual_hours: 1.5
 
 parent_prd: PRD-002
 
@@ -64,12 +64,14 @@ test_required: true
 
 automation_required: false
 
-change_summary:
+change_summary: CHANGE-TASK-035
 
 test_report:
 
 history:
   - 2026-07-10 — Planner — Created task from PRD-002 v1.0.0
+  - 2026-07-10 — Software Engineer — Auto-activated from PLANNED (TASK-034 completed). Locked, created feature/TASK-035 branch, started implementation.
+  - 2026-07-10 — Software Engineer — Created V17 Flyway migration (440 lines, 7 forms, 26 fields, 7 sections, 4 sub-forms, 2 VIEWs with 10 column registrations). Build passes.
 
 ---
 
@@ -223,16 +225,18 @@ FROM sys_metadata_views parent WHERE parent.name = 'admin_layout_section';
 
 # Acceptance Criteria
 
-- [ ] Flyway migration file exists
-- [ ] Migration is idempotent
-- [ ] 7 form rows inserted into `sys_metadata_views`
-- [ ] ~28 field rows inserted into `sys_form_fields`
-- [ ] 7 layout section rows inserted
-- [ ] All section-field mappings complete
-- [ ] 4 sub-form configs: Form Definition → Fields/Rules/Validations + Layout Section → Section Fields
-- [ ] After migration + restart, all 11 admin forms appear in `GET /api/runtime/forms`
-- [ ] Opening admin_form_definition shows Fields, Rules, and Validations tabs
-- [ ] Opening admin_layout_section shows "Field Mappings" tab
+- [x] Flyway migration file exists → V17 (440 lines)
+- [x] Migration is idempotent (DELETE-before-INSERT + ON CONFLICT)
+- [x] 7 form rows inserted into `sys_metadata_views`
+- [x] 26 field rows inserted into `sys_form_fields`
+- [x] 7 layout section rows inserted
+- [x] All section-field mappings complete (7 joins)
+- [x] 4 sub-form configs: Form Definition → Fields/Rules/Validations + Layout Section → Section Fields
+- [x] VIEW approach implemented for field rules/validations (FK resolution via v_admin_field_rules / v_admin_field_validations)
+- [x] 2 view models registered in sys_metadata_models with 10 column registrations
+- [ ] After migration + restart, all 11 admin forms appear in `GET /api/runtime/forms` (requires PostgreSQL)
+- [ ] Opening admin_form_definition shows Fields, Rules, and Validations tabs (requires PostgreSQL)
+- [ ] Opening admin_layout_section shows "Field Mappings" tab (requires PostgreSQL)
 
 ---
 
