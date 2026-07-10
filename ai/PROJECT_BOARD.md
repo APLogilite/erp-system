@@ -11,7 +11,7 @@ Updated By: Software Engineer
 | PRD | Title | Version | Status | Priority |
 |-----|-------|---------|--------|----------|
 | PRD-001 | Dynamic Form Configuration System | 1.6.0 | TESTING | High |
-| PRD-002 | Admin Configuration Forms | 1.0.0 | APPROVED | High |
+| PRD-002 | Admin Configuration Forms | 1.0.0 | IN_DEVELOPMENT | High |
 | PRD-003 | ERP Order Flow — Transaction Forms | 1.0.0 | APPROVED | High |
 
 ---
@@ -21,20 +21,21 @@ Updated By: Software Engineer
 | Task | PRD | Priority | Owner | Branch | Locked | Depends On |
 |------|-----|----------|-------|--------|--------|------------|
 | TASK-028 | PRD-003 | High | Developer | — | false | — |
+| TASK-034 | PRD-002 | High | Developer | — | false | TASK-033 |
 
 ---
 
 ## In Development
 
-| Task | PRD | Priority | Owner | Branch | Locked | Depends On |
-|------|-----|----------|-------|--------|--------|------------|
-| TASK-033 | PRD-002 | High | Software Engineer | feature/TASK-033 | true | — |
+*(none)*
 
 ---
 
 ## Ready For Test
 
-*(none)*
+| Task | PRD | Priority | Owner | Branch | Locked | Depends On |
+|------|-----|----------|-------|--------|--------|------------|
+| TASK-033 | PRD-002 | High | QA Engineer | prd/PRD-002-admin-configuration-forms | false | — |
 
 ---
 
@@ -86,7 +87,6 @@ Updated By: Software Engineer
 | TASK-030 | PRD-003 | High | PLANNED | Planner | false | TASK-028 |
 | TASK-031 | PRD-003 | High | PLANNED | Planner | false | TASK-029, TASK-030 |
 | TASK-032 | PRD-003 | High | PLANNED | Planner | false | TASK-031 |
-| TASK-034 | PRD-002 | High | PLANNED | Planner | false | TASK-033 |
 | TASK-035 | PRD-002 | High | PLANNED | Planner | false | TASK-034 |
 
 ---
@@ -115,14 +115,14 @@ Updated By: Software Engineer
 
 | Status | Count |
 |--------|-------|
-| PRDs | 3 (PRD-001 TESTING, PRD-002 APPROVED, PRD-003 APPROVED) |
-| Ready For Dev | 1 task (TASK-028) |
-| In Development | 1 task (TASK-033) |
-| Planning | 6 tasks (TASK-029-032, TASK-034-035) |
+| PRDs | 3 (PRD-001 TESTING, PRD-002 IN_DEVELOPMENT, PRD-003 APPROVED) |
+| Ready For Dev | 2 tasks (TASK-028, TASK-034) |
+| Ready For Test | 1 task (TASK-033) |
+| Planning | 5 tasks (TASK-029-032, TASK-035) |
 | Completed (PRD-001) | 28 (27 tasks + 1 enhancement) |
-| Total Tasks | 36 (28 completed + 8 planned/ready) |
+| Total Tasks | 36 (28 completed + 8 planned/ready/test) |
 | PRD-001 Status | TESTING |
-| PRD-002 Status | APPROVED |
+| PRD-002 Status | IN_DEVELOPMENT |
 | PRD-003 Status | APPROVED |
 
-**TASK-028 (PRD-003) and TASK-033 (PRD-002) ready for development.**
+**TASK-028 (PRD-003) and TASK-034 (PRD-002) ready for development. TASK-033 ready for QA.**
