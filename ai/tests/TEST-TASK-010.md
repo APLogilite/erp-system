@@ -4,6 +4,7 @@ task_id: TASK-010
 parent_prd: PRD-001
 test_date: 2026-07-09
 qa_engineer: QA Engineer
+test_scope: Structural and functional verification of backend API/service implementation against PRD-001 specifications.
 status: PASSED
 ---
 
@@ -25,3 +26,14 @@ status: PASSED
 - TenantRoleResponse.java: EXISTS ✓
 - GlobalFormDto.java: EXISTS ✓
 - Backend compilation: PASS ✓
+
+---
+
+## Reusable Test Scripts
+
+None. Manual verification only. This task is a frontend/API implementation task with no database-level regression queries applicable.
+
+```bash
+# Full regression suite (database tests only):
+./ai/scripts/run-all-regression.sh
+```

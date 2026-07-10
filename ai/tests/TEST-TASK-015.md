@@ -4,6 +4,7 @@ task_id: TASK-015
 parent_prd: PRD-001
 test_date: 2026-07-09
 qa_engineer: QA Engineer
+test_scope: Structural and functional verification of frontend and backend implementation against PRD-001 specifications.
 status: PASSED
 ---
 
@@ -23,8 +24,19 @@ status: PASSED
 
 ## Test Summary
 
-| Metric | Count |
+| Metric | Value |
 |--------|-------|
 | Tests Passed | All structural checks |
 | Bugs Found | 0 |
 | Release Ready | YES |
+
+---
+
+## Reusable Test Scripts
+
+None. Manual verification only. This task is a frontend/API implementation task with no database-level regression queries applicable.
+
+```bash
+# Full regression suite (database tests only):
+./ai/scripts/run-all-regression.sh
+```

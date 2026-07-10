@@ -41,8 +41,20 @@ status: PASSED
 
 ## Test Summary
 
-| Metric | Count |
+| Metric | Value |
 |--------|-------|
 | Tests Executed | 3 |
 | Passed | 3 |
 | Failed | 0 |
+
+---
+
+## Reusable Test Scripts
+
+```bash
+# Targeted verification:
+psql -U erp_user -h localhost -d erp_db -f ai/scripts/verify-prd-001-schema.sql
+
+# Full regression suite:
+./ai/scripts/run-all-regression.sh
+```

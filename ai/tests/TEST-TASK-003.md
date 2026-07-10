@@ -249,7 +249,7 @@ None.
 
 ## Test Summary
 
-| Metric | Count |
+| Metric | Value |
 |--------|-------|
 | Test Cases Executed | 16 |
 | Passed | 16 |
