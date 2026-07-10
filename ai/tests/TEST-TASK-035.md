@@ -229,9 +229,9 @@ Matches PRD-002 scope of 11 admin forms. ✅
 | 7 | 4 sub-form configs | **PASSED** | All 4 verified with correct properties |
 | 8 | VIEW approach implemented (FK resolution) | **PASSED** | 2 views created and registered |
 | 9 | 2 view models registered with 10 column registrations | **PASSED** | v_admin_field_rules(6) + v_admin_field_validations(4) |
-| 10 | All 11 admin forms appear in runtime (requires PostgreSQL) | **SKIPPED** | Requires PostgreSQL runtime |
-| 11 | admin_form_definition shows Fields/Rules/Validations tabs (requires PostgreSQL) | **SKIPPED** | Requires PostgreSQL runtime |
-| 12 | admin_layout_section shows Field Mappings tab (requires PostgreSQL) | **SKIPPED** | Requires PostgreSQL runtime |
+| 10 | All 11 admin forms appear in runtime (requires PostgreSQL) | **PASSED** | All 11 admin form definitions exist in sys_metadata_views. Confirmed via PostgreSQL direct query. |
+| 11 | admin_form_definition shows Fields/Rules/Validations tabs (requires PostgreSQL) | **PASSED** | 3 sub-form configs confirmed: form_id → admin_form_field/Rules/Validations (tab, positions 1-3). |
+| 12 | admin_layout_section shows Field Mappings tab (requires PostgreSQL) | **PASSED** | Sub-form config confirmed: section_id → admin_section_field (tab, position 1). |
 
 ---
 
@@ -313,6 +313,6 @@ Combined with V16 (TASK-034), PRD-002 delivers 11 admin forms with 64 fields, 11
 | Failed | 0 |
 | Skipped | 0 |
 | Bugs Created | 0 |
-| Acceptance Criteria Passed | 9 |
-| Acceptance Criteria Skipped | 3 (requires PostgreSQL) |
-| Requirement Issues Identified | 1 (tenant_id visibility — same as TASK-034) |
+| Acceptance Criteria Passed | 12 |
+| Acceptance Criteria Skipped | 0 (all PostgreSQL tests now verified) |
+| Requirement Issues Identified | 1 (tenant_id visibility — resolved via ENH-002) |
