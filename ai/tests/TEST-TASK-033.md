@@ -206,3 +206,15 @@ The V15 Flyway migration is structurally correct and matches all PRD-002 v1.0.0 
 | Bugs Created | 0 |
 | Acceptance Criteria Passed | 9 |
 | Acceptance Criteria Skipped | 0 (all PostgreSQL tests now verified) |
+
+---
+
+## Reusable Test Scripts
+
+```bash
+# PRD-002 data verification:
+psql -U erp_user -h localhost -d erp_db -f ai/scripts/verify-prd-002-data.sql
+
+# Full regression suite (all PRDs):
+./ai/scripts/run-all-regression.sh
+```

@@ -209,3 +209,15 @@ Combined PRD-002 delivery after V18:
 | Bugs Created | 0 |
 | REQ-ISSUE-001 Gaps Closed | 10/10 ✅ |
 | SE Pre-Commit Checklist | 9/9 ✅ |
+
+---
+
+## Reusable Test Scripts
+
+```bash
+# PRD-002 data verification:
+psql -U erp_user -h localhost -d erp_db -f ai/scripts/verify-prd-002-data.sql
+
+# Full regression suite (all PRDs):
+./ai/scripts/run-all-regression.sh
+```

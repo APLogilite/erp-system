@@ -257,3 +257,15 @@ None.
 | Skipped | 0 |
 | Bugs Created | 0 |
 | Regression Status | Clean (no new failures) |
+
+---
+
+## Reusable Test Scripts
+
+```bash
+# Schema verification (PRD-001):
+psql -U erp_user -h localhost -d erp_db -f ai/scripts/verify-prd-001-schema.sql
+
+# Full regression suite:
+./ai/scripts/run-all-regression.sh
+```

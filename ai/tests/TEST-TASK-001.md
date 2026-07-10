@@ -292,3 +292,17 @@ None. All implementation matches the task specification and PRD-001 v1.6.0 requi
 | Bugs Created | 0 |
 | Regression Status | Clean (no new failures) |
 | AC2 PostgreSQL verification | PASSED (30 tables confirmed in erp_db) |
+
+---
+
+## Reusable Test Scripts
+
+This report's PostgreSQL verification can be re-run with:
+
+```bash
+# Schema verification only:
+psql -U erp_user -h localhost -d erp_db -f ai/scripts/verify-prd-001-schema.sql
+
+# Full regression suite (all PRDs):
+./ai/scripts/run-all-regression.sh
+```

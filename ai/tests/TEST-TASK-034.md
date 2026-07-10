@@ -261,3 +261,15 @@ V16 migration is structurally correct per TASK-034 specification. All 15 structu
 | Acceptance Criteria Passed | 11 |
 | Acceptance Criteria Skipped | 0 (all PostgreSQL tests now verified) |
 | Requirement Issues Identified | 1 (tenant_id visibility — resolved via ENH-002) |
+
+---
+
+## Reusable Test Scripts
+
+```bash
+# PRD-002 data verification:
+psql -U erp_user -h localhost -d erp_db -f ai/scripts/verify-prd-002-data.sql
+
+# Full regression suite (all PRDs):
+./ai/scripts/run-all-regression.sh
+```

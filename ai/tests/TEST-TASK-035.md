@@ -316,3 +316,15 @@ Combined with V16 (TASK-034), PRD-002 delivers 11 admin forms with 64 fields, 11
 | Acceptance Criteria Passed | 12 |
 | Acceptance Criteria Skipped | 0 (all PostgreSQL tests now verified) |
 | Requirement Issues Identified | 1 (tenant_id visibility — resolved via ENH-002) |
+
+---
+
+## Reusable Test Scripts
+
+```bash
+# PRD-002 data verification:
+psql -U erp_user -h localhost -d erp_db -f ai/scripts/verify-prd-002-data.sql
+
+# Full regression suite (all PRDs):
+./ai/scripts/run-all-regression.sh
+```
