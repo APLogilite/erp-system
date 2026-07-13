@@ -12,15 +12,13 @@ Updated By: Planner
 |-----|-------|---------|--------|----------|
 | PRD-001 | Dynamic Form Configuration System | 1.6.0 | **COMPLETED** | High |
 | PRD-002 | Admin Configuration Forms | 1.1.0 | **COMPLETED** | High |
-| PRD-003 | ERP Order Flow — Transaction Forms | 1.0.0 | APPROVED | High |
+| PRD-003 | ERP Order Flow — Transaction Forms | 1.0.0 | **READY_FOR_DEPLOYMENT** | High |
 
 ---
 
 ## Ready For Development
 
-| Task | PRD | Priority | Owner | Branch | Locked | Depends On |
-|------|-----|----------|-------|--------|--------|------------|
-| TASK-028 | PRD-003 | High | Developer | — | false | — |
+*(none)*
 
 ---
 
@@ -32,7 +30,9 @@ Updated By: Planner
 
 ## Ready For Test
 
-*(none)*
+| Task | Branch | Change Report | Owner |
+|------|--------|---------------|-------|
+| BUG-001 | bugfix/BUG-001 | CHANGE-BUG-001.md | QA Engineer |
 
 ---
 
@@ -73,6 +73,11 @@ Updated By: Planner
 | TASK-025 | 2026-07-09 | 1.6.0 |
 | TASK-026 | 2026-07-09 | 1.6.0 |
 | TASK-027 | 2026-07-09 | 1.6.0 |
+| TASK-028 | 2026-07-13 | 1.0.0 |
+| TASK-029 | 2026-07-13 | 1.0.0 |
+| TASK-030 | 2026-07-13 | 1.0.0 |
+| TASK-031 | 2026-07-13 | 1.0.0 |
+| TASK-032 | 2026-07-13 | 1.0.0 |
 | TASK-033 | 2026-07-10 | 1.1.0 |
 | TASK-034 | 2026-07-10 | 1.1.0 |
 | TASK-035 | 2026-07-10 | 1.1.0 |
@@ -83,18 +88,15 @@ Updated By: Planner
 
 ## Planning
 
-| Task | PRD | Priority | Status | Owner | Locked | Depends On |
-|------|-----|----------|--------|--------|--------|------------|
-| TASK-029 | PRD-003 | High | PLANNED | Planner | false | TASK-028 |
-| TASK-030 | PRD-003 | High | PLANNED | Planner | false | TASK-028 |
-| TASK-031 | PRD-003 | High | PLANNED | Planner | false | TASK-029, TASK-030 |
-| TASK-032 | PRD-003 | High | PLANNED | Planner | false | TASK-031 |
+*(none)*
 
 ---
 
 ## Bugs
 
-*(none)*
+| Bug | Parent Task | Severity | Status | Owner |
+|-----|-------------|----------|--------|-------|
+| BUG-001 | TASK-001 | Medium | TESTED | QA Engineer |
 
 ---
 
@@ -117,14 +119,17 @@ Updated By: Planner
 
 | Status | Count |
 |--------|-------|
-| PRDs | 3 (PRD-001 COMPLETED, PRD-002 COMPLETED, PRD-003 APPROVED) |
-| Ready For Dev | 1 task (TASK-028) |
+| PRDs | 3 (PRD-001 COMPLETED, PRD-002 COMPLETED, PRD-003 READY_FOR_DEPLOYMENT) |
+| Ready For Dev | 0 tasks |
+| In Development | 0 tasks |
 | Ready For Test | 0 tasks |
 | In Testing | 0 tasks |
-| Planning | 4 tasks (TASK-029-032) |
+| Planning | 0 tasks |
+| Bugs | 1 (BUG-001 — TESTED) |
 | Completed (PRD-001) | 27 tasks + 1 enhancement (ENH-001) |
 | Completed (PRD-002) | 3 tasks + 1 enhancement (TASK-033/034/035 + ENH-002) |
-| Total Tasks | 37 (32 completed + 1 ready for dev + 4 planning) |
-| PRD-001 Status | COMPLETED (v1.6.0 — all tasks + ENH-001 tested and passed) |
-| PRD-002 Status | COMPLETED (v1.1.0 — all 4 items tested and passed) |
-| PRD-003 Status | APPROVED (awaiting development) |
+| Completed (PRD-003) | 5 tasks (TASK-028/029/030/031/032) |
+| Total Tasks | 37 tasks + 1 bug (37 completed + 1 bug task) |
+| PRD-001 Status | COMPLETED (v1.6.0) |
+| PRD-002 Status | COMPLETED (v1.1.0) |
+| PRD-003 Status | READY_FOR_DEPLOYMENT (all 5 tasks tested and passed) |

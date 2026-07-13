@@ -322,21 +322,45 @@ The main branch only receives changes after the PRD has been fully tested and ap
 
 ## Branch Rules
 
-For every implementation task:
+For every implementation task or bug fix:
 
-1. Checkout the Parent PRD branch.
+1. Fetch the latest remote state: `git fetch --all`
 
-2. Pull or synchronize the Parent PRD branch to the latest repository state.
+2. Determine the base branch:
+
+   a. Identify the original Parent PRD branch name from the task (e.g. `prd/PRD-001-dynamic-form-configuration`).
+
+   b. Check whether the original PRD branch has been merged into `main`:
+      - If the branch does not exist locally or on remote → it was merged and deleted.
+      - If it exists, run: `git merge-base --is-ancestor origin/prd/PRD-XXX-<name> main`
+        Exit code 0 means it is an ancestor of main (merged).
+
+   c. If merged (branch does not exist OR is ancestor of main):
+      - Checkout `main`, pull the latest.
+      - Determine the next versioned PRD branch:
+        - Search for existing `prd/PRD-XXX-v*` branches locally and on remote.
+        - Use the next available version: `prd/PRD-XXX-v2`, `-v3`, etc.
+      - Create the versioned PRD branch:
+        ```
+        git checkout -b prd/PRD-XXX-v<N>
+        git push -u origin prd/PRD-XXX-v<N>
+        ```
+      - This versioned branch is the new Parent PRD branch for this work.
+
+   d. If NOT merged (branch exists and is NOT ancestor of main):
+      - Checkout the original PRD branch: `git checkout prd/PRD-XXX-<name>`
+      - Pull or synchronize to the latest repository state.
+      - The original PRD branch remains the Parent PRD branch.
 
 3. Verify:
 
-   ✓ Current branch is the Parent PRD branch.
+   ✓ Current branch is the determined base (Parent PRD) branch.
 
    ✓ Working tree is clean.
 
-   ✓ Parent PRD branch is synchronized.
+   ✓ Base branch is synchronized.
 
-4. Create a NEW task branch.
+4. Create a NEW task branch from the base branch.
 
 Branch naming:
 
@@ -355,7 +379,7 @@ Branch naming:
 
    ✓ Branch name matches the assigned Task or Bug ID.
 
-Every task must use a newly created branch from the latest synchronized Parent PRD branch.
+Every task must use a newly created branch from the latest synchronized base branch.
 
 Never:
 
@@ -364,6 +388,8 @@ Never:
 • Create a task branch from another task branch.
 
 • Continue a previous task on the current feature branch.
+
+• Work from a stale or merged PRD branch — always re-evaluate the base.
 
 ────────────────────────────────────────
 
@@ -443,13 +469,13 @@ Never attempt to bypass Git failures.
 
 ## Git Synchronization Standard
 
-The Parent PRD branch is the single source of truth for all implementation work.
+The determined base branch (Parent PRD branch or versioned PRD branch) is the single source of truth for all implementation work.
 
-Every task must begin from the latest synchronized Parent PRD branch.
+Every task must begin from the latest synchronized base branch.
 
-Always synchronize the Parent PRD branch before creating a new task branch.
+Always synchronize the base branch before creating a new task branch.
 
-Never assume the local PRD branch is current.
+Never assume the local base branch is current.
 
 
 ────────────────────────────────────────
@@ -466,9 +492,9 @@ Never assume the current branch is correct.
 
 Before implementation begins verify:
 
-✓ Current branch is the assigned PRD branch.
+✓ Current branch is the determined base branch (original or versioned PRD branch).
 
-✓ PRD branch matches the Parent PRD.
+✓ Base branch matches the Parent PRD.
 
 ✓ PRD branch is up to date.
 
@@ -896,15 +922,17 @@ Never wait for user input unless a stopping condition explicitly requires user a
 
 After a task reaches READY_FOR_TEST, the Software Engineer must verify whether additional work can continue.
 
-1. Return to the Parent PRD branch.
+1. Synchronize the repository: `git fetch --all`
 
-2. Synchronize the repository.
+2. Re-determine the base branch (the PRD may have been merged to main since the last task — run the Branch Rules logic again).
 
-3. Read the latest PROJECT_BOARD.md.
+3. Return to the determined base branch.
 
-4. Identify the highest-priority eligible READY_FOR_DEV task.
+4. Read the latest PROJECT_BOARD.md.
 
-5. Verify:
+5. Identify the highest-priority eligible READY_FOR_DEV task.
+
+6. Verify:
    • All dependencies are satisfied.
    • The task is not BLOCKED.
    • No active Requirement Issue prevents implementation.
@@ -915,7 +943,7 @@ If an eligible task exists:
 
 Do not produce an Execution Summary.
 
-Each new task must always start from the latest Parent PRD branch.
+Each new task must always start from the latest synchronized base branch.
 
 ────────────────────────────────────────
 

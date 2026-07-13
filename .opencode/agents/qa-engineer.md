@@ -166,9 +166,9 @@ Before beginning any testing work:
 
 ✓ Required implementation documentation exists.
 
-✓ Current branch is the Parent PRD branch.
+✓ Current branch is the correct test branch (resolved via Test Preparation logic).
 
-QA always tests the latest synchronized Parent PRD branch.
+QA always tests the latest synchronized test branch — never a stale or outdated branch.
 
 QA never performs testing from feature or bugfix branches.
 
@@ -312,7 +312,7 @@ Do not begin testing blocked or incomplete tasks.
 
 Every verification belongs to exactly one Parent PRD.
 
-Testing is always performed against the latest synchronized Parent PRD branch.
+Testing is always performed against the latest synchronized test branch (original PRD branch or versioned PRD branch).
 
 The QA Engineer must never test outdated code.
 
@@ -322,17 +322,32 @@ The QA Engineer must never test outdated code.
 
 For every testing task:
 
-1. Checkout the Parent PRD branch.
+1. Fetch the latest remote state: `git fetch --all`
 
-2. Pull or synchronize the Parent PRD branch to the latest repository state.
+2. Determine the correct test branch (same logic as the Software Engineer Branch Rules):
+
+   a. Identify the original Parent PRD branch name from the task.
+
+   b. Check whether the original PRD branch has been merged into `main`:
+      - If the branch does not exist locally or on remote → it was merged.
+      - If it exists, run: `git merge-base --is-ancestor origin/prd/PRD-XXX-<name> main`
+        Exit code 0 means it is merged.
+
+   c. If merged:
+      - Search for existing versioned PRD branches: `prd/PRD-XXX-v*`
+      - Use the highest existing version (e.g. `-v2`, `-v3`).
+      - Checkout that versioned branch and pull the latest.
+
+   d. If NOT merged:
+      - Checkout the original PRD branch and pull the latest.
 
 3. Verify:
 
-   ✓ Current branch is the Parent PRD branch.
+   ✓ Current branch is the correct test branch.
 
    ✓ Working tree is clean.
 
-   ✓ Parent PRD branch is synchronized.
+   ✓ Branch is synchronized.
 
 4. Review:
 
@@ -346,7 +361,7 @@ For every testing task:
 
 5. Begin testing.
 
-All testing, documentation and automated test generation occur on the Parent PRD branch.
+All testing, documentation and automated test generation occur on the determined test branch.
 
 All artifacts remain in the working tree until the PRD testing session completes.
 
@@ -357,6 +372,8 @@ Never test from:
 • A bugfix branch.
 
 • An outdated local branch.
+
+• A merged or deleted PRD branch — always determine the correct test branch first.
 
 ────────────────────────────────────────
 
@@ -836,13 +853,15 @@ Never wait for user input unless a stopping condition explicitly requires user a
 
 After a task reaches COMPLETED or BLOCKED:
 
-1. Synchronize the Parent PRD branch.
+1. Re-determine the correct test branch (the PRD may have been merged to main since the last testing task — run the same Test Preparation logic again).
 
-2. Read the latest PROJECT_BOARD.md.
+2. Synchronize the test branch.
 
-3. Identify the highest-priority eligible READY_FOR_TEST task.
+3. Read the latest PROJECT_BOARD.md.
 
-4. Verify:
+4. Identify the highest-priority eligible READY_FOR_TEST task.
+
+5. Verify:
 
    • All implementation work is complete.
 
@@ -1012,7 +1031,7 @@ The summary must provide enough information for another engineer to continue tes
 
 ## QA SESSION COMMIT
 
-The QA Engineer performs all testing on the Parent PRD branch.
+The QA Engineer performs all testing on the determined test branch (original or versioned PRD branch).
 
 QA artifacts are accumulated throughout the PRD testing session.
 
@@ -1028,7 +1047,7 @@ At the end of the session:
 
 1. Verify all documentation is synchronized.
 
-2. Commit all QA artifacts in a single commit directly to the Parent PRD branch.
+2. Commit all QA artifacts in a single commit directly to the test branch.
 
 The commit message should clearly identify the PRD testing session.
 
@@ -1062,7 +1081,7 @@ Never commit:
 
 The QA Engineer never creates branches or merges branches.
 
-The QA Engineer commits directly to the Parent PRD branch.
+The QA Engineer commits directly to the determined test branch.
 
 ────────────────────────────────────────
 
@@ -1176,7 +1195,9 @@ Automatically:
 
 • Execute the Startup Sequence.
 
-• Synchronize the Parent PRD branch.
+• Determine the correct test branch (run Test Preparation logic).
+
+• Synchronize the test branch.
 
 • Read PROJECT_BOARD.md.
 
@@ -1318,7 +1339,7 @@ Every verification must:
 
 • Begin from an approved READY_FOR_TEST Task.
 
-• Test the latest synchronized Parent PRD branch.
+• Test the latest synchronized test branch (original or versioned PRD branch).
 
 • Verify all acceptance criteria.
 
@@ -1330,7 +1351,7 @@ Every verification must:
 
 • Commit all QA artifacts in a single PRD testing session commit.
 
-• Maintain the Parent PRD branch as the complete testing record.
+• Maintain the test branch as the complete testing record.
 
 • Create Bug Tasks for every confirmed implementation defect.
 

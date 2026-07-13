@@ -460,7 +460,7 @@ Direct development on `main` is never allowed.
 
 ### PRD Branch
 
-One branch is created for every approved PRD.
+A branch is created for every approved PRD.
 
 Example:
 
@@ -469,6 +469,14 @@ prd/PRD-001-dynamic-form
 ```
 
 The PRD branch is the integration branch for that feature.
+
+If the original PRD branch has been merged into `main`, subsequent work uses a versioned PRD branch:
+
+```
+prd/PRD-001-v2
+```
+
+Versioned PRD branches follow the exact same lifecycle as the original.
 
 All implementation, bug fixes, and enhancements for the PRD are merged into this branch.
 
@@ -546,6 +554,49 @@ After validation they are merged back into the PRD branch.
 
 ---
 
+### Post-Merge Bug Fix Branch
+
+When a PRD branch has been merged into `main`, subsequent bug fixes or enhancements for that PRD must not reuse the original PRD branch. Instead, a new versioned PRD branch is created from the latest `main`.
+
+Determine the base branch:
+
+1. Fetch the latest remote state: `git fetch --all`
+2. Check if the original PRD branch exists locally or on remote.
+3. If the branch does not exist, or if its tip is an ancestor of `main` (checked via `git merge-base --is-ancestor`):
+   - The PRD branch has been merged.
+   - Checkout `main` and pull the latest.
+   - Determine the next versioned PRD branch name:
+     - Check for existing branches matching `prd/PRD-XXX-v*` locally and on remote.
+     - Use the next available version number: `prd/PRD-XXX-v2`, `-v3`, etc.
+   - Create the versioned PRD branch from `main` and push it.
+   - This versioned branch becomes the Parent PRD branch for this work.
+4. If the branch exists and has NOT been merged into `main`:
+   - Checkout the original PRD branch and pull the latest.
+   - It remains the Parent PRD branch.
+
+Once the base is determined, create the task/bug branch from it normally.
+
+After testing, the versioned PRD branch is merged into `main`:
+
+```
+main
+    │
+    ▼
+prd/PRD-001-v2
+    │
+    ├── bugfix/BUG-002
+    │       │
+    │       └── Merge → prd/PRD-001-v2
+    │
+    ▼
+QA validates prd/PRD-001-v2
+    │
+    ▼
+Merge prd/PRD-001-v2 → main
+```
+
+---
+
 ## Merge Rules
 
 Software Engineer
@@ -564,7 +615,7 @@ Software Engineer never merges directly into `main`.
 
 QA Engineer
 
-QA always validates the PRD branch.
+QA always validates the determined test branch (original or versioned PRD branch).
 
 QA never validates individual task branches unless specifically requested.
 
@@ -575,16 +626,16 @@ Release
 When every task under the PRD has passed testing:
 
 ```
-prd/PRD-001-dynamic-form
-        │
-        ▼
-Merge
-        │
-        ▼
-main
+prd/PRD-001-dynamic-form       or       prd/PRD-001-v2
+        │                                        │
+        ▼                                        ▼
+Merge                                   Merge
+        │                                        │
+        ▼                                        ▼
+main                                            main
 ```
 
-Only the completed PRD branch may be merged into `main`.
+Only the completed PRD branch (original or versioned) may be merged into `main`.
 
 ---
 
@@ -593,7 +644,7 @@ Only the completed PRD branch may be merged into `main`.
 | Branch | Owner |
 |---------|-------|
 | main | Release / Supervisor |
-| prd/* | Software Engineer (during development), QA (during testing) |
+| prd/* (original and versioned) | Software Engineer (during development), QA (during testing) |
 | feature/* | Software Engineer |
 | bugfix/* | Software Engineer |
 | enhancement/* | Software Engineer |
@@ -601,10 +652,10 @@ Only the completed PRD branch may be merged into `main`.
 Rules:
 
 - Only one active task branch may exist for a task.
-- Every task branch must originate from its PRD branch.
-- Every completed task branch must be merged into its PRD branch before the next task begins.
-- QA always tests the latest PRD branch.
-- Only a fully tested PRD branch may be merged into `main`.
+- Every task branch must originate from its base PRD branch (original or versioned).
+- Every completed task branch must be merged into its base PRD branch before the next task begins.
+- QA always tests the latest determined test branch.
+- Only a fully tested PRD branch (original or versioned) may be merged into `main`.
 
 ---
 
