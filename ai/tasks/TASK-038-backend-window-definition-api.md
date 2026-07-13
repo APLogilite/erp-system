@@ -5,7 +5,7 @@ title: Backend — Runtime Window Definition API (Bundle)
 
 type: API
 
-status: PLANNED
+status: READY_FOR_DEV
 
 priority: Critical
 
