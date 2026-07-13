@@ -5,7 +5,7 @@ title: Seed Data — Register Business Tables (md_*, tx_*) as sys_table + sys_co
 
 type: Database
 
-status: PLANNING
+status: PLANNED
 
 priority: High
 

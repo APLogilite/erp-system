@@ -2,7 +2,7 @@
 
 Last Updated: 2026-07-13
 
-Updated By: Planner
+Updated By: software_engineer
 
 ---
 
@@ -13,13 +13,21 @@ Updated By: Planner
 | PRD-001 | Dynamic Form Configuration System | 1.6.0 | **COMPLETED** | High |
 | PRD-002 | Admin Configuration Forms | 1.1.0 | **COMPLETED** | High |
 | PRD-003 | ERP Order Flow — Transaction Forms | 1.0.0 | **READY_FOR_DEPLOYMENT** | High |
-| PRD-004 | Window Hierarchy & Menu System | 1.0.0 | **APPROVED** | High |
+| PRD-004 | Window Hierarchy & Menu System | 1.0.0 | **IN_DEVELOPMENT** | High |
 
 ---
 
 ## Ready For Development
 
-*(none — all PRD-004 tasks are in PLANNING)*
+*(none)*
+
+---
+
+## Ready For Test
+
+| Task | PRD | Priority | Owner | Change Report |
+|------|-----|----------|-------|---------------|
+| TASK-036 | PRD-004 | Critical | software_engineer | CHANGE-TASK-036.md |
 
 ---
 
@@ -85,20 +93,19 @@ Updated By: Planner
 
 ---
 
-## Planning (PRD-004)
+## Planning (PRD-004) — All tasks advanced to PLANNED
 
 | Task | PRD | Priority | Owner | Depends On |
 |------|-----|----------|-------|------------|
-| TASK-036 | PRD-004 | Critical | planner | — |
-| TASK-037 | PRD-004 | Critical | planner | TASK-036 |
-| TASK-038 | PRD-004 | Critical | planner | TASK-037 |
-| TASK-039 | PRD-004 | Critical | planner | TASK-037, TASK-038 |
-| TASK-040 | PRD-004 | Critical | planner | TASK-037 |
-| TASK-041 | PRD-004 | Critical | planner | TASK-038, TASK-039, TASK-040, TASK-037 |
-| TASK-042 | PRD-004 | High | planner | TASK-036 |
-| TASK-043 | PRD-004 | High | planner | TASK-037, TASK-042 |
-| TASK-044 | PRD-004 | High | planner | TASK-042, TASK-037 |
-| TASK-045 | PRD-004 | High | planner | TASK-043, TASK-044 |
+| TASK-037 | PRD-004 | Critical | — | TASK-036 |
+| TASK-038 | PRD-004 | Critical | — | TASK-037 |
+| TASK-039 | PRD-004 | Critical | — | TASK-037, TASK-038 |
+| TASK-040 | PRD-004 | Critical | — | TASK-037 |
+| TASK-041 | PRD-004 | Critical | — | TASK-038, TASK-039, TASK-040, TASK-037 |
+| TASK-042 | PRD-004 | High | — | TASK-036 |
+| TASK-043 | PRD-004 | High | — | TASK-037, TASK-042 |
+| TASK-044 | PRD-004 | High | — | TASK-042, TASK-037 |
+| TASK-045 | PRD-004 | High | — | TASK-043, TASK-044 |
 
 ---
 
@@ -135,15 +142,16 @@ Updated By: Planner
 
 | Status | Count |
 |--------|-------|
-| PRDs | 4 (PRD-001 COMPLETED, PRD-002 COMPLETED, PRD-003 READY_FOR_DEPLOYMENT, PRD-004 APPROVED) |
+| PRDs | 4 (PRD-001 COMPLETED, PRD-002 COMPLETED, PRD-003 READY_FOR_DEPLOYMENT, PRD-004 IN_DEVELOPMENT) |
 | Ready For Dev | 0 |
+| Ready For Test | 1 (TASK-036) |
 | In Development | 0 |
 | Ready For Test | 0 |
 | In Testing | 0 |
-| Planning | 10 tasks (PRD-004) |
+| Planning | 9 tasks (PRD-004 — PLANNED) |
 | Bugs | 6 (ALL TESTED) |
 | Completed (PRD-001) | 27 tasks + 1 enhancement (ENH-001) |
 | Completed (PRD-002) | 3 tasks + 1 enhancement (TASK-033/034/035 + ENH-002) |
 | Completed (PRD-003) | 5 tasks (TASK-028/029/030/031/032) |
-| Total Tasks | 37 completed + 10 planning + 6 bugs |
-| PRD-004 Status | APPROVED (v1.0.0) — Window Hierarchy & Menu System |
+| Total Tasks | 37 completed + 1 in-dev + 9 planned + 6 bugs |
+| PRD-004 Status | IN_DEVELOPMENT (v1.0.0) — Window Hierarchy & Menu System |

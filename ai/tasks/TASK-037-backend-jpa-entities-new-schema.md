@@ -5,7 +5,7 @@ title: Backend — JPA Entities + Services for New Metadata Tables
 
 type: Feature
 
-status: PLANNING
+status: PLANNED
 
 priority: Critical
 
