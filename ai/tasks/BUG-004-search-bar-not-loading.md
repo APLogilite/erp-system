@@ -3,7 +3,7 @@ id: BUG-004
 
 title: FormSearchBar shows empty results — needs default form list and visible header button
 
-status: PLANNING_APPROVED
+status: IN_DEVELOPMENT
 
 priority: Medium
 
@@ -11,17 +11,17 @@ severity: Medium
 
 owner: developer
 
-assigned_to:
+assigned_to: Software Engineer
 
-assigned_branch:
+assigned_branch: bugfix/BUG-004
 
-locked: false
+locked: true
 
 created: 2026-07-13
 
 updated: 2026-07-13
 
-started:
+started: 2026-07-13
 
 completed:
 
