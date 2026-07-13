@@ -5,11 +5,11 @@ title: Seed Master Data Forms (Flyway Migration)
 
 type: Database
 
-status: PLANNED
+status: READY_FOR_DEV
 
 priority: High
 
-owner: planner
+owner: developer
 
 assigned_to:
 
@@ -19,7 +19,7 @@ locked: false
 
 created: 2026-07-10
 
-updated: 2026-07-10
+updated: 2026-07-13
 
 started:
 
