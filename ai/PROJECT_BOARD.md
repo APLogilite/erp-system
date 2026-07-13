@@ -97,11 +97,11 @@ Updated By: Planner
 | Bug | Parent Task | Severity | Status | Owner | Depends On |
 |-----|-------------|----------|--------|-------|------------|
 | BUG-001 | TASK-001 | Medium | TESTED | QA Engineer | — |
-| BUG-002 | TASK-007 | High | READY_FOR_TEST | Software Engineer | — |
-| BUG-003 | TASK-011 | High | READY_FOR_TEST | Software Engineer | — |
-| BUG-004 | TASK-025 | Medium | READY_FOR_TEST | Software Engineer | — |
-| BUG-005 | TASK-025 | Medium | READY_FOR_TEST | Software Engineer | — |
-| BUG-006 | TASK-007 | Critical | READY_FOR_TEST | Software Engineer | — |
+| BUG-002 | TASK-007 | High | TESTED | QA Engineer | — |
+| BUG-003 | TASK-011 | High | TESTED | QA Engineer | — |
+| BUG-004 | TASK-025 | Medium | TESTED | QA Engineer | — |
+| BUG-005 | TASK-025 | Medium | TESTED | QA Engineer | — |
+| BUG-006 | TASK-007 | Critical | TESTED | QA Engineer | — |
 
 ---
 
@@ -111,7 +111,7 @@ Updated By: Planner
 |------|------------|-------------|--------|--------|
 | ENH-001 | PRD-001 | TASK-007 | Form Designer API tenant authorization | COMPLETED |
 | ENH-002 | PRD-002 | TASK-034, TASK-035 | Add tenant_id to all admin forms (REQ-ISSUE-001) | COMPLETED |
-| ENH-003 | PRD-001 | TASK-026 | RuntimePage not integrated with API — uses hardcoded sample bundles instead of dynamic form rendering | READY_FOR_TEST |
+| ENH-003 | PRD-001 | TASK-026 | RuntimePage not integrated with API — uses hardcoded sample bundles instead of dynamic form rendering | TESTED |
 
 ---
 
@@ -128,10 +128,10 @@ Updated By: Planner
 | PRDs | 3 (PRD-001 COMPLETED, PRD-002 COMPLETED, PRD-003 READY_FOR_DEPLOYMENT) |
 | Ready For Dev | 0 bugs |
 | In Development | 0 bugs |
-| Ready For Test | 6 bugs (BUG-002, BUG-003, BUG-004, BUG-005, BUG-006) |
+| Ready For Test | 0 bugs |
 | In Testing | 0 tasks |
 | Planning | 0 tasks |
-| Bugs | 6 (BUG-001 TESTED, BUG-002/003/004/005/006 READY_FOR_TEST) |
+| Bugs | 6 (ALL TESTED) |
 | Completed (PRD-001) | 27 tasks + 1 enhancement (ENH-001) |
 | Completed (PRD-002) | 3 tasks + 1 enhancement (TASK-033/034/035 + ENH-002) |
 | Completed (PRD-003) | 5 tasks (TASK-028/029/030/031/032) |
