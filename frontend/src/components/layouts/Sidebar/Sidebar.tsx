@@ -37,7 +37,8 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuthStore } from '@/core/auth/authStore';
 import { FormNavigationMenu } from '@/core/runtime/components/FormNavigationMenu';
 
-const drawerWidth = 280;
+export const SIDEBAR_WIDTH = 280;
+const drawerWidth = SIDEBAR_WIDTH;
 
 interface NavItem {
   text: string;

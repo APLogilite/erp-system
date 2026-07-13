@@ -3,7 +3,7 @@ id: BUG-003
 
 title: Sidebar and main content overlap — AppLayout missing margin compensation for permanent Drawer
 
-status: READY_FOR_DEV
+status: IN_DEVELOPMENT
 
 priority: High
 
@@ -11,17 +11,17 @@ severity: High
 
 owner: developer
 
-assigned_to:
+assigned_to: Software Engineer
 
-assigned_branch:
+assigned_branch: bugfix/BUG-003
 
-locked: false
+locked: true
 
 created: 2026-07-13
 
 updated: 2026-07-13
 
-started:
+started: 2026-07-13
 
 completed:
 
@@ -35,12 +35,13 @@ detected_in: UI layout (localhost:5173)
 
 related_test:
 
-fix_summary:
+fix_summary: ai/changes/CHANGE-BUG-003.md
 
 verification_report:
 
 history:
   - 2026-07-13 — Planner — Created bug task. Sidebar drawer overlaps main content area; was previously responsive.
+  - 2026-07-13 — Software Engineer — Phase 1 done: added marginLeft compensation in AppLayout. Sidebar no longer overlaps content. Phase 2 (page responsiveness audit) and Phase 3 (ContentArea Container) still pending.
 
 ---
 
