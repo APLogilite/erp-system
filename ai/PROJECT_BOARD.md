@@ -92,7 +92,9 @@ Updated By: Planner
 
 ## Bugs
 
-*(none)*
+| Bug | Parent Task | Severity | Status | Owner |
+|-----|-------------|----------|--------|-------|
+| BUG-001 | TASK-001 | Medium | READY_FOR_DEV | developer |
 
 ---
 
@@ -121,10 +123,11 @@ Updated By: Planner
 | Ready For Test | 0 tasks |
 | In Testing | 0 tasks |
 | Planning | 0 tasks |
+| Bugs | 1 (BUG-001 — READY_FOR_DEV) |
 | Completed (PRD-001) | 27 tasks + 1 enhancement (ENH-001) |
 | Completed (PRD-002) | 3 tasks + 1 enhancement (TASK-033/034/035 + ENH-002) |
 | Completed (PRD-003) | 5 tasks (TASK-028/029/030/031/032) |
-| Total Tasks | 37 (37 completed — all PRDs done!) |
+| Total Tasks | 37 tasks + 1 bug (37 completed + 1 bug task) |
 | PRD-001 Status | COMPLETED (v1.6.0) |
 | PRD-002 Status | COMPLETED (v1.1.0) |
 | PRD-003 Status | READY_FOR_DEPLOYMENT (all 5 tasks tested and passed) |

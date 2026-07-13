@@ -3,10 +3,33 @@ document: CHANGELOG
 version: 1.0.0
 status: ACTIVE
 owner: Planner
-last_updated: 2026-07-10
+last_updated: 2026-07-13
 ---
 
 # Changelog
+
+## 2026-07-13 (BUG-001 Created — DatabaseConnectionTest Failures)
+
+### Summary
+Created BUG-001 to track the 3 pre-existing test errors in `DatabaseConnectionTest`. Previously documented as a known limitation in PROJECT_MEMORY.md but had no actionable task assigned. The bug causes `mvn test` to always end with `BUILD FAILURE` despite all functional tests passing (33/33 pass).
+
+### Bug Created
+- **BUG-001** — Fix pre-existing DatabaseConnectionTest failures (3 errors)
+  - Priority: High | Severity: Medium | Status: READY_FOR_DEV
+  - Parent PRD: PRD-001 (foundational architecture PRD)
+  - Root causes identified: INFORMATION_SCHEMA case sensitivity, wrong table name for warehouse (`warehouses` vs `m1_warehouses`), test queries legacy JPA entity tables
+
+### Project State
+- **3 PRDs**: all COMPLETED or READY_FOR_DEPLOYMENT
+- **37 tasks**: all completed
+- **1 bug**: BUG-001 at READY_FOR_DEV
+
+### Documentation Updated
+- **BUG-001** created at `ai/tasks/BUG-001-database-connection-test-failures.md`
+- **PROJECT_BOARD.md** — Bugs section populated with BUG-001
+- **PROJECT_MEMORY.md** — Known Limitations updated (pre-existing test failures now tracked as BUG-001)
+
+---
 
 ## 2026-07-13 (PRD-003 QA Complete — All 37 Tasks Done)
 
@@ -28,7 +51,7 @@ QA completed structural verification of all 5 PRD-003 tasks (V19-V23 migrations)
 ### Full Project State
 - **3 PRDs**: 2 COMPLETED, 1 READY_FOR_DEPLOYMENT
 - **37 tasks**: all completed and tested
-- **0 bugs**, 0 blocked, 0 pending
+- **0 bugs**, 0 blocked, 0 pending (before BUG-001)
 
 ---
 
