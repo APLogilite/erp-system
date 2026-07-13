@@ -13,14 +13,13 @@ Updated By: Planner
 | PRD-001 | Dynamic Form Configuration System | 1.6.0 | **COMPLETED** | High |
 | PRD-002 | Admin Configuration Forms | 1.1.0 | **COMPLETED** | High |
 | PRD-003 | ERP Order Flow — Transaction Forms | 1.0.0 | **READY_FOR_DEPLOYMENT** | High |
+| PRD-004 | Window Hierarchy & Menu System | 1.0.0 | **APPROVED** | High |
 
 ---
 
 ## Ready For Development
 
-| Task | PRD | Priority | Owner | Branch | Locked | Depends On |
-|------|-----|----------|-------|--------|--------|------------|
-| BUG-003 | PRD-001 | High | developer | — | false | — |
+*(none — all PRD-004 tasks are in PLANNING)*
 
 ---
 
@@ -86,9 +85,20 @@ Updated By: Planner
 
 ---
 
-## Planning
+## Planning (PRD-004)
 
-*(none)*
+| Task | PRD | Priority | Owner | Depends On |
+|------|-----|----------|-------|------------|
+| TASK-036 | PRD-004 | Critical | planner | — |
+| TASK-037 | PRD-004 | Critical | planner | TASK-036 |
+| TASK-038 | PRD-004 | Critical | planner | TASK-037 |
+| TASK-039 | PRD-004 | Critical | planner | TASK-037, TASK-038 |
+| TASK-040 | PRD-004 | Critical | planner | TASK-037 |
+| TASK-041 | PRD-004 | Critical | planner | TASK-038, TASK-039, TASK-040, TASK-037 |
+| TASK-042 | PRD-004 | High | planner | TASK-036 |
+| TASK-043 | PRD-004 | High | planner | TASK-037, TASK-042 |
+| TASK-044 | PRD-004 | High | planner | TASK-042, TASK-037 |
+| TASK-045 | PRD-004 | High | planner | TASK-043, TASK-044 |
 
 ---
 
@@ -125,17 +135,15 @@ Updated By: Planner
 
 | Status | Count |
 |--------|-------|
-| PRDs | 3 (PRD-001 COMPLETED, PRD-002 COMPLETED, PRD-003 READY_FOR_DEPLOYMENT) |
-| Ready For Dev | 0 bugs |
-| In Development | 0 bugs |
-| Ready For Test | 0 bugs |
-| In Testing | 0 tasks |
-| Planning | 0 tasks |
+| PRDs | 4 (PRD-001 COMPLETED, PRD-002 COMPLETED, PRD-003 READY_FOR_DEPLOYMENT, PRD-004 APPROVED) |
+| Ready For Dev | 0 |
+| In Development | 0 |
+| Ready For Test | 0 |
+| In Testing | 0 |
+| Planning | 10 tasks (PRD-004) |
 | Bugs | 6 (ALL TESTED) |
 | Completed (PRD-001) | 27 tasks + 1 enhancement (ENH-001) |
 | Completed (PRD-002) | 3 tasks + 1 enhancement (TASK-033/034/035 + ENH-002) |
 | Completed (PRD-003) | 5 tasks (TASK-028/029/030/031/032) |
-| Total Tasks | 37 tasks + 4 bugs (37 completed + 3 ready for dev + 1 planning) |
-| PRD-001 Status | COMPLETED (v1.6.0) |
-| PRD-002 Status | COMPLETED (v1.1.0) |
-| PRD-003 Status | READY_FOR_DEPLOYMENT (all 5 tasks tested and passed) |
+| Total Tasks | 37 completed + 10 planning + 6 bugs |
+| PRD-004 Status | APPROVED (v1.0.0) — Window Hierarchy & Menu System |

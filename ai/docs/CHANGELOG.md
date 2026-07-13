@@ -8,6 +8,43 @@ last_updated: 2026-07-13
 
 # Changelog
 
+## 2026-07-13 (PRD-004 Created — Window Hierarchy & Menu System)
+
+### Summary
+New PRD-004 created to replace the old PRD-001/002/003 metadata schema with an iDempiere-inspired Window/Tab/Field/Menu hierarchy. The old metadata tables are dropped and replaced with a clean three-layer design: Database Schema (sys_table/sys_column), Window Design (sys_window/sys_tab/sys_window_field/sys_window_access), and Menu (sys_menu). The RuntimePage is fixed to use real API data instead of hardcoded bundles. Routes change from /runtime/{formCode} to /window/{windowName}.
+
+### PRD Created
+- **PRD-004** — Window Hierarchy & Menu System (v1.0.0, APPROVED)
+  - 7 new metadata tables: sys_table, sys_column, sys_window, sys_tab, sys_window_field, sys_window_access, sys_menu
+  - 3-layer architecture: Database → Window Design → Menu
+  - Admin windows for all metadata tables (replaces PRD-002)
+  - ERP windows seeded for Sales/Purchase Orders, Invoices, Payments, Shipments (replaces PRD-003)
+  - Hierarchical menu system with collapsible groups
+  - RuntimePage fixed to render actual dynamic forms
+  - Routes changed to /window/{windowName}
+  - Field display/readonly logic inline on field (iDempiere style)
+
+### Tasks Generated (10)
+| Task | Priority | Description | Depends On |
+|------|----------|-------------|------------|
+| TASK-036 | Critical | Create new metadata schema (Flyway migration) | — |
+| TASK-037 | Critical | Backend: JPA entities + services for new tables | TASK-036 |
+| TASK-038 | Critical | Backend: Runtime window definition API (bundle) | TASK-037 |
+| TASK-039 | Critical | Backend: Runtime window data API (CRUD records) | TASK-037, TASK-038 |
+| TASK-040 | Critical | Frontend: Menu component + navigation | TASK-037 |
+| TASK-041 | Critical | Frontend: Update routing to /window/{name} + fix RuntimePage | TASK-038, TASK-039, TASK-040, TASK-037 |
+| TASK-042 | High | Seed data: Register business tables as sys_table + sys_column | TASK-036 |
+| TASK-043 | High | Seed data: Admin windows for metadata management | TASK-037, TASK-042 |
+| TASK-044 | High | Seed data: ERP windows with tabs/fields | TASK-042, TASK-037 |
+| TASK-045 | High | Seed data: Menu entries + window access | TASK-043, TASK-044 |
+
+### State
+- PRD-004: 10 tasks at PLANNING
+- 3 older PRDs: 2 COMPLETED, 1 READY_FOR_DEPLOYMENT
+- All 10 tasks require PRD branch `prd/PRD-004-window-hierarchy-menu` to be created from `main`
+
+---
+
 ## 2026-07-13 (BUG-001 Created — DatabaseConnectionTest Failures)
 
 ### Summary
