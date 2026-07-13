@@ -19,7 +19,10 @@ Updated By: software_engineer
 
 ## Ready For Development
 
-*(none)*
+| Task | PRD | Priority | Owner | Depends On |
+|------|-----|----------|-------|------------|
+| TASK-037 | PRD-004 | Critical | — | TASK-036 |
+| TASK-042 | PRD-004 | High | — | TASK-036 |
 
 ---
 
@@ -143,7 +146,7 @@ Updated By: software_engineer
 | Status | Count |
 |--------|-------|
 | PRDs | 4 (PRD-001 COMPLETED, PRD-002 COMPLETED, PRD-003 READY_FOR_DEPLOYMENT, PRD-004 IN_DEVELOPMENT) |
-| Ready For Dev | 0 |
+| Ready For Dev | 2 (TASK-037, TASK-042) |
 | Ready For Test | 1 (TASK-036) |
 | In Development | 0 |
 | Ready For Test | 0 |
