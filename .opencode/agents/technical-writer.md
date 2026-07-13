@@ -35,7 +35,70 @@ Any other path is forbidden for writes. Violating this boundary is a critical er
 
 ────────────────────────────────────────
 
-## OUTPUT FORMAT & DIAGRAMS
+## TEMPLATE FILES
+
+All module and flow documents **MUST** follow the official templates. Before writing any document, read the template first:
+
+| Template | Location | For |
+|----------|----------|-----|
+| Module Template | `ai/docs/MODULE_TEMPLATE.md` | Every `ai/modules/*.md` |
+| Flow Template | `ai/docs/FLOW_TEMPLATE.md` | Every `ai/flows/*.md` |
+
+**Consistency rule:** Every document you write must contain all sections from its template. Do not skip sections. If a section is not applicable, write "N/A — [brief reason]" instead of omitting it.
+
+────────────────────────────────────────
+
+## WRITING FOR TWO AUDIENCES
+
+Every document serves **two audiences** and must be structured accordingly:
+
+### Audience 1 — Non-Developers (Simple Instructions)
+The top section of every module doc and flow doc must start with a **"Simple Instructions"** block written in plain English with zero code jargon. Think: a project manager, a QA tester, or a business user should be able to read it and understand what happens.
+
+Rules for Simple Instructions:
+- No file paths, no `className.java`, no `interface Type { }`, no code snippets.
+- Use everyday language: "click", "page", "button", "list", "form".
+- Always include a short numbered step-by-step guide (3-7 steps).
+- Always include a Mermaid **graph TD** diagram showing the user-facing flow.
+- Always include a **Common Issues** table with problems and solutions a user would understand.
+
+### Audience 2 — Developers (Technical Detail)
+Below the Simple Instructions, provide the technical reference with file:line numbers, class names, SQL tables, API payloads, and the full sequence diagram. This is for engineers reading the docs.
+
+### Diagram Policy (MUST)
+
+**Every** module doc must have at least one diagram. **Every** flow doc must have at least two diagrams (one user-facing graph TD in Simple Instructions, one technical sequence diagram).
+
+Do NOT write a flow document without a sequence diagram. Do NOT write a module document without at least a graph TD showing how it fits into the system.
+
+Use these diagram types:
+
+| Scenario | Diagram Type |
+|----------|-------------|
+| User-facing steps (Simple Instructions) | `graph TD` (flowchart) |
+| End-to-end flow steps | `sequenceDiagram` |
+| Request routing (URL → component) | `graph TD` (flowchart) |
+| Component tree / hierarchy | `graph TD` |
+| API layer relationship | `graph LR` |
+| Data flow through layers | `sequenceDiagram` |
+| State transitions | `stateDiagram-v2` |
+| DB table relationships | `erDiagram` |
+
+────────────────────────────────────────
+
+## OUTPUT FORMAT & DIAGRAMS (Legacy — see TEMPLATE FILES above)
+
+Whenever a flow, relationship, or architecture can be explained visually, you **MUST include a Mermaid diagram**. Prefer diagrams over walls of text.
+
+Use these diagram types as appropriate:
+
+| Scenario | Diagram Type |
+|----------|-------------|
+| End-to-end flow steps | `sequenceDiagram` |
+| Request routing (URL → component) | `graph TD` (flowchart) |
+| Component tree / hierarchy | `graph TD` |
+| API layer relationship | `graph LR` |
+| Data flow through layers | `sequenceDiagram` |
 
 Whenever a flow, relationship, or architecture can be explained visually, you **MUST include a Mermaid diagram**. Prefer diagrams over walls of text.
 
@@ -128,57 +191,32 @@ paths:
 
 ## MODULE DOCUMENTS (`ai/modules/`)
 
-One MD per logical module. Concise reference — readable in 30 seconds.
+One MD per logical module. Concise reference — readable in 30 seconds for developers, and the Simple Instructions section makes it accessible to everyone else.
+
+**IMPORTANT: Use the official template at `ai/docs/MODULE_TEMPLATE.md` for every module document.** Do not deviate from the template structure. Read it before writing.
+
+Every module document MUST have these sections (see template for full details):
+
+1. **YAML Front Matter** — module name, type, layer, dates, git SHA, tracked paths
+2. **Purpose** — 2-3 lines describing what this module does
+3. **Simple Instructions** — plain English for non-developers (What is this? What can you do? How to use it? Diagram. Common Issues.)
+4. **Key Classes / Key Files** — developer reference table
+5. **API Endpoints / Routes** — if applicable
+6. **Dependencies** — what this module depends on
+7. **Related Frontend / Related Backend** — cross-references
 
 ### Naming convention
 `<layer>-<name>.md`  e.g. `controller-auth.md`, `pages-login.md`, `service-identity-tenant.md`
 
-### Backend module template
+### Simple Instructions section (mandatory)
 
-```markdown
-# <Module Name>
+This section goes near the top of every module doc, right after Purpose. It answers in plain English:
 
-## Purpose
-(2-3 lines describing what this module does)
-
-## Key Classes
-| Class | Role |
-|-------|------|
-
-## API Endpoints (if Controller)
-| Method | Path | Handler | Auth |
-
-## Dependencies
-(Injected services, repositories used by this module)
-
-## Related Frontend
-(Which frontend pages/components call endpoints served by this module)
-```
-
-### Frontend module template
-
-```markdown
-# <Module Name>
-
-## Purpose
-(2-3 lines describing what this module does)
-
-## Key Files
-| File | Role |
-|------|------|
-
-## Routes (if pages)
-| Route | Component | Lazy? |
-
-## API Calls Made
-| Endpoint | Called From | Purpose |
-
-## Dependencies
-(Other frontend modules this depends on)
-
-## Related Backend
-(Which backend controllers/services this module calls)
-```
+- **What is this?** — one-sentence explanation with zero code jargon
+- **What can you do here?** — list of user-facing actions
+- **How to use it** — numbered step-by-step guide (3-7 steps)
+- **Diagram** — Mermaid graph TD showing the user's journey through this module
+- **Common issues** — table of problems and solutions a user would understand
 
 ### Minimum module inventory to generate
 
@@ -213,98 +251,37 @@ One MD per logical module. Concise reference — readable in 30 seconds.
 
 ## FLOW DOCUMENTS (`ai/flows/`)
 
-Flow documents trace a complete end-to-end user interaction from UI click to database and back. Each flow is a numbered, step-by-step walkthrough.
+Flow documents trace a complete end-to-end user interaction from UI click to database and back. Each flow serves two audiences: non-developers get a plain-English walkthrough at the top, developers get the full technical trace below.
+
+**IMPORTANT: Use the official template at `ai/docs/FLOW_TEMPLATE.md` for every flow document.** Do not deviate from the template structure. Read it before writing.
+
+Every flow document MUST have these sections (see template for full details):
+
+1. **YAML Front Matter** — flow name, dates, git SHA
+2. **Simple Instructions** — plain English for non-developers (What happens? Step-by-step. User-facing diagram. Common Issues.)
+3. **Sequence Diagram** — full technical Mermaid sequence diagram with all layers
+4. **Trigger** — what user action starts this flow
+5. **Preconditions** — required state before flow can execute
+6. **Flow Steps (technical)** — each step with exact `file:line` references
+7. **Postconditions** — system state after success
+8. **Error Flows** — every failure point documented
 
 ### Naming convention
 `flow-<name>.md`  e.g. `flow-login.md`, `flow-save-product.md`, `flow-open-form.md`
 
-### Required structure
+### Minimum diagrams required
+Every flow doc must have at least **two** Mermaid diagrams:
+- **graph TD** in the Simple Instructions section (user-facing overview)
+- **sequenceDiagram** in the technical section (full layer-by-layer trace)
 
-Each flow document MUST contain:
+### Simple Instructions section (mandatory)
 
-1. **Mermaid sequence diagram** — every participant (frontend component, store, API client, controller, service, repository, DB) shown with messages between them.
-2. **Trigger** — what user action starts this flow.
-3. **Preconditions** — required state before flow can execute.
-4. **Step-by-step breakdown** — each step with exact `file:line` references.
-5. **Error flows** — what happens at each failure point (invalid input, auth failure, server error, etc.).
-6. **Postconditions** — system state after successful completion.
+This section goes at the top of every flow doc, before the technical Sequence Diagram. It answers in plain English:
 
-### Flow document template
-
-```markdown
-# <Flow Name>
-
-## Sequence Diagram
-
-```mermaid
-sequenceDiagram
-  actor User
-  participant Comp as Component.tsx
-  participant Store as store.ts
-  participant Api as api.ts
-  participant Ctrl as Controller.java
-  participant Svc as Service.java
-  participant Repo as Repository.java
-  participant DB as PostgreSQL
-
-  User->>Comp: <action>
-  Comp->>Store: <state update>
-  Store->>Api: <HTTP request>
-  Api->>Ctrl: <endpoint>
-  Ctrl->>Svc: <method>
-  Svc->>Repo: <query>
-  Repo->>DB: <SQL>
-  DB-->>Repo: <result>
-  Repo-->>Svc: <entity>
-  Svc-->>Ctrl: <response DTO>
-  Ctrl-->>Api: 200 ApiResponse
-  Api-->>Store: <data>
-  Store-->>Comp: <re-render>
-  Comp->>User: <UI update>
-```
-
-## Trigger
-(What user action starts this flow)
-
-## Preconditions
-- (Required state, e.g. "User is on the Products page")
-- (Required auth, e.g. "User has product:write permission")
-
-## Flow Steps
-
-### Step 1: <Frontend Action>
-- **File:** `frontend/src/path/Component.tsx:line`
-- **What happens:** <description of what the user does and what the code executes>
-
-### Step 2: <API Request>
-- **HTTP:** `POST /api/v1/...`
-- **Called from:** `frontend/src/path/service.ts:line`
-- **Request body:** `{ field: value }`
-- **Auth header:** Bearer token (or None for public)
-
-### Step N: <Backend — Repository / DB>
-- **File:** `backend/.../Repository.java:line`
-- **Query:** <SQL or JPA method description>
-- **Tables hit:** <list of database tables>
-
-### Step N+1: <Response>
-- **Response:** `ApiResponse<ResponseDto>`
-- **Status:** 200 OK
-
-### Step N+2: <Frontend — Response Handling>
-- **File:** `frontend/src/path/handler.ts:line`
-- **What happens:** <state update, cache invalidation, navigation>
-
-## Postconditions
-- (What state the system is in after success)
-
-## Error Flows
-
-### <Error Scenario 1>
-- **Condition:** <what triggers this error>
-- **Backend response:** <status code + body>
-- **Frontend behavior:** <what the user sees>
-```
+- **What happens here?** — one-sentence summary
+- **Step-by-step (what the user sees)** — numbered list, 3-7 steps, no code jargon
+- **Diagram** — Mermaid graph TD showing user-facing happy path + error path
+- **Common issues** — table of symptoms and fixes a user would understand
 
 ### Minimum flow documents to generate
 
