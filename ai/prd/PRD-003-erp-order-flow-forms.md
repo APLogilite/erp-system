@@ -5,7 +5,7 @@ title: ERP Order Flow — Transaction Forms
 
 version: 1.0.0
 
-status: TESTING
+status: READY_FOR_DEPLOYMENT
 
 priority: High
 
@@ -13,7 +13,7 @@ owner: planner
 
 created: 2026-07-10
 
-updated: 2026-07-10
+updated: 2026-07-13
 
 approved_by: user
 

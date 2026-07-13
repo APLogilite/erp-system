@@ -12,7 +12,7 @@ Updated By: Planner
 |-----|-------|---------|--------|----------|
 | PRD-001 | Dynamic Form Configuration System | 1.6.0 | **COMPLETED** | High |
 | PRD-002 | Admin Configuration Forms | 1.1.0 | **COMPLETED** | High |
-| PRD-003 | ERP Order Flow — Transaction Forms | 1.0.0 | **TESTING** | High |
+| PRD-003 | ERP Order Flow — Transaction Forms | 1.0.0 | **READY_FOR_DEPLOYMENT** | High |
 
 ---
 
@@ -30,13 +30,7 @@ Updated By: Planner
 
 ## Ready For Test
 
-| Task | PRD | Priority | Owner | Branch | Locked | Depends On |
-|------|-----|----------|-------|--------|--------|------------|
-| TASK-028 | PRD-003 | High | Software Engineer | feature/TASK-028 | true | — |
-| TASK-029 | PRD-003 | High | Software Engineer | feature/TASK-029 | true | TASK-028 |
-| TASK-030 | PRD-003 | High | Software Engineer | feature/TASK-030 | true | TASK-028 |
-| TASK-031 | PRD-003 | High | Software Engineer | feature/TASK-031 | true | TASK-029, TASK-030 |
-| TASK-032 | PRD-003 | High | Software Engineer | feature/TASK-032 | true | TASK-031 |
+*(none)*
 
 ---
 
@@ -77,6 +71,11 @@ Updated By: Planner
 | TASK-025 | 2026-07-09 | 1.6.0 |
 | TASK-026 | 2026-07-09 | 1.6.0 |
 | TASK-027 | 2026-07-09 | 1.6.0 |
+| TASK-028 | 2026-07-13 | 1.0.0 |
+| TASK-029 | 2026-07-13 | 1.0.0 |
+| TASK-030 | 2026-07-13 | 1.0.0 |
+| TASK-031 | 2026-07-13 | 1.0.0 |
+| TASK-032 | 2026-07-13 | 1.0.0 |
 | TASK-033 | 2026-07-10 | 1.1.0 |
 | TASK-034 | 2026-07-10 | 1.1.0 |
 | TASK-035 | 2026-07-10 | 1.1.0 |
@@ -116,15 +115,16 @@ Updated By: Planner
 
 | Status | Count |
 |--------|-------|
-| PRDs | 3 (PRD-001 COMPLETED, PRD-002 COMPLETED, PRD-003 TESTING) |
+| PRDs | 3 (PRD-001 COMPLETED, PRD-002 COMPLETED, PRD-003 READY_FOR_DEPLOYMENT) |
 | Ready For Dev | 0 tasks |
 | In Development | 0 tasks |
-| Ready For Test | 5 tasks (TASK-028, TASK-029, TASK-030, TASK-031, TASK-032) |
+| Ready For Test | 0 tasks |
 | In Testing | 0 tasks |
 | Planning | 0 tasks |
 | Completed (PRD-001) | 27 tasks + 1 enhancement (ENH-001) |
 | Completed (PRD-002) | 3 tasks + 1 enhancement (TASK-033/034/035 + ENH-002) |
-| Total Tasks | 37 (32 completed + 5 ready for test) |
+| Completed (PRD-003) | 5 tasks (TASK-028/029/030/031/032) |
+| Total Tasks | 37 (37 completed — all PRDs done!) |
 | PRD-001 Status | COMPLETED (v1.6.0) |
 | PRD-002 Status | COMPLETED (v1.1.0) |
-| PRD-003 Status | TESTING (all 5 tasks implemented, awaiting QA verification) |
+| PRD-003 Status | READY_FOR_DEPLOYMENT (all 5 tasks tested and passed) |

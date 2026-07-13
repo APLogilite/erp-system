@@ -118,6 +118,53 @@ else
   log_fail "tenant_id missing: $TENANT_PASS/11 have it"
 fi
 
+# ── PRD-003: Data Verification ────────────────────────────────
+log_section "PRD-003: Data Verification"
+$PSQL -f "$SCRIPT_DIR/verify-prd-003-data.sql" 2>&1 | tail -30
+
+MD_COUNT=$($PSQL -t -c "SELECT count(*) FROM sys_metadata_models WHERE name IN ('md_business_partner','md_product','md_uom','md_uom_conversion','md_warehouse')" 2>/dev/null || echo 0)
+TX_COUNT=$($PSQL -t -c "SELECT count(*) FROM sys_metadata_models WHERE name LIKE 'tx_%'" 2>/dev/null || echo 0)
+MF_COUNT=$($PSQL -t -c "SELECT count(*) FROM sys_metadata_views WHERE name IN ('business_partner','product','uom','uom_conversion','warehouse')" 2>/dev/null || echo 0)
+TF_COUNT=$($PSQL -t -c "SELECT count(*) FROM sys_metadata_views WHERE name LIKE '%_order' OR name LIKE '%_invoice' OR name LIKE '%_payment' OR name LIKE '%_shipment' OR name = 'material_receipt'" 2>/dev/null || echo 0)
+LF_COUNT=$($PSQL -t -c "SELECT count(*) FROM sys_metadata_views WHERE name IN ('order_line','invoice_line','shipment_line','mr_line')" 2>/dev/null || echo 0)
+SF_COUNT=$($PSQL -t -c "SELECT count(*) FROM sys_form_sub_forms WHERE child_form_code IN ('order_line','invoice_line','shipment_line','mr_line')" 2>/dev/null || echo 0)
+
+if [ "$MD_COUNT" -eq 5 ] 2>/dev/null; then
+  log_pass "Master data tables: $MD_COUNT (expected 5)"
+else
+  log_fail "Master data tables: $MD_COUNT (expected 5)"
+fi
+
+if [ "$TX_COUNT" -eq 9 ] 2>/dev/null; then
+  log_pass "Transaction tables: $TX_COUNT (expected 9)"
+else
+  log_fail "Transaction tables: $TX_COUNT (expected 9)"
+fi
+
+if [ "$MF_COUNT" -eq 5 ] 2>/dev/null; then
+  log_pass "Master data forms: $MF_COUNT (expected 5)"
+else
+  log_fail "Master data forms: $MF_COUNT (expected 5)"
+fi
+
+if [ "$TF_COUNT" -eq 9 ] 2>/dev/null; then
+  log_pass "Transaction header forms: $TF_COUNT (expected 9)"
+else
+  log_fail "Transaction header forms: $TF_COUNT (expected 9)"
+fi
+
+if [ "$LF_COUNT" -eq 4 ] 2>/dev/null; then
+  log_pass "Line forms: $LF_COUNT (expected 4)"
+else
+  log_fail "Line forms: $LF_COUNT (expected 4)"
+fi
+
+if [ "$SF_COUNT" -eq 7 ] 2>/dev/null; then
+  log_pass "Sub-form configs: $SF_COUNT (expected 7)"
+else
+  log_fail "Sub-form configs: $SF_COUNT (expected 7)"
+fi
+
 # ── PRD-002: ENH-002 tenant_id Verification ──────────────────
 log_section "ENH-002: tenant_id Detail Check"
 $PSQL <<SQL

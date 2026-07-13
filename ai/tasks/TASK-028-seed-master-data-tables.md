@@ -5,13 +5,13 @@ title: Seed Master Data Tables (Flyway Migration)
 
 type: Database
 
-status: READY_FOR_TEST
+status: TESTED
 
 priority: High
 
-owner: Software Engineer
+owner: QA Engineer
 
-assigned_to: Software Engineer
+assigned_to: QA Engineer
 
 assigned_branch: feature/TASK-028
 
@@ -23,11 +23,11 @@ updated: 2026-07-13
 
 started: 2026-07-13
 
-completed:
+completed: 2026-07-13
 
 estimated_hours: 3
 
-actual_hours:
+actual_hours: 0.5
 
 parent_prd: PRD-003
 

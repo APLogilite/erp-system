@@ -5,13 +5,13 @@ title: Seed Transaction Header Forms (Flyway Migration)
 
 type: Database
 
-status: READY_FOR_TEST
+status: TESTED
 
 priority: High
 
-owner: Software Engineer
+owner: QA Engineer
 
-assigned_to: Software Engineer
+assigned_to: QA Engineer
 
 assigned_branch: feature/TASK-031
 
