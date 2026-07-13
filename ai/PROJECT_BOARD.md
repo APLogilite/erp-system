@@ -20,8 +20,6 @@ Updated By: Planner
 
 | Task | PRD | Priority | Owner | Branch | Locked | Depends On |
 |------|-----|----------|-------|--------|--------|------------|
-| BUG-001 | PRD-001 | High | developer | — | false | — |
-| BUG-002 | PRD-001 | High | developer | — | false | — |
 | BUG-003 | PRD-001 | High | developer | — | false | — |
 
 ---
@@ -98,10 +96,10 @@ Updated By: Planner
 
 | Bug | Parent Task | Severity | Status | Owner | Depends On |
 |-----|-------------|----------|--------|-------|------------|
-| BUG-001 | TASK-001 | Medium | READY_FOR_DEV | developer | — |
-| BUG-002 | TASK-007 | High | READY_FOR_DEV | developer | — |
-| BUG-003 | TASK-011 | High | READY_FOR_DEV | developer | — |
-| BUG-004 | TASK-025 | Medium | PLANNING_APPROVED | developer | BUG-002, BUG-003 |
+| BUG-001 | TASK-001 | Medium | TESTED | QA Engineer | — |
+| BUG-002 | TASK-007 | High | READY_FOR_TEST | Software Engineer | — |
+| BUG-003 | TASK-011 | High | READY_FOR_TEST | Software Engineer | — |
+| BUG-004 | TASK-025 | Medium | READY_FOR_TEST | Software Engineer | — |
 
 ---
 
@@ -125,12 +123,12 @@ Updated By: Planner
 | Status | Count |
 |--------|-------|
 | PRDs | 3 (PRD-001 COMPLETED, PRD-002 COMPLETED, PRD-003 READY_FOR_DEPLOYMENT) |
-| Ready For Dev | 3 bugs (BUG-001, BUG-002, BUG-003) |
-| In Development | 0 tasks |
-| Ready For Test | 0 tasks |
+| Ready For Dev | 0 bugs |
+| In Development | 0 bugs |
+| Ready For Test | 3 bugs (BUG-002, BUG-003, BUG-004) |
 | In Testing | 0 tasks |
 | Planning | 1 bug (BUG-004 — waiting on BUG-002, BUG-003) |
-| Bugs | 4 (BUG-001, BUG-002, BUG-003, BUG-004) |
+| Bugs | 4 (BUG-001 TESTED, BUG-002/003/004 READY_FOR_TEST) |
 | Completed (PRD-001) | 27 tasks + 1 enhancement (ENH-001) |
 | Completed (PRD-002) | 3 tasks + 1 enhancement (TASK-033/034/035 + ENH-002) |
 | Completed (PRD-003) | 5 tasks (TASK-028/029/030/031/032) |
