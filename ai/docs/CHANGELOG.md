@@ -3,10 +3,81 @@ document: CHANGELOG
 version: 1.0.0
 status: ACTIVE
 owner: Planner
-last_updated: 2026-07-10
+last_updated: 2026-07-13
 ---
 
 # Changelog
+
+## 2026-07-13 (BUG-001 Created — DatabaseConnectionTest Failures)
+
+### Summary
+Created BUG-001 to track the 3 pre-existing test errors in `DatabaseConnectionTest`. Previously documented as a known limitation in PROJECT_MEMORY.md but had no actionable task assigned. The bug causes `mvn test` to always end with `BUILD FAILURE` despite all functional tests passing (33/33 pass).
+
+### Bug Created
+- **BUG-001** — Fix pre-existing DatabaseConnectionTest failures (3 errors)
+  - Priority: High | Severity: Medium | Status: READY_FOR_DEV
+  - Parent PRD: PRD-001 (foundational architecture PRD)
+  - Root causes identified: INFORMATION_SCHEMA case sensitivity, wrong table name for warehouse (`warehouses` vs `m1_warehouses`), test queries legacy JPA entity tables
+
+### Project State
+- **3 PRDs**: all COMPLETED or READY_FOR_DEPLOYMENT
+- **37 tasks**: all completed
+- **1 bug**: BUG-001 at READY_FOR_DEV
+
+### Documentation Updated
+- **BUG-001** created at `ai/tasks/BUG-001-database-connection-test-failures.md`
+- **PROJECT_BOARD.md** — Bugs section populated with BUG-001
+- **PROJECT_MEMORY.md** — Known Limitations updated (pre-existing test failures now tracked as BUG-001)
+
+---
+
+## 2026-07-13 (PRD-003 QA Complete — All 37 Tasks Done)
+
+### Summary
+QA completed structural verification of all 5 PRD-003 tasks (V19-V23 migrations). All 5 tasks PASSED with zero failures. PRD-003 advanced to READY_FOR_DEPLOYMENT. Project fully complete — all 37 tasks across 3 PRDs are done.
+
+### PRD Advanced
+- **PRD-003** — ERP Order Flow — Transaction Forms v1.0.0: TESTING → **READY_FOR_DEPLOYMENT**
+
+### Tasks Tested (5)
+| Task | Migration | Result |
+|------|-----------|--------|
+| TASK-028 | V19 — 5 master data tables | **PASSED** (12 tests) |
+| TASK-029 | V20 — 9 transaction tables | **PASSED** (11 tests) |
+| TASK-030 | V21 — 5 master data forms | **PASSED** (9 tests) |
+| TASK-031 | V22 — 9 transaction header forms | **PASSED** (9 tests) |
+| TASK-032 | V23 — 4 line forms + 7 sub-form configs | **PASSED** (10 tests) |
+
+### Full Project State
+- **3 PRDs**: 2 COMPLETED, 1 READY_FOR_DEPLOYMENT
+- **37 tasks**: all completed and tested
+- **0 bugs**, 0 blocked, 0 pending (before BUG-001)
+
+---
+
+### Summary
+All 5 PRD-003 tasks implemented via Flyway migrations V19-V23. The ERP Order Flow module now has 5 master data tables, 9 transaction tables, 5 master data forms, 9 transaction header forms, 4 line forms, and 7 sub-form tab configurations — all seeded as metadata for PRD-001's runtime engine.
+
+### PRD Advanced
+- **PRD-003** — ERP Order Flow — Transaction Forms v1.0.0: IN_DEVELOPMENT → **TESTING**
+
+### Tasks Implemented (5)
+| Task | Migration | Content |
+|------|-----------|---------|
+| TASK-028 | V19 | 5 master data tables (Business Partner, Product, UOM, UOM Conversion, Warehouse) |
+| TASK-029 | V20 | 9 transaction tables (Order, Invoice, Payment, Shipment, Material Receipt + 4 line tables) |
+| TASK-030 | V21 | 5 master data forms with layout sections |
+| TASK-031 | V22 | 9 transaction header forms with purchase/sales where_clause variants |
+| TASK-032 | V23 | 4 line-item forms + 7 sub-form tab configurations |
+
+All tasks at READY_FOR_TEST — awaiting QA Engineer.
+
+### Project State
+- **3 PRDs**: 2 COMPLETED, 1 TESTING
+- **37 tasks**: 32 completed + 5 ready for test
+- **0 bugs**, 0 blocked, 0 planning
+
+---
 
 ## 2026-07-13 (PRD-001 + PRD-002 Marked COMPLETED)
 

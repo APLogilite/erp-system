@@ -3,7 +3,7 @@ document: PROJECT_MEMORY
 version: 1.1.0
 status: ACTIVE
 owner: Planner
-last_updated: 2026-07-07
+last_updated: 2026-07-13
 ---
 
 # Project Overview
@@ -70,7 +70,7 @@ last_updated: 2026-07-07
 # Known Limitations
 
 - Form Designer API (TASK-007) lacks tenant authorization — tracked as ENH-001
-- 3 pre-existing test failures in DatabaseConnectionTest (H2 vs PostgreSQL incompatibility)
+- BUG-001: 3 pre-existing test failures in DatabaseConnectionTest (H2 vs PostgreSQL incompatibility, legacy table name references) — tracked as BUG-001, READY_FOR_DEV
 
 ---
 

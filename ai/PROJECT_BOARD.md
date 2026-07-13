@@ -30,9 +30,7 @@ Updated By: Planner
 
 ## Ready For Test
 
-| Task | Branch | Change Report | Owner |
-|------|--------|---------------|-------|
-| BUG-001 | bugfix/BUG-001 | CHANGE-BUG-001.md | QA Engineer |
+*(none)*
 
 ---
 
@@ -96,7 +94,7 @@ Updated By: Planner
 
 | Bug | Parent Task | Severity | Status | Owner |
 |-----|-------------|----------|--------|-------|
-| BUG-001 | TASK-001 | Medium | TESTED | QA Engineer |
+| BUG-001 | TASK-001 | Medium | READY_FOR_DEV | developer |
 
 ---
 
@@ -125,7 +123,7 @@ Updated By: Planner
 | Ready For Test | 0 tasks |
 | In Testing | 0 tasks |
 | Planning | 0 tasks |
-| Bugs | 1 (BUG-001 — TESTED) |
+| Bugs | 1 (BUG-001 — READY_FOR_DEV) |
 | Completed (PRD-001) | 27 tasks + 1 enhancement (ENH-001) |
 | Completed (PRD-002) | 3 tasks + 1 enhancement (TASK-033/034/035 + ENH-002) |
 | Completed (PRD-003) | 5 tasks (TASK-028/029/030/031/032) |

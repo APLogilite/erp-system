@@ -29,7 +29,11 @@ You are responsible ONLY for quality assurance and verification.
 
 You do not define business requirements.
 
-You do not modify Product Requirement Documents (PRDs).
+You do not modify Product Requirement Documents (PRDs),
+except you may update the `status` and `updated` fields when all tasks
+under the PRD have been tested and marked COMPLETED (advancing TESTING →
+READY_FOR_DEPLOYMENT), and you may append an entry to ai/docs/CHANGELOG.md.
+Before committing, run `git diff ai/prd/PRD-*.md` to verify nothing else changed.
 
 You do not implement features.
 
@@ -1049,6 +1053,15 @@ At the end of the session:
 
 2. Commit all QA artifacts in a single commit directly to the test branch.
 
+3. If all PRD tasks are now COMPLETED (no READY_FOR_TEST remaining, no unresolved bugs):
+   a. Verify every task lists `status: COMPLETED`.
+   b. Update the PRD `status` field to READY_FOR_DEPLOYMENT.
+   c. Update the PRD `updated` field to today's date.
+   d. Append a CHANGELOG.md entry summarizing QA results.
+   e. Run `git diff ai/prd/PRD-*.md` — confirm ONLY `status` and `updated` changed.
+   f. If other lines changed (e.g. requirements content), REVERT and report.
+   g. Include PRD file + CHANGELOG in the session commit.
+
 The commit message should clearly identify the PRD testing session.
 
 Example:
@@ -1077,7 +1090,9 @@ Never commit:
 
 • Business requirement changes
 
-• PRDs
+• PRD business content (you may commit `status`/`updated` field updates +
+  CHANGELOG.md entries when all tasks are completed — run `git diff` to
+  verify only those lines changed)
 
 The QA Engineer never creates branches or merges branches.
 

@@ -3,27 +3,27 @@ id: BUG-001
 
 title: Fix pre-existing DatabaseConnectionTest failures (3 errors)
 
-status: TESTED
+status: READY_FOR_DEV
 
 priority: High
 
 severity: Medium
 
-owner: QA Engineer
+owner: developer
 
-assigned_to: QA Engineer
+assigned_to:
 
-assigned_branch: bugfix/BUG-001
+assigned_branch:
 
-locked: true
+locked: false
 
 created: 2026-07-13
 
 updated: 2026-07-13
 
-started: 2026-07-13
+started:
 
-completed: 2026-07-13
+completed:
 
 parent_prd: PRD-001
 
@@ -35,127 +35,111 @@ detected_in: mvn test
 
 related_test: DatabaseConnectionTest.java
 
-fix_summary: ai/changes/CHANGE-BUG-001.md
+fix_summary:
 
-verification_report: ai/tests/TEST-BUG-001.md
+verification_report:
 
 history:
   - 2026-07-13 — Planner — Created bug task from pre-existing test failures. Tests run: 3, Errors: 3, Failures: 0.
-  - 2026-07-13 — Software Engineer — Locked, assigned, started on bugfix/BUG-001
-  - 2026-07-13 — Software Engineer — Implemented fix: rewrote DatabaseConnectionTest using JDBC DatabaseMetaData (portable across H2/PostgreSQL/Oracle); added spring.flyway.enabled=false to test properties. All 36 tests pass BUILD SUCCESS.
-  - 2026-07-13 — QA Engineer — Started testing. Locked, assigned QA Engineer.
 
 ---
 
 # Summary
 
-`DatabaseConnectionTest` (at `backend/src/test/java/com/erp/DatabaseConnectionTest.java`) previously produced 3 errors every time `mvn test` was run, causing `BUILD FAILURE`. The test has been rewritten to use only JDBC standard APIs — no vendor-specific SQL — making it portable across H2, PostgreSQL, Oracle, MySQL, and any JDBC-compliant database.
+`DatabaseConnectionTest` (at `backend/src/test/java/com/erp/DatabaseConnectionTest.java`) produces 3 errors every time `mvn test` is run. These are pre-existing failures documented in PROJECT_MEMORY.md as a known limitation ("3 pre-existing test failures in DatabaseConnectionTest (H2 vs PostgreSQL incompatibility)"). The build fails with `BUILD FAILURE` even though no functional code is broken.
 
 ---
 
 # Problem
 
-All 3 tests in `DatabaseConnectionTest` errored out due to `ApplicationContext failure threshold (1) exceeded`. Root cause: Flyway auto-configuration tried to run PostgreSQL-specific migrations (containing `CREATE EXTENSION "uuid-ossp"`) against the H2 test database, which doesn't support that syntax. The application context never loaded.
+All 3 tests in `DatabaseConnectionTest` error out during `mvn test`:
 
-Additionally, the test logic checked for incorrect table names (`warehouses` instead of `m1_warehouses`) and used uppercase INFORMATION_SCHEMA queries that don't match PostgreSQL's lowercase table name storage.
+```
+[ERROR] Tests run: 3, Failures: 0, Errors: 3, Skipped: 0, Time elapsed: 3.436 s <<< FAILURE! -- in com.erp.DatabaseConnectionTest
+```
+
+This causes `BUILD FAILURE` despite all other 33 tests passing cleanly (0 failures, 0 errors across `PermissionCacheTest`, `PermissionEvaluatorTest`, `PasswordServiceTest`, `JwtProviderTest`).
 
 ---
 
 # Expected Behaviour
 
-All 36 tests pass when running `mvn test`, producing `BUILD SUCCESS`.
+All 36 tests (including `DatabaseConnectionTest`) should pass when running `mvn test`, producing `BUILD SUCCESS`. The test should either:
+
+- Accurately validate the current database schema, OR
+- Be replaced with a meaningful integration test that reflects the current metadata-driven architecture
 
 ---
 
-# Actual Behaviour (Before Fix)
+# Actual Behaviour
 
-```
-[ERROR] Tests run: 36, Failures: 0, Errors: 3, Skipped: 0
-[INFO] BUILD FAILURE
-```
-
-3 errors in `DatabaseConnectionTest`:
-- `testDatabaseConnection` — context load failure
-- `testTablesExist` — context load failure  
-- `testSampleData` — context load failure
-
-All 33 other tests passed.
+3 errors in `DatabaseConnectionTest`. The test was written for the original JPA entity-based schema (tables `products`, `warehouses`, `orders`) but the project now uses a metadata-driven architecture with different table naming conventions.
 
 ---
 
 # Steps To Reproduce
 
-1. `cd backend`
-2. `mvn test`
-3. Observe `BUILD SUCCESS` with 36 tests passing
+1. Open a terminal in the `backend/` directory
+2. Run `mvn test`
+3. Observe the 3 errors in `DatabaseConnectionTest`
+4. Confirm `BUILD FAILURE`
 
 ---
 
 # Root Cause
 
-Three interrelated issues:
+*(To be filled by Developer after investigation)*
 
-1. **Flyway running against H2:** The `@SpringBootTest` integration test loaded the full `ErpApplication` context. Flyway auto-configuration activated and tried to run migration `V1__init_identity_schema.sql`, whose first line is `CREATE EXTENSION IF NOT EXISTS "uuid-ossp"` — a PostgreSQL-specific command that H2 rejects. The application context failed to load.
+Known contributing factors identified during analysis:
 
-2. **Missing spring.flyway.enabled=false in test properties:** The `application.properties` in `src/main/resources/` had `spring.flyway.enabled=false`, but the test properties in `src/test/resources/` did not. Spring Boot test properties override main properties, so if a property is not defined in test properties, the main value should apply — however, Flyway's auto-configuration condition `@ConditionalOnProperty(prefix = "spring.flyway", name = "enabled", matchIfMissing = true)` means Flyway is enabled when the property is absent. With the merged property loading, this condition evaluated differently in the test context.
+1. **INFORMATION_SCHEMA case sensitivity:** The `testTablesExist()` method queries `INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'PRODUCTS'` (uppercase). In H2 with PostgreSQL compatibility mode (`MODE=PostgreSQL`), unquoted table names are stored in lowercase, so `'PRODUCTS'` does not match `'products'`.
 
-3. **Legacy table name references:** The test checked for tables that either don't exist (`warehouses` — actual JPA entity maps to `m1_warehouses`) or used case-sensitive INFORMATION_SCHEMA queries that don't match the actual stored table names.
+2. **Wrong table name for warehouse:** `testTablesExist()` checks for `'WAREHOUSES'` and `testSampleData()` queries `warehouses`, but the actual JPA entity `Warehouse.java` maps to `@Table(name = "m1_warehouses")`.
+
+3. **Test queries tables that may not exist in H2 test context:** Flyway migrations are disabled by default in tests. The metadata-driven tables (`md_product`, `md_warehouse`, etc.) are not created during tests. Only JPA `ddl-auto=update` creates tables for `@Entity`-annotated classes. The test was written against the old JPA table names.
 
 ---
 
 # Fix
 
-## Changes Made
+*(To be filled by Developer)*
 
-### 1. `backend/src/test/resources/application.properties`
-Added:
-```properties
-spring.flyway.enabled=false
-```
-This explicitly disables Flyway in the test context, preventing PostgreSQL-specific migrations from running against H2.
+The fix should either:
 
-### 2. `backend/src/test/java/com/erp/DatabaseConnectionTest.java` (complete rewrite)
-The test was rewritten from scratch to be **database-agnostic**:
+**Option A — Update the test to match current schema:** Correct the table name references and case sensitivity, or update to validate the metadata-driven tables (e.g., `md_product`, `md_warehouse`).
 
-| Before | After |
-|--------|-------|
-| `@EntityScan(basePackages = "com.erp.modules")` — too restrictive, missed `com.erp.platform` entities | No `@EntityScan` — uses default component scan from `ErpApplication` |
-| `INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'PRODUCTS'` — not portable (no INFORMATION_SCHEMA in Oracle) | `DatabaseMetaData.getTables()` — JDBC standard, works across all databases |
-| Uppercase-only table names in queries | Tries all three cases (as-is, UPPER, lower) for cross-database portability |
-| `SELECT 1` — fails on Oracle < 23c | `DataSource.getConnection().isValid(5)` + `DatabaseMetaData` — pure JDBC, no SQL |
-| Checked `warehouses` table (doesn't exist — actual name is `m1_warehouses`) | Checks correct table names from JPA entity annotations |
-| Tested that tables are empty — fragile (seed data exists) | Tests that tables are queryable (not checking emptiness) |
+**Option B — Rewrite the test as a meaningful integration test:** Replace the legacy table-name checks with a proper database connectivity + schema validation test that checks the metadata tables created by Flyway migrations.
 
-### Key Design Decisions
-
-- **`DatabaseMetaData.getTables()`** — This is the JDBC standard API for schema metadata. Unlike `INFORMATION_SCHEMA` (not in Oracle) or `USER_TABLES` (only in Oracle), it works consistently across all databases.
-- **Case-insensitive matching** — Different databases store identifiers differently: H2 uses the case from the DDL, PostgreSQL lowercases unquoted identifiers, Oracle uppercases them. The test tries all three forms.
-- **No vendor-specific SQL** — The only SQL used is `SELECT COUNT(*) FROM tableName`, which is standard ANSI SQL supported by every relational database.
+**Option C — Remove and replace:** If the test is no longer relevant, remove it and create a new integration test that validates the dynamic metadata schema can be queried.
 
 ---
 
 # Validation
 
-The fix has been validated:
+*(To be filled by QA Engineer after fix)*
 
-- [x] `mvn test` runs with `BUILD SUCCESS`
-- [x] All 36 tests pass with 0 errors and 0 failures
-- [x] The test uses only JDBC standard APIs (portable across H2, PostgreSQL, Oracle, MySQL, SQL Server)
-- [x] The test reflects current JPA entity table names
-- [x] No vendor-specific SQL or INFORMATION_SCHEMA queries
+The fix will be validated when:
+
+- [ ] `mvn test` runs with `BUILD SUCCESS`
+- [ ] All 36+ tests pass with 0 errors and 0 failures
+- [ ] The test accurately reflects the current database schema
+- [ ] The test does not produce false negatives on future schema changes
 
 ---
 
 # Files Changed
 
-- `backend/src/test/java/com/erp/DatabaseConnectionTest.java` — Complete rewrite
-- `backend/src/test/resources/application.properties` — Added `spring.flyway.enabled=false`
+*(To be filled by Developer)*
+
+Likely:
+
+- `backend/src/test/java/com/erp/DatabaseConnectionTest.java`
 
 ---
 
 # Related Documents
 
-- [PROJECT_MEMORY.md](../docs/PROJECT_MEMORY.md) — Known Limitations updated
+- [PROJECT_MEMORY.md](../docs/PROJECT_MEMORY.md) — Known Limitations section documents this issue
 - [PRD-001 — Dynamic Form Configuration System](../prd/PRD-001-dynamic-form-configuration-system.md)
 - [TASK-001 — Database Migations Metadata Tables](../tasks/TASK-001-database-migrations-metadata-tables.md)
 
@@ -166,5 +150,3 @@ The fix has been validated:
 | Date | Agent | Action |
 |------|-------|--------|
 | 2026-07-13 | Planner | Created bug task from pre-existing test failures |
-| 2026-07-13 | Software Engineer | Locked, assigned, started on bugfix/BUG-001 |
-| 2026-07-13 | Software Engineer | Rewrote DatabaseConnectionTest with JDBC DatabaseMetaData; disabled Flyway in tests. 36/36 PASS, BUILD SUCCESS |

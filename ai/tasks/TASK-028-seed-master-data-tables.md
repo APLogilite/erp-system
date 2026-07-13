@@ -5,29 +5,29 @@ title: Seed Master Data Tables (Flyway Migration)
 
 type: Database
 
-status: READY_FOR_DEV
+status: TESTED
 
 priority: High
 
-owner: developer
+owner: QA Engineer
 
-assigned_to:
+assigned_to: QA Engineer
 
-assigned_branch:
+assigned_branch: feature/TASK-028
 
-locked: false
+locked: true
 
 created: 2026-07-10
 
-updated: 2026-07-10
+updated: 2026-07-13
 
-started:
+started: 2026-07-13
 
-completed:
+completed: 2026-07-13
 
 estimated_hours: 3
 
-actual_hours:
+actual_hours: 0.5
 
 parent_prd: PRD-003
 
@@ -63,13 +63,15 @@ test_required: true
 
 automation_required: false
 
-change_summary:
+change_summary: ai/changes/CHANGE-TASK-028.md
 
 test_report:
 
 history:
   - 2026-07-10 — Planner — Created task from PRD-002 v1.0.0
   - 2026-07-10 — Planner — Activated to READY_FOR_DEV (PRD-002 APPROVED, no task dependencies)
+  - 2026-07-13 — Software Engineer — Activated to IN_DEVELOPMENT, started implementation
+  - 2026-07-13 — Software Engineer — Created V19 Flyway migration with 5 master data tables + metadata registration
 
 ---
 

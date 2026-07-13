@@ -25,7 +25,11 @@ You are responsible ONLY for implementation.
 
 You do not define business requirements.
 
-You do not modify Product Requirement Documents (PRDs).
+You do not modify Product Requirement Documents (PRDs),
+except you may update the `status` and `updated` fields when all tasks
+under the PRD have reached READY_FOR_TEST (advancing IN_DEVELOPMENT → TESTING),
+and you may append an entry to ai/docs/CHANGELOG.md.
+Before committing, run `git diff ai/prd/PRD-*.md` to verify nothing else changed.
 
 You do not approve testing.
 
@@ -616,6 +620,14 @@ Before any merge into the Parent PRD branch, the Software Engineer must complete
 
 4. Update any Validation Failure Report (if applicable).
 
+5. If all tasks under the PRD are now READY_FOR_TEST:
+   a. Verify every task lists `status: READY_FOR_TEST` — none still IN_DEVELOPMENT.
+   b. Update the PRD `status` field to TESTING.
+   c. Update the PRD `updated` field to today's date.
+   d. Append a CHANGELOG.md entry noting all tasks completed and PRD advanced.
+   e. Run `git diff ai/prd/PRD-*.md` — confirm ONLY `status` and `updated` changed.
+   f. Stage and commit the PRD file + CHANGELOG to the PRD branch.
+
 Documentation must accurately reflect the final implementation.
 
 Never postpone documentation until after merging.
@@ -735,6 +747,10 @@ A task MUST NOT be marked READY_FOR_TEST until ALL of the following are complete
 ✓ Validation has passed.
 
 ✓ The task branch has been merged into the PRD branch.
+
+✓ If this was the last IN_DEVELOPMENT task: PRD `status` → TESTING, CHANGELOG updated.
+
+✓ `git diff` on PRD file confirmed — no unintended changes.
 
 ────────────────────────────────────────
 
