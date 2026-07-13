@@ -100,8 +100,8 @@ Updated By: Planner
 | BUG-002 | TASK-007 | High | READY_FOR_TEST | Software Engineer | — |
 | BUG-003 | TASK-011 | High | READY_FOR_TEST | Software Engineer | — |
 | BUG-004 | TASK-025 | Medium | READY_FOR_TEST | Software Engineer | — |
-| BUG-005 | TASK-025 | Medium | READY_FOR_DEV | developer | — |
-| BUG-006 | TASK-007 | Critical | READY_FOR_DEV | developer | — |
+| BUG-005 | TASK-025 | Medium | READY_FOR_TEST | Software Engineer | — |
+| BUG-006 | TASK-007 | Critical | READY_FOR_TEST | Software Engineer | — |
 
 ---
 
@@ -126,12 +126,12 @@ Updated By: Planner
 | Status | Count |
 |--------|-------|
 | PRDs | 3 (PRD-001 COMPLETED, PRD-002 COMPLETED, PRD-003 READY_FOR_DEPLOYMENT) |
-| Ready For Dev | 2 bugs (BUG-005, BUG-006) |
+| Ready For Dev | 0 bugs |
 | In Development | 0 bugs |
-| Ready For Test | 3 bugs (BUG-002, BUG-003, BUG-004) |
+| Ready For Test | 6 bugs (BUG-002, BUG-003, BUG-004, BUG-005, BUG-006) |
 | In Testing | 0 tasks |
 | Planning | 1 enhancement (ENH-003 — RuntimePage API integration) |
-| Bugs | 6 (BUG-001 TESTED, BUG-002/003/004 READY_FOR_TEST, BUG-005/006 READY_FOR_DEV) |
+| Bugs | 6 (BUG-001 TESTED, BUG-002/003/004/005/006 READY_FOR_TEST) |
 | Completed (PRD-001) | 27 tasks + 1 enhancement (ENH-001) |
 | Completed (PRD-002) | 3 tasks + 1 enhancement (TASK-033/034/035 + ENH-002) |
 | Completed (PRD-003) | 5 tasks (TASK-028/029/030/031/032) |
