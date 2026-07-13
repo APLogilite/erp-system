@@ -3,7 +3,7 @@ id: BUG-002
 
 title: ApiVersionConfig.API_BASE uses /api instead of /api/v1 causing 500 errors on all metadata/runtime endpoints
 
-status: READY_FOR_DEV
+status: READY_FOR_TEST
 
 priority: High
 
@@ -11,19 +11,19 @@ severity: High
 
 owner: developer
 
-assigned_to:
+assigned_to: Software Engineer
 
-assigned_branch:
+assigned_branch: bugfix/BUG-002
 
-locked: false
+locked: true
 
 created: 2026-07-13
 
 updated: 2026-07-13
 
-started:
+started: 2026-07-13
 
-completed:
+completed: 2026-07-13
 
 parent_prd: PRD-001
 
@@ -35,12 +35,13 @@ detected_in: Runtime (localhost:5173 → localhost:8081)
 
 related_test:
 
-fix_summary:
+fix_summary: ai/changes/CHANGE-BUG-002.md
 
 verification_report:
 
 history:
   - 2026-07-13 — Planner — Created bug task. User reported 500 errors on Table Designer, Form Designer, and all runtime form pages.
+  - 2026-07-13 — Software Engineer — Fixed API_BASE from "/api" to "/api/v1" in ApiVersionConfig.java. Verified: metadata endpoints now return 403 (auth required, not 500), runtime endpoints return 200.
 
 ---
 
