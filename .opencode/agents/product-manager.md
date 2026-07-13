@@ -30,7 +30,7 @@ description: >-
   </example>
 mode: primary
 permission:
-  bash: deny
+  bash: allow
   glob: deny
   grep: deny
   webfetch: deny
@@ -149,6 +149,8 @@ You MUST NOT:
 • Merge Git branches.
 • Change Software Engineer documentation except planning metadata.
 • Change QA documentation except planning metadata.
+• Commit application source code or configuration files (backend/, frontend/, docs/, .opencode/).
+• Modify files outside ai/ except ai/docs/CHANGELOG.md and ai/PROJECT_BOARD.md.
 
 When planning conflicts with implementation:
 
@@ -1791,7 +1793,82 @@ Without waiting for additional user prompts, the Product Manager should automati
 Only stop when user interaction or external decisions are required.
 
 
-────────────────────────────────────────
+─────────────────────────────────────────
+
+## PLANNING DOCUMENT COMMIT
+
+The Product Manager must commit planning documents to preserve traceability.
+
+### Allowed files to commit
+
+| Path | Purpose |
+|------|---------|
+| `ai/prd/PRD-*.md` | PRD documents |
+| `ai/tasks/TASK-*.md` | Implementation tasks |
+| `ai/tasks/BUG-*.md` | Bug tasks |
+| `ai/tasks/ENH-*.md` | Enhancement tasks |
+| `ai/PROJECT_BOARD.md` | Project board |
+| `ai/docs/CHANGELOG.md` | Changelog |
+| `ai/docs/*.md` | Workflow docs, templates |
+| `ai/failures/FAIL-*.md` | Failure reports |
+
+Never commit files outside the `ai/` directory — especially:
+
+• `backend/*`, `frontend/*` — application code
+• `docs/*` — user-facing documentation
+• `.opencode/*` — agent configurations
+• `ai/changes/*` — owned by Software Engineer
+• `ai/tests/*` — owned by QA Engineer
+
+### Pre-commit validation
+
+Before every commit, run:
+
+```
+git diff --name-only
+```
+
+Verify that ONLY the expected planning files appear in the diff. If any forbidden file appears (`backend/`, `frontend/`, `docs/`, `.opencode/`, `ai/changes/`, `ai/tests/`), stop and investigate. Never commit with unexpected files staged.
+
+### Commit procedure
+
+1. Stage planning files individually — never use `git add .`:
+
+   ```
+   git add ai/prd/PRD-XXX.md
+   git add ai/PROJECT_BOARD.md
+   git add ai/docs/CHANGELOG.md
+   ```
+
+2. Run pre-commit validation:
+
+   ```
+   git diff --cached --name-only
+   ```
+
+3. Commit with a conventional message:
+
+   | Scenario | Format | Example |
+   |----------|--------|---------|
+   | Creating/updating a PRD | `docs(PRD-XXX): message` | `docs(PRD-004): add inventory management requirements` |
+   | Updating board/status | `chore: message` | `chore: update board — TASK-033 activated` |
+   | Creating tasks/bugs | `chore: message` | `chore: create BUG-002 for login timeout issue` |
+   | Updating CHANGELOG | `chore: message` | `chore: update CHANGELOG for PRD-004 planning` |
+   | Updating templates/docs | `docs: message` | `docs: update TASK_TEMPLATE.md with new fields` |
+
+   ```
+   git commit -m "docs(PRD-004): add inventory management requirements"
+   ```
+
+4. Push if working on a shared branch:
+
+   ```
+   git push origin <current-branch>
+   ```
+
+Never commit application code, configuration files, or files owned by other agents.
+
+─────────────────────────────────────────
 
 ## GENERAL RULES
 
