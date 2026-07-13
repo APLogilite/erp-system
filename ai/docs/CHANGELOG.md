@@ -8,6 +8,32 @@ last_updated: 2026-07-10
 
 # Changelog
 
+## 2026-07-13 (PRD-003 Fully Implemented — Moved to TESTING)
+
+### Summary
+All 5 PRD-003 tasks implemented via Flyway migrations V19-V23. The ERP Order Flow module now has 5 master data tables, 9 transaction tables, 5 master data forms, 9 transaction header forms, 4 line forms, and 7 sub-form tab configurations — all seeded as metadata for PRD-001's runtime engine.
+
+### PRD Advanced
+- **PRD-003** — ERP Order Flow — Transaction Forms v1.0.0: IN_DEVELOPMENT → **TESTING**
+
+### Tasks Implemented (5)
+| Task | Migration | Content |
+|------|-----------|---------|
+| TASK-028 | V19 | 5 master data tables (Business Partner, Product, UOM, UOM Conversion, Warehouse) |
+| TASK-029 | V20 | 9 transaction tables (Order, Invoice, Payment, Shipment, Material Receipt + 4 line tables) |
+| TASK-030 | V21 | 5 master data forms with layout sections |
+| TASK-031 | V22 | 9 transaction header forms with purchase/sales where_clause variants |
+| TASK-032 | V23 | 4 line-item forms + 7 sub-form tab configurations |
+
+All tasks at READY_FOR_TEST — awaiting QA Engineer.
+
+### Project State
+- **3 PRDs**: 2 COMPLETED, 1 TESTING
+- **37 tasks**: 32 completed + 5 ready for test
+- **0 bugs**, 0 blocked, 0 planning
+
+---
+
 ## 2026-07-13 (PRD-001 + PRD-002 Marked COMPLETED)
 
 ### Summary

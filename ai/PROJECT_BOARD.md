@@ -12,7 +12,7 @@ Updated By: Planner
 |-----|-------|---------|--------|----------|
 | PRD-001 | Dynamic Form Configuration System | 1.6.0 | **COMPLETED** | High |
 | PRD-002 | Admin Configuration Forms | 1.1.0 | **COMPLETED** | High |
-| PRD-003 | ERP Order Flow — Transaction Forms | 1.0.0 | **IN_DEVELOPMENT** | High |
+| PRD-003 | ERP Order Flow — Transaction Forms | 1.0.0 | **TESTING** | High |
 
 ---
 
@@ -116,7 +116,7 @@ Updated By: Planner
 
 | Status | Count |
 |--------|-------|
-| PRDs | 3 (PRD-001 COMPLETED, PRD-002 COMPLETED, PRD-003 IN_DEVELOPMENT) |
+| PRDs | 3 (PRD-001 COMPLETED, PRD-002 COMPLETED, PRD-003 TESTING) |
 | Ready For Dev | 0 tasks |
 | In Development | 0 tasks |
 | Ready For Test | 5 tasks (TASK-028, TASK-029, TASK-030, TASK-031, TASK-032) |
@@ -127,4 +127,4 @@ Updated By: Planner
 | Total Tasks | 37 (32 completed + 5 ready for test) |
 | PRD-001 Status | COMPLETED (v1.6.0) |
 | PRD-002 Status | COMPLETED (v1.1.0) |
-| PRD-003 Status | IN_DEVELOPMENT (all 5 tasks implemented, ready for QA) |
+| PRD-003 Status | TESTING (all 5 tasks implemented, awaiting QA verification) |
