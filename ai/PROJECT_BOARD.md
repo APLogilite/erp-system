@@ -12,7 +12,7 @@ Updated By: Planner
 |-----|-------|---------|--------|----------|
 | PRD-001 | Dynamic Form Configuration System | 1.6.0 | **COMPLETED** | High |
 | PRD-002 | Admin Configuration Forms | 1.1.0 | **COMPLETED** | High |
-| PRD-003 | ERP Order Flow — Transaction Forms | 1.0.0 | APPROVED | High |
+| PRD-003 | ERP Order Flow — Transaction Forms | 1.0.0 | **IN_DEVELOPMENT** | High |
 
 ---
 
@@ -20,13 +20,15 @@ Updated By: Planner
 
 | Task | PRD | Priority | Owner | Branch | Locked | Depends On |
 |------|-----|----------|-------|--------|--------|------------|
-| TASK-028 | PRD-003 | High | Developer | — | false | — |
+| *(none)* | | | | | | |
 
 ---
 
 ## In Development
 
-*(none)*
+| Task | PRD | Priority | Owner | Branch | Locked | Depends On |
+|------|-----|----------|-------|--------|--------|------------|
+| TASK-028 | PRD-003 | High | Software Engineer | feature/TASK-028 | true | — |
 
 ---
 
@@ -117,14 +119,15 @@ Updated By: Planner
 
 | Status | Count |
 |--------|-------|
-| PRDs | 3 (PRD-001 COMPLETED, PRD-002 COMPLETED, PRD-003 APPROVED) |
-| Ready For Dev | 1 task (TASK-028) |
+| PRDs | 3 (PRD-001 COMPLETED, PRD-002 COMPLETED, PRD-003 IN_DEVELOPMENT) |
+| Ready For Dev | 0 tasks |
+| In Development | 1 task (TASK-028) |
 | Ready For Test | 0 tasks |
 | In Testing | 0 tasks |
 | Planning | 4 tasks (TASK-029-032) |
 | Completed (PRD-001) | 27 tasks + 1 enhancement (ENH-001) |
 | Completed (PRD-002) | 3 tasks + 1 enhancement (TASK-033/034/035 + ENH-002) |
-| Total Tasks | 37 (32 completed + 1 ready for dev + 4 planning) |
+| Total Tasks | 37 (32 completed + 1 in development + 4 planning) |
 | PRD-001 Status | COMPLETED (v1.6.0 — all tasks + ENH-001 tested and passed) |
 | PRD-002 Status | COMPLETED (v1.1.0 — all 4 items tested and passed) |
-| PRD-003 Status | APPROVED (awaiting development) |
+| PRD-003 Status | IN_DEVELOPMENT (TASK-028 in progress) |
