@@ -5,29 +5,29 @@ title: Seed Line Forms and Sub-Form Configurations (Flyway Migration)
 
 type: Database
 
-status: PLANNED
+status: READY_FOR_TEST
 
 priority: High
 
-owner: planner
+owner: Software Engineer
 
-assigned_to:
+assigned_to: Software Engineer
 
-assigned_branch:
+assigned_branch: feature/TASK-032
 
-locked: false
+locked: true
 
 created: 2026-07-10
 
-updated: 2026-07-10
+updated: 2026-07-13
 
-started:
+started: 2026-07-13
 
-completed:
+completed: 2026-07-13
 
 estimated_hours: 3
 
-actual_hours:
+actual_hours: 1
 
 parent_prd: PRD-003
 
@@ -63,12 +63,14 @@ test_required: true
 
 automation_required: false
 
-change_summary:
+change_summary: ai/changes/CHANGE-TASK-032.md
 
 test_report:
 
 history:
   - 2026-07-10 — Planner — Created task from PRD-002 v1.0.0
+  - 2026-07-13 — Software Engineer — Activated to IN_DEVELOPMENT, started implementation
+  - 2026-07-13 — Software Engineer — Created V23 Flyway migration with 4 line forms + 7 sub-form configs
 
 ---
 
