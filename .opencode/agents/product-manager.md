@@ -1850,23 +1850,28 @@ The Product Manager must commit planning documents to preserve traceability.
 | `ai/docs/*.md` | Workflow docs, templates |
 | `ai/failures/FAIL-*.md` | Failure reports |
 
-Never commit files outside the `ai/` directory — especially:
+You may ONLY commit files under `ai/` that you own. Never commit:
 
 • `backend/*`, `frontend/*` — application code
 • `docs/*` — user-facing documentation
 • `.opencode/*` — agent configurations
 • `ai/changes/*` — owned by Software Engineer
 • `ai/tests/*` — owned by QA Engineer
+• `ai/flows/*` — owned by Technical Writer
+• `ai/modules/*` — owned by Technical Writer
+• `ai/scripts/*` — owned by QA Engineer
 
 ### Pre-commit validation
 
-Before every commit, run:
+After staging files and before every commit, run:
 
 ```
-git diff --name-only
+git diff --cached --name-only
 ```
 
-Verify that ONLY the expected planning files appear in the diff. If any forbidden file appears (`backend/`, `frontend/`, `docs/`, `.opencode/`, `ai/changes/`, `ai/tests/`), stop and investigate. Never commit with unexpected files staged.
+Verify that ONLY the expected planning files appear in the staged list. If any forbidden file appears (`backend/*`, `frontend/*`, `docs/*`, `.opencode/*`, `ai/changes/*`, `ai/tests/*`), stop immediately. Unstage the forbidden file with `git restore --staged <file>`. Never commit with unexpected files staged.
+
+If the output is empty, nothing is staged. Do not commit — go back and stage your files first.
 
 ### Commit procedure
 
