@@ -20,7 +20,6 @@ Updated By: Planner
 
 | Task | PRD | Priority | Owner | Branch | Locked | Depends On |
 |------|-----|----------|-------|--------|--------|------------|
-| TASK-029 | PRD-003 | High | Developer | — | false | TASK-028 |
 | TASK-030 | PRD-003 | High | Developer | — | false | TASK-028 |
 
 ---
@@ -36,6 +35,7 @@ Updated By: Planner
 | Task | PRD | Priority | Owner | Branch | Locked | Depends On |
 |------|-----|----------|-------|--------|--------|------------|
 | TASK-028 | PRD-003 | High | Software Engineer | feature/TASK-028 | true | — |
+| TASK-029 | PRD-003 | High | Software Engineer | feature/TASK-029 | true | TASK-028 |
 
 ---
 
@@ -119,9 +119,9 @@ Updated By: Planner
 | Status | Count |
 |--------|-------|
 | PRDs | 3 (PRD-001 COMPLETED, PRD-002 COMPLETED, PRD-003 IN_DEVELOPMENT) |
-| Ready For Dev | 2 tasks (TASK-029, TASK-030) |
+| Ready For Dev | 1 task (TASK-030) |
 | In Development | 0 tasks |
-| Ready For Test | 1 task (TASK-028) |
+| Ready For Test | 2 tasks (TASK-028, TASK-029) |
 | In Testing | 0 tasks |
 | Planning | 2 tasks (TASK-031, TASK-032) |
 | Completed (PRD-001) | 27 tasks + 1 enhancement (ENH-001) |
