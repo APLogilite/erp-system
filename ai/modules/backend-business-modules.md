@@ -2,19 +2,16 @@
 module: backend-business-modules
 type: backend
 layer: controller + service + entity
-last_updated: 2026-07-10T18:37:40+05:30
-last_updated_git_sha: e599b75716403f982bcb643899a0a9590d11af9a
+last_updated: 2026-07-13T15:30:00+05:30
+last_updated_git_sha: de61bd7a93aaf16c1806265caf508874fe0e0170
 paths:
-  - backend/src/main/java/com/erp/modules/product/
-  - backend/src/main/java/com/erp/modules/warehouse/
-  - backend/src/main/java/com/erp/modules/order/
-  - backend/src/main/java/com/erp/modules/inventory/
+  - backend/src/main/java/com/erp/modules/
 ---
 
 # Backend Business Modules
 
 ## Purpose
-Thin CRUD layers for core ERP business entities: Products, Warehouses, Orders, and Inventory. Each follows the same pattern — entity extends `BaseEntity`, service extends `BaseService<T>`, and controller maps between DTOs and entities using `ApiResponse<T>`.
+19 business modules providing CRUD layers for all ERP entities. Each follows the same pattern — entity extends `BaseEntity`, service extends `BaseService<T>`, and controller maps between DTOs and entities using `ApiResponse<T>`. Additional modules exist under `platform/identity/` (auth, RBAC, multi-tenant admin) and `core/` (metadata engine, runtime).
 
 ---
 
@@ -63,28 +60,51 @@ graph TD
 
 ---
 
-## Entity Overview
+## All Modules
 
-### Product Module
-| Entity | Table | Key Fields |
-|--------|-------|------------|
-| `Product` | `products` | code, name, description, sku, barcode, uom, productType, isStocked, isSold, isPurchased, categoryId |
-| `ProductCategory` | `product_categories` | Category hierarchy for products |
+### Core Business
+| Module | Entities | Table(s) |
+|--------|----------|----------|
+| **Product** | Product, ProductCategory | `products`, `product_categories` |
+| **Warehouse** | Warehouse, Location | `m1_warehouses`, `warehouse_locations` |
+| **Order** | Order, OrderLine | `orders`, `order_lines` |
+| **Inventory** | StockMovement, InventoryTransaction, InventoryBalance, InventoryTransactionLine | `stock_movements`, `inventory_transactions`, `inventory_balances`, `inventory_transaction_lines` |
+| **Business Partner** | BusinessPartner, Contact, Address | `business_partners`, `contacts`, `addresses` |
 
-### Warehouse Module
-| Entity | Table | Key Fields |
-|--------|-------|------------|
-| `Warehouse` | `warehouses` | code, name, address, location type |
-| `Location` | `locations` | Sub-locations within a warehouse (aisle, rack, bin) |
+### Commerce
+| Module | Entities | Table(s) |
+|--------|----------|----------|
+| **Sales** | SalesOrder, SalesOrderLine | `sales_orders`, `sales_order_lines` |
+| **Purchase** | PurchaseOrder, PurchaseOrderLine | `purchase_orders`, `purchase_order_lines` |
+| **Reservation** | Reservation | `reservations` |
 
-### Order Module
-| Entity | Table | Key Fields |
-|--------|-------|------------|
-| `Order` | `orders` | orderNumber, orderType, status, partner, dates, totals |
-| `OrderLine` | `order_lines` | product, quantity, unit price, line total, line status |
+### Operations
+| Module | Entities | Table(s) |
+|--------|----------|----------|
+| **Manufacturing** | BOM, BOMLine, WorkOrder, WorkCenter, Routing, RoutingOperation, ManufacturingOrder | `bill_of_materials`, `bom_lines`, `work_orders`, `work_centers`, `routings`, `routing_operations`, `manufacturing_orders` |
+| **Projects** | Project, Task | `projects`, `project_tasks` |
+| **Service** | ServiceRequest | `service_requests` |
+| **Assets** | Asset | `assets` |
 
-### Inventory Module
-| Entity | Table | Key Fields |
+### Support
+| Module | Entities | Table(s) |
+|--------|----------|----------|
+| **Accounting** | Account, JournalEntry, JournalEntryLine, AccountBalance | `accounts`, `journal_entries`, `journal_entry_lines`, `account_balances` |
+| **Analytics** | Dashboard, DashboardWidget, KPI, ReportDefinition, ScheduledReport | `dashboards`, `dashboard_widgets`, `kpi_definitions`, `report_definitions`, `scheduled_reports` |
+| **CRM** | Lead, Opportunity | `leads`, `opportunities` |
+| **HR** | Employee, Department | `employees`, `departments` |
+| **Users** | UserEntity | `user_entities` |
+| **Auth** | AuthEntity | `auth_entities` |
+| **Platform** | AuditLog, Attachment, Notification, Comment, Document, ActivityEvent, PlatformEvent, EmailTemplate | `audit_logs`, `attachments`, `notifications`, `comments`, `documents`, `activity_events`, `platform_events`, `email_templates` |
+
+### Metadata Engine (core/)
+| Module | Description |
+|--------|-------------|
+| `core/metadata/` | Table designer, form designer, field/rules/validation/sub-form/tenant-role CRUD |
+| `core/runtime/` | Form bundle assembly, dynamic CRUD, record validation, breadcrumb service |
+| `core/security/` | Permission evaluation and service |
+| `core/relation/` | Relation metadata for many2one lookups |
+| `core/workflow/` | Workflow engine with guards and state transitions |
 |--------|-------|------------|
 | `StockMovement` | `stock_movements` | product, warehouse, location, movementType, quantity, direction |
 | `InventoryBalance` | `inventory_balances` | product, warehouse, quantityOnHand, reservedQty, availableQty |
