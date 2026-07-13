@@ -5,29 +5,29 @@ title: Seed Transaction Tables (Flyway Migration)
 
 type: Database
 
-status: READY_FOR_DEV
+status: READY_FOR_TEST
 
 priority: High
 
-owner: developer
+owner: Software Engineer
 
-assigned_to:
+assigned_to: Software Engineer
 
-assigned_branch:
+assigned_branch: feature/TASK-029
 
-locked: false
+locked: true
 
 created: 2026-07-10
 
 updated: 2026-07-13
 
-started:
+started: 2026-07-13
 
-completed:
+completed: 2026-07-13
 
 estimated_hours: 4
 
-actual_hours:
+actual_hours: 1.5
 
 parent_prd: PRD-003
 
@@ -63,12 +63,14 @@ test_required: true
 
 automation_required: false
 
-change_summary:
+change_summary: ai/changes/CHANGE-TASK-029.md
 
 test_report:
 
 history:
   - 2026-07-10 — Planner — Created task from PRD-002 v1.0.0
+  - 2026-07-13 — Software Engineer — Activated to IN_DEVELOPMENT, started implementation
+  - 2026-07-13 — Software Engineer — Created V20 Flyway migration with 9 transaction tables + metadata registration
 
 ---
 
