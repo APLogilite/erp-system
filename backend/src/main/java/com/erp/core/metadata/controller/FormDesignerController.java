@@ -37,7 +37,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping(ApiVersionConfig.API_BASE + "/metadata/forms")
-@PreAuthorize("hasAnyRole('SYSTEM_ADMIN','TENANT_ADMIN')")
+@PreAuthorize("hasAnyAuthority('sys_admin','tnt_admin')")
 public class FormDesignerController {
 
   private final FormDesignerService formDesignerService;

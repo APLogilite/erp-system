@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(ApiVersionConfig.API_BASE + "/metadata/tables")
-@PreAuthorize("hasRole('SYSTEM_ADMIN')")
+@PreAuthorize("hasAuthority('sys_admin')")
 public class TableDesignerController {
 
   private final TableDesignerService service;

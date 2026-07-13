@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(ApiVersionConfig.API_BASE + "/metadata/forms/{formId}/fields/{fieldId}/validations")
-@PreAuthorize("hasRole('SYSTEM_ADMIN')")
+@PreAuthorize("hasAuthority('sys_admin')")
 public class FormValidationController {
   private final FormValidationService service;
   public FormValidationController(FormValidationService service) { this.service = service; }

@@ -23,7 +23,7 @@ public class FormTenantRoleController {
 
   /** Tenant Admin: view role assignments for their tenant on a form */
   @GetMapping("/{formId}/tenant-roles")
-  @PreAuthorize("hasAnyRole('SYSTEM_ADMIN','TENANT_ADMIN')")
+  @PreAuthorize("hasAnyAuthority('sys_admin','tnt_admin')")
   public ResponseEntity<ApiResponse<TenantRoleResponse>> getRoles(@PathVariable UUID formId) {
     UUID tenantId = service.getCurrentTenantId();
     return ResponseEntity.ok(
@@ -32,7 +32,7 @@ public class FormTenantRoleController {
 
   /** Tenant Admin: replace all role assignments for their tenant */
   @PutMapping("/{formId}/tenant-roles")
-  @PreAuthorize("hasAnyRole('SYSTEM_ADMIN','TENANT_ADMIN')")
+  @PreAuthorize("hasAnyAuthority('sys_admin','tnt_admin')")
   public ResponseEntity<ApiResponse<TenantRoleResponse>> setRoles(
       @PathVariable UUID formId, @RequestBody TenantRoleRequest req) {
     UUID tenantId = service.getCurrentTenantId();
@@ -42,7 +42,7 @@ public class FormTenantRoleController {
 
   /** System Admin: view all tenant role assignments across all tenants */
   @GetMapping("/{formId}/global-tenant-roles")
-  @PreAuthorize("hasRole('SYSTEM_ADMIN')")
+  @PreAuthorize("hasAuthority('sys_admin')")
   public ResponseEntity<ApiResponse<List<TenantRoleResponse>>> getGlobalTenantRoles(
       @PathVariable UUID formId) {
     return ResponseEntity.ok(
@@ -51,7 +51,7 @@ public class FormTenantRoleController {
 
   /** Tenant Admin: list global forms available to their tenant */
   @GetMapping("/global")
-  @PreAuthorize("hasAnyRole('SYSTEM_ADMIN','TENANT_ADMIN')")
+  @PreAuthorize("hasAnyAuthority('sys_admin','tnt_admin')")
   public ResponseEntity<ApiResponse<List<GlobalFormDto>>> getGlobalForms() {
     UUID tenantId = service.getCurrentTenantId();
     return ResponseEntity.ok(

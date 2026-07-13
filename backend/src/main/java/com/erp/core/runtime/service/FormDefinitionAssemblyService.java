@@ -55,7 +55,7 @@ public class FormDefinitionAssemblyService {
 
   private static final Logger log = LoggerFactory.getLogger(FormDefinitionAssemblyService.class);
 
-  private static final String ROLE_SYSTEM_ADMIN = "SYSTEM_ADMIN";
+  private static final String ROLE_SYSTEM_ADMIN = "sys_admin";
   private static final String SCOPE_GLOBAL = "global";
 
   private final MetadataViewRepository metadataViewRepository;
@@ -267,7 +267,7 @@ public class FormDefinitionAssemblyService {
    *
    * <p>Rules:
    * <ul>
-   *   <li>SYSTEM_ADMIN can access any form globally</li>
+   *   <li>sys_admin can access any form globally</li>
    *   <li>For global forms: the user's tenant must have at least one of the user's
    *       roles assigned to the form via sys_form_tenant_role</li>
    *   <li>For tenant-scoped forms: the form must belong to the user's tenant</li>

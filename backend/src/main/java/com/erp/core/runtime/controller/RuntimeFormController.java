@@ -99,7 +99,7 @@ public class RuntimeFormController {
     List<String> roleCodes = ctx.getRoles() != null ? ctx.getRoles() : List.of();
 
     // System admin sees all active forms
-    boolean isSystemAdmin = roleCodes.contains("SYSTEM_ADMIN");
+    boolean isSystemAdmin = roleCodes.contains("sys_admin");
 
     // Convert role codes to UUIDs
     List<Role> userRoles = roleRepository.findByCodeIn(roleCodes);

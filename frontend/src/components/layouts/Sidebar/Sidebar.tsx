@@ -17,6 +17,8 @@ import {
   Person,
   AdminPanelSettings,
   TableChart,
+  KeyboardArrowDown,
+  KeyboardArrowRight,
 } from '@mui/icons-material';
 import {
   Drawer,
@@ -31,7 +33,9 @@ import {
   Divider,
   Typography,
   ListSubheader,
+  Collapse,
 } from '@mui/material';
+import { useCallback, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 import { useAuthStore } from '@/core/auth/authStore';
@@ -77,6 +81,47 @@ const adminItems: NavItem[] = [
 
 type SidebarProps = { mobileOpen?: boolean; onMobileClose?: () => void };
 
+/** Collapsible group section in the sidebar */
+function NavGroup({
+  label,
+  defaultOpen = true,
+  children,
+}: {
+  label: string;
+  defaultOpen?: boolean;
+  children: React.ReactNode;
+}) {
+  const [open, setOpen] = useState(defaultOpen);
+  const toggle = useCallback(() => setOpen((o) => !o), []);
+  return (
+    <>
+      <ListSubheader
+        sx={{
+          fontWeight: 600,
+          fontSize: 11,
+          lineHeight: '28px',
+          cursor: 'pointer',
+          display: 'flex',
+          alignItems: 'center',
+          gap: 0.5,
+          '&:hover': { color: 'primary.main' },
+        }}
+        onClick={toggle}
+      >
+        {open ? (
+          <KeyboardArrowDown sx={{ fontSize: 16 }} />
+        ) : (
+          <KeyboardArrowRight sx={{ fontSize: 16 }} />
+        )}
+        {label}
+      </ListSubheader>
+      <Collapse in={open} timeout={200}>
+        {children}
+      </Collapse>
+    </>
+  );
+}
+
 export function Sidebar({ mobileOpen = false, onMobileClose }: SidebarProps) {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
@@ -85,98 +130,134 @@ export function Sidebar({ mobileOpen = false, onMobileClose }: SidebarProps) {
   const user = useAuthStore((s) => s.user);
   const isAdmin = user?.roles?.some((r) => r === 'sys_admin' || r === 'tnt_admin');
 
-  const handleNavigate = (path: string) => {
-    navigate(path);
-    if (isMobile && onMobileClose) onMobileClose();
-  };
+  const handleNavigate = useCallback(
+    (path: string) => {
+      navigate(path);
+      if (isMobile && onMobileClose) onMobileClose();
+    },
+    [navigate, isMobile, onMobileClose]
+  );
 
   const drawer = (
-    <Box sx={{ width: drawerWidth, pt: 2 }}>
-      <Box sx={{ px: 2, py: 1 }}>
+    <Box
+      sx={{
+        width: drawerWidth,
+        height: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+      }}
+    >
+      {/* Logo / Title */}
+      <Box sx={{ px: 2, pt: 2, pb: 1 }}>
         <Typography variant="h6" fontWeight={700} color="primary">
           ERP System
         </Typography>
       </Box>
-      <Divider sx={{ my: 1 }} />
+      <Divider />
 
-      <ListSubheader sx={{ fontWeight: 600, fontSize: 11, lineHeight: '28px' }}>
-        MODULES
-      </ListSubheader>
-      <List dense>
-        {moduleItems.map((item) => (
-          <ListItem key={item.text} disablePadding>
-            <ListItemButton
-              onClick={() => handleNavigate(item.path)}
-              selected={location.pathname.startsWith(item.path)}
-              sx={{ mx: 1, mb: 0.3, borderRadius: 1 }}
-            >
-              <ListItemIcon
-                sx={{
-                  minWidth: 36,
-                  color: location.pathname.startsWith(item.path) ? 'primary.main' : undefined,
-                }}
-              >
-                <item.icon fontSize="small" />
-              </ListItemIcon>
-              <ListItemText primary={item.text} primaryTypographyProps={{ fontSize: 14 }} />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
-
-      <Divider sx={{ my: 1 }} />
-      <FormNavigationMenu />
-      <Divider sx={{ my: 1 }} />
-
-      <ListSubheader sx={{ fontWeight: 600, fontSize: 11, lineHeight: '28px' }}>
-        IDENTITY & ADMINISTRATION
-      </ListSubheader>
-      <List dense>
-        {identityItems.map((item) => (
-          <ListItem key={item.text} disablePadding>
-            <ListItemButton
-              onClick={() => handleNavigate(item.path)}
-              selected={location.pathname === item.path}
-              sx={{ mx: 1, mb: 0.3, borderRadius: 1 }}
-            >
-              <ListItemIcon sx={{ minWidth: 36 }}>
-                <item.icon fontSize="small" />
-              </ListItemIcon>
-              <ListItemText primary={item.text} primaryTypographyProps={{ fontSize: 14 }} />
-            </ListItemButton>
-          </ListItem>
-        ))}
-        {isAdmin && <Divider sx={{ my: 0.5, mx: 2 }} />}
-        {isAdmin &&
-          adminItems.map((item) => (
-            <ListItem key={item.text} disablePadding>
-              <ListItemButton
-                onClick={() => handleNavigate(item.path)}
-                selected={
-                  item.path === '/app/admin'
-                    ? location.pathname === '/app/admin'
-                    : location.pathname.startsWith(item.path)
-                }
-                sx={{ mx: 1, mb: 0.3, borderRadius: 1 }}
-              >
-                <ListItemIcon sx={{ minWidth: 36 }}>
-                  {item.text === 'Overview' ? (
-                    <AdminPanelSettings fontSize="small" color="primary" />
-                  ) : (
+      {/* Scrollable nav area */}
+      <Box
+        sx={{
+          flex: 1,
+          overflowY: 'auto',
+          overflowX: 'hidden',
+          pb: 2,
+          // Smooth custom scrollbar
+          '&::-webkit-scrollbar': { width: 4 },
+          '&::-webkit-scrollbar-track': { background: 'transparent' },
+          '&::-webkit-scrollbar-thumb': {
+            background: theme.palette.divider,
+            borderRadius: 2,
+          },
+          '&::-webkit-scrollbar-thumb:hover': {
+            background: theme.palette.text.disabled,
+          },
+          scrollbarWidth: 'thin',
+          scrollbarColor: `${theme.palette.divider} transparent`,
+        }}
+      >
+        {/* MODULES group */}
+        <NavGroup label="MODULES" defaultOpen>
+          <List dense disablePadding>
+            {moduleItems.map((item) => (
+              <ListItem key={item.text} disablePadding>
+                <ListItemButton
+                  onClick={() => handleNavigate(item.path)}
+                  selected={location.pathname.startsWith(item.path)}
+                  sx={{ mx: 1, mb: 0.2, borderRadius: 1, py: 0.6 }}
+                >
+                  <ListItemIcon
+                    sx={{
+                      minWidth: 34,
+                      color: location.pathname.startsWith(item.path) ? 'primary.main' : undefined,
+                    }}
+                  >
                     <item.icon fontSize="small" />
-                  )}
-                </ListItemIcon>
-                <ListItemText
-                  primary={item.text}
-                  primaryTypographyProps={{
-                    fontSize: 14,
-                    fontWeight: item.text === 'Overview' ? 600 : 400,
-                  }}
-                />
-              </ListItemButton>
-            </ListItem>
-          ))}
-      </List>
+                  </ListItemIcon>
+                  <ListItemText primary={item.text} primaryTypographyProps={{ fontSize: 13 }} />
+                </ListItemButton>
+              </ListItem>
+            ))}
+          </List>
+        </NavGroup>
+
+        <Divider sx={{ my: 0.5 }} />
+
+        {/* DYNAMIC FORMS — rendered by FormNavigationMenu with its own collapse */}
+        <FormNavigationMenu />
+
+        <Divider sx={{ my: 0.5 }} />
+
+        {/* IDENTITY & ADMINISTRATION group */}
+        <NavGroup label="IDENTITY & ADMIN" defaultOpen={false}>
+          <List dense disablePadding>
+            {identityItems.map((item) => (
+              <ListItem key={item.text} disablePadding>
+                <ListItemButton
+                  onClick={() => handleNavigate(item.path)}
+                  selected={location.pathname === item.path}
+                  sx={{ mx: 1, mb: 0.2, borderRadius: 1, py: 0.6 }}
+                >
+                  <ListItemIcon sx={{ minWidth: 34 }}>
+                    <item.icon fontSize="small" />
+                  </ListItemIcon>
+                  <ListItemText primary={item.text} primaryTypographyProps={{ fontSize: 13 }} />
+                </ListItemButton>
+              </ListItem>
+            ))}
+            {isAdmin && <Divider sx={{ my: 0.3, mx: 2 }} />}
+            {isAdmin &&
+              adminItems.map((item) => (
+                <ListItem key={item.text} disablePadding>
+                  <ListItemButton
+                    onClick={() => handleNavigate(item.path)}
+                    selected={
+                      item.path === '/app/admin'
+                        ? location.pathname === '/app/admin'
+                        : location.pathname.startsWith(item.path)
+                    }
+                    sx={{ mx: 1, mb: 0.2, borderRadius: 1, py: 0.6 }}
+                  >
+                    <ListItemIcon sx={{ minWidth: 34 }}>
+                      {item.text === 'Overview' ? (
+                        <AdminPanelSettings fontSize="small" color="primary" />
+                      ) : (
+                        <item.icon fontSize="small" />
+                      )}
+                    </ListItemIcon>
+                    <ListItemText
+                      primary={item.text}
+                      primaryTypographyProps={{
+                        fontSize: 13,
+                        fontWeight: item.text === 'Overview' ? 600 : 400,
+                      }}
+                    />
+                  </ListItemButton>
+                </ListItem>
+              ))}
+          </List>
+        </NavGroup>
+      </Box>
     </Box>
   );
 
