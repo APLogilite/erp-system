@@ -21,7 +21,6 @@ Updated By: software_engineer
 
 | Task | PRD | Priority | Owner | Depends On |
 |------|-----|----------|-------|------------|
-| TASK-037 | PRD-004 | Critical | — | TASK-036 |
 | TASK-042 | PRD-004 | High | — | TASK-036 |
 
 ---
@@ -36,7 +35,9 @@ Updated By: software_engineer
 
 ## In Development
 
-*(none)*
+| Task | PRD | Priority | Owner | Branch |
+|------|-----|----------|-------|--------|
+| TASK-037 | PRD-004 | Critical | software_engineer | feature/TASK-037 |
 
 ---
 
@@ -146,9 +147,9 @@ Updated By: software_engineer
 | Status | Count |
 |--------|-------|
 | PRDs | 4 (PRD-001 COMPLETED, PRD-002 COMPLETED, PRD-003 READY_FOR_DEPLOYMENT, PRD-004 IN_DEVELOPMENT) |
-| Ready For Dev | 2 (TASK-037, TASK-042) |
+| Ready For Dev | 1 (TASK-042) |
 | Ready For Test | 1 (TASK-036) |
-| In Development | 0 |
+| In Development | 1 (TASK-037) |
 | Ready For Test | 0 |
 | In Testing | 0 |
 | Planning | 9 tasks (PRD-004 — PLANNED) |
@@ -156,5 +157,5 @@ Updated By: software_engineer
 | Completed (PRD-001) | 27 tasks + 1 enhancement (ENH-001) |
 | Completed (PRD-002) | 3 tasks + 1 enhancement (TASK-033/034/035 + ENH-002) |
 | Completed (PRD-003) | 5 tasks (TASK-028/029/030/031/032) |
-| Total Tasks | 37 completed + 1 in-dev + 9 planned + 6 bugs |
+| Total Tasks | 37 completed + 1 in-dev + 1 ready-for-test + 1 ready-for-dev + 7 planned + 6 bugs |
 | PRD-004 Status | IN_DEVELOPMENT (v1.0.0) — Window Hierarchy & Menu System |

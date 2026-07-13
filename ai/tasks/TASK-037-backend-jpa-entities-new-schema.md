@@ -5,29 +5,29 @@ title: Backend — JPA Entities + Services for New Metadata Tables
 
 type: Feature
 
-status: READY_FOR_DEV
+status: READY_FOR_TEST
 
 priority: Critical
 
-owner: planner
+owner: software_engineer
 
-assigned_to:
+assigned_to: software_engineer
 
-assigned_branch:
+assigned_branch: feature/TASK-037
 
-locked: false
+locked: true
 
 created: 2026-07-13
 
 updated: 2026-07-13
 
-started:
+started: 2026-07-13
 
-completed:
+completed: 2026-07-13
 
 estimated_hours: 6
 
-actual_hours:
+actual_hours: 2
 
 parent_prd: PRD-004
 
@@ -45,9 +45,15 @@ blocks: [TASK-038, TASK-039, TASK-046]
 
 labels: [backend, jpa, entity, service]
 
+history:
+  - 2026-07-13: Status READY_FOR_DEV → IN_DEVELOPMENT. Assigned to software_engineer. Started implementation.
+  - 2026-07-13: 7 JPA entities + 7 repositories + 7 services created. Validation passed. Status → READY_FOR_TEST.
+
 review_required: true
 
 test_required: true
+
+change_report: ai/changes/CHANGE-TASK-037.md
 
 ---
 
