@@ -26,7 +26,7 @@ export function ContentArea({
         sx={{
           py: disablePadding ? 0 : 3,
           px: disablePadding ? 0 : 3,
-          minHeight: 'calc(100vh - 64px)', // Subtract header height
+          minHeight: '100%',
         }}
       >
         {children}
