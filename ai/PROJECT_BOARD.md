@@ -111,7 +111,7 @@ Updated By: Planner
 |------|------------|-------------|--------|--------|
 | ENH-001 | PRD-001 | TASK-007 | Form Designer API tenant authorization | COMPLETED |
 | ENH-002 | PRD-002 | TASK-034, TASK-035 | Add tenant_id to all admin forms (REQ-ISSUE-001) | COMPLETED |
-| ENH-003 | PRD-001 | TASK-026 | RuntimePage not integrated with API — uses hardcoded sample bundles instead of dynamic form rendering | PLANNING |
+| ENH-003 | PRD-001 | TASK-026 | RuntimePage not integrated with API — uses hardcoded sample bundles instead of dynamic form rendering | READY_FOR_TEST |
 
 ---
 
@@ -130,7 +130,7 @@ Updated By: Planner
 | In Development | 0 bugs |
 | Ready For Test | 6 bugs (BUG-002, BUG-003, BUG-004, BUG-005, BUG-006) |
 | In Testing | 0 tasks |
-| Planning | 1 enhancement (ENH-003 — RuntimePage API integration) |
+| Planning | 0 tasks |
 | Bugs | 6 (BUG-001 TESTED, BUG-002/003/004/005/006 READY_FOR_TEST) |
 | Completed (PRD-001) | 27 tasks + 1 enhancement (ENH-001) |
 | Completed (PRD-002) | 3 tasks + 1 enhancement (TASK-033/034/035 + ENH-002) |

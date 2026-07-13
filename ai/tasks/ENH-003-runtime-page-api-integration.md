@@ -3,17 +3,17 @@ id: ENH-003
 
 title: RuntimePage needs proper API integration for dynamic form rendering
 
-status: READY_FOR_DEV
+status: READY_FOR_TEST
 
 priority: High
 
-owner: developer
+owner: Software Engineer
 
-assigned_to:
+assigned_to: Software Engineer
 
-assigned_branch:
+assigned_branch: (merged to main)
 
-locked: false
+locked: true
 
 created: 2026-07-13
 
