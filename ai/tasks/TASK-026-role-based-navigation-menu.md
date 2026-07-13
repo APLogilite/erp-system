@@ -5,7 +5,7 @@ title: Build Role-Based Navigation Menu (Frontend)
 
 type: UI
 
-status: TESTED
+status: COMPLETED
 
 priority: High
 

@@ -5,7 +5,7 @@ title: Seed Core Admin Forms — Tables, Columns, Forms, Fields (Flyway Migratio
 
 type: Database
 
-status: TESTED
+status: COMPLETED
 
 priority: High
 

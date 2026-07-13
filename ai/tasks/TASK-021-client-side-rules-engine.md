@@ -5,7 +5,7 @@ title: Build Client-Side Rules Engine (Frontend)
 
 type: Feature
 
-status: TESTED
+status: COMPLETED
 
 priority: High
 

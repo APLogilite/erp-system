@@ -5,7 +5,7 @@ title: Build Form Designer Admin UI — Core (Frontend)
 
 type: UI
 
-status: TESTED
+status: COMPLETED
 
 priority: High
 

@@ -5,7 +5,7 @@ title: Build Form Toolbar with Record Actions & Keyboard Shortcuts (Frontend)
 
 type: UI
 
-status: TESTED
+status: COMPLETED
 
 priority: High
 

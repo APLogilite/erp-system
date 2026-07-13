@@ -5,7 +5,7 @@ title: Build Table Designer Admin UI (Frontend)
 
 type: UI
 
-status: TESTED
+status: COMPLETED
 
 priority: High
 

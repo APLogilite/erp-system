@@ -5,7 +5,7 @@ title: Build Dynamic List View with DataGrid (Frontend)
 
 type: UI
 
-status: TESTED
+status: COMPLETED
 
 priority: High
 

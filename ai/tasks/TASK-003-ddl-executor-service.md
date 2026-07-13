@@ -5,7 +5,7 @@ title: Implement DDL Executor Service for Dynamic Table Creation
 
 type: Feature
 
-status: TESTED
+status: COMPLETED
 
 priority: High
 

@@ -5,7 +5,7 @@ title: Build Form Designer — Sub-Forms & Global Forms UI (Frontend)
 
 type: UI
 
-status: TESTED
+status: COMPLETED
 
 priority: Medium
 

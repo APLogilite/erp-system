@@ -5,7 +5,7 @@ title: Build Header Form Search Bar (Ctrl+K) (Frontend)
 
 type: UI
 
-status: TESTED
+status: COMPLETED
 
 priority: Medium
 

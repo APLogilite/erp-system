@@ -5,7 +5,7 @@ title: Add tenant_id Field to All Admin Forms (Tenant Isolation Safeguard)
 
 type: Enhancement
 
-status: TESTED
+status: COMPLETED
 
 priority: Critical
 

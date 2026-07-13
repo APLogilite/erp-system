@@ -5,7 +5,7 @@ title: Register Metadata Tables as Static (Flyway Migration)
 
 type: Database
 
-status: TESTED
+status: COMPLETED
 
 priority: High
 

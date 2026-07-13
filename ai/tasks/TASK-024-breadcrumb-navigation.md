@@ -5,7 +5,7 @@ title: Build Breadcrumb Navigation Component (Frontend)
 
 type: UI
 
-status: TESTED
+status: COMPLETED
 
 priority: Medium
 

@@ -5,7 +5,7 @@ title: Implement Table Designer CRUD APIs (Backend)
 
 type: API
 
-status: TESTED
+status: COMPLETED
 
 priority: High
 

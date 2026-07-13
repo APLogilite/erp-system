@@ -5,7 +5,7 @@ title: Create Flyway Migrations for Normalized Metadata Storage
 
 type: Database
 
-status: TESTED
+status: COMPLETED
 
 priority: High
 

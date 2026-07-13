@@ -5,7 +5,7 @@ title: Admin Configuration Forms — Metadata Table Management
 
 version: 1.1.0
 
-status: APPROVED
+status: COMPLETED
 
 priority: High
 

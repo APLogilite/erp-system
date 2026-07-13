@@ -5,7 +5,7 @@ title: Implement Schema History Service
 
 type: Feature
 
-status: TESTED
+status: COMPLETED
 
 priority: Low
 

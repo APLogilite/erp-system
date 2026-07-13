@@ -5,7 +5,7 @@ title: Create JPA Entities for All Metadata Tables
 
 type: Feature
 
-status: TESTED
+status: COMPLETED
 
 priority: High
 
