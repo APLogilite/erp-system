@@ -32,7 +32,7 @@ Updated By: Planner
 
 | Task | Branch | Change Report | Owner |
 |------|--------|---------------|-------|
-| BUG-001 | bugfix/BUG-001 | CHANGE-BUG-001.md | Software Engineer |
+| BUG-001 | bugfix/BUG-001 | CHANGE-BUG-001.md | QA Engineer |
 
 ---
 
@@ -96,7 +96,7 @@ Updated By: Planner
 
 | Bug | Parent Task | Severity | Status | Owner |
 |-----|-------------|----------|--------|-------|
-| BUG-001 | TASK-001 | Medium | READY_FOR_TEST | Software Engineer |
+| BUG-001 | TASK-001 | Medium | TESTED | QA Engineer |
 
 ---
 
@@ -122,10 +122,10 @@ Updated By: Planner
 | PRDs | 3 (PRD-001 COMPLETED, PRD-002 COMPLETED, PRD-003 READY_FOR_DEPLOYMENT) |
 | Ready For Dev | 0 tasks |
 | In Development | 0 tasks |
-| Ready For Test | 1 bug (BUG-001) |
+| Ready For Test | 0 tasks |
 | In Testing | 0 tasks |
 | Planning | 0 tasks |
-| Bugs | 1 (BUG-001 — READY_FOR_TEST) |
+| Bugs | 1 (BUG-001 — TESTED) |
 | Completed (PRD-001) | 27 tasks + 1 enhancement (ENH-001) |
 | Completed (PRD-002) | 3 tasks + 1 enhancement (TASK-033/034/035 + ENH-002) |
 | Completed (PRD-003) | 5 tasks (TASK-028/029/030/031/032) |

@@ -3,15 +3,15 @@ id: BUG-001
 
 title: Fix pre-existing DatabaseConnectionTest failures (3 errors)
 
-status: READY_FOR_TEST
+status: TESTED
 
 priority: High
 
 severity: Medium
 
-owner: developer
+owner: QA Engineer
 
-assigned_to: Software Engineer
+assigned_to: QA Engineer
 
 assigned_branch: bugfix/BUG-001
 
@@ -37,12 +37,13 @@ related_test: DatabaseConnectionTest.java
 
 fix_summary: ai/changes/CHANGE-BUG-001.md
 
-verification_report:
+verification_report: ai/tests/TEST-BUG-001.md
 
 history:
   - 2026-07-13 — Planner — Created bug task from pre-existing test failures. Tests run: 3, Errors: 3, Failures: 0.
   - 2026-07-13 — Software Engineer — Locked, assigned, started on bugfix/BUG-001
   - 2026-07-13 — Software Engineer — Implemented fix: rewrote DatabaseConnectionTest using JDBC DatabaseMetaData (portable across H2/PostgreSQL/Oracle); added spring.flyway.enabled=false to test properties. All 36 tests pass BUILD SUCCESS.
+  - 2026-07-13 — QA Engineer — Started testing. Locked, assigned QA Engineer.
 
 ---
 
