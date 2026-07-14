@@ -270,6 +270,20 @@ export async function deleteWindowRecord(windowName: string, recordId: string): 
   await apiClient.delete(`/runtime/windows/${encodeURIComponent(windowName)}/records/${recordId}`);
 }
 
+// ---- Lookup API ----
+
+/**
+ * Fetches records from a table for use in dropdown/autocomplete.
+ * Each record includes a _display field with the human-readable label.
+ * GET /api/v1/runtime/windows/lookup/{tableName}
+ */
+export async function fetchLookupRecords(tableName: string): Promise<Record<string, unknown>[]> {
+  const response = await apiClient.get<ApiResponse<Record<string, unknown>[]>>(
+    `/runtime/windows/lookup/${encodeURIComponent(tableName)}`
+  );
+  return unwrap(response);
+}
+
 // ---- Menu API (PRD-004) ----
 
 /** A single menu tree node returned from the menu API. */

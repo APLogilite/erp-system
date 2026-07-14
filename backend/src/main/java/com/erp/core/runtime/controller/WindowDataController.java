@@ -6,6 +6,7 @@ import com.erp.core.runtime.service.WindowDataService;
 import com.erp.platform.identity.dto.RuntimeContext;
 import com.erp.platform.identity.dto.RuntimeContextHolder;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import org.slf4j.Logger;
@@ -157,6 +158,31 @@ public class WindowDataController {
     } catch (IllegalArgumentException e) {
       return ResponseEntity.status(HttpStatus.BAD_REQUEST)
           .body(new ApiResponse<>(false, null, e.getMessage(), "VALIDATION_ERROR", Collections.emptyList()));
+    }
+  }
+
+  /**
+   * Lookup records from a table for dropdown/autocomplete (no pagination).
+   * Returns records with id + a displayable label field.
+   */
+  @GetMapping("/lookup/{tableName}")
+  public ResponseEntity<ApiResponse<List<Map<String, Object>>>> lookupRecords(
+      @PathVariable String tableName) {
+
+    RuntimeContext ctx = requireContext();
+    if (ctx == null || ctx.getTenantId() == null) {
+      ApiResponse<List<Map<String, Object>>> errorResp = new ApiResponse<>(
+          false, null, "Authentication required.", "UNAUTHORIZED", Collections.emptyList());
+      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResp);
+    }
+
+    try {
+      List<Map<String, Object>> records = windowDataService.lookupRecords(
+          tableName, ctx.getTenantId());
+      return ResponseEntity.ok(ApiResponse.success(records, "Lookup records retrieved."));
+    } catch (IllegalArgumentException e) {
+      return ResponseEntity.status(HttpStatus.NOT_FOUND)
+          .body(new ApiResponse<>(false, null, e.getMessage(), "NOT_FOUND", Collections.emptyList()));
     }
   }
 

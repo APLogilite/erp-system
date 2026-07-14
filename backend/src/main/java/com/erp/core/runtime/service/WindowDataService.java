@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -214,6 +215,43 @@ public class WindowDataService {
     result.put("record", record);
     result.put("childRecords", childRecords);
     return result;
+  }
+
+  /**
+   * Lookup records from a table for dropdown/autocomplete use.
+   * Returns all active records up to 500 with id + resolved display label.
+   */
+  @Transactional(readOnly = true)
+  public List<Map<String, Object>> lookupRecords(
+      String tableName,
+      UUID tenantId) {
+
+    Map<String, Object> result = dynamicCrudService.listRecords(
+        tableName, null, null, tenantId, 0, 500, null, null, null);
+
+    @SuppressWarnings("unchecked")
+    List<Map<String, Object>> items = (List<Map<String, Object>>) result.get("items");
+    if (items == null) return List.of();
+
+    // Build display labels from known name-like columns
+    Set<String> labelCols = Set.of("name", "code", "order_number", "invoice_number",
+        "payment_number", "shipment_number", "receipt_number", "title", "label");
+
+    for (Map<String, Object> item : items) {
+      String display = "";
+      for (String col : labelCols) {
+        if (item.containsKey(col) && item.get(col) != null) {
+          display = item.get(col).toString();
+          break;
+        }
+      }
+      if (display.isBlank() && item.containsKey("id")) {
+        display = item.get("id").toString();
+      }
+      item.put("_display", display);
+    }
+
+    return items;
   }
 
   /**

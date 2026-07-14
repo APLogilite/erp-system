@@ -33,6 +33,7 @@ import {
   fetchWindowDefinition,
   fetchWindowRecords,
   fetchWindowRecord,
+  fetchLookupRecords,
   createWindowRecord,
   updateWindowRecord,
   deleteWindowRecord,
@@ -60,6 +61,7 @@ interface RecordDialogProps {
 function RecordDialog({ open, windowName, windowDef, recordId, onClose }: RecordDialogProps) {
   const queryClient = useQueryClient();
   const mainTab = windowDef.tabs.find((t) => !t.parentColumn);
+  const childTabs = windowDef.tabs.filter((t) => t.parentColumn);
   const [formData, setFormData] = useState<Record<string, unknown>>({});
 
   // Fetch record data if editing
@@ -77,6 +79,8 @@ function RecordDialog({ open, windowName, windowDef, recordId, onClose }: Record
     }
   }, [recordData]);
 
+  const [saveError, setSaveError] = useState<string | null>(null);
+
   // Create mutation
   const createMutation = useMutation({
     mutationFn: (data: Record<string, unknown>) => createWindowRecord(windowName, data),
@@ -84,6 +88,7 @@ function RecordDialog({ open, windowName, windowDef, recordId, onClose }: Record
       queryClient.invalidateQueries({ queryKey: ['window-records', windowName] });
       onClose();
     },
+    onError: (err: Error) => setSaveError(err.message),
   });
 
   // Update mutation
@@ -93,6 +98,7 @@ function RecordDialog({ open, windowName, windowDef, recordId, onClose }: Record
       queryClient.invalidateQueries({ queryKey: ['window-records', windowName] });
       onClose();
     },
+    onError: (err: Error) => setSaveError(err.message),
   });
 
   const handleSave = useCallback(() => {
@@ -131,6 +137,11 @@ function RecordDialog({ open, windowName, windowDef, recordId, onClose }: Record
         {recordId ? 'Edit Record' : 'New Record'} - {windowDef.window.name}
       </DialogTitle>
       <DialogContent>
+        {saveError && (
+          <Typography color="error" sx={{ mb: 2, p: 1, bgcolor: 'error.light', borderRadius: 1 }}>
+            {saveError}
+          </Typography>
+        )}
         {isLoadingRecord && recordId ? (
           <Box sx={{ display: 'flex', justifyContent: 'center', py: 4 }}>
             <CircularProgress />
@@ -201,21 +212,40 @@ function RecordDialog({ open, windowName, windowDef, recordId, onClose }: Record
 
                 case 'many2one':
                 case 'many2many':
-                case 'one2many':
+                case 'one2many': {
+                  const relationTable = field.column.relationTable;
+                  const colCode = field.column.code;
+                  // eslint-disable-next-line react-hooks/rules-of-hooks
+                  const { data: lookupOptions } = useQuery({
+                    queryKey: ['lookup', relationTable],
+                    queryFn: () => fetchLookupRecords(relationTable!),
+                    enabled: !!relationTable,
+                    staleTime: 30000,
+                    gcTime: 60000,
+                  });
+
                   return (
-                    <TextField
-                      key={field.column.code}
-                      fullWidth
-                      margin="dense"
-                      label={label}
-                      value={String(value ?? '')}
-                      onChange={(e) => handleFieldChange(field.column.code, e.target.value)}
-                      disabled={field.isReadonly || isSaving}
-                      required={field.isMandatory}
-                      placeholder="Reference ID"
-                      sx={{ mb: 1 }}
-                    />
+                    <FormControl key={colCode} fullWidth margin="dense" sx={{ mb: 1 }}>
+                      <InputLabel>{label}</InputLabel>
+                      <Select
+                        value={value as string}
+                        label={label}
+                        onChange={(e) => handleFieldChange(colCode, e.target.value)}
+                        disabled={field.isReadonly || isSaving || !relationTable}
+                        required={field.isMandatory}
+                      >
+                        <MenuItem value="">
+                          <em>None</em>
+                        </MenuItem>
+                        {(lookupOptions ?? []).map((opt) => (
+                          <MenuItem key={opt.id as string} value={opt.id as string}>
+                            {(opt._display as string) ?? (opt.id as string)}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
                   );
+                }
 
                 case 'text':
                   return (
@@ -274,6 +304,18 @@ function RecordDialog({ open, windowName, windowDef, recordId, onClose }: Record
           </Box>
         )}
       </DialogContent>
+      {/* Child tab records (only shown when editing an existing record) */}
+      {recordId && childTabs.length > 0 && (
+        <Box sx={{ mt: 3, pt: 2, borderTop: 1, borderColor: 'divider' }}>
+          <Typography variant="subtitle1" sx={{ mb: 2, fontWeight: 600 }}>
+            Related Records
+          </Typography>
+          {childTabs.map((ct) => (
+            <ChildTabGrid key={ct.id} tab={ct} parentRecordId={recordId} windowName={windowName} />
+          ))}
+        </Box>
+      )}
+
       <DialogActions>
         <Button onClick={onClose}>Cancel</Button>
         <Button onClick={handleSave} variant="contained" disabled={isSaving || isLoadingRecord}>
@@ -281,6 +323,32 @@ function RecordDialog({ open, windowName, windowDef, recordId, onClose }: Record
         </Button>
       </DialogActions>
     </Dialog>
+  );
+}
+
+// ---- Child Tab Grid ----
+
+interface ChildTabGridProps {
+  tab: WindowTabDefinition;
+  parentRecordId: string;
+  windowName: string;
+}
+
+function ChildTabGrid({ tab, parentRecordId: _parentRecordId }: ChildTabGridProps) {
+  // For now, show a placeholder indicating child records exist
+  // Full child record CRUD will be implemented in a future update
+  const relatedCol = tab.parentColumn;
+
+  return (
+    <Box sx={{ mb: 2, px: 1 }}>
+      <Typography variant="subtitle2" sx={{ mb: 0.5 }}>
+        {tab.name} ({relatedCol ? `via ${relatedCol}` : ''})
+      </Typography>
+      <Typography variant="body2" color="text.secondary">
+        Child records will be shown here when a parent record is selected. This feature requires a
+        dedicated child record grid component.
+      </Typography>
+    </Box>
   );
 }
 
