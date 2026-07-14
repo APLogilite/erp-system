@@ -24,7 +24,7 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQueries, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
@@ -68,24 +68,26 @@ function RecordDialog({ open, windowName, windowDef, recordId, onClose }: Record
   // Collect unique relation table names for lookup dropdowns
   const lookupTables = [
     ...new Set(
-      (mainTab?.fields ?? [])
+      (windowDef.tabs.flatMap((t) => t.fields) ?? [])
         .filter((f) => f.column.relationTable)
         .map((f) => f.column.relationTable!)
     ),
   ];
 
-  // Fetch all lookup data upfront (avoids hooks-in-loop violation)
-  const lookupQueries: Record<string, Record<string, unknown>[]> = {};
-  for (const tableName of lookupTables) {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    const { data } = useQuery({
+  // Fetch ALL lookups — useQueries always returns same number of results
+  const lookupResults = useQueries({
+    queries: lookupTables.map((tableName) => ({
       queryKey: ['lookup', tableName],
       queryFn: () => fetchLookupRecords(tableName),
       staleTime: 30000,
       gcTime: 60000,
-    });
-    lookupQueries[tableName] = data ?? [];
-  }
+    })),
+  });
+
+  const lookupQueries: Record<string, Record<string, unknown>[]> = {};
+  lookupTables.forEach((tableName, idx) => {
+    lookupQueries[tableName] = lookupResults[idx]?.data ?? [];
+  });
 
   // Fetch record data if editing
   const { data: recordData, isLoading: isLoadingRecord } = useQuery({
