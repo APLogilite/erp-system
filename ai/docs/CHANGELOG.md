@@ -3,7 +3,7 @@ document: CHANGELOG
 version: 1.0.0
 status: ACTIVE
 owner: Product Manager
-last_updated: 2026-07-13
+last_updated: 2026-07-14
 ---
 
 # Changelog
@@ -41,6 +41,29 @@ Three bugs (BUG-002, BUG-003, BUG-004) had test reports showing COMPLETED but th
 
 ### Summary
 PRD-003's 5 tasks (TASK-028..032) were in TESTED status but the branch had already been merged to main. Updated to COMPLETED. PRD-003 status: READY_FOR_DEPLOYMENT → COMPLETED.
+
+---
+
+## 2026-07-14 (PRD-004 Merged to Main — COMPLETED)
+
+### Summary
+PRD-004 (Window Hierarchy & Menu System v1.0.0) merged to `main`. All 10 tasks, all changes, and the PRD itself advanced to COMPLETED. All 4 PRDs are now COMPLETED.
+
+### PRD Completed
+- **PRD-004** — Window Hierarchy & Menu System v1.0.0 → **COMPLETED** (merged to main)
+
+### Changes Merged (143 files, +8647/-5894)
+- **New Metadata Schema:** 7 tables (sys_table, sys_column, sys_window, sys_tab, sys_window_field, sys_window_access, sys_menu) via V24
+- **JPA Entities + Services:** All 7 entities, repositories, and CRUD services in `modules/metadata/`
+- **Runtime APIs:** Window definition endpoint, window data CRUD endpoint, menu endpoint
+- **Frontend:** WindowPage with `/window/{name}` routing, MenuNavigation collapsible hierarchy
+- **Seed Data:** V25 (12 business tables), V26 (7 admin windows), V27 (10 ERP windows), V28 (menu tree + access)
+- **Documentation:** 10 change reports, 10 test reports, schema verification script
+
+### Project State
+- **4 PRDs ALL COMPLETED** — PRD-001, PRD-002, PRD-003, PRD-004
+- **47 tasks COMPLETED** + 6 bug tasks (BUG-001..006 at TESTED or READY_FOR_TEST)
+- **2 enhancements COMPLETED** (ENH-001, ENH-002), 1 pending (ENH-003 at READY_FOR_TEST)
 
 ---
 

@@ -5,7 +5,7 @@ title: Frontend — Update Routing to /window/{name} + Fix RuntimePage
 
 type: UI
 
-status: TESTED
+status: COMPLETED
 
 priority: Critical
 

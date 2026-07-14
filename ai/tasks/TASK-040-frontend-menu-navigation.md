@@ -5,7 +5,7 @@ title: Frontend — Menu Component + Navigation
 
 type: UI
 
-status: TESTED
+status: COMPLETED
 
 priority: Critical
 

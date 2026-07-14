@@ -5,7 +5,7 @@ title: Seed Data — Menu Entries + Window Access
 
 type: Database
 
-status: TESTED
+status: COMPLETED
 
 priority: High
 

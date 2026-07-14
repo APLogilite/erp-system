@@ -5,7 +5,7 @@ title: Create New Metadata Schema (Flyway Migration)
 
 type: Database
 
-status: TESTED
+status: COMPLETED
 
 priority: Critical
 
