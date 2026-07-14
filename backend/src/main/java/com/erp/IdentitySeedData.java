@@ -2,6 +2,7 @@ package com.erp;
 
 import com.erp.platform.identity.entity.*;
 import com.erp.platform.identity.repository.*;
+import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
@@ -63,16 +64,17 @@ public class IdentitySeedData implements CommandLineRunner {
     @Override
     @Transactional
     public void run(String... args) {
-        // Check if seed data already exists by looking for known roles
-        // (checks both users and roles to handle partially-seeded databases)
-        if (userAccountRepository.count() > 0 || roleRepository.findByCode("tnt_admin").isPresent()) {
+        // Check if demo seed data already exists (admin user is created by V31 migration)
+        if (userAccountRepository.findByUsername("admin").isPresent()) {
             log.info("Identity seed data already exists, skipping.");
             return;
         }
         log.info("Creating identity seed data...");
 
-        // ── Tenants ──
-        Tenant sysTenant = makeTenant("SYS", "System", "system.erp.local", "en", "UTC", "USD");
+        // ── Tenants (SYS is created by V31 migration in production; create it here for tests) ──
+        Tenant sysTenant = tenantRepository.findById(SYS_TENANT_ID).orElseGet(() ->
+            makeTenant("SYS", "System", "system.erp.local", "en", "UTC", "USD")
+        );
         Tenant acme = makeTenant("ACME", "Acme Corporation", "acme.example.com", "en", "America/New_York", "USD");
         Tenant globex = makeTenant("GLOBEX", "Globex Industries", "globex.example.com", "en", "Europe/London", "EUR");
 
@@ -312,8 +314,16 @@ public class IdentitySeedData implements CommandLineRunner {
 
     // ── Helpers ──
 
+    /** Fixed UUID for the SYS tenant (referenced by Flyway seed data migrations). */
+    private static final UUID SYS_TENANT_ID = UUID.fromString("00000000-0000-0000-0000-000000000001");
+
     private Tenant makeTenant(String code, String name, String domain, String lang, String tz, String currency) {
-        Tenant t = new Tenant(); t.setCode(code); t.setName(name); t.setDomain(domain);
+        Tenant t = new Tenant();
+        // System tenant uses a fixed UUID so Flyway migrations can reference it
+        if ("SYS".equals(code)) {
+            t.setId(SYS_TENANT_ID);
+        }
+        t.setCode(code); t.setName(name); t.setDomain(domain);
         t.setDefaultLanguage(lang); t.setDefaultTimezone(tz); t.setDefaultCurrency(currency);
         return tenantRepository.save(t);
     }
@@ -344,10 +354,13 @@ public class IdentitySeedData implements CommandLineRunner {
     }
 
     private Permission makePerm(String code, String name, String resourceType, String resource, String action, String module) {
-        Permission p = new Permission(); p.setCode(code); p.setName(name);
-        p.setResourceType(resourceType); p.setResource(resource); p.setAction(action);
-        p.setModule(module); p.setIsSystem(true);
-        return p;
+        // If permission already exists (e.g. from V31 migration), return it
+        return permissionRepository.findByCode(code).orElseGet(() -> {
+            Permission p = new Permission(); p.setCode(code); p.setName(name);
+            p.setResourceType(resourceType); p.setResource(resource); p.setAction(action);
+            p.setModule(module); p.setIsSystem(true);
+            return permissionRepository.save(p);
+        });
     }
 
     private Role makeRole(String code, String name, String description, boolean isSystem, Tenant tenant) {
