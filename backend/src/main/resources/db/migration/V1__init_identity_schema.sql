@@ -140,11 +140,12 @@ CREATE TABLE identity_roles (
     updated_by UUID,
     is_active BOOLEAN NOT NULL DEFAULT TRUE,
     deleted_at TIMESTAMP,
-    code VARCHAR(50) NOT NULL UNIQUE,
+    code VARCHAR(50) NOT NULL,
     name VARCHAR(255) NOT NULL,
     description TEXT,
     is_system BOOLEAN DEFAULT FALSE,
-    tenant_id UUID REFERENCES identity_tenants(id)
+    tenant_id UUID REFERENCES identity_tenants(id),
+    UNIQUE (code, tenant_id)
 );
 CREATE INDEX idx_identity_roles_code ON identity_roles(code);
 

@@ -63,7 +63,9 @@ public class IdentitySeedData implements CommandLineRunner {
     @Override
     @Transactional
     public void run(String... args) {
-        if (userAccountRepository.count() > 0) {
+        // Check if seed data already exists by looking for known roles
+        // (checks both users and roles to handle partially-seeded databases)
+        if (userAccountRepository.count() > 0 || roleRepository.findByCode("tnt_admin").isPresent()) {
             log.info("Identity seed data already exists, skipping.");
             return;
         }
