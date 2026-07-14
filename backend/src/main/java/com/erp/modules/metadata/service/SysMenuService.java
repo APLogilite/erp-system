@@ -2,11 +2,13 @@ package com.erp.modules.metadata.service;
 
 import com.erp.common.base.BaseService;
 import com.erp.modules.metadata.entity.SysMenu;
+import com.erp.modules.metadata.entity.SysWindow;
 import com.erp.modules.metadata.repository.SysMenuRepository;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
@@ -20,9 +22,11 @@ import org.springframework.transaction.annotation.Transactional;
 public class SysMenuService extends BaseService<SysMenu> {
 
   private final SysMenuRepository repository;
+  private final SysWindowService windowService;
 
-  public SysMenuService(SysMenuRepository repository) {
+  public SysMenuService(SysMenuRepository repository, SysWindowService windowService) {
     this.repository = repository;
+    this.windowService = windowService;
   }
 
   @Override
@@ -42,7 +46,7 @@ public class SysMenuService extends BaseService<SysMenu> {
 
     // Build all nodes
     for (SysMenu menu : allMenus) {
-      nodeMap.put(menu.getId(), new MenuTreeNode(menu));
+      nodeMap.put(menu.getId(), new MenuTreeNode(menu, resolveWindowName(menu)));
     }
 
     // Build tree structure
@@ -60,6 +64,17 @@ public class SysMenuService extends BaseService<SysMenu> {
     roots.sort((a, b) -> Integer.compare(a.getSeqNo(), b.getSeqNo()));
 
     return roots;
+  }
+
+  /**
+   * Resolves the window name from a menu's windowId.
+   */
+  private String resolveWindowName(SysMenu menu) {
+    if (menu.getWindowId() == null) {
+      return null;
+    }
+    Optional<SysWindow> windowOpt = windowService.findById(menu.getWindowId());
+    return windowOpt.map(SysWindow::getName).orElse(null);
   }
 
   /**
@@ -97,15 +112,17 @@ public class SysMenuService extends BaseService<SysMenu> {
     private String name;
     private String type;
     private UUID windowId;
+    private String windowName;
     private String icon;
     private Integer seqNo;
     private List<MenuTreeNode> children = new ArrayList<>();
 
-    public MenuTreeNode(SysMenu menu) {
+    public MenuTreeNode(SysMenu menu, String windowName) {
       this.id = menu.getId();
       this.name = menu.getName();
       this.type = menu.getType();
       this.windowId = menu.getWindowId();
+      this.windowName = windowName;
       this.icon = menu.getIcon();
       this.seqNo = menu.getSeqNo();
     }
@@ -119,6 +136,7 @@ public class SysMenuService extends BaseService<SysMenu> {
     public String getName() { return name; }
     public String getType() { return type; }
     public UUID getWindowId() { return windowId; }
+    public String getWindowName() { return windowName; }
     public String getIcon() { return icon; }
     public Integer getSeqNo() { return seqNo; }
     public List<MenuTreeNode> getChildren() { return children; }

@@ -118,3 +118,26 @@ export async function updateRecord(
 export async function deleteRecord(formCode: string, recordId: string): Promise<void> {
   await apiClient.delete(`/runtime/forms/${encodeURIComponent(formCode)}/records/${recordId}`);
 }
+
+// ---- Menu API (PRD-004) ----
+
+/** A single menu tree node returned from the menu API. */
+export interface MenuTreeNode {
+  id: string;
+  name: string;
+  type: 'group' | 'window';
+  windowId?: string;
+  windowName?: string;
+  icon?: string;
+  seqNo: number;
+  children: MenuTreeNode[];
+}
+
+/**
+ * Fetches the hierarchical menu tree for the current user.
+ * GET /api/v1/runtime/menu
+ */
+export async function fetchMenu(): Promise<MenuTreeNode[]> {
+  const response = await apiClient.get<ApiResponse<MenuTreeNode[]>>('/runtime/menu');
+  return unwrap(response);
+}
