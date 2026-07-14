@@ -35,7 +35,9 @@ See `ai/docs/STATUS_TRANSITIONS.md` for full transition rules.
 
 ## Ready For Development
 
-*(none)*
+| Bug | Priority | Parent PRD | Depends On | Description |
+|-----|----------|------------|------------|-------------|
+| BUG-009 | Critical | PRD-004 | — | Flyway migration chain broken on fresh DB (V3 FK error) |
 
 ---
 
@@ -130,6 +132,7 @@ See `ai/docs/STATUS_TRANSITIONS.md` for full transition rules.
 | BUG-006 | TASK-007 | Critical | COMPLETED | QA Engineer | — |
 | BUG-007 | TASK-036 | Critical | COMPLETED | QA Engineer | — |
 | BUG-008 | TASK-041 | Medium | COMPLETED | QA Engineer | BUG-007 |
+| BUG-009 | TASK-036 | Critical | READY_FOR_DEV | Software Engineer | — |
 
 ---
 
@@ -154,12 +157,12 @@ See `ai/docs/STATUS_TRANSITIONS.md` for full transition rules.
 | Status | Count |
 |--------|-------|
 | PRDs | 4 (ALL COMPLETED: PRD-001, PRD-002, PRD-003, PRD-004) |
-| Ready For Dev | 0 |
+| Ready For Dev | 1 bug (BUG-009) |
 | Ready For Test | 0 |
 | In Development | 0 |
 | In Testing | 0 |
 | Planning | 0 |
-| Bugs | 8 (all resolved: 3 COMPLETED, 4 TESTED, 1 CANCELLED) |
+| Bugs | 9 (1 at READY_FOR_DEV, 3 COMPLETED, 4 TESTED, 1 CANCELLED) |
 | Completed (PRD-001) | 27 tasks + 2 enhancements (ENH-001, ENH-003) |
 | Completed (PRD-002) | 3 tasks + 1 enhancement (TASK-033/034/035 + ENH-002) |
 | Completed (PRD-003) | 5 tasks (TASK-028/029/030/031/032) — merged to main |

@@ -8,6 +8,24 @@ last_updated: 2026-07-14
 
 # Changelog
 
+## 2026-07-14 (BUG-009 — Flyway Migration Chain Broken on Fresh DB)
+
+### Summary
+When enabling Flyway on a **fresh PostgreSQL database**, V3__create_sys_table_columns.sql fails with `ERROR: relation "sys_metadata_models" does not exist`. The old V1–V23 migration chain was designed assuming JPA `ddl-auto=update` would pre-create base tables. On a fresh DB, the FK constraint in V3 references a table that no migration creates.
+
+### Root Cause
+- V3 creates `sys_table_columns` with `REFERENCES sys_metadata_models(id)` but no migration creates `sys_metadata_models`
+- Old migrations (V3–V23) create/seed old metadata schema that V24 drops anyway
+- Business table DDL (V19–V20) is interleaved with old metadata registration
+- The entire V3–V23 chain is partially obsolete scaffolding for the old PRD-001 schema
+
+### Bug Created
+| Bug | Severity | Status | Description |
+|-----|----------|--------|-------------|
+| BUG-009 | Critical | READY_FOR_DEV | Flyway chain breaks on fresh DB at V3 — needs migration consolidation |
+
+---
+
 ## 2026-07-14 (Bugs Found — PRD-004 Features Not Working in Runtime)
 
 ### Summary
