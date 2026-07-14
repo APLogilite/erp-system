@@ -8,6 +8,29 @@ last_updated: 2026-07-14
 
 # Changelog
 
+## 2026-07-14 (Bugs Found — PRD-004 Features Not Working in Runtime)
+
+### Summary
+User reports three issues with PRD-004 features after merge to main — all caused by the same root cause: **Flyway migrations V24–V28 never ran**. 
+
+Both bugs created:
+- **BUG-007** (Critical): Flyway disabled — schema not applied, seed data missing. Sidebar has no menu, old tables still exist.
+- **BUG-008** (Medium): Ctrl+K search still references old PRD-001 form schema instead of new Window names.
+
+### Root Cause
+`spring.flyway.enabled=false` was the default setting. Since PRD-004 relies entirely on Flyway migrations (V24–V28) for schema changes and seed data, none of the new features were operational at runtime.
+
+### QA Testing Gap
+All PRD-004 QA tests were **structural** (file existence, code compilation, SQL file content review) — no **runtime functional testing** was performed. This allowed the Flyway issue to go undetected.
+
+### New Bugs
+| Bug | Severity | Status | Description | Depends On |
+|-----|----------|--------|-------------|------------|
+| BUG-007 | Critical | READY_FOR_DEV | Flyway disabled — schema + seed data not applied | — |
+| BUG-008 | Medium | READY_FOR_DEV | Ctrl+K search still uses old schema | BUG-007 |
+
+---
+
 ## 2026-07-13 (PRD-004 Advanced to TESTING — All 10 Tasks Complete)
 
 ### Summary
