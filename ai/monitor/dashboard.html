@@ -279,6 +279,134 @@ body {
   .kanban { grid-template-columns: 1fr; }
   .agents-grid { grid-template-columns: 1fr; }
 }
+
+.agent-more {
+  text-align: center; font-size: 12px; color: var(--accent2);
+  cursor: pointer; padding: 8px; border-top: 1px solid var(--border);
+  user-select: none;
+}
+.agent-more:hover { text-decoration: underline; background: var(--bg3); }
+.agent-hidden { display: none; }
+.agent-hidden.open { display: block; }
+.agent-hidden .agent-task { opacity: 0.8; }
+
+.kanban-col { max-height: 520px; overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin; scrollbar-color: var(--border) var(--bg2); }
+.kanban-col::-webkit-scrollbar { width: 5px; }
+.kanban-col::-webkit-scrollbar-track { background: var(--bg2); border-radius: 3px; }
+.kanban-col::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+.kanban-col::-webkit-scrollbar-thumb:hover { background: var(--text3); }
+.kanban-more {
+  text-align: center; font-size: 11px; color: var(--accent2);
+  cursor: pointer; padding: 6px; border-top: 1px solid var(--border);
+  user-select: none; margin-top: 4px;
+}
+.kanban-more:hover { text-decoration: underline; background: var(--card2); }
+.kanban-hidden { display: none; }
+.kanban-hidden.open { display: block; }
+.kanban-hidden .kanban-card { opacity: 0.8; }
+
+.kanban-card { cursor: pointer; }
+.agent-task { cursor: pointer; }
+
+.modal-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.65);
+  z-index: 1000; display: none; align-items: center; justify-content: center;
+  backdrop-filter: blur(2px); animation: fadeIn 0.15s ease;
+}
+.modal-overlay.open { display: flex; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+.modal {
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: 12px; max-width: 680px; width: 90%; max-height: 80vh;
+  overflow-y: auto; box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  animation: slideUp 0.2s ease;
+  scrollbar-width: thin; scrollbar-color: var(--border) var(--bg2);
+}
+.modal::-webkit-scrollbar { width: 5px; }
+.modal::-webkit-scrollbar-track { background: var(--bg2); }
+.modal::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+@keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+.modal-header {
+  display: flex; justify-content: space-between; align-items: flex-start;
+  padding: 20px 24px 0; position: sticky; top: 0; z-index: 1;
+}
+.modal-header-inner { flex: 1; }
+.modal-close {
+  background: none; border: none; color: var(--text3); font-size: 24px;
+  cursor: pointer; padding: 0 0 0 16px; line-height: 1;
+}
+.modal-close:hover { color: var(--text); }
+.modal-id { font-size: 13px; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.5px; }
+.modal-title { font-size: 18px; font-weight: 600; margin: 4px 24px 12px; line-height: 1.4; }
+.modal-badges { margin: 0 24px 16px; display: flex; gap: 8px; flex-wrap: wrap; }
+
+.modal-body { padding: 0 24px 20px; }
+.modal-details {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 0; background: var(--card); border-radius: 8px;
+  border: 1px solid var(--border); overflow: hidden; margin-bottom: 16px;
+}
+.modal-detail-item {
+  padding: 10px 14px; border-right: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+.modal-detail-item:nth-child(2n) { border-right: none; }
+.modal-detail-item .label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text3); margin-bottom: 2px; }
+.modal-detail-item .value { font-size: 13px; font-weight: 500; color: var(--text); }
+
+.modal-section { margin-bottom: 16px; }
+.modal-section h4 {
+  font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;
+  color: var(--text2); margin-bottom: 6px; padding-bottom: 4px;
+  border-bottom: 1px solid var(--border); font-weight: 600;
+}
+.modal-section .content {
+  font-size: 13px; color: var(--text); line-height: 1.6;
+  white-space: normal;
+}
+.modal-section .content { white-space: normal; }
+.modal-section .content ul, .modal-section .content ol { padding-left: 20px; margin: 6px 0; }
+.modal-section .content li { margin-bottom: 3px; }
+.modal-section .content h2 { font-size: 15px; font-weight: 600; margin: 14px 0 6px; color: var(--text); }
+.modal-section .content h3 { font-size: 14px; font-weight: 600; margin: 12px 0 4px; color: var(--text); }
+.modal-section .content h4 { font-size: 13px; font-weight: 600; margin: 10px 0 4px; color: var(--text2); }
+.modal-section .content code {
+  background: var(--bg3); padding: 1px 5px; border-radius: 3px;
+  font-size: 12px;
+}
+.modal-section .content pre {
+  background: var(--bg3); padding: 12px 14px; border-radius: 6px;
+  overflow-x: auto; font-size: 12px; line-height: 1.5;
+  border: 1px solid var(--border); margin: 8px 0;
+}
+.modal-section .content pre code { background: none; padding: 0; border-radius: 0; }
+.modal-section .content table {
+  width: 100%; border-collapse: collapse; font-size: 12px;
+  margin: 8px 0; border: 1px solid var(--border);
+}
+.modal-section .content th, .modal-section .content td {
+  padding: 6px 10px; border: 1px solid var(--border); text-align: left;
+}
+.modal-section .content th { background: var(--bg3); font-weight: 600; }
+.modal-section .content hr { border: none; border-top: 1px solid var(--border); margin: 12px 0; }
+.modal-section .content a { color: var(--accent2); text-decoration: underline; }
+.modal-section .content a:hover { color: var(--accent); }
+
+.modal-history { margin-bottom: 16px; }
+.modal-history-item {
+  font-size: 12px; padding: 6px 0; border-bottom: 1px solid var(--border);
+  color: var(--text2); line-height: 1.5;
+}
+.modal-history-item:last-child { border-bottom: none; }
+.modal-history-item .h-date { color: var(--accent); font-weight: 600; }
+
+.modal-related {
+  display: flex; gap: 12px; flex-wrap: wrap; font-size: 12px; margin-top: 8px;
+}
+.modal-related a { color: var(--accent2); text-decoration: none; }
+.modal-related a:hover { text-decoration: underline; }
 </style>
 </head>
 <body>
@@ -307,6 +435,18 @@ body {
   <div class="tab-content" id="tab-board"></div>
 </div>
 
+<div class="modal-overlay" id="taskModal" onclick="closeModal()">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="modal-header">
+      <div class="modal-header-inner"><span class="modal-id" id="modalId"></span></div>
+      <button class="modal-close" onclick="closeModal()">&times;</button>
+    </div>
+    <div class="modal-title" id="modalTitle"></div>
+    <div class="modal-badges" id="modalBadges"></div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
 <script>
 const STATUS_ORDER = [
   "PLANNING", "PLANNED", "READY_FOR_DEV", "IN_DEVELOPMENT",
@@ -322,6 +462,42 @@ function esc(s) {
   const d = document.createElement("div");
   d.textContent = s || "";
   return d.innerHTML;
+}
+
+function mdToHtml(text) {
+  let h = esc(text);
+  h = h.replace(/```(\w*)\n?([\s\S]*?)```/g, '<pre><code>$2</code></pre>');
+  const tableRegex = /((?:\|.+?\|(?:\s*(?:\n|$)))+)/g;
+  h = h.replace(tableRegex, tb => {
+    const rows = tb.trim().split('\n').filter(r => r.trim());
+    if (rows.length < 2) return tb;
+    const isSep = r => /^\|[\s\-:|]+\|$/.test(r.trim());
+    if (!isSep(rows[1])) return tb;
+    const hdrs = rows[0].split('|').filter(c => c.trim()).map(c => c.trim());
+    const body = rows.slice(2).filter(r => !isSep(r));
+    if (!body.length) return tb;
+    let tbl = '<table><thead><tr>';
+    for (const h of hdrs) tbl += `<th>${h}</th>`;
+    tbl += '</tr></thead><tbody>';
+    for (const row of body) {
+      tbl += '<tr>' + row.split('|').filter(c => c.trim()).map(c => `<td>${c.trim()}</td>`).join('') + '</tr>';
+    }
+    return tbl + '</tbody></table>';
+  });
+  h = h.replace(/^### (.+)$/gm, '<h4>$1</h4>');
+  h = h.replace(/^## (.+)$/gm, '<h3>$1</h3>');
+  h = h.replace(/^# (.+)$/gm, '<h2>$1</h2>');
+  h = h.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+  h = h.replace(/\*(.+?)\*/g, '<em>$1</em>');
+  h = h.replace(/`([^`]+)`/g, '<code>$1</code>');
+  h = h.replace(/^[\-\*]\s(.+)$/gm, '<li>$1</li>');
+  h = h.replace(/((?:<li>.*<\/li>\n?)+)/g, '<ul>$1</ul>');
+  h = h.replace(/^\d+\.\s(.+)$/gm, '<li>$1</li>');
+  h = h.replace(/((?:<li>.*<\/li>\n?)+?)(?=\s*(?:\n|<[^l]|$))/g, m => m.includes('<ul>') ? m : '<ol>' + m + '</ol>');
+  h = h.replace(/^---+$/gm, '<hr>');
+  h = h.replace(/https?:\/\/[^\s<]+/g, '<a href="$&">$&</a>');
+  h = h.replace(/\n/g, '<br>');
+  return h;
 }
 
 function badge(status, extra) {
@@ -535,6 +711,7 @@ const App = {
       "BLOCKED": { label: "Blocked", tasks: [] },
     };
     const other = { label: "Other", tasks: [] };
+    const KANBAN_SHOW = 10;
 
     for (const t of tasks) {
       const s = t.status || "";
@@ -542,38 +719,35 @@ const App = {
       else other.tasks.push(t);
     }
 
-    let html = `<div class="kanban">`;
-    for (const [key, col] of Object.entries(cols)) {
-      const items = col.tasks.sort(byStatus);
-      html += `
-      <div class="kanban-col">
-        <h3>${esc(col.label)} <span class="count">${items.length}</span></h3>
-        ${items.map(t => `
-          <div class="kanban-card">
-            <div class="task-id">${esc(t.id)} ${prioBadge(t.priority)}</div>
-            <div class="task-title">${esc(t.title)}</div>
-            <div class="task-meta">
-              ${badge(t.status)}
-              <span class="owner">${esc(t.owner || t.assigned_to || "")}</span>
-              ${t.parent_prd ? `<span class="prd-tag">${esc(t.parent_prd)}</span>` : ""}
-            </div>
-          </div>
-        `).join("")}
-        ${!items.length ? '<div class="empty-state" style="padding:16px;font-size:12px">(none)</div>' : ""}
+    function cardHtml(t) {
+      return `<div class="kanban-card">
+        <div class="task-id">${esc(t.id)} ${prioBadge(t.priority)}</div>
+        <div class="task-title">${esc(t.title)}</div>
+        <div class="task-meta">
+          ${badge(t.status)}
+          <span class="owner">${esc(t.owner || t.assigned_to || "")}</span>
+          ${t.parent_prd ? `<span class="prd-tag">${esc(t.parent_prd)}</span>` : ""}
+        </div>
       </div>`;
     }
-    if (other.tasks.length) {
-      html += `
-      <div class="kanban-col">
-        <h3>${esc(other.label)} <span class="count">${other.tasks.length}</span></h3>
-        ${other.tasks.map(t => `
-          <div class="kanban-card">
-            <div class="task-id">${esc(t.id)} ${prioBadge(t.priority)}</div>
-            <div class="task-title">${esc(t.title)}</div>
-            <div class="task-meta">${badge(t.status)}</div>
-          </div>
-        `).join("")}
+
+    function colHtml(label, items) {
+      items.sort(byStatus);
+      const visible = items.slice(0, KANBAN_SHOW);
+      const hidden = items.slice(KANBAN_SHOW);
+      return `<div class="kanban-col">
+        <h3>${esc(label)} <span class="count">${items.length}</span></h3>
+        ${!items.length ? '<div class="empty-state" style="padding:16px;font-size:12px">(none)</div>' : visible.map(cardHtml).join("")}
+        ${hidden.length ? `<div class="kanban-more" onclick="this.nextElementSibling.classList.toggle('open');this.textContent=this.nextElementSibling.classList.contains('open')?'Show less':'Show ${hidden.length} more...'">Show ${hidden.length} more...</div><div class="kanban-hidden">${hidden.map(cardHtml).join("")}</div>` : ""}
       </div>`;
+    }
+
+    let html = `<div class="kanban">`;
+    for (const [, col] of Object.entries(cols)) {
+      html += colHtml(col.label, col.tasks);
+    }
+    if (other.tasks.length) {
+      html += colHtml(other.label, other.tasks);
     }
     html += `</div>`;
     document.getElementById("tab-kanban").innerHTML = html;
@@ -586,6 +760,19 @@ const App = {
       document.getElementById("tab-agents").innerHTML = '<div class="empty-state">No agents found</div>';
       return;
     }
+    const AGENT_SHOW = 10;
+
+    function agentTaskHtml(t) {
+      return `<div class="agent-task">
+        <div class="at-title">
+          <span><strong>${esc(t.id)}</strong> ${esc(t.title)}</span>
+          <span>${badge(t.status)}</span>
+        </div>
+        <div style="font-size:11px;color:var(--text3);margin-top:2px">
+          ${t.parent_prd ? esc(t.parent_prd) + " &middot; " : ""}${prioBadge(t.priority)}
+        </div>
+      </div>`;
+    }
 
     let html = `<div class="agents-grid">`;
     for (const [name, agent] of entries) {
@@ -593,6 +780,8 @@ const App = {
       const inProgress = tasks.filter(t => t.status === "IN_DEVELOPMENT" || t.status === "TESTING");
       const completed = tasks.filter(t => t.status === "COMPLETED");
       const readyTest = tasks.filter(t => t.status === "READY_FOR_TEST");
+      const visible = tasks.slice(0, AGENT_SHOW);
+      const hidden = tasks.slice(AGENT_SHOW);
       html += `
       <div class="agent-card">
         <div class="agent-name">${esc(name)}</div>
@@ -605,18 +794,8 @@ const App = {
         <div style="height:4px;background:var(--bg3);border-radius:2px;margin:8px 0;overflow:hidden">
           <div style="height:100%;width:${tasks.length ? Math.round(completed.length / tasks.length * 100) : 0}%;background:var(--green);border-radius:2px;transition:width 0.5s"></div>
         </div>
-        ${tasks.slice(0, 20).map(t => `
-          <div class="agent-task">
-            <div class="at-title">
-              <span><strong>${esc(t.id)}</strong> ${esc(t.title)}</span>
-              <span>${badge(t.status)}</span>
-            </div>
-            <div style="font-size:11px;color:var(--text3);margin-top:2px">
-              ${t.parent_prd ? esc(t.parent_prd) + " &middot; " : ""}${prioBadge(t.priority)}
-            </div>
-          </div>
-        `).join("")}
-        ${tasks.length > 20 ? `<div style="font-size:11px;color:var(--text3);text-align:center;padding:8px">... and ${tasks.length - 20} more</div>` : ""}
+        ${visible.map(t => agentTaskHtml(t)).join("")}
+        ${hidden.length ? `<div class="agent-more" onclick="this.nextElementSibling.classList.toggle('open');this.textContent=this.nextElementSibling.classList.contains('open')?'Show less':'Show all ${tasks.length} tasks'">Show all ${tasks.length} tasks</div><div class="agent-hidden">${hidden.map(t => agentTaskHtml(t)).join("")}</div>` : ""}
       </div>`;
     }
     html += `</div>`;
@@ -653,7 +832,122 @@ const App = {
   }
 };
 
-document.addEventListener("DOMContentLoaded", () => App.init());
+function showTaskDetail(taskId) {
+  fetch("/api/task/" + encodeURIComponent(taskId))
+    .then(r => { if (!r.ok) throw new Error("Not found"); return r.json(); })
+    .then(d => {
+      const fm = d.frontmatter || {};
+      const sec = d.sections || {};
+      document.getElementById("modalId").textContent = fm.id || taskId;
+      document.getElementById("modalTitle").textContent = fm.title || "";
+      const badges = document.getElementById("modalBadges");
+      badges.innerHTML = "";
+      if (fm.status) badges.appendChild(elFromHTML(badge(fm.status)));
+      if (fm.priority) badges.appendChild(elFromHTML(prioBadge(fm.priority)));
+      if (fm.severity) badges.appendChild(elFromHTML(badge(fm.severity)));
+
+      const detailFields = [
+        ["Status", fm.status], ["Priority", fm.priority], ["Severity", fm.severity],
+        ["Owner", fm.owner], ["Assigned To", fm.assigned_to],
+        ["PRD", fm.parent_prd], ["Type", fm.type],
+        ["Created", fm.created], ["Started", fm.started],
+        ["Completed", fm.completed], ["Updated", fm.updated],
+        ["Est. Hours", fm.estimated_hours], ["Actual Hours", fm.actual_hours],
+        ["Branch", fm.assigned_branch],
+      ].filter(([,v]) => v != null && v !== "");
+
+      let bodyHtml = '<div class="modal-details">';
+      for (const [label, value] of detailFields) {
+        bodyHtml += `<div class="modal-detail-item"><div class="label">${esc(label)}</div><div class="value">${esc(String(value))}</div></div>`;
+      }
+      bodyHtml += '</div>';
+
+      const sectionOrder = ["goal", "description", "summary", "problem", "acceptance_criteria", "technical_notes", "root_cause", "fix", "validation", "files_expected", "files_changed"];
+      const sectionLabels = {
+        goal: "Goal", description: "Description", summary: "Summary", problem: "Problem",
+        acceptance_criteria: "Acceptance Criteria", technical_notes: "Technical Notes",
+        root_cause: "Root Cause", fix: "Fix", validation: "Validation",
+        files_expected: "Files Expected", files_changed: "Files Changed"
+      };
+      for (const key of sectionOrder) {
+        if (sec[key]) {
+          bodyHtml += `<div class="modal-section"><h4>${esc(sectionLabels[key] || key)}</h4><div class="content">${mdToHtml(sec[key])}</div></div>`;
+        }
+      }
+
+      if (fm.history && Array.isArray(fm.history) && fm.history.length) {
+        bodyHtml += '<div class="modal-section"><h4>History</h4><div class="modal-history">';
+        for (const entry of fm.history) {
+          bodyHtml += `<div class="modal-history-item">${esc(entry)}</div>`;
+        }
+        bodyHtml += '</div></div>';
+      }
+
+      const links = [];
+      if (fm.change_report) links.push(["Change Report", fm.change_report]);
+      if (fm.test_report) links.push(["Test Report", fm.test_report]);
+      if (fm.fix_summary) links.push(["Fix Summary", fm.fix_summary]);
+      if (fm.verification_report) links.push(["Verification", fm.verification_report]);
+      if (fm.parent_prd) links.push(["PRD", fm.parent_prd]);
+      if (fm.parent_task) links.push(["Parent Task", fm.parent_task]);
+      if (fm.depends_on && Array.isArray(fm.depends_on) && fm.depends_on.length) {
+        links.push(["Depends On", fm.depends_on.join(", ")]);
+      }
+      if (fm.blocks && Array.isArray(fm.blocks) && fm.blocks.length) {
+        links.push(["Blocks", fm.blocks.join(", ")]);
+      }
+      if (fm.labels && Array.isArray(fm.labels) && fm.labels.length) {
+        links.push(["Labels", fm.labels.join(", ")]);
+      }
+      if (links.length) {
+        bodyHtml += '<div class="modal-section"><h4>Related</h4><div class="modal-related">';
+        for (const [l, v] of links) {
+          bodyHtml += `<span><strong>${esc(l)}:</strong> ${esc(String(v))}</span>`;
+        }
+        bodyHtml += '</div></div>';
+      }
+
+      document.getElementById("modalBody").innerHTML = bodyHtml;
+      document.getElementById("taskModal").classList.add("open");
+    })
+    .catch(() => { /* silently ignore */ });
+}
+
+function closeModal() {
+  document.getElementById("taskModal").classList.remove("open");
+}
+
+function elFromHTML(html) {
+  const t = document.createElement("template");
+  t.innerHTML = html;
+  return t.content.firstChild;
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  document.addEventListener("click", e => {
+    const card = e.target.closest(".kanban-card");
+    if (card) {
+      const idEl = card.querySelector(".task-id");
+      if (idEl) {
+        const taskId = idEl.textContent.trim().split(/\s+/)[0];
+        showTaskDetail(taskId);
+      }
+      return;
+    }
+    const agentTask = e.target.closest(".agent-task");
+    if (agentTask) {
+      const idEl = agentTask.querySelector("strong");
+      if (idEl) {
+        showTaskDetail(idEl.textContent.trim());
+      }
+      return;
+    }
+  });
+  document.addEventListener("keydown", e => {
+    if (e.key === "Escape") closeModal();
+  });
+  App.init();
+});
 </script>
 </body>
 </html>

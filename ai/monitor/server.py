@@ -2,7 +2,7 @@
 """Project Monitor Dashboard — live project tracking from ai/ markdown files."""
 
 import os, re, json, time, glob, logging, threading, queue, collections.abc
-from http.server import HTTPServer, BaseHTTPRequestHandler
+from http.server import HTTPServer, ThreadingHTTPServer, BaseHTTPRequestHandler
 from urllib.parse import urlparse, parse_qs
 from datetime import datetime, timezone, date
 from collections import defaultdict
@@ -170,6 +170,33 @@ def parse_stats_section(tables):
         if len(row) >= 2:
             stats[row[0].strip()] = row[1].strip()
     return stats
+
+def get_task_detail(task_id):
+    for fp in list_files(TASKS_DIR):
+        if os.path.basename(fp).startswith(task_id):
+            try:
+                fm, body = parse_task_file(fp)
+                sections = {}
+                current_section = "description"
+                current_lines = []
+                for line in body.split("\n"):
+                    stripped = line.strip()
+                    if (stripped.startswith("# ") or stripped.startswith("## ")) and not stripped.startswith("### "):
+                        if current_lines:
+                            sections[current_section] = "\n".join(current_lines).strip()
+                        prefix_len = 2 if stripped.startswith("# ") else 3
+                        current_section = stripped[prefix_len:].strip().lower().replace(" ", "_").replace("-", "_")
+                        current_lines = []
+                    else:
+                        current_lines.append(line)
+                if current_lines:
+                    sections[current_section] = "\n".join(current_lines).strip()
+                sections = {k: v for k, v in sections.items() if v}
+                return {"frontmatter": fm, "sections": sections}
+            except Exception as e:
+                log.warning("Failed to parse task detail %s: %s", fp, e)
+                return None
+    return None
 
 def load_all_data():
     cache = {}
@@ -344,6 +371,13 @@ class Handler(BaseHTTPRequestHandler):
             self.send_json(data_cache.get("timeline", {}))
         elif path == "/api/board-tables":
             self.send_json(data_cache.get("board_tables", {}))
+        elif path.startswith("/api/task/"):
+            task_id = path[len("/api/task/"):]
+            detail = get_task_detail(task_id)
+            if detail:
+                self.send_json(detail)
+            else:
+                self.send_error(404, f"Task {task_id} not found")
         elif path in ("/", "/index.html"):
             self.serve_static("dashboard.html")
         else:
@@ -430,7 +464,7 @@ def main():
     reload_cache()
     watcher = start_file_watcher()
 
-    server = HTTPServer(("0.0.0.0", PORT), Handler)
+    server = ThreadingHTTPServer(("0.0.0.0", PORT), Handler)
     log.info("=" * 60)
     log.info("  Project Monitor Dashboard")
     log.info("  http://localhost:%d", PORT)

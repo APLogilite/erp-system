@@ -12,7 +12,7 @@ Updated By: QA Engineer
 |-----|-------|---------|--------|----------|
 | PRD-001 | Dynamic Form Configuration System | 1.6.0 | **COMPLETED** | High |
 | PRD-002 | Admin Configuration Forms | 1.1.0 | **COMPLETED** | High |
-| PRD-003 | ERP Order Flow — Transaction Forms | 1.0.0 | **READY_FOR_DEPLOYMENT** | High |
+| PRD-003 | ERP Order Flow — Transaction Forms | 1.0.0 | **COMPLETED** | High |
 | PRD-004 | Window Hierarchy & Menu System | 1.0.0 | **READY_FOR_DEPLOYMENT** | High |
 
 ---
@@ -134,7 +134,7 @@ Updated By: QA Engineer
 
 | Status | Count |
 |--------|-------|
-| PRDs | 4 (PRD-001 COMPLETED, PRD-002 COMPLETED, PRD-003 READY_FOR_DEPLOYMENT, PRD-004 READY_FOR_DEPLOYMENT) |
+| PRDs | 4 (PRD-001 COMPLETED, PRD-002 COMPLETED, PRD-003 COMPLETED, PRD-004 READY_FOR_DEPLOYMENT) |
 | Ready For Dev | 0 |
 | Ready For Test | 0 |
 | In Development | 0 |
@@ -143,7 +143,7 @@ Updated By: QA Engineer
 | Bugs | 6 (1 TESTED, 3 READY_FOR_TEST, 2 IN_DEVELOPMENT) |
 | Completed (PRD-001) | 27 tasks + 1 enhancement (ENH-001) |
 | Completed (PRD-002) | 3 tasks + 1 enhancement (TASK-033/034/035 + ENH-002) |
-| Completed (PRD-003) | 5 tasks (TASK-028/029/030/031/032) |
+| Completed (PRD-003) | 5 tasks (TASK-028/029/030/031/032) — merged to main |
 | Completed (PRD-004) | 10 tasks (TASK-036..045) |
 | Total Tasks | 47 completed + 6 bugs |
 | PRD-004 Status | READY_FOR_DEPLOYMENT (v1.0.0) — Window Hierarchy & Menu System |

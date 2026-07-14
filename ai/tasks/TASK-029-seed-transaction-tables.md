@@ -5,7 +5,9 @@ title: Seed Transaction Tables (Flyway Migration)
 
 type: Database
 
-status: TESTED
+status: COMPLETED
+
+merged_to_main: 2026-07-14
 
 priority: High
 

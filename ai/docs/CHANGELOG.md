@@ -24,6 +24,13 @@ All 10 PRD-004 implementation tasks completed and advanced to READY_FOR_TEST. Th
   - All 36 backend tests pass
   - Frontend typecheck passes
 
+## 2026-07-14 (PRD-003 Marked COMPLETED — Branch Merged to Main)
+
+### Summary
+PRD-003's 5 tasks (TASK-028..032) were in TESTED status but the branch had already been merged to main. Updated to COMPLETED. PRD-003 status: READY_FOR_DEPLOYMENT → COMPLETED.
+
+---
+
 ## 2026-07-14 (PRD-004 QA Complete — READY_FOR_DEPLOYMENT)
 
 ### Summary
