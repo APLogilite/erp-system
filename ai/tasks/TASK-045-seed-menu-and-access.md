@@ -5,7 +5,7 @@ title: Seed Data — Menu Entries + Window Access
 
 type: Database
 
-status: READY_FOR_TEST
+status: TESTED
 
 priority: High
 
@@ -48,10 +48,13 @@ labels: [database, seed, flyway, menu]
 history:
   - 2026-07-13: Status PLANNED → IN_DEVELOPMENT. Assigned to software_engineer. Started implementation.
   - 2026-07-13: V28 Flyway migration created. Menu tree + window access seeded. Validation passed. Status → READY_FOR_TEST.
+  - 2026-07-14: QA verification completed. 12/12 tests passed, 0 bugs. Status → TESTED.
 
 review_required: true
 
 test_required: true
+
+test_report: ai/tests/TEST-TASK-045.md
 
 change_report: ai/changes/CHANGE-TASK-045.md
 

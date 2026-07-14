@@ -5,7 +5,7 @@ title: Seed Data — ERP Windows with Tabs/Fields (replaces PRD-003)
 
 type: Database
 
-status: READY_FOR_TEST
+status: TESTED
 
 priority: High
 
@@ -50,6 +50,7 @@ labels: [database, seed, flyway, erp]
 history:
   - 2026-07-13: Status READY_FOR_DEV → IN_DEVELOPMENT. Assigned to software_engineer. Started implementation.
   - 2026-07-13: V27 Flyway migration created. 10 ERP windows + tabs + fields seeded. Validation passed. Status → READY_FOR_TEST.
+  - 2026-07-14: QA verification completed. 14/14 tests passed, 0 bugs. Status → TESTED.
 
 review_required: true
 

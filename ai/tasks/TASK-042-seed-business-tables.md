@@ -5,7 +5,7 @@ title: Seed Data — Register Business Tables (md_*, tx_*) as sys_table + sys_co
 
 type: Database
 
-status: READY_FOR_TEST
+status: TESTED
 
 priority: High
 
@@ -48,10 +48,13 @@ labels: [database, seed, flyway]
 history:
   - 2026-07-13: Status READY_FOR_DEV → IN_DEVELOPMENT. Assigned to software_engineer. Started implementation.
   - 2026-07-13: V25 Flyway migration created. All 12 business tables registered. Validation passed. Status → READY_FOR_TEST.
+  - 2026-07-14: QA verification completed. 19/19 tests passed, 0 bugs. Status → TESTED.
 
 review_required: true
 
 test_required: true
+
+test_report: ai/tests/TEST-TASK-042.md
 
 change_report: ai/changes/CHANGE-TASK-042.md
 

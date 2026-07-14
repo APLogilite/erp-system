@@ -5,7 +5,7 @@ title: Backend — JPA Entities + Services for New Metadata Tables
 
 type: Feature
 
-status: READY_FOR_TEST
+status: TESTED
 
 priority: Critical
 
@@ -48,10 +48,13 @@ labels: [backend, jpa, entity, service]
 history:
   - 2026-07-13: Status READY_FOR_DEV → IN_DEVELOPMENT. Assigned to software_engineer. Started implementation.
   - 2026-07-13: 7 JPA entities + 7 repositories + 7 services created. Validation passed. Status → READY_FOR_TEST.
+  - 2026-07-14: QA verification completed. 10/12 tests passed, 2 skipped, 0 bugs. Status → TESTED.
 
 review_required: true
 
 test_required: true
+
+test_report: ai/tests/TEST-TASK-037.md
 
 change_report: ai/changes/CHANGE-TASK-037.md
 

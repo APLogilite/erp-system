@@ -5,7 +5,7 @@ title: Frontend — Update Routing to /window/{name} + Fix RuntimePage
 
 type: UI
 
-status: READY_FOR_TEST
+status: TESTED
 
 priority: Critical
 
@@ -48,10 +48,13 @@ labels: [frontend, ui, routing, runtime]
 history:
   - 2026-07-13: Status READY_FOR_DEV → IN_DEVELOPMENT. Assigned to software_engineer. Started implementation.
   - 2026-07-13: WindowPage component created. /window/{windowName} route added. Legacy /runtime redirect added. Validation passed. Status → READY_FOR_TEST.
+  - 2026-07-14: QA verification completed. 11/11 tests passed, 0 bugs. Status → TESTED.
 
 review_required: true
 
 test_required: true
+
+test_report: ai/tests/TEST-TASK-041.md
 
 change_report: ai/changes/CHANGE-TASK-041.md
 
