@@ -175,7 +175,7 @@ main
 
 ## Activation Rules
 
-Per TASK_ACTIVATION_RULES.md: a task may move from PLANNED to READY_FOR_DEV when:
+Per STATUS_TRANSITIONS.md: a task may move from PLANNED to READY_FOR_DEV when:
 
 - Parent PRD is APPROVED.
 - All dependency tasks are READY_FOR_TEST (or beyond).

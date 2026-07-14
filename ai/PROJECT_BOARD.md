@@ -6,6 +6,20 @@ Updated By: QA Engineer
 
 ---
 
+## Workflow Legend
+
+```
+PRD:  APPROVED → IN_DEVELOPMENT → TESTING → READY_FOR_DEPLOYMENT → COMPLETED
+          ↓ (SE)        ↓ (SE)        ↓ (QA)        ↓ (PM+user)     ↓ (Release)
+Task: PLANNED → READY_FOR_DEV → IN_DEVELOPMENT → READY_FOR_TEST → TESTING → TESTED → COMPLETED
+          ↓ (PM)     ↓ (SE)           ↓ (SE)          ↓ (SE)        ↓ (QA)    ↓ (QA)   ↓ (cascade)
+Bug:                                READY_FOR_DEV → IN_DEVELOPMENT → READY_FOR_TEST → TESTING → RESOLVED
+```
+
+See `ai/docs/STATUS_TRANSITIONS.md` for full transition rules.
+
+---
+
 ## PRD Status
 
 | PRD | Title | Version | Status | Priority |
