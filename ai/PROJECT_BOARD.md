@@ -21,6 +21,7 @@ Updated By: software_engineer
 
 | Task | PRD | Priority | Owner | Depends On |
 |------|-----|----------|-------|------------|
+| TASK-041 | PRD-004 | Critical | — | TASK-038, TASK-039, TASK-040, TASK-037 |
 | TASK-042 | PRD-004 | High | — | TASK-036 |
 
 ---
@@ -33,14 +34,13 @@ Updated By: software_engineer
 | TASK-037 | PRD-004 | Critical | software_engineer | CHANGE-TASK-037.md |
 | TASK-038 | PRD-004 | Critical | software_engineer | CHANGE-TASK-038.md |
 | TASK-039 | PRD-004 | Critical | software_engineer | CHANGE-TASK-039.md |
+| TASK-040 | PRD-004 | Critical | software_engineer | CHANGE-TASK-040.md |
 
 ---
 
 ## In Development
 
-| Task | PRD | Priority | Owner | Branch |
-|------|-----|----------|-------|--------|
-| TASK-040 | PRD-004 | Critical | software_engineer | feature/TASK-040 |
+*(none)*
 
 ---
 
@@ -145,8 +145,8 @@ Updated By: software_engineer
 | Status | Count |
 |--------|-------|
 | PRDs | 4 (PRD-001 COMPLETED, PRD-002 COMPLETED, PRD-003 READY_FOR_DEPLOYMENT, PRD-004 IN_DEVELOPMENT) |
-| Ready For Dev | 1 (TASK-042) |
-| Ready For Test | 4 (TASK-036, TASK-037, TASK-038, TASK-039) |
+| Ready For Dev | 2 (TASK-041, TASK-042) |
+| Ready For Test | 5 (TASK-036, TASK-037, TASK-038, TASK-039, TASK-040) |
 | In Development | 1 (TASK-040) |
 | In Testing | 0 |
 | Planning | 7 tasks (PRD-004 — PLANNED) |
