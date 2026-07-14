@@ -3,7 +3,7 @@ id: BUG-007
 
 title: PRD-004 schema and seed data not applied — Flyway disabled
 
-status: TESTED
+status: COMPLETED
 
 priority: Critical
 

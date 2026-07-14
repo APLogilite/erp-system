@@ -3,7 +3,7 @@ id: BUG-006
 
 title: Backend @PreAuthorize uses SYSTEM_ADMIN but seeded role code is sys_admin — causes 403 on all admin endpoints
 
-status: RESOLVED
+status: COMPLETED
 
 priority: Critical
 

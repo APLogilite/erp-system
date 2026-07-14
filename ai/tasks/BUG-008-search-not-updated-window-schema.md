@@ -3,7 +3,7 @@ id: BUG-008
 
 title: Ctrl+K search still uses old PRD-001 form schema instead of new Window names
 
-status: TESTED
+status: COMPLETED
 
 priority: High
 

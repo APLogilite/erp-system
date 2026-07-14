@@ -4,7 +4,7 @@ Last Updated: 2026-07-14
 
 Updated By: QA Engineer
 
-(BUG-005 → CANCELLED; BUG-006 → RESOLVED; ENH-003 → TESTED; BUG-007/BUG-008 → TESTED; all ready for merge to main)
+(ALL bugs + ENH-003 cascaded to COMPLETED after merge; BUG-005 CANCELLED; ready for user testing)
 
 ---
 
@@ -98,6 +98,7 @@ See `ai/docs/STATUS_TRANSITIONS.md` for full transition rules.
 | TASK-035 | 2026-07-10 | 1.1.0 |
 | ENH-001 | 2026-07-09 | 1.6.0 |
 | ENH-002 | 2026-07-10 | 1.1.0 |
+| ENH-003 | 2026-07-14 | 1.0.0 |
 | TASK-036 | 2026-07-14 | 1.0.0 |
 | TASK-037 | 2026-07-14 | 1.0.0 |
 | TASK-038 | 2026-07-14 | 1.0.0 |
@@ -126,9 +127,9 @@ See `ai/docs/STATUS_TRANSITIONS.md` for full transition rules.
 | BUG-003 | TASK-011 | High | TESTED | QA Engineer | — |
 | BUG-004 | TASK-025 | Medium | TESTED | QA Engineer | — |
 | BUG-005 | TASK-025 | Medium | CANCELLED | QA Engineer | — |
-| BUG-006 | TASK-007 | Critical | RESOLVED | QA Engineer | — |
-| BUG-007 | TASK-036 | Critical | TESTED | QA Engineer | — |
-| BUG-008 | TASK-041 | Medium | TESTED | QA Engineer | BUG-007 |
+| BUG-006 | TASK-007 | Critical | COMPLETED | QA Engineer | — |
+| BUG-007 | TASK-036 | Critical | COMPLETED | QA Engineer | — |
+| BUG-008 | TASK-041 | Medium | COMPLETED | QA Engineer | BUG-007 |
 
 ---
 
@@ -138,7 +139,7 @@ See `ai/docs/STATUS_TRANSITIONS.md` for full transition rules.
 |------|------------|-------------|--------|--------|
 | ENH-001 | PRD-001 | TASK-007 | Form Designer API tenant authorization | COMPLETED |
 | ENH-002 | PRD-002 | TASK-034, TASK-035 | Add tenant_id to all admin forms (REQ-ISSUE-001) | COMPLETED |
-| ENH-003 | PRD-001 | TASK-026 | RuntimePage not integrated with API — uses hardcoded sample bundles instead of dynamic form rendering | TESTED |
+| ENH-003 | PRD-001 | TASK-026 | RuntimePage not integrated with API — uses hardcoded sample bundles instead of dynamic form rendering | COMPLETED |
 
 ---
 
@@ -158,8 +159,8 @@ See `ai/docs/STATUS_TRANSITIONS.md` for full transition rules.
 | In Development | 0 |
 | In Testing | 0 |
 | Planning | 0 |
-| Bugs | 8 (all resolved: 6 TESTED, 1 RESOLVED, 1 CANCELLED) |
-| Completed (PRD-001) | 27 tasks + 1 enhancement (ENH-001) |
+| Bugs | 8 (all resolved: 3 COMPLETED, 4 TESTED, 1 CANCELLED) |
+| Completed (PRD-001) | 27 tasks + 2 enhancements (ENH-001, ENH-003) |
 | Completed (PRD-002) | 3 tasks + 1 enhancement (TASK-033/034/035 + ENH-002) |
 | Completed (PRD-003) | 5 tasks (TASK-028/029/030/031/032) — merged to main |
 | Completed (PRD-004) | 10 tasks (TASK-036..045) — merged to main |
