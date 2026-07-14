@@ -9,7 +9,7 @@ priority: High
 
 severity: High
 
-owner: developer
+owner: Software Engineer
 
 assigned_to: Software Engineer
 

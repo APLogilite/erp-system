@@ -6,7 +6,7 @@ prd_version: 1.0.0
 git_branch: feature/TASK-044
 status: READY_FOR_TEST
 created: 2026-07-13
-author: software_engineer
+author: Software Engineer
 ---
 
 # Change Report — TASK-044

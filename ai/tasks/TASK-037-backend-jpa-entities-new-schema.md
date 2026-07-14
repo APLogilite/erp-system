@@ -9,9 +9,9 @@ status: TESTED
 
 priority: Critical
 
-owner: software_engineer
+owner: Software Engineer
 
-assigned_to: software_engineer
+assigned_to: Software Engineer
 
 assigned_branch: feature/TASK-037
 
@@ -46,7 +46,7 @@ blocks: [TASK-038, TASK-039, TASK-046]
 labels: [backend, jpa, entity, service]
 
 history:
-  - 2026-07-13: Status READY_FOR_DEV → IN_DEVELOPMENT. Assigned to software_engineer. Started implementation.
+  - 2026-07-13: Status READY_FOR_DEV → IN_DEVELOPMENT. Assigned to Software Engineer. Started implementation.
   - 2026-07-13: 7 JPA entities + 7 repositories + 7 services created. Validation passed. Status → READY_FOR_TEST.
   - 2026-07-14: QA verification completed. 10/12 tests passed, 2 skipped, 0 bugs. Status → TESTED.
 

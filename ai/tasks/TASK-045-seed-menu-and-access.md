@@ -9,9 +9,9 @@ status: TESTED
 
 priority: High
 
-owner: software_engineer
+owner: Software Engineer
 
-assigned_to: software_engineer
+assigned_to: Software Engineer
 
 assigned_branch: feature/TASK-045
 
@@ -46,7 +46,7 @@ blocks: []
 labels: [database, seed, flyway, menu]
 
 history:
-  - 2026-07-13: Status PLANNED → IN_DEVELOPMENT. Assigned to software_engineer. Started implementation.
+  - 2026-07-13: Status PLANNED → IN_DEVELOPMENT. Assigned to Software Engineer. Started implementation.
   - 2026-07-13: V28 Flyway migration created. Menu tree + window access seeded. Validation passed. Status → READY_FOR_TEST.
   - 2026-07-14: QA verification completed. 12/12 tests passed, 0 bugs. Status → TESTED.
 

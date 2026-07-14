@@ -7,7 +7,7 @@ git_branch: feature/TASK-040
 base_branch: prd/PRD-004-window-hierarchy-menu
 status: READY_FOR_TEST
 created: 2026-07-13
-author: software_engineer
+author: Software Engineer
 ---
 
 # Change Report — TASK-040

@@ -20,7 +20,7 @@ priority: Medium
 # Medium
 # Low
 
-owner: planner
+owner: Planner
 
 created:
 

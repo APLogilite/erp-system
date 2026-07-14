@@ -9,7 +9,7 @@ priority: Medium
 
 severity: Medium
 
-owner: developer
+owner: Software Engineer
 
 assigned_to: Software Engineer
 

@@ -9,9 +9,9 @@ status: TESTED
 
 priority: Critical
 
-owner: software_engineer
+owner: Software Engineer
 
-assigned_to: software_engineer
+assigned_to: Software Engineer
 
 assigned_branch: feature/TASK-036
 
@@ -46,7 +46,7 @@ blocks: [TASK-037, TASK-038, TASK-039, TASK-040, TASK-041, TASK-043]
 labels: [database, migration, flyway]
 
 history:
-  - 2026-07-13: Status PLANNING → IN_DEVELOPMENT. Assigned to software_engineer. Started implementation.
+  - 2026-07-13: Status PLANNING → IN_DEVELOPMENT. Assigned to Software Engineer. Started implementation.
   - 2026-07-13: V24 Flyway migration created. Validation passed. Change report created. Status → READY_FOR_TEST.
   - 2026-07-14: QA verification completed. 15/17 tests passed, 2 skipped, 0 bugs. Status → TESTED.
 

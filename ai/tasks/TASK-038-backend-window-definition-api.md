@@ -9,9 +9,9 @@ status: TESTED
 
 priority: Critical
 
-owner: software_engineer
+owner: Software Engineer
 
-assigned_to: software_engineer
+assigned_to: Software Engineer
 
 assigned_branch: feature/TASK-038
 
@@ -46,7 +46,7 @@ blocks: [TASK-041]
 labels: [backend, api, runtime]
 
 history:
-  - 2026-07-13: Status READY_FOR_DEV → IN_DEVELOPMENT. Assigned to software_engineer. Started implementation.
+  - 2026-07-13: Status READY_FOR_DEV → IN_DEVELOPMENT. Assigned to Software Engineer. Started implementation.
   - 2026-07-13: Window definition API endpoint created. Validation passed. Status → READY_FOR_TEST.
   - 2026-07-14: QA verification completed. 5/5 tests passed, 0 bugs. Status → TESTED.
 

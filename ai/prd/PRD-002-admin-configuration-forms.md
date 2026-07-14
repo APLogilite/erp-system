@@ -9,7 +9,7 @@ status: COMPLETED
 
 priority: High
 
-owner: planner
+owner: Planner
 
 created: 2026-07-10
 

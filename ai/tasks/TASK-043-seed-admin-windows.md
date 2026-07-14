@@ -9,9 +9,9 @@ status: TESTED
 
 priority: High
 
-owner: software_engineer
+owner: Software Engineer
 
-assigned_to: software_engineer
+assigned_to: Software Engineer
 
 assigned_branch: feature/TASK-043
 
@@ -46,7 +46,7 @@ blocks: [TASK-045]
 labels: [database, seed, flyway, admin]
 
 history:
-  - 2026-07-13: Status READY_FOR_DEV → IN_DEVELOPMENT. Assigned to software_engineer. Started implementation.
+  - 2026-07-13: Status READY_FOR_DEV → IN_DEVELOPMENT. Assigned to Software Engineer. Started implementation.
   - 2026-07-13: V26 Flyway migration created. 7 admin windows + tabs + fields seeded. Validation passed. Status → READY_FOR_TEST.
   - 2026-07-14: QA verification completed. 10/10 tests passed, 0 bugs. Status → TESTED.
 
