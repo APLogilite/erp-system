@@ -46,6 +46,103 @@ SELECT gen_random_uuid(), 'sys_menu', 'Menu', 'Menus', 'static', 'sys_menu', 'Me
 WHERE NOT EXISTS (SELECT 1 FROM sys_table WHERE name = 'sys_menu');
 
 -- ============================================================
+-- Part 0b — Register Columns for Metadata Tables
+-- (required so admin window fields can reference them)
+-- ============================================================
+
+-- sys_table columns
+INSERT INTO sys_column (id, table_id, code, label, type, required, max_length, position, is_active, created_at, updated_at)
+SELECT gen_random_uuid(), (SELECT id FROM sys_table WHERE name = 'sys_table'), 'name',         'Name',         'string',  true,  100, 1, true, now(), now() WHERE NOT EXISTS (SELECT 1 FROM sys_column WHERE table_id = (SELECT id FROM sys_table WHERE name = 'sys_table') AND code = 'name');
+INSERT INTO sys_column (id, table_id, code, label, type, required, max_length, position, is_active, created_at, updated_at)
+SELECT gen_random_uuid(), (SELECT id FROM sys_table WHERE name = 'sys_table'), 'label',        'Label',        'string',  true,  100, 2, true, now(), now() WHERE NOT EXISTS (SELECT 1 FROM sys_column WHERE table_id = (SELECT id FROM sys_table WHERE name = 'sys_table') AND code = 'label');
+INSERT INTO sys_column (id, table_id, code, label, type, required, max_length, position, is_active, created_at, updated_at)
+SELECT gen_random_uuid(), (SELECT id FROM sys_table WHERE name = 'sys_table'), 'plural_label', 'Plural Label', 'string',  false, 100, 3, true, now(), now() WHERE NOT EXISTS (SELECT 1 FROM sys_column WHERE table_id = (SELECT id FROM sys_table WHERE name = 'sys_table') AND code = 'plural_label');
+INSERT INTO sys_column (id, table_id, code, label, type, required, max_length, position, is_active, created_at, updated_at)
+SELECT gen_random_uuid(), (SELECT id FROM sys_table WHERE name = 'sys_table'), 'table_type',   'Table Type',   'string',  true,  20,  4, true, now(), now() WHERE NOT EXISTS (SELECT 1 FROM sys_column WHERE table_id = (SELECT id FROM sys_table WHERE name = 'sys_table') AND code = 'table_type');
+INSERT INTO sys_column (id, table_id, code, label, type, required, max_length, position, is_active, created_at, updated_at)
+SELECT gen_random_uuid(), (SELECT id FROM sys_table WHERE name = 'sys_table'), 'table_name',   'Table Name',   'string',  true,  100, 5, true, now(), now() WHERE NOT EXISTS (SELECT 1 FROM sys_column WHERE table_id = (SELECT id FROM sys_table WHERE name = 'sys_table') AND code = 'table_name');
+INSERT INTO sys_column (id, table_id, code, label, type, required, position, is_active, created_at, updated_at)
+SELECT gen_random_uuid(), (SELECT id FROM sys_table WHERE name = 'sys_table'), 'description',  'Description',  'text',    false,     6, true, now(), now() WHERE NOT EXISTS (SELECT 1 FROM sys_column WHERE table_id = (SELECT id FROM sys_table WHERE name = 'sys_table') AND code = 'description');
+
+-- sys_column columns
+INSERT INTO sys_column (id, table_id, code, label, type, required, max_length, position, is_active, created_at, updated_at)
+SELECT gen_random_uuid(), (SELECT id FROM sys_table WHERE name = 'sys_column'), 'code',           'Code',           'string',  true,  100, 1, true, now(), now() WHERE NOT EXISTS (SELECT 1 FROM sys_column WHERE table_id = (SELECT id FROM sys_table WHERE name = 'sys_column') AND code = 'code');
+INSERT INTO sys_column (id, table_id, code, label, type, required, max_length, position, is_active, created_at, updated_at)
+SELECT gen_random_uuid(), (SELECT id FROM sys_table WHERE name = 'sys_column'), 'label',          'Label',          'string',  true,  100, 2, true, now(), now() WHERE NOT EXISTS (SELECT 1 FROM sys_column WHERE table_id = (SELECT id FROM sys_table WHERE name = 'sys_column') AND code = 'label');
+INSERT INTO sys_column (id, table_id, code, label, type, required, max_length, position, is_active, created_at, updated_at)
+SELECT gen_random_uuid(), (SELECT id FROM sys_table WHERE name = 'sys_column'), 'type',           'Type',           'string',  true,  50,  3, true, now(), now() WHERE NOT EXISTS (SELECT 1 FROM sys_column WHERE table_id = (SELECT id FROM sys_table WHERE name = 'sys_column') AND code = 'type');
+INSERT INTO sys_column (id, table_id, code, label, type, required, position, is_active, created_at, updated_at)
+SELECT gen_random_uuid(), (SELECT id FROM sys_table WHERE name = 'sys_column'), 'required',       'Required',       'boolean', false,    4, true, now(), now() WHERE NOT EXISTS (SELECT 1 FROM sys_column WHERE table_id = (SELECT id FROM sys_table WHERE name = 'sys_column') AND code = 'required');
+INSERT INTO sys_column (id, table_id, code, label, type, required, position, is_active, created_at, updated_at)
+SELECT gen_random_uuid(), (SELECT id FROM sys_table WHERE name = 'sys_column'), 'max_length',     'Max Length',     'integer', false,    5, true, now(), now() WHERE NOT EXISTS (SELECT 1 FROM sys_column WHERE table_id = (SELECT id FROM sys_table WHERE name = 'sys_column') AND code = 'max_length');
+INSERT INTO sys_column (id, table_id, code, label, type, required, position, is_active, created_at, updated_at)
+SELECT gen_random_uuid(), (SELECT id FROM sys_table WHERE name = 'sys_column'), 'precision',      'Precision',      'integer', false,    6, true, now(), now() WHERE NOT EXISTS (SELECT 1 FROM sys_column WHERE table_id = (SELECT id FROM sys_table WHERE name = 'sys_column') AND code = 'precision');
+INSERT INTO sys_column (id, table_id, code, label, type, required, position, is_active, created_at, updated_at)
+SELECT gen_random_uuid(), (SELECT id FROM sys_table WHERE name = 'sys_column'), 'scale',          'Scale',          'integer', false,    7, true, now(), now() WHERE NOT EXISTS (SELECT 1 FROM sys_column WHERE table_id = (SELECT id FROM sys_table WHERE name = 'sys_column') AND code = 'scale');
+INSERT INTO sys_column (id, table_id, code, label, type, required, max_length, position, is_active, created_at, updated_at)
+SELECT gen_random_uuid(), (SELECT id FROM sys_table WHERE name = 'sys_column'), 'relation_table', 'Relation Table', 'string',  false, 100, 8, true, now(), now() WHERE NOT EXISTS (SELECT 1 FROM sys_column WHERE table_id = (SELECT id FROM sys_table WHERE name = 'sys_column') AND code = 'relation_table');
+INSERT INTO sys_column (id, table_id, code, label, type, required, position, is_active, created_at, updated_at)
+SELECT gen_random_uuid(), (SELECT id FROM sys_table WHERE name = 'sys_column'), 'enum_options',   'Enum Options',   'text',    false,    9, true, now(), now() WHERE NOT EXISTS (SELECT 1 FROM sys_column WHERE table_id = (SELECT id FROM sys_table WHERE name = 'sys_column') AND code = 'enum_options');
+INSERT INTO sys_column (id, table_id, code, label, type, required, position, is_active, created_at, updated_at)
+SELECT gen_random_uuid(), (SELECT id FROM sys_table WHERE name = 'sys_column'), 'position',       'Position',       'integer', false,   10, true, now(), now() WHERE NOT EXISTS (SELECT 1 FROM sys_column WHERE table_id = (SELECT id FROM sys_table WHERE name = 'sys_column') AND code = 'position');
+
+-- sys_window columns
+INSERT INTO sys_column (id, table_id, code, label, type, required, max_length, position, is_active, created_at, updated_at)
+SELECT gen_random_uuid(), (SELECT id FROM sys_table WHERE name = 'sys_window'), 'name',        'Name',        'string', true,  100, 1, true, now(), now() WHERE NOT EXISTS (SELECT 1 FROM sys_column WHERE table_id = (SELECT id FROM sys_table WHERE name = 'sys_window') AND code = 'name');
+INSERT INTO sys_column (id, table_id, code, label, type, required, position, is_active, created_at, updated_at)
+SELECT gen_random_uuid(), (SELECT id FROM sys_table WHERE name = 'sys_window'), 'description', 'Description', 'text',   false,   2, true, now(), now() WHERE NOT EXISTS (SELECT 1 FROM sys_column WHERE table_id = (SELECT id FROM sys_table WHERE name = 'sys_window') AND code = 'description');
+
+-- sys_tab columns
+INSERT INTO sys_column (id, table_id, code, label, type, required, max_length, position, is_active, created_at, updated_at)
+SELECT gen_random_uuid(), (SELECT id FROM sys_table WHERE name = 'sys_tab'), 'name',           'Name',           'string',  true,  100, 1, true, now(), now() WHERE NOT EXISTS (SELECT 1 FROM sys_column WHERE table_id = (SELECT id FROM sys_table WHERE name = 'sys_tab') AND code = 'name');
+INSERT INTO sys_column (id, table_id, code, label, type, required, position, is_active, created_at, updated_at)
+SELECT gen_random_uuid(), (SELECT id FROM sys_table WHERE name = 'sys_tab'), 'seq_no',         'Seq No',         'integer', true,    2, true, now(), now() WHERE NOT EXISTS (SELECT 1 FROM sys_column WHERE table_id = (SELECT id FROM sys_table WHERE name = 'sys_tab') AND code = 'seq_no');
+INSERT INTO sys_column (id, table_id, code, label, type, required, position, is_active, created_at, updated_at)
+SELECT gen_random_uuid(), (SELECT id FROM sys_table WHERE name = 'sys_tab'), 'is_single_row',  'Is Single Row',  'boolean', false,   3, true, now(), now() WHERE NOT EXISTS (SELECT 1 FROM sys_column WHERE table_id = (SELECT id FROM sys_table WHERE name = 'sys_tab') AND code = 'is_single_row');
+INSERT INTO sys_column (id, table_id, code, label, type, required, position, is_active, created_at, updated_at)
+SELECT gen_random_uuid(), (SELECT id FROM sys_table WHERE name = 'sys_tab'), 'where_clause',   'Where Clause',   'text',    false,   4, true, now(), now() WHERE NOT EXISTS (SELECT 1 FROM sys_column WHERE table_id = (SELECT id FROM sys_table WHERE name = 'sys_tab') AND code = 'where_clause');
+INSERT INTO sys_column (id, table_id, code, label, type, required, max_length, position, is_active, created_at, updated_at)
+SELECT gen_random_uuid(), (SELECT id FROM sys_table WHERE name = 'sys_tab'), 'parent_column',  'Parent Column',  'string',  false, 100, 5, true, now(), now() WHERE NOT EXISTS (SELECT 1 FROM sys_column WHERE table_id = (SELECT id FROM sys_table WHERE name = 'sys_tab') AND code = 'parent_column');
+
+-- sys_window_field columns
+INSERT INTO sys_column (id, table_id, code, label, type, required, position, is_active, created_at, updated_at)
+SELECT gen_random_uuid(), (SELECT id FROM sys_table WHERE name = 'sys_window_field'), 'seq_no',          'Seq No',          'integer', true,   1, true, now(), now() WHERE NOT EXISTS (SELECT 1 FROM sys_column WHERE table_id = (SELECT id FROM sys_table WHERE name = 'sys_window_field') AND code = 'seq_no');
+INSERT INTO sys_column (id, table_id, code, label, type, required, position, is_active, created_at, updated_at)
+SELECT gen_random_uuid(), (SELECT id FROM sys_table WHERE name = 'sys_window_field'), 'is_same_line',    'Same Line',       'boolean', false,  2, true, now(), now() WHERE NOT EXISTS (SELECT 1 FROM sys_column WHERE table_id = (SELECT id FROM sys_table WHERE name = 'sys_window_field') AND code = 'is_same_line');
+INSERT INTO sys_column (id, table_id, code, label, type, required, position, is_active, created_at, updated_at)
+SELECT gen_random_uuid(), (SELECT id FROM sys_table WHERE name = 'sys_window_field'), 'num_lines',       'Num Lines',       'integer', false,  3, true, now(), now() WHERE NOT EXISTS (SELECT 1 FROM sys_column WHERE table_id = (SELECT id FROM sys_table WHERE name = 'sys_window_field') AND code = 'num_lines');
+INSERT INTO sys_column (id, table_id, code, label, type, required, position, is_active, created_at, updated_at)
+SELECT gen_random_uuid(), (SELECT id FROM sys_table WHERE name = 'sys_window_field'), 'column_width',    'Column Width',    'integer', false,  4, true, now(), now() WHERE NOT EXISTS (SELECT 1 FROM sys_column WHERE table_id = (SELECT id FROM sys_table WHERE name = 'sys_window_field') AND code = 'column_width');
+INSERT INTO sys_column (id, table_id, code, label, type, required, position, is_active, created_at, updated_at)
+SELECT gen_random_uuid(), (SELECT id FROM sys_table WHERE name = 'sys_window_field'), 'is_displayed',    'Is Displayed',    'boolean', false,  5, true, now(), now() WHERE NOT EXISTS (SELECT 1 FROM sys_column WHERE table_id = (SELECT id FROM sys_table WHERE name = 'sys_window_field') AND code = 'is_displayed');
+INSERT INTO sys_column (id, table_id, code, label, type, required, position, is_active, created_at, updated_at)
+SELECT gen_random_uuid(), (SELECT id FROM sys_table WHERE name = 'sys_window_field'), 'is_readonly',     'Is Readonly',     'boolean', false,  6, true, now(), now() WHERE NOT EXISTS (SELECT 1 FROM sys_column WHERE table_id = (SELECT id FROM sys_table WHERE name = 'sys_window_field') AND code = 'is_readonly');
+INSERT INTO sys_column (id, table_id, code, label, type, required, position, is_active, created_at, updated_at)
+SELECT gen_random_uuid(), (SELECT id FROM sys_table WHERE name = 'sys_window_field'), 'is_mandatory',    'Is Mandatory',    'boolean', false,  7, true, now(), now() WHERE NOT EXISTS (SELECT 1 FROM sys_column WHERE table_id = (SELECT id FROM sys_table WHERE name = 'sys_window_field') AND code = 'is_mandatory');
+INSERT INTO sys_column (id, table_id, code, label, type, required, position, is_active, created_at, updated_at)
+SELECT gen_random_uuid(), (SELECT id FROM sys_table WHERE name = 'sys_window_field'), 'display_logic',   'Display Logic',   'text',    false,  8, true, now(), now() WHERE NOT EXISTS (SELECT 1 FROM sys_column WHERE table_id = (SELECT id FROM sys_table WHERE name = 'sys_window_field') AND code = 'display_logic');
+INSERT INTO sys_column (id, table_id, code, label, type, required, position, is_active, created_at, updated_at)
+SELECT gen_random_uuid(), (SELECT id FROM sys_table WHERE name = 'sys_window_field'), 'readonly_logic',  'Readonly Logic',  'text',    false,  9, true, now(), now() WHERE NOT EXISTS (SELECT 1 FROM sys_column WHERE table_id = (SELECT id FROM sys_table WHERE name = 'sys_window_field') AND code = 'readonly_logic');
+INSERT INTO sys_column (id, table_id, code, label, type, required, max_length, position, is_active, created_at, updated_at)
+SELECT gen_random_uuid(), (SELECT id FROM sys_table WHERE name = 'sys_window_field'), 'label_override',  'Label Override',  'string',  false, 200, 10, true, now(), now() WHERE NOT EXISTS (SELECT 1 FROM sys_column WHERE table_id = (SELECT id FROM sys_table WHERE name = 'sys_window_field') AND code = 'label_override');
+
+-- sys_window_access columns
+INSERT INTO sys_column (id, table_id, code, label, type, required, position, relation_table, is_active, created_at, updated_at)
+SELECT gen_random_uuid(), (SELECT id FROM sys_table WHERE name = 'sys_window_access'), 'role_id',   'Role',   'many2one', true,  1, 'identity_roles', true, now(), now() WHERE NOT EXISTS (SELECT 1 FROM sys_column WHERE table_id = (SELECT id FROM sys_table WHERE name = 'sys_window_access') AND code = 'role_id');
+INSERT INTO sys_column (id, table_id, code, label, type, required, position, is_active, created_at, updated_at)
+SELECT gen_random_uuid(), (SELECT id FROM sys_table WHERE name = 'sys_window_access'), 'tenant_id', 'Tenant', 'string',   false, 2, true, now(), now() WHERE NOT EXISTS (SELECT 1 FROM sys_column WHERE table_id = (SELECT id FROM sys_table WHERE name = 'sys_window_access') AND code = 'tenant_id');
+
+-- sys_menu columns
+INSERT INTO sys_column (id, table_id, code, label, type, required, max_length, position, is_active, created_at, updated_at)
+SELECT gen_random_uuid(), (SELECT id FROM sys_table WHERE name = 'sys_menu'), 'name',    'Name',    'string',  true,  100, 1, true, now(), now() WHERE NOT EXISTS (SELECT 1 FROM sys_column WHERE table_id = (SELECT id FROM sys_table WHERE name = 'sys_menu') AND code = 'name');
+INSERT INTO sys_column (id, table_id, code, label, type, required, max_length, position, enum_options, is_active, created_at, updated_at)
+SELECT gen_random_uuid(), (SELECT id FROM sys_table WHERE name = 'sys_menu'), 'type',    'Type',    'string',  true,  20,  2, '["group","window"]', true, now(), now() WHERE NOT EXISTS (SELECT 1 FROM sys_column WHERE table_id = (SELECT id FROM sys_table WHERE name = 'sys_menu') AND code = 'type');
+INSERT INTO sys_column (id, table_id, code, label, type, required, position, is_active, created_at, updated_at)
+SELECT gen_random_uuid(), (SELECT id FROM sys_table WHERE name = 'sys_menu'), 'seq_no',  'Seq No',  'integer', true,    3, true, now(), now() WHERE NOT EXISTS (SELECT 1 FROM sys_column WHERE table_id = (SELECT id FROM sys_table WHERE name = 'sys_menu') AND code = 'seq_no');
+INSERT INTO sys_column (id, table_id, code, label, type, required, max_length, position, is_active, created_at, updated_at)
+SELECT gen_random_uuid(), (SELECT id FROM sys_table WHERE name = 'sys_menu'), 'icon',    'Icon',    'string',  false, 100, 4, true, now(), now() WHERE NOT EXISTS (SELECT 1 FROM sys_column WHERE table_id = (SELECT id FROM sys_table WHERE name = 'sys_menu') AND code = 'icon');
+
+-- ============================================================
 -- Part 1 — Master Data Tables (md_*)
 -- ============================================================
 
