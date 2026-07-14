@@ -3,13 +3,13 @@ id: BUG-004
 
 title: FormSearchBar shows empty results — needs default form list and visible header button
 
-status: IN_DEVELOPMENT
+status: TESTED
 
 priority: Medium
 
 severity: Medium
 
-owner: developer
+owner: Software Engineer
 
 assigned_to: Software Engineer
 
@@ -40,7 +40,8 @@ fix_summary:
 verification_report:
 
 history:
-  - 2026-07-13 — Planner — Created bug task. Ctrl+K opens dialog but shows "No forms found". User requests default form list on open and visible search button in header.
+  - 2026-07-13 — Product Manager — Created bug task. Ctrl+K opens dialog but shows "No forms found". User requests default form list on open and visible search button in header.
+  - 2026-07-14 — QA Engineer — Verified fix. FormSearchBar has visible search IconButton in header, loading state, and proper default form list. Test report: TEST-BUG-004.md. Status → TESTED.
 
 ---
 

@@ -27,6 +27,7 @@ import { LoginPage } from './auth/LoginPage';
 import { ResetPasswordPage } from './auth/reset-password/ResetPasswordPage';
 import { DashboardPage } from './dashboard/DashboardPage';
 import { RuntimePage } from './runtime/RuntimePage';
+import { WindowPage } from './window/WindowPage';
 
 import { AdminRoute } from '@/core/router/guards/AdminRoute';
 import { AuthGuard } from '@/core/router/guards/AuthGuard';
@@ -148,8 +149,12 @@ export function AppRoutes() {
             }
           />
           <Route path="runtime" element={<RuntimePage />} />
+          <Route path="window/:windowName" element={<WindowPage />} />
         </Route>
       </Route>
+
+      {/* Legacy /runtime redirect — redirect /runtime/sales_order to /window/sales_order */}
+      <Route path="/runtime/:formCode" element={<Navigate to="/window/:formCode" replace />} />
 
       {/* Fallback */}
       <Route path="*" element={<Navigate to="/app/dashboard" replace />} />

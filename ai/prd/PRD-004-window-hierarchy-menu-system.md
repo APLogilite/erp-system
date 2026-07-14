@@ -5,15 +5,15 @@ title: Window Hierarchy & Menu System
 
 version: 1.0.0
 
-status: APPROVED
+status: READY_FOR_DEPLOYMENT
 
 priority: High
 
-owner: planner
+owner: Product Manager
 
 created: 2026-07-13
 
-updated: 2026-07-13
+updated: 2026-07-14
 
 approved_by: user
 

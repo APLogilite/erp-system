@@ -39,7 +39,7 @@ import { useCallback, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 import { useAuthStore } from '@/core/auth/authStore';
-import { FormNavigationMenu } from '@/core/runtime/components/FormNavigationMenu';
+import { MenuNavigation } from '@/core/runtime/components/MenuNavigation';
 
 export const SIDEBAR_WIDTH = 280;
 const drawerWidth = SIDEBAR_WIDTH;
@@ -203,8 +203,8 @@ export function Sidebar({ mobileOpen = false, onMobileClose }: SidebarProps) {
 
         <Divider sx={{ my: 0.5 }} />
 
-        {/* DYNAMIC FORMS — rendered by FormNavigationMenu with its own collapse */}
-        <FormNavigationMenu />
+        {/* Hierarchical menu — rendered by MenuNavigation */}
+        <MenuNavigation />
 
         <Divider sx={{ my: 0.5 }} />
 

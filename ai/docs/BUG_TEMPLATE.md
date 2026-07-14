@@ -13,7 +13,7 @@ severity: Medium
 # Medium
 # Low
 
-owner: developer
+owner: Software Engineer
 
 assigned_to:
 

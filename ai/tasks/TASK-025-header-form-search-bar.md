@@ -9,7 +9,7 @@ status: COMPLETED
 
 priority: Medium
 
-owner: developer
+owner: Software Engineer
 
 assigned_to: QA Engineer
 

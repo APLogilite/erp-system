@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Project Monitor</title>
+<style>
+:root {
+  --bg: #0f1117;
+  --bg2: #161822;
+  --bg3: #1c1f2e;
+  --card: #1a1d2e;
+  --card2: #222639;
+  --border: #2a2e42;
+  --text: #e2e8f0;
+  --text2: #94a3b8;
+  --text3: #64748b;
+  --accent: #6366f1;
+  --accent2: #818cf8;
+  --green: #22c55e;
+  --green-bg: rgba(34,197,94,0.12);
+  --red: #ef4444;
+  --red-bg: rgba(239,68,68,0.12);
+  --amber: #f59e0b;
+  --amber-bg: rgba(245,158,11,0.12);
+  --blue: #3b82f6;
+  --blue-bg: rgba(59,130,246,0.12);
+  --purple: #8b5cf6;
+  --purple-bg: rgba(139,92,246,0.12);
+  --cyan: #06b6d4;
+  --orange: #f97316;
+  --gray: #6b7280;
+  --critical: #ef4444;
+  --high: #f97316;
+  --medium: #f59e0b;
+  --low: #6b7280;
+  --radius: 8px;
+  --radius-sm: 4px;
+  --shadow: 0 1px 3px rgba(0,0,0,0.3);
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  line-height: 1.5;
+}
+
+.header {
+  background: var(--bg2);
+  border-bottom: 1px solid var(--border);
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.header h1 {
+  font-size: 20px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.header h1 .icon { color: var(--accent); }
+.header-right { display: flex; align-items: center; gap: 16px; font-size: 13px; }
+.live-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  display: inline-block; margin-right: 6px;
+}
+.live-dot.active { background: var(--green); box-shadow: 0 0 8px var(--green); animation: pulse 2s infinite; }
+.live-dot.inactive { background: var(--gray); }
+.live-dot.error { background: var(--red); }
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+.last-updated { color: var(--text3); font-size: 12px; }
+
+.tabs {
+  display: flex;
+  background: var(--bg2);
+  border-bottom: 1px solid var(--border);
+  padding: 0 24px;
+  gap: 4px;
+  overflow-x: auto;
+}
+.tab {
+  padding: 12px 20px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text2);
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s;
+  white-space: nowrap;
+  user-select: none;
+}
+.tab:hover { color: var(--text); background: var(--bg3); }
+.tab.active { color: var(--accent2); border-bottom-color: var(--accent); }
+
+.content { padding: 24px; max-width: 1400px; margin: 0 auto; }
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 12px;
+  margin-bottom: 24px;
+}
+.stat-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+  text-align: center;
+}
+.stat-card .value { font-size: 28px; font-weight: 700; line-height: 1.2; }
+.stat-card .label { font-size: 12px; color: var(--text3); margin-top: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
+.stat-card .value.green { color: var(--green); }
+.stat-card .value.blue { color: var(--blue); }
+.stat-card .value.amber { color: var(--amber); }
+.stat-card .value.purple { color: var(--purple); }
+.stat-card .value.red { color: var(--red); }
+.stat-card .value.cyan { color: var(--cyan); }
+.stat-card .value.orange { color: var(--orange); }
+
+.prd-list { display: flex; flex-direction: column; gap: 16px; }
+.prd-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+}
+.prd-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.prd-title { font-size: 16px; font-weight: 600; }
+.prd-title .prd-id { color: var(--accent); margin-right: 8px; }
+.prd-meta { display: flex; align-items: center; gap: 12px; font-size: 12px; flex-wrap: wrap; }
+.prd-progress { margin-top: 12px; }
+.prd-bar-bg { height: 6px; background: var(--bg3); border-radius: 3px; overflow: hidden; }
+.prd-bar-fill { height: 100%; border-radius: 3px; transition: width 0.5s ease; }
+.prd-bar-label { display: flex; justify-content: space-between; font-size: 12px; color: var(--text2); margin-top: 6px; }
+.prd-tasks-toggle {
+  margin-top: 12px;
+  font-size: 12px;
+  color: var(--accent2);
+  cursor: pointer;
+  user-select: none;
+}
+.prd-tasks-toggle:hover { text-decoration: underline; }
+.prd-tasks { display: none; margin-top: 12px; }
+.prd-tasks.open { display: block; }
+.task-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+.task-table th { text-align: left; padding: 8px 10px; color: var(--text3); font-weight: 500; border-bottom: 1px solid var(--border); }
+.task-table td { padding: 8px 10px; border-bottom: 1px solid var(--border); }
+
+.badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+.badge-COMPLETED, .badge-TESTED, .badge-RESOLVED { background: var(--green-bg); color: var(--green); }
+.badge-IN_DEVELOPMENT { background: var(--amber-bg); color: var(--amber); }
+.badge-READY_FOR_DEV { background: var(--blue-bg); color: var(--blue); }
+.badge-READY_FOR_TEST { background: var(--purple-bg); color: var(--purple); }
+.badge-TESTING { background: rgba(249,115,22,0.12); color: var(--orange); }
+.badge-PLANNING, .badge-PLANNED { background: rgba(107,114,128,0.12); color: var(--gray); }
+.badge-BLOCKED, .badge-CANCELLED { background: var(--red-bg); color: var(--red); }
+.badge-ON_HOLD { background: rgba(100,116,139,0.12); color: #94a3b8; }
+.badge-APPROVED { background: var(--green-bg); color: var(--green); }
+.badge-READY_FOR_DEPLOYMENT { background: var(--cyan); color: #000; }
+.badge-COMPLETED.prd { background: var(--green-bg); color: var(--green); }
+.badge-TESTING.prd { background: rgba(6,182,212,0.12); color: var(--cyan); }
+
+.prio-Critical { color: var(--critical); }
+.prio-High { color: var(--high); }
+.prio-Medium { color: var(--medium); }
+.prio-Low { color: var(--low); }
+
+.kanban { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
+.kanban-col {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 12px;
+  min-height: 300px;
+}
+.kanban-col h3 {
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.kanban-col .count {
+  font-size: 11px;
+  color: var(--text3);
+  background: var(--bg3);
+  padding: 1px 8px;
+  border-radius: 10px;
+}
+.kanban-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+  margin-bottom: 8px;
+  cursor: default;
+  transition: border-color 0.15s;
+}
+.kanban-card:hover { border-color: var(--accent); }
+.kanban-card .task-id { font-size: 11px; color: var(--text3); font-weight: 600; }
+.kanban-card .task-title { font-size: 12px; margin: 4px 0; line-height: 1.4; }
+.kanban-card .task-meta { display: flex; gap: 6px; flex-wrap: wrap; font-size: 10px; margin-top: 6px; }
+.kanban-card .task-meta .owner { color: var(--text3); }
+.kanban-card .task-meta .prd-tag {
+  background: var(--bg3);
+  padding: 1px 6px;
+  border-radius: 4px;
+  color: var(--text2);
+  font-weight: 500;
+}
+
+.agents-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+.agent-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+}
+.agent-name { font-size: 16px; font-weight: 700; color: var(--accent2); margin-bottom: 4px; }
+.agent-stats { display: flex; gap: 16px; margin: 12px 0; font-size: 13px; }
+.agent-stats span { display: flex; align-items: center; gap: 4px; }
+.agent-task { padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 12px; }
+.agent-task:last-child { border-bottom: none; }
+.agent-task .at-title { display: flex; justify-content: space-between; align-items: center; }
+
+.timeline-chart { margin: 20px 0; }
+.timeline-bar { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
+.timeline-bar .date { font-size: 11px; color: var(--text3); min-width: 90px; text-align: right; }
+.timeline-bar .bar-track { flex: 1; height: 20px; background: var(--bg3); border-radius: 3px; overflow: hidden; position: relative; }
+.timeline-bar .bar-fill { height: 100%; background: var(--accent); border-radius: 3px; transition: width 0.5s; }
+.timeline-bar .bar-count { font-size: 11px; color: var(--text2); min-width: 30px; }
+
+.section-title { font-size: 16px; font-weight: 600; margin-bottom: 16px; }
+.empty-state { text-align: center; padding: 40px; color: var(--text3); font-size: 14px; }
+
+.board-table-wrap { overflow-x: auto; margin-bottom: 24px; }
+.board-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+.board-table th { text-align: left; padding: 8px 12px; color: var(--text3); font-weight: 600; background: var(--bg2); border-bottom: 2px solid var(--border); }
+.board-table td { padding: 8px 12px; border-bottom: 1px solid var(--border); }
+.board-table tr:hover { background: var(--bg3); }
+.board-section { margin-bottom: 28px; }
+.board-section h3 { font-size: 14px; font-weight: 600; margin-bottom: 8px; color: var(--text2); text-transform: uppercase; letter-spacing: 0.5px; }
+
+@media (max-width: 768px) {
+  .content { padding: 12px; }
+  .header { padding: 12px 16px; }
+  .tabs { padding: 0 12px; }
+  .tab { padding: 10px 14px; font-size: 12px; }
+  .stats-row { grid-template-columns: repeat(2, 1fr); }
+  .kanban { grid-template-columns: 1fr; }
+  .agents-grid { grid-template-columns: 1fr; }
+}
+
+.agent-more {
+  text-align: center; font-size: 12px; color: var(--accent2);
+  cursor: pointer; padding: 8px; border-top: 1px solid var(--border);
+  user-select: none;
+}
+.agent-more:hover { text-decoration: underline; background: var(--bg3); }
+.agent-hidden { display: none; }
+.agent-hidden.open { display: block; }
+.agent-hidden .agent-task { opacity: 0.8; }
+
+.kanban-col { max-height: 520px; overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin; scrollbar-color: var(--border) var(--bg2); }
+.kanban-col::-webkit-scrollbar { width: 5px; }
+.kanban-col::-webkit-scrollbar-track { background: var(--bg2); border-radius: 3px; }
+.kanban-col::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+.kanban-col::-webkit-scrollbar-thumb:hover { background: var(--text3); }
+.kanban-more {
+  text-align: center; font-size: 11px; color: var(--accent2);
+  cursor: pointer; padding: 6px; border-top: 1px solid var(--border);
+  user-select: none; margin-top: 4px;
+}
+.kanban-more:hover { text-decoration: underline; background: var(--card2); }
+.kanban-hidden { display: none; }
+.kanban-hidden.open { display: block; }
+.kanban-hidden .kanban-card { opacity: 0.8; }
+
+.kanban-card { cursor: pointer; }
+.agent-task { cursor: pointer; }
+
+.modal-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.65);
+  z-index: 1000; display: none; align-items: center; justify-content: center;
+  backdrop-filter: blur(2px); animation: fadeIn 0.15s ease;
+}
+.modal-overlay.open { display: flex; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+.modal {
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: 12px; max-width: 680px; width: 90%; max-height: 80vh;
+  overflow-y: auto; box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  animation: slideUp 0.2s ease;
+  scrollbar-width: thin; scrollbar-color: var(--border) var(--bg2);
+}
+.modal::-webkit-scrollbar { width: 5px; }
+.modal::-webkit-scrollbar-track { background: var(--bg2); }
+.modal::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+@keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+.modal-header {
+  display: flex; justify-content: space-between; align-items: flex-start;
+  padding: 20px 24px 0; position: sticky; top: 0; z-index: 1;
+}
+.modal-header-inner { flex: 1; }
+.modal-close {
+  background: none; border: none; color: var(--text3); font-size: 24px;
+  cursor: pointer; padding: 0 0 0 16px; line-height: 1;
+}
+.modal-close:hover { color: var(--text); }
+.modal-id { font-size: 13px; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.5px; }
+.modal-title { font-size: 18px; font-weight: 600; margin: 4px 24px 12px; line-height: 1.4; }
+.modal-badges { margin: 0 24px 16px; display: flex; gap: 8px; flex-wrap: wrap; }
+
+.modal-body { padding: 0 24px 20px; }
+.modal-details {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 0; background: var(--card); border-radius: 8px;
+  border: 1px solid var(--border); overflow: hidden; margin-bottom: 16px;
+}
+.modal-detail-item {
+  padding: 10px 14px; border-right: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+.modal-detail-item:nth-child(2n) { border-right: none; }
+.modal-detail-item .label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text3); margin-bottom: 2px; }
+.modal-detail-item .value { font-size: 13px; font-weight: 500; color: var(--text); }
+
+.modal-section { margin-bottom: 16px; }
+.modal-section h4 {
+  font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;
+  color: var(--text2); margin-bottom: 6px; padding-bottom: 4px;
+  border-bottom: 1px solid var(--border); font-weight: 600;
+}
+.modal-section .content {
+  font-size: 13px; color: var(--text); line-height: 1.6;
+  white-space: normal;
+}
+.modal-section .content { white-space: normal; }
+.modal-section .content ul, .modal-section .content ol { padding-left: 20px; margin: 6px 0; }
+.modal-section .content li { margin-bottom: 3px; }
+.modal-section .content h2 { font-size: 15px; font-weight: 600; margin: 14px 0 6px; color: var(--text); }
+.modal-section .content h3 { font-size: 14px; font-weight: 600; margin: 12px 0 4px; color: var(--text); }
+.modal-section .content h4 { font-size: 13px; font-weight: 600; margin: 10px 0 4px; color: var(--text2); }
+.modal-section .content code {
+  background: var(--bg3); padding: 1px 5px; border-radius: 3px;
+  font-size: 12px;
+}
+.modal-section .content pre {
+  background: var(--bg3); padding: 12px 14px; border-radius: 6px;
+  overflow-x: auto; font-size: 12px; line-height: 1.5;
+  border: 1px solid var(--border); margin: 8px 0;
+}
+.modal-section .content pre code { background: none; padding: 0; border-radius: 0; }
+.modal-section .content table {
+  width: 100%; border-collapse: collapse; font-size: 12px;
+  margin: 8px 0; border: 1px solid var(--border);
+}
+.modal-section .content th, .modal-section .content td {
+  padding: 6px 10px; border: 1px solid var(--border); text-align: left;
+}
+.modal-section .content th { background: var(--bg3); font-weight: 600; }
+.modal-section .content hr { border: none; border-top: 1px solid var(--border); margin: 12px 0; }
+.modal-section .content a { color: var(--accent2); text-decoration: underline; }
+.modal-section .content a:hover { color: var(--accent); }
+
+.modal-history { margin-bottom: 16px; }
+.modal-history-item {
+  font-size: 12px; padding: 6px 0; border-bottom: 1px solid var(--border);
+  color: var(--text2); line-height: 1.5;
+}
+.modal-history-item:last-child { border-bottom: none; }
+.modal-history-item .h-date { color: var(--accent); font-weight: 600; }
+
+.modal-related {
+  display: flex; gap: 12px; flex-wrap: wrap; font-size: 12px; margin-top: 8px;
+}
+.modal-related a { color: var(--accent2); text-decoration: none; }
+.modal-related a:hover { text-decoration: underline; }
+
+.refresh-btn {
+  background: var(--bg3); border: 1px solid var(--border);
+  color: var(--text2); padding: 4px 12px; border-radius: 4px;
+  cursor: pointer; font-size: 12px; display: flex; align-items: center; gap: 5px;
+  transition: background 0.15s;
+}
+.refresh-btn:hover { background: var(--card); color: var(--text); border-color: var(--accent); }
+.refresh-btn.spinning { pointer-events: none; }
+.refresh-btn.spinning .icon { display: inline-block; animation: spin 0.5s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1><span class="icon">&#9670;</span> Project Monitor</h1>
+  <div class="header-right">
+    <span><span class="live-dot" id="liveDot"></span><span id="liveLabel">Connecting...</span></span>
+    <button class="refresh-btn" id="refreshBtn" onclick="App.refresh()"><span class="icon">&#x27F3;</span> <span>Refresh</span></button>
+    <span class="last-updated" id="lastUpdated">-</span>
+  </div>
+</div>
+
+<div class="tabs" id="tabs">
+  <div class="tab active" data-tab="overview">Overview</div>
+  <div class="tab" data-tab="prds">PRDs</div>
+  <div class="tab" data-tab="kanban">Kanban</div>
+  <div class="tab" data-tab="agents">Agents</div>
+  <div class="tab" data-tab="board">Board</div>
+</div>
+
+<div class="content" id="content">
+  <div class="tab-content active" id="tab-overview"></div>
+  <div class="tab-content" id="tab-prds"></div>
+  <div class="tab-content" id="tab-kanban"></div>
+  <div class="tab-content" id="tab-agents"></div>
+  <div class="tab-content" id="tab-board"></div>
+</div>
+
+<div class="modal-overlay" id="taskModal" onclick="closeModal()">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="modal-header">
+      <div class="modal-header-inner"><span class="modal-id" id="modalId"></span></div>
+      <button class="modal-close" onclick="closeModal()">&times;</button>
+    </div>
+    <div class="modal-title" id="modalTitle"></div>
+    <div class="modal-badges" id="modalBadges"></div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+<script>
+const STATUS_ORDER = [
+  "PLANNING", "PLANNED", "READY_FOR_DEV", "IN_DEVELOPMENT",
+  "READY_FOR_TEST", "TESTING", "TESTED", "COMPLETED",
+  "BLOCKED", "ON_HOLD", "CANCELLED"
+];
+
+function byStatus(a, b) {
+  return STATUS_ORDER.indexOf(a.status) - STATUS_ORDER.indexOf(b.status);
+}
+
+function esc(s) {
+  const d = document.createElement("div");
+  d.textContent = s || "";
+  return d.innerHTML;
+}
+
+function mdToHtml(text) {
+  let h = esc(text);
+  h = h.replace(/```(\w*)\n?([\s\S]*?)```/g, '<pre><code>$2</code></pre>');
+  const tableRegex = /((?:\|.+?\|(?:\s*(?:\n|$)))+)/g;
+  h = h.replace(tableRegex, tb => {
+    const rows = tb.trim().split('\n').filter(r => r.trim());
+    if (rows.length < 2) return tb;
+    const isSep = r => /^\|[\s\-:|]+\|$/.test(r.trim());
+    if (!isSep(rows[1])) return tb;
+    const hdrs = rows[0].split('|').filter(c => c.trim()).map(c => c.trim());
+    const body = rows.slice(2).filter(r => !isSep(r));
+    if (!body.length) return tb;
+    let tbl = '<table><thead><tr>';
+    for (const h of hdrs) tbl += `<th>${h}</th>`;
+    tbl += '</tr></thead><tbody>';
+    for (const row of body) {
+      tbl += '<tr>' + row.split('|').filter(c => c.trim()).map(c => `<td>${c.trim()}</td>`).join('') + '</tr>';
+    }
+    return tbl + '</tbody></table>';
+  });
+  h = h.replace(/^### (.+)$/gm, '<h4>$1</h4>');
+  h = h.replace(/^## (.+)$/gm, '<h3>$1</h3>');
+  h = h.replace(/^# (.+)$/gm, '<h2>$1</h2>');
+  h = h.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+  h = h.replace(/\*(.+?)\*/g, '<em>$1</em>');
+  h = h.replace(/`([^`]+)`/g, '<code>$1</code>');
+  h = h.replace(/^[\-\*]\s(.+)$/gm, '<li>$1</li>');
+  h = h.replace(/((?:<li>.*<\/li>\n?)+)/g, '<ul>$1</ul>');
+  h = h.replace(/^\d+\.\s(.+)$/gm, '<li>$1</li>');
+  h = h.replace(/((?:<li>.*<\/li>\n?)+?)(?=\s*(?:\n|<[^l]|$))/g, m => m.includes('<ul>') ? m : '<ol>' + m + '</ol>');
+  h = h.replace(/^---+$/gm, '<hr>');
+  h = h.replace(/https?:\/\/[^\s<]+/g, '<a href="$&">$&</a>');
+  h = h.replace(/\n/g, '<br>');
+  return h;
+}
+
+function badge(status, extra) {
+  const cls = "badge badge-" + (status || "").replace(/[\s-]/g, "_");
+  return `<span class="${cls}${extra ? ' ' + extra : ''}">${esc(status)}</span>`;
+}
+
+function prioBadge(p) {
+  return `<span class="prio-${esc(p)}">${esc(p)}</span>`;
+}
+
+function formatDate(d) {
+  if (!d) return "-";
+  return d;
+}
+
+function humanTime(d) {
+  if (!d) return "";
+  const t = new Date(d);
+  return t.toLocaleTimeString();
+}
+
+function rankTasks(tasks) {
+  const dev = [], test = [], done = [], other = [], blocked = [];
+  for (const t of tasks) {
+    const s = (t.status || "").toUpperCase();
+    if (s === "IN_DEVELOPMENT") dev.push(t);
+    else if (s === "READY_FOR_TEST" || s === "TESTING" || s === "TESTED") test.push(t);
+    else if (s === "COMPLETED") done.push(t);
+    else if (s === "BLOCKED" || s === "CANCELLED") blocked.push(t);
+    else other.push(t);
+  }
+  return { dev, test, done, other, blocked };
+}
+
+const App = {
+  data: null,
+  conn: null,
+  pollTimer: null,
+  init() {
+    this.setupTabs();
+    this.connectSSE();
+    this.startPolling();
+  },
+
+  setupTabs() {
+    document.querySelectorAll(".tab").forEach(tab => {
+      tab.addEventListener("click", () => {
+        document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+        document.querySelectorAll(".tab-content").forEach(tc => tc.classList.remove("active"));
+        tab.classList.add("active");
+        const id = tab.dataset.tab;
+        document.getElementById("tab-" + id).classList.add("active");
+      });
+    });
+  },
+
+  connectSSE() {
+    const evtSource = new EventSource("/events");
+    this.conn = evtSource;
+
+    evtSource.onopen = () => {
+      document.getElementById("liveDot").className = "live-dot active";
+      document.getElementById("liveLabel").textContent = "LIVE";
+    };
+
+    evtSource.onmessage = (e) => {
+      try {
+        const msg = JSON.parse(e.data);
+        if (msg.type === "connected" || msg.type === "reload") {
+          this.data = msg.data;
+          this.render();
+        }
+      } catch(err) {
+        console.warn("SSE parse error", err);
+      }
+    };
+
+    evtSource.onerror = () => {
+      document.getElementById("liveDot").className = "live-dot error";
+      document.getElementById("liveLabel").textContent = "Reconnecting...";
+    };
+  },
+
+  startPolling() {
+    this.pollTimer = setInterval(() => this.refresh(true), 30000);
+  },
+
+  refresh(silent) {
+    const btn = document.getElementById("refreshBtn");
+    if (!silent) btn.classList.add("spinning");
+    fetch("/api/board")
+      .then(r => r.json())
+      .then(d => {
+        this.data = d;
+        this.render();
+        if (!silent) {
+          document.getElementById("liveLabel").textContent = "Updated";
+          setTimeout(() => document.getElementById("liveLabel").textContent = "LIVE", 2000);
+        }
+      })
+      .catch(() => {})
+      .finally(() => { if (!silent) btn.classList.remove("spinning"); });
+  },
+
+  render() {
+    if (!this.data) return;
+    const d = this.data;
+    document.getElementById("lastUpdated").textContent = "Updated: " + humanTime(d.board_updated);
+    this.renderOverview(d);
+    this.renderPRDs(d);
+    this.renderKanban(d);
+    this.renderAgents(d);
+    this.renderBoard(d);
+  },
+
+  renderOverview(d) {
+    const tasks = Object.values(d.tasks || {});
+    const stats = d.stats || {};
+    const prds = Object.values(d.prds || {});
+    const all = tasks.length;
+    const completed = tasks.filter(t => t.status === "COMPLETED").length;
+    const inDev = tasks.filter(t => t.status === "IN_DEVELOPMENT").length;
+    const readyTest = tasks.filter(t => t.status === "READY_FOR_TEST").length;
+    const bugs = tasks.filter(t => t.id && t.id.startsWith("BUG")).length;
+    const prdCount = prds.length;
+    const pct = all ? Math.round(completed / all * 100) : 0;
+
+    let html = `
+    <div class="stats-row">
+      <div class="stat-card"><div class="value blue">${all}</div><div class="label">Total Tasks</div></div>
+      <div class="stat-card"><div class="value green">${completed}</div><div class="label">Completed</div></div>
+      <div class="stat-card"><div class="value amber">${inDev}</div><div class="label">In Development</div></div>
+      <div class="stat-card"><div class="value purple">${readyTest}</div><div class="label">Ready for Test</div></div>
+      <div class="stat-card"><div class="value red">${bugs}</div><div class="label">Bugs</div></div>
+      <div class="stat-card"><div class="value cyan">${prdCount}</div><div class="label">PRDs</div></div>
+    </div>
+    <div class="prd-progress" style="margin-bottom:24px">
+      <div class="section-title">Overall Progress</div>
+      <div class="prd-bar-bg"><div class="prd-bar-fill" style="width:${pct}%;background:var(--accent)"></div></div>
+      <div class="prd-bar-label"><span>${completed} / ${all} tasks</span><span>${pct}%</span></div>
+    </div>`;
+
+    if (prds.length) {
+      html += `<div class="section-title">PRD Progress</div><div class="prd-list">`;
+      for (const p of prds) {
+        const pct2 = p._completion_pct || 0;
+        const statuses = p._statuses || {};
+        const breakdown = Object.entries(statuses).map(([k, v]) => `${k}: ${v}`).join(" &middot; ");
+        html += `
+        <div class="prd-card">
+          <div class="prd-header">
+            <div class="prd-title"><span class="prd-id">${esc(p.id || "")}</span>${esc(p.title || "")}</div>
+            <div class="prd-meta">${badge(p.status, "prd")} <span class="text3">v${esc(p.version || "")}</span></div>
+          </div>
+          <div class="prd-progress">
+            <div class="prd-bar-bg"><div class="prd-bar-fill" style="width:${pct2}%;background:var(--accent2)"></div></div>
+            <div class="prd-bar-label"><span>${p._completed_count || 0} / ${p._task_count || 0} tasks</span><span>${pct2}%</span></div>
+          </div>
+          <div style="font-size:11px;color:var(--text3);margin-top:4px">${breakdown}</div>
+        </div>`;
+      }
+      html += `</div>`;
+    }
+
+    if (stats && Object.keys(stats).length) {
+      html += `<div class="section-title" style="margin-top:24px">Board Statistics</div><div class="board-table-wrap"><table class="board-table">`;
+      for (const [k, v] of Object.entries(stats)) {
+        html += `<tr><td style="font-weight:500">${esc(k)}</td><td>${esc(v)}</td></tr>`;
+      }
+      html += `</table></div>`;
+    }
+
+    document.getElementById("tab-overview").innerHTML = html;
+  },
+
+  renderPRDs(d) {
+    const prds = Object.values(d.prds || {});
+    if (!prds.length) {
+      document.getElementById("tab-prds").innerHTML = '<div class="empty-state">No PRDs found</div>';
+      return;
+    }
+
+    let html = `<div class="prd-list">`;
+    for (const p of prds) {
+      const pct = p._completion_pct || 0;
+      const statuses = p._statuses || {};
+      const prdId = (p.id || "").replace("-", "");
+      const prdTasks = Object.values(d.tasks || {}).filter(t => (t.parent_prd || "").replace("-", "") === prdId);
+      prdTasks.sort(byStatus);
+
+      html += `
+      <div class="prd-card">
+        <div class="prd-header">
+          <div class="prd-title"><span class="prd-id">${esc(p.id || "")}</span>${esc(p.title || "")}</div>
+          <div class="prd-meta">${badge(p.status, "prd")} <span class="text3">v${esc(p.version || "")}</span></div>
+        </div>
+        <div class="prd-progress">
+          <div class="prd-bar-bg"><div class="prd-bar-fill" style="width:${pct}%;background:var(--accent2)"></div></div>
+          <div class="prd-bar-label"><span>${p._completed_count || 0} / ${p._task_count || 0} tasks</span><span>${pct}%</span></div>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px">
+          ${Object.entries(statuses).sort().map(([k, v]) => `<span>${badge(k)} ${v}</span>`).join("")}
+        </div>
+        ${prdTasks.length ? `
+        <div class="prd-tasks-toggle" onclick="this.nextElementSibling.classList.toggle('open');this.textContent=this.nextElementSibling.classList.contains('open')?'Hide tasks':'Show tasks (${prdTasks.length})'">Show tasks (${prdTasks.length})</div>
+        <div class="prd-tasks">
+          <table class="task-table">
+            <tr><th>ID</th><th>Title</th><th>Status</th><th>Priority</th><th>Owner</th></tr>
+            ${prdTasks.map(t => `<tr>
+              <td><strong>${esc(t.id)}</strong></td>
+              <td>${esc(t.title)}</td>
+              <td>${badge(t.status)}</td>
+              <td>${prioBadge(t.priority)}</td>
+              <td>${esc(t.owner || t.assigned_to || "-")}</td>
+            </tr>`).join("")}
+          </table>
+        </div>` : ""}
+      </div>`;
+    }
+    html += `</div>`;
+    document.getElementById("tab-prds").innerHTML = html;
+  },
+
+  renderKanban(d) {
+    const tasks = Object.values(d.tasks || {});
+    const cols = {
+      "READY_FOR_DEV": { label: "Ready for Dev", tasks: [] },
+      "IN_DEVELOPMENT": { label: "In Development", tasks: [] },
+      "READY_FOR_TEST": { label: "Ready for Test", tasks: [] },
+      "TESTING": { label: "Testing", tasks: [] },
+      "TESTED": { label: "Tested", tasks: [] },
+      "COMPLETED": { label: "Completed", tasks: [] },
+      "BLOCKED": { label: "Blocked", tasks: [] },
+    };
+    const other = { label: "Other", tasks: [] };
+    const KANBAN_SHOW = 10;
+
+    for (const t of tasks) {
+      const s = t.status || "";
+      if (cols[s]) cols[s].tasks.push(t);
+      else other.tasks.push(t);
+    }
+
+    function cardHtml(t) {
+      return `<div class="kanban-card">
+        <div class="task-id">${esc(t.id)} ${prioBadge(t.priority)}</div>
+        <div class="task-title">${esc(t.title)}</div>
+        <div class="task-meta">
+          ${badge(t.status)}
+          <span class="owner">${esc(t.owner || t.assigned_to || "")}</span>
+          ${t.parent_prd ? `<span class="prd-tag">${esc(t.parent_prd)}</span>` : ""}
+        </div>
+      </div>`;
+    }
+
+    function colHtml(label, items) {
+      items.sort(byStatus);
+      const visible = items.slice(0, KANBAN_SHOW);
+      const hidden = items.slice(KANBAN_SHOW);
+      return `<div class="kanban-col">
+        <h3>${esc(label)} <span class="count">${items.length}</span></h3>
+        ${!items.length ? '<div class="empty-state" style="padding:16px;font-size:12px">(none)</div>' : visible.map(cardHtml).join("")}
+        ${hidden.length ? `<div class="kanban-more" onclick="this.nextElementSibling.classList.toggle('open');this.textContent=this.nextElementSibling.classList.contains('open')?'Show less':'Show ${hidden.length} more...'">Show ${hidden.length} more...</div><div class="kanban-hidden">${hidden.map(cardHtml).join("")}</div>` : ""}
+      </div>`;
+    }
+
+    let html = `<div class="kanban">`;
+    for (const [, col] of Object.entries(cols)) {
+      html += colHtml(col.label, col.tasks);
+    }
+    if (other.tasks.length) {
+      html += colHtml(other.label, other.tasks);
+    }
+    html += `</div>`;
+    document.getElementById("tab-kanban").innerHTML = html;
+  },
+
+  renderAgents(d) {
+    const agents = d.agents || {};
+    const entries = Object.entries(agents);
+    if (!entries.length) {
+      document.getElementById("tab-agents").innerHTML = '<div class="empty-state">No agents found</div>';
+      return;
+    }
+    const AGENT_SHOW = 10;
+
+    function agentTaskHtml(t) {
+      return `<div class="agent-task">
+        <div class="at-title">
+          <span><strong>${esc(t.id)}</strong> ${esc(t.title)}</span>
+          <span>${badge(t.status)}</span>
+        </div>
+        <div style="font-size:11px;color:var(--text3);margin-top:2px">
+          ${t.parent_prd ? esc(t.parent_prd) + " &middot; " : ""}${prioBadge(t.priority)}
+        </div>
+      </div>`;
+    }
+
+    let html = `<div class="agents-grid">`;
+    for (const [name, agent] of entries) {
+      const tasks = agent.tasks || [];
+      const inProgress = tasks.filter(t => t.status === "IN_DEVELOPMENT" || t.status === "TESTING");
+      const completed = tasks.filter(t => t.status === "COMPLETED");
+      const readyTest = tasks.filter(t => t.status === "READY_FOR_TEST");
+      const visible = tasks.slice(0, AGENT_SHOW);
+      const hidden = tasks.slice(AGENT_SHOW);
+      html += `
+      <div class="agent-card">
+        <div class="agent-name">${esc(name)}</div>
+        <div class="agent-stats">
+          <span>${tasks.length} total</span>
+          <span style="color:var(--amber)">${inProgress.length} active</span>
+          <span style="color:var(--green)">${completed.length} done</span>
+          <span style="color:var(--purple)">${readyTest.length} ready</span>
+        </div>
+        <div style="height:4px;background:var(--bg3);border-radius:2px;margin:8px 0;overflow:hidden">
+          <div style="height:100%;width:${tasks.length ? Math.round(completed.length / tasks.length * 100) : 0}%;background:var(--green);border-radius:2px;transition:width 0.5s"></div>
+        </div>
+        ${visible.map(t => agentTaskHtml(t)).join("")}
+        ${hidden.length ? `<div class="agent-more" onclick="this.nextElementSibling.classList.toggle('open');this.textContent=this.nextElementSibling.classList.contains('open')?'Show less':'Show all ${tasks.length} tasks'">Show all ${tasks.length} tasks</div><div class="agent-hidden">${hidden.map(t => agentTaskHtml(t)).join("")}</div>` : ""}
+      </div>`;
+    }
+    html += `</div>`;
+    document.getElementById("tab-agents").innerHTML = html;
+  },
+
+  renderBoard(d) {
+    const tables = d.board_tables || {};
+    const sections = Object.keys(tables);
+    if (!sections.length) {
+      document.getElementById("tab-board").innerHTML = '<div class="empty-state">No board data found</div>';
+      return;
+    }
+
+    let html = "";
+    for (const section of sections) {
+      const t = tables[section];
+      const rows = t.rows || [];
+      const headers = t.headers || [];
+      if (!rows.length) {
+        html += `<div class="board-section"><h3>${esc(section)}</h3><div class="empty-state" style="padding:12px;font-size:12px">(none)</div></div>`;
+        continue;
+      }
+      html += `<div class="board-section"><h3>${esc(section)}</h3><div class="board-table-wrap"><table class="board-table"><tr>${headers.map(h => `<th>${esc(h)}</th>`).join("")}</tr>`;
+      for (const row of rows) {
+        html += `<tr>${row.map((c, i) => {
+          if (i === 0 && headers[i] && headers[i].toLowerCase() === "status") return `<td>${badge(c)}</td>`;
+          return `<td>${esc(c)}</td>`;
+        }).join("")}</tr>`;
+      }
+      html += `</table></div></div>`;
+    }
+    document.getElementById("tab-board").innerHTML = html;
+  }
+};
+
+function showTaskDetail(taskId) {
+  fetch("/api/task/" + encodeURIComponent(taskId))
+    .then(r => { if (!r.ok) throw new Error("Not found"); return r.json(); })
+    .then(d => {
+      const fm = d.frontmatter || {};
+      const sec = d.sections || {};
+      document.getElementById("modalId").textContent = fm.id || taskId;
+      document.getElementById("modalTitle").textContent = fm.title || "";
+      const badges = document.getElementById("modalBadges");
+      badges.innerHTML = "";
+      if (fm.status) badges.appendChild(elFromHTML(badge(fm.status)));
+      if (fm.priority) badges.appendChild(elFromHTML(prioBadge(fm.priority)));
+      if (fm.severity) badges.appendChild(elFromHTML(badge(fm.severity)));
+
+      const detailFields = [
+        ["Status", fm.status], ["Priority", fm.priority], ["Severity", fm.severity],
+        ["Owner", fm.owner], ["Assigned To", fm.assigned_to],
+        ["PRD", fm.parent_prd], ["Type", fm.type],
+        ["Created", fm.created], ["Started", fm.started],
+        ["Completed", fm.completed], ["Updated", fm.updated],
+        ["Est. Hours", fm.estimated_hours], ["Actual Hours", fm.actual_hours],
+        ["Branch", fm.assigned_branch],
+      ].filter(([,v]) => v != null && v !== "");
+
+      let bodyHtml = '<div class="modal-details">';
+      for (const [label, value] of detailFields) {
+        bodyHtml += `<div class="modal-detail-item"><div class="label">${esc(label)}</div><div class="value">${esc(String(value))}</div></div>`;
+      }
+      bodyHtml += '</div>';
+
+      const sectionOrder = ["goal", "description", "summary", "problem", "acceptance_criteria", "technical_notes", "root_cause", "fix", "validation", "files_expected", "files_changed"];
+      const sectionLabels = {
+        goal: "Goal", description: "Description", summary: "Summary", problem: "Problem",
+        acceptance_criteria: "Acceptance Criteria", technical_notes: "Technical Notes",
+        root_cause: "Root Cause", fix: "Fix", validation: "Validation",
+        files_expected: "Files Expected", files_changed: "Files Changed"
+      };
+      for (const key of sectionOrder) {
+        if (sec[key]) {
+          bodyHtml += `<div class="modal-section"><h4>${esc(sectionLabels[key] || key)}</h4><div class="content">${mdToHtml(sec[key])}</div></div>`;
+        }
+      }
+
+      if (fm.history && Array.isArray(fm.history) && fm.history.length) {
+        bodyHtml += '<div class="modal-section"><h4>History</h4><div class="modal-history">';
+        for (const entry of fm.history) {
+          bodyHtml += `<div class="modal-history-item">${esc(entry)}</div>`;
+        }
+        bodyHtml += '</div></div>';
+      }
+
+      const links = [];
+      if (fm.change_report) links.push(["Change Report", fm.change_report]);
+      if (fm.test_report) links.push(["Test Report", fm.test_report]);
+      if (fm.fix_summary) links.push(["Fix Summary", fm.fix_summary]);
+      if (fm.verification_report) links.push(["Verification", fm.verification_report]);
+      if (fm.parent_prd) links.push(["PRD", fm.parent_prd]);
+      if (fm.parent_task) links.push(["Parent Task", fm.parent_task]);
+      if (fm.depends_on && Array.isArray(fm.depends_on) && fm.depends_on.length) {
+        links.push(["Depends On", fm.depends_on.join(", ")]);
+      }
+      if (fm.blocks && Array.isArray(fm.blocks) && fm.blocks.length) {
+        links.push(["Blocks", fm.blocks.join(", ")]);
+      }
+      if (fm.labels && Array.isArray(fm.labels) && fm.labels.length) {
+        links.push(["Labels", fm.labels.join(", ")]);
+      }
+      if (links.length) {
+        bodyHtml += '<div class="modal-section"><h4>Related</h4><div class="modal-related">';
+        for (const [l, v] of links) {
+          bodyHtml += `<span><strong>${esc(l)}:</strong> ${esc(String(v))}</span>`;
+        }
+        bodyHtml += '</div></div>';
+      }
+
+      document.getElementById("modalBody").innerHTML = bodyHtml;
+      document.getElementById("taskModal").classList.add("open");
+    })
+    .catch(() => { /* silently ignore */ });
+}
+
+function closeModal() {
+  document.getElementById("taskModal").classList.remove("open");
+}
+
+function elFromHTML(html) {
+  const t = document.createElement("template");
+  t.innerHTML = html;
+  return t.content.firstChild;
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  document.addEventListener("click", e => {
+    const card = e.target.closest(".kanban-card");
+    if (card) {
+      const idEl = card.querySelector(".task-id");
+      if (idEl) {
+        const taskId = idEl.textContent.trim().split(/\s+/)[0];
+        showTaskDetail(taskId);
+      }
+      return;
+    }
+    const agentTask = e.target.closest(".agent-task");
+    if (agentTask) {
+      const idEl = agentTask.querySelector("strong");
+      if (idEl) {
+        showTaskDetail(idEl.textContent.trim());
+      }
+      return;
+    }
+  });
+  document.addEventListener("keydown", e => {
+    if (e.key === "Escape") closeModal();
+  });
+  App.init();
+});
+</script>
+</body>
+</html>

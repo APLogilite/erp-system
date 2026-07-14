@@ -2,11 +2,73 @@
 document: CHANGELOG
 version: 1.0.0
 status: ACTIVE
-owner: Planner
+owner: Product Manager
 last_updated: 2026-07-13
 ---
 
 # Changelog
+
+## 2026-07-13 (PRD-004 Advanced to TESTING — All 10 Tasks Complete)
+
+### Summary
+All 10 PRD-004 implementation tasks completed and advanced to READY_FOR_TEST. The new Window Hierarchy & Menu System is fully implemented:
+- New metadata schema (V24): sys_table, sys_column, sys_window, sys_tab, sys_window_field, sys_window_access, sys_menu
+- JPA entities + CRUD services for all 7 metadata tables
+- Runtime API: window definition endpoint, window data CRUD endpoints, menu endpoint
+- Frontend: WindowPage with /window/{windowName} routing, MenuNavigation component with collapsible hierarchy
+- Seed data: 12 business tables registered (V25), 7 admin windows with tabs/fields (V26), 10 ERP windows (V27), menu tree + access (V28)
+
+### PRD-004 Status
+- **PRD-004** — Window Hierarchy & Menu System → **TESTING** (v1.0.0)
+  - 10 tasks completed (TASK-036 through TASK-045)
+  - All 36 backend tests pass
+  - Frontend typecheck passes
+
+## 2026-07-14 (BUG-002/BUG-003/BUG-004 Marked TESTED — Fixes Already Verified)
+
+### Summary
+Three bugs (BUG-002, BUG-003, BUG-004) had test reports showing COMPLETED but their task files still showed IN_DEVELOPMENT/READY_FOR_TEST. Verified codebase confirms all fixes are in place. Updated task statuses to TESTED.
+
+| Bug | Was | Now | Fix verified |
+|-----|:---:|:---:|:------------|
+| BUG-002 | READY_FOR_TEST | **TESTED** | ApiVersionConfig.API_BASE = "/api/v1" ✅ |
+| BUG-003 | IN_DEVELOPMENT | **TESTED** | AppLayout has marginLeft compensation ✅ |
+| BUG-004 | IN_DEVELOPMENT | **TESTED** | FormSearchBar has search icon + loading ✅ |
+
+---
+
+## 2026-07-14 (PRD-003 Marked COMPLETED — Branch Merged to Main)
+
+### Summary
+PRD-003's 5 tasks (TASK-028..032) were in TESTED status but the branch had already been merged to main. Updated to COMPLETED. PRD-003 status: READY_FOR_DEPLOYMENT → COMPLETED.
+
+---
+
+## 2026-07-14 (PRD-004 QA Complete — READY_FOR_DEPLOYMENT)
+
+### Summary
+QA verification completed for all 10 PRD-004 tasks. Full structural verification performed — 118 test cases across all tasks, 0 bugs found. Reusable PRD-004 schema verification script created.
+
+### QA Results
+| Task | Tests Passed | Tests Skipped | Bugs |
+|------|:---:|:---:|:---:|
+| TASK-036 — New Metadata Schema | 15 | 2 (PSQL runtime, rollback) | 0 |
+| TASK-037 — JPA Entities + Services | 10 | 2 (FK pattern, runtime query) | 0 |
+| TASK-038 — Window Definition API | 5 | 0 | 0 |
+| TASK-039 — Window Data API | 9 | 0 | 0 |
+| TASK-040 — Menu Component | 11 | 0 | 0 |
+| TASK-041 — WindowPage + Routing | 11 | 0 | 0 |
+| TASK-042 — Register Business Tables | 19 | 0 | 0 |
+| TASK-043 — Admin Windows | 10 | 0 | 0 |
+| TASK-044 — ERP Windows | 14 | 0 | 0 |
+| TASK-045 — Menu + Access | 12 | 0 | 0 |
+| **Total** | **118** | **4** | **0** |
+
+### State
+- **PRD-004** → **READY_FOR_DEPLOYMENT** (v1.0.0)
+- All 10 tasks verified and TESTED
+- 0 bugs created
+- Ready for PostgreSQL runtime validation and production deployment
 
 ## 2026-07-13 (PRD-004 Created — Window Hierarchy & Menu System)
 

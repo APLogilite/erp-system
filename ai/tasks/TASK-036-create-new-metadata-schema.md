@@ -5,29 +5,29 @@ title: Create New Metadata Schema (Flyway Migration)
 
 type: Database
 
-status: PLANNING
+status: TESTED
 
 priority: Critical
 
-owner: planner
+owner: Software Engineer
 
-assigned_to:
+assigned_to: Software Engineer
 
-assigned_branch:
+assigned_branch: feature/TASK-036
 
-locked: false
+locked: true
 
 created: 2026-07-13
 
 updated: 2026-07-13
 
-started:
+started: 2026-07-13
 
-completed:
+completed: 2026-07-13
 
 estimated_hours: 6
 
-actual_hours:
+actual_hours: 1
 
 parent_prd: PRD-004
 
@@ -45,9 +45,19 @@ blocks: [TASK-037, TASK-038, TASK-039, TASK-040, TASK-041, TASK-043]
 
 labels: [database, migration, flyway]
 
+history:
+  - 2026-07-13: Status PLANNING → IN_DEVELOPMENT. Assigned to Software Engineer. Started implementation.
+  - 2026-07-13: V24 Flyway migration created. Validation passed. Change report created. Status → READY_FOR_TEST.
+  - 2026-07-14: QA verification completed. 15/17 tests passed, 2 skipped, 0 bugs. Status → TESTED.
+
 review_required: true
 
 test_required: true
+
+test_report: ai/tests/TEST-TASK-036.md
+test_script: ai/scripts/verify-prd-004-schema.sql
+
+change_report: ai/changes/CHANGE-TASK-036.md
 
 ---
 

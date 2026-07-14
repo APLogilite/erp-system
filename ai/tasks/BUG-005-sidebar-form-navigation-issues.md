@@ -40,7 +40,7 @@ fix_summary:
 verification_report:
 
 history:
-  - 2026-07-13 — Planner — Created bug task. User reported sidebar DYNAMIC FORMS section shows table/model names and sub-forms.
+  - 2026-07-13 — Product Manager — Created bug task. User reported sidebar DYNAMIC FORMS section shows table/model names and sub-forms.
 
 ---
 

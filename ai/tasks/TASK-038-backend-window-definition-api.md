@@ -5,29 +5,29 @@ title: Backend — Runtime Window Definition API (Bundle)
 
 type: API
 
-status: PLANNING
+status: TESTED
 
 priority: Critical
 
-owner: planner
+owner: Software Engineer
 
-assigned_to:
+assigned_to: Software Engineer
 
-assigned_branch:
+assigned_branch: feature/TASK-038
 
-locked: false
+locked: true
 
 created: 2026-07-13
 
 updated: 2026-07-13
 
-started:
+started: 2026-07-13
 
-completed:
+completed: 2026-07-13
 
 estimated_hours: 8
 
-actual_hours:
+actual_hours: 1
 
 parent_prd: PRD-004
 
@@ -45,9 +45,18 @@ blocks: [TASK-041]
 
 labels: [backend, api, runtime]
 
+history:
+  - 2026-07-13: Status READY_FOR_DEV → IN_DEVELOPMENT. Assigned to Software Engineer. Started implementation.
+  - 2026-07-13: Window definition API endpoint created. Validation passed. Status → READY_FOR_TEST.
+  - 2026-07-14: QA verification completed. 5/5 tests passed, 0 bugs. Status → TESTED.
+
 review_required: true
 
 test_required: true
+
+test_report: ai/tests/TEST-TASK-038.md
+
+change_report: ai/changes/CHANGE-TASK-038.md
 
 ---
 

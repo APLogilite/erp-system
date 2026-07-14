@@ -75,7 +75,7 @@ test_report: TEST-TASK-033
 ntest_script: ai/scripts/verify-prd-002-data.sql
 
 history:
-  - 2026-07-10 — Planner — Created task from PRD-002 v1.0.0
+  - 2026-07-10 — Product Manager — Created task from PRD-002 v1.0.0
   - 2026-07-10 — Software Engineer — Locked task, created feature/TASK-033 branch, started implementation
   - 2026-07-10 — Software Engineer — Created V15 Flyway migration (351 lines, 11 tables, 63 columns). Build passes.
   - 2026-07-10 — QA Engineer — Locked task for testing. Created prd/PRD-002-admin-configuration-forms branch from main. Build verified (36 tests, 0 failures, 3 pre-existing errors).
@@ -300,7 +300,7 @@ Foreign key columns (form_id, table_id, field_id, etc.) store UUIDs. For simplic
 
 | Date | Agent | Action |
 |------|-------|--------|
-| 2026-07-10 | Planner | Created task from PRD-002 v1.0.0 |
+| 2026-07-10 | Product Manager | Created task from PRD-002 v1.0.0 |
 
 ---
 

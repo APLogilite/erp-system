@@ -29,7 +29,7 @@ parent_prd: PRD-001
 
 parent_task: TASK-007
 
-reported_by: User + Planner investigation
+reported_by: User + Product Manager investigation
 
 detected_in: Backend authorization (localhost:8081)
 
@@ -40,7 +40,7 @@ fix_summary:
 verification_report:
 
 history:
-  - 2026-07-13 — Planner — Created bug task. After BUG-002 fixed the 500 errors, all metadata/runtime endpoints return 403 Access Denied for admin user because role codes don't match.
+  - 2026-07-13 — Product Manager — Created bug task. After BUG-002 fixed the 500 errors, all metadata/runtime endpoints return 403 Access Denied for admin user because role codes don't match.
 
 ---
 

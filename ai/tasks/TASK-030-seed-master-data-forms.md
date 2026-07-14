@@ -5,7 +5,9 @@ title: Seed Master Data Forms (Flyway Migration)
 
 type: Database
 
-status: TESTED
+status: COMPLETED
+
+merged_to_main: 2026-07-14
 
 priority: High
 
@@ -68,7 +70,7 @@ change_summary: ai/changes/CHANGE-TASK-030.md
 test_report:
 
 history:
-  - 2026-07-10 — Planner — Created task from PRD-002 v1.0.0
+  - 2026-07-10 — Product Manager — Created task from PRD-002 v1.0.0
   - 2026-07-13 — Software Engineer — Activated to IN_DEVELOPMENT, started implementation
   - 2026-07-13 — Software Engineer — Created V21 Flyway migration with 5 master data forms + metadata
 
@@ -294,7 +296,7 @@ Use `{next}` = TASK-028's version + 2 (after TASK-029).
 
 | Date | Agent | Action |
 |------|-------|--------|
-| 2026-07-10 | Planner | Created task from PRD-002 v1.0.0 |
+| 2026-07-10 | Product Manager | Created task from PRD-002 v1.0.0 |
 
 ---
 

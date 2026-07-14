@@ -5,7 +5,9 @@ title: Seed Line Forms and Sub-Form Configurations (Flyway Migration)
 
 type: Database
 
-status: TESTED
+status: COMPLETED
+
+merged_to_main: 2026-07-14
 
 priority: High
 
@@ -68,7 +70,7 @@ change_summary: ai/changes/CHANGE-TASK-032.md
 test_report:
 
 history:
-  - 2026-07-10 — Planner — Created task from PRD-002 v1.0.0
+  - 2026-07-10 — Product Manager — Created task from PRD-002 v1.0.0
   - 2026-07-13 — Software Engineer — Activated to IN_DEVELOPMENT, started implementation
   - 2026-07-13 — Software Engineer — Created V23 Flyway migration with 4 line forms + 7 sub-form configs
 
@@ -283,7 +285,7 @@ Use `{next}` = TASK-031's version + 1. If splitting into two files, use +1 and +
 
 | Date | Agent | Action |
 |------|-------|--------|
-| 2026-07-10 | Planner | Created task from PRD-002 v1.0.0 |
+| 2026-07-10 | Product Manager | Created task from PRD-002 v1.0.0 |
 
 ---
 

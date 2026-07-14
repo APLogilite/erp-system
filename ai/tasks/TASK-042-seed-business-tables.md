@@ -5,29 +5,29 @@ title: Seed Data — Register Business Tables (md_*, tx_*) as sys_table + sys_co
 
 type: Database
 
-status: PLANNING
+status: TESTED
 
 priority: High
 
-owner: planner
+owner: Software Engineer
 
-assigned_to:
+assigned_to: Software Engineer
 
-assigned_branch:
+assigned_branch: feature/TASK-042
 
-locked: false
+locked: true
 
 created: 2026-07-13
 
 updated: 2026-07-13
 
-started:
+started: 2026-07-13
 
-completed:
+completed: 2026-07-13
 
 estimated_hours: 4
 
-actual_hours:
+actual_hours: 2
 
 parent_prd: PRD-004
 
@@ -45,9 +45,18 @@ blocks: [TASK-043, TASK-044]
 
 labels: [database, seed, flyway]
 
+history:
+  - 2026-07-13: Status READY_FOR_DEV → IN_DEVELOPMENT. Assigned to Software Engineer. Started implementation.
+  - 2026-07-13: V25 Flyway migration created. All 12 business tables registered. Validation passed. Status → READY_FOR_TEST.
+  - 2026-07-14: QA verification completed. 19/19 tests passed, 0 bugs. Status → TESTED.
+
 review_required: true
 
 test_required: true
+
+test_report: ai/tests/TEST-TASK-042.md
+
+change_report: ai/changes/CHANGE-TASK-042.md
 
 ---
 
