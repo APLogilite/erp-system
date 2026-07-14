@@ -94,6 +94,12 @@ function RecordDialog({ open, windowName, windowDef, recordId, onClose }: Record
     enabled: !!recordId,
   });
 
+  // Extract child records from recordData
+  const childRecordsMap = recordData
+    ? ((recordData as { childRecords?: Record<string, Record<string, unknown>[]> }).childRecords ??
+      {})
+    : {};
+
   // Initialize form data when record data loads
   useEffect(() => {
     if (recordData) {
@@ -335,7 +341,7 @@ function RecordDialog({ open, windowName, windowDef, recordId, onClose }: Record
             Related Records
           </Typography>
           {childTabs.map((ct) => (
-            <ChildTabGrid key={ct.id} tab={ct} parentRecordId={recordId} windowName={windowName} />
+            <ChildTabGrid key={ct.id} tab={ct} childRecords={childRecordsMap[ct.name] ?? []} />
           ))}
         </Box>
       )}
@@ -354,24 +360,56 @@ function RecordDialog({ open, windowName, windowDef, recordId, onClose }: Record
 
 interface ChildTabGridProps {
   tab: WindowTabDefinition;
-  parentRecordId: string;
-  windowName: string;
+  childRecords: Record<string, unknown>[];
 }
 
-function ChildTabGrid({ tab, parentRecordId: _parentRecordId }: ChildTabGridProps) {
-  // For now, show a placeholder indicating child records exist
-  // Full child record CRUD will be implemented in a future update
-  const relatedCol = tab.parentColumn;
+function ChildTabGrid({ tab, childRecords }: ChildTabGridProps) {
+  const fields = tab.fields
+    .filter((f) => f.isDisplayed !== false)
+    .sort((a, b) => a.seqNo - b.seqNo);
+
+  if (childRecords.length === 0) {
+    return (
+      <Box sx={{ mb: 2, px: 1 }}>
+        <Typography variant="subtitle2" sx={{ mb: 0.5, fontWeight: 600 }}>
+          {tab.name}
+        </Typography>
+        <Typography variant="body2" color="text.secondary">
+          No related records found.
+        </Typography>
+      </Box>
+    );
+  }
 
   return (
-    <Box sx={{ mb: 2, px: 1 }}>
-      <Typography variant="subtitle2" sx={{ mb: 0.5 }}>
-        {tab.name} ({relatedCol ? `via ${relatedCol}` : ''})
+    <Box sx={{ mb: 2 }}>
+      <Typography variant="subtitle2" sx={{ mb: 0.5, fontWeight: 600, px: 1 }}>
+        {tab.name}
       </Typography>
-      <Typography variant="body2" color="text.secondary">
-        Child records will be shown here when a parent record is selected. This feature requires a
-        dedicated child record grid component.
-      </Typography>
+      <TableContainer>
+        <Table size="small">
+          <TableHead>
+            <TableRow>
+              {fields.map((f) => (
+                <TableCell key={f.column.code} sx={{ fontWeight: 600, fontSize: 12 }}>
+                  {f.labelOverride ?? f.column.label}
+                </TableCell>
+              ))}
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {childRecords.map((rec) => (
+              <TableRow key={rec.id as string}>
+                {fields.map((f) => (
+                  <TableCell key={f.column.code} sx={{ fontSize: 12 }}>
+                    {String(rec[f.column.code] ?? '')}
+                  </TableCell>
+                ))}
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
     </Box>
   );
 }

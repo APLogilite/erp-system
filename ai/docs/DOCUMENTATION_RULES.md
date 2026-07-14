@@ -21,7 +21,9 @@ Every AI agent must read this before creating or modifying any project file.
 | `backend/*`, `frontend/*` | Software Engineer | Application source code |
 | `ai/tests/TEST-*.md` | QA Engineer | Test reports |
 | `ai/scripts/*` | QA Engineer | Reusable test scripts |
+| `ai/schema/*` | Software Engineer | Centralized DDL reference |
 | `ai/modules/*` | Technical Writer | Module docs |
+| `ai/ACCESS_RULES.md`, `ai/ACCESS_RULES.json` | AI Framework | Access control rules |
 | `ai/flows/*` | Technical Writer | Flow docs |
 | `ai/failures/FAIL-*.md` | Agent that created it | Failure reports |
 | `.opencode/*` | AI Framework | Agent config (no agent modifies) |
@@ -33,6 +35,8 @@ Every AI agent must read this before creating or modifying any project file.
 - QA Engineer may update `status` and `updated` fields in PRD docs when advancing TESTING→READY_FOR_DEPLOYMENT
 - No agent modifies another agent's owned directories
 - No agent modifies `.opencode/*` files
+- Any agent may read `ai/schema/*` (reference only)
+- Software Engineer writes `ai/schema/*` when schema changes
 
 ---
 
@@ -57,6 +61,7 @@ Update the board on EVERY status change:
 - PRD doc and PROJECT_BOARD.md must always match
 - Never update one without the other
 - If inconsistency is found: stop, correct, continue
+- `ai/ACCESS_RULES.md` is the source of truth for file ownership
 
 ### Field ownership
 

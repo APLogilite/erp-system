@@ -88,7 +88,7 @@ List any bugs discovered during testing. If none, state "None".
 
 ---
 
-## Reusable Test Scripts
+## Reusable Scripts
 
 Reference any reusable scripts that can re-run this report's verification.
 
@@ -100,4 +100,6 @@ psql -U erp_user -h localhost -d erp_db -f ai/scripts/verify-<name>.sql
 ./ai/scripts/run-all-regression.sh
 ```
 
-If no reusable scripts were generated for this test, state "None. Manual verification only." and explain why (e.g., "Frontend-only test, no database queries", "One-time structural validation").
+If the test involves schema verification, reference the canonical DDL in `ai/schema/<table>.sql` for expected table structure.
+
+If no reusable scripts were generated for this test, state "None. Manual verification only."

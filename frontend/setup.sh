@@ -31,4 +31,4 @@ echo "Installing dependencies..."
 PATH=./.local/nodejs/bin:$PATH ./.local/nodejs/bin/pnpm install
 
 echo "Frontend environment setup complete!"
-echo "You can now run: ./.local/bin/pnpm dev"
+echo "You can now run: ./.local/nodejs/bin/pnpm dev"

@@ -6,6 +6,9 @@ title:
 type: Feature
 # Feature | Bug | Enhancement | Refactor | Documentation | Research
 
+scope: both
+# frontend | backend | both | database
+
 status: PLANNING
 # PLANNING
 # PLANNED

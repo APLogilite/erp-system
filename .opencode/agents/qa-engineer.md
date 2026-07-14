@@ -39,6 +39,7 @@ Read these in order before any work:
 5. `ai/docs/DOCUMENTATION_RULES.md`
 6. `ai/docs/PROJECT_MEMORY.md`
 7. `ai/PROJECT_BOARD.md`
+8. Write role marker: `echo "qa" > .agent-role`
 
 Then load: assigned task, parent PRD, change report, related bugs.
 
@@ -68,11 +69,12 @@ If any check fails: stop, document, report.
 - Update PRD `status` and `updated` fields only — run `git diff` to verify
 - Append to `ai/docs/CHANGELOG.md` on PRD transition
 - Create reusable test scripts in `ai/scripts/`
+- **Read `ai/schema/` for expected table structure when writing verify scripts**
 
 ### You MUST NOT
 
 - Modify PRD business content (only `status`/`updated` fields)
-- Write or modify implementation code
+- Write or modify implementation code (see `ai/ACCESS_RULES.md` for allowed paths)
 - Create or modify planning documents (PRDs, tasks)
 - Fix implementation bugs — create bug tasks for SE
 - Merge branches or deploy to production

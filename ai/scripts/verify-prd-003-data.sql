@@ -1,98 +1,146 @@
 -- ============================================================
 -- PRD-003 Data Verification (Reusable Regression Script)
--- Verifies V19-V23 Flyway migrations applied correctly
+-- Verifies V19-V20 (physical tables) + V25-V27 (registrations) applied correctly
 -- Usage: psql -U erp_user -h localhost -d erp_db -f ai/scripts/verify-prd-003-data.sql
 -- ============================================================
 
 \echo '========================================'
-\echo 'PRD-003: ERP Order Flow — Transaction Forms'
+\echo 'PRD-003: ERP Order Flow (New Schema)'
 \echo '========================================'
 
--- Part A: V19 — Master Data Tables
+-- Part A: Master Data Tables in sys_table (table_type = 'master_data')
 \echo ''
-\echo '--- A: V19 — Master Data Tables ---'
-SELECT table_name, name AS model_name, label
-FROM sys_metadata_models
-WHERE name IN ('md_business_partner','md_product','md_uom','md_uom_conversion','md_warehouse')
-ORDER BY name;
+\echo '--- A: Master Data Tables (table_type = master_data) ---'
+SELECT t.name, t.label, t.plural_label, t.table_name
+FROM sys_table t
+WHERE t.table_type = 'master_data'
+ORDER BY t.name;
 
-\echo 'Expected: 5 master data tables'
-
-\echo ''
-SELECT m.name AS table_name, count(tc.code) AS registered_columns
-FROM sys_metadata_models m
-JOIN sys_table_columns tc ON tc.table_id = m.id
-WHERE m.name IN ('md_business_partner','md_product','md_uom','md_uom_conversion','md_warehouse')
-GROUP BY m.name ORDER BY m.name;
-
-\echo 'Expected: 7,7,2,4,3 columns respectively (23 total)'
-
--- Part B: V20 — Transaction Tables
-\echo ''
-\echo '--- B: V20 — Transaction Tables ---'
-SELECT table_name, name AS model_name, label
-FROM sys_metadata_models
-WHERE name LIKE 'tx_%'
-ORDER BY name;
-
-\echo 'Expected: 9 transaction tables (tx_order, tx_order_line, tx_invoice, tx_invoice_line, tx_payment, tx_shipment, tx_shipment_line, tx_material_receipt, tx_mr_line)'
-
--- Part C: V21 — Master Data Forms
-\echo ''
-\echo '--- C: V21 — Master Data Forms ---'
-SELECT name, model_name, type, scope
-FROM sys_metadata_views
-WHERE name IN ('business_partner','product','uom','uom_conversion','warehouse')
-ORDER BY name;
-
-\echo 'Expected: 5 master data forms'
+\echo 'Expected: 5 master data tables (md_business_partner, md_product, md_uom, md_uom_conversion, md_warehouse)'
 
 \echo ''
-SELECT v.name AS form_name, count(f.id) AS field_count
-FROM sys_metadata_views v
-JOIN sys_form_fields f ON f.form_id = v.id
-WHERE v.name IN ('business_partner','product','uom','uom_conversion','warehouse')
-GROUP BY v.name ORDER BY v.name;
+\echo '--- A2: Master Data Table Columns ---'
+SELECT t.name AS table_name, count(c.id) AS registered_columns
+FROM sys_table t
+JOIN sys_column c ON c.table_id = t.id
+WHERE t.table_type = 'master_data'
+GROUP BY t.name
+ORDER BY t.name;
 
-\echo 'Expected: 7,7,2,4,3 fields respectively (23 total)'
+\echo 'Expected: Column counts for each master data table'
 
--- Part D: V22 — Transaction Header Forms
+-- Part B: Transaction Tables in sys_table (table_type = 'transaction')
 \echo ''
-\echo '--- D: V22 — Transaction Header Forms ---'
-SELECT name, model_name, where_clause_field, where_clause_value
-FROM sys_metadata_views
-WHERE name IN ('purchase_order','sales_order','purchase_invoice','sales_invoice',
-               'purchase_payment','sales_payment','purchase_shipment','sales_shipment',
-               'material_receipt')
-ORDER BY name;
+\echo '--- B: Transaction Tables (table_type = transaction) ---'
+SELECT t.name, t.label, t.plural_label, t.table_name
+FROM sys_table t
+WHERE t.table_type = 'transaction'
+ORDER BY t.name;
 
-\echo 'Expected: 9 forms with correct where_clause values'
-
--- Verify material_receipt has NO where_clause
-\echo ''
-SELECT name, where_clause_field IS NULL AS no_where_clause
-FROM sys_metadata_views
-WHERE name = 'material_receipt';
-
-\echo 'Expected: no_where_clause = t (true)'
-
--- Part E: V23 — Line Forms + Sub-Form Configs
-\echo ''
-\echo '--- E: V23 — Line Forms + Sub-Form Configs ---'
-SELECT name, model_name
-FROM sys_metadata_views
-WHERE name IN ('order_line','invoice_line','shipment_line','mr_line')
-ORDER BY name;
-
-\echo 'Expected: 4 line forms'
+\echo 'Expected: 7 transaction tables (tx_order, tx_order_line, tx_invoice, tx_invoice_line, tx_payment, tx_shipment, tx_shipment_line)'
 
 \echo ''
-SELECT child_form_code, parent_form_name, relation_code
-FROM (
-  SELECT sub.child_form_code, p.name AS parent_form_name, sub.relation_code
-  FROM sys_form_sub_forms sub
-  JOIN sys_metadata_views p ON p.id = sub.parent_form_id
-) subq
-ORDER BY child_form_code, parent_form_name;
+\echo '--- B2: Transaction Table Columns ---'
+SELECT t.name AS table_name, count(c.id) AS registered_columns
+FROM sys_table t
+JOIN sys_column c ON c.table_id = t.id
+WHERE t.table_type = 'transaction'
+GROUP BY t.name
+ORDER BY t.name;
 
-\echo 'Expected: 7 sub-form links (order_line used by both purchase_order and sales_order)'
+\echo 'Expected: Column counts for each transaction table'
+
+-- Part C: Master Data Windows (from V27)
+\echo ''
+\echo '--- C: Master Data Windows ---'
+SELECT w.name, t.name AS table_name, w.description
+FROM sys_window w
+JOIN sys_table t ON w.table_id = t.id
+WHERE t.table_type = 'master_data'
+ORDER BY w.name;
+
+\echo 'Expected: 4 master data windows (Business Partners, Products, UOM, Warehouses)'
+
+\echo ''
+\echo '--- C2: Master Data Window Tabs ---'
+SELECT w.name AS window_name, tab.name AS tab_name,
+       st.label AS table_label, tab.seq_no, tab.parent_column
+FROM sys_tab tab
+JOIN sys_window w ON tab.window_id = w.id
+JOIN sys_table st ON tab.table_id = st.id
+WHERE w.name IN ('Business Partners', 'Products', 'UOM', 'Warehouses')
+ORDER BY w.name, tab.seq_no;
+
+\echo ''
+\echo '--- C3: Master Data Window Field Counts ---'
+SELECT w.name AS window_name, count(wf.id) AS field_count
+FROM sys_window_field wf
+JOIN sys_tab t ON wf.tab_id = t.id
+JOIN sys_window w ON t.window_id = w.id
+WHERE w.name IN ('Business Partners', 'Products', 'UOM', 'Warehouses')
+GROUP BY w.name
+ORDER BY w.name;
+
+\echo 'Expected: Business Partners=7, Products=6, UOM=2, Warehouses=3'
+
+-- Part D: Transaction Windows (from V27)
+\echo ''
+\echo '--- D: Transaction Windows ---'
+SELECT w.name, t.name AS table_name, w.description
+FROM sys_window w
+JOIN sys_table t ON w.table_id = t.id
+WHERE t.table_type = 'transaction'
+ORDER BY w.name;
+
+\echo 'Expected: 6 transaction windows (Sales Orders, Purchase Orders, Sales Invoices, Purchase Invoices, Payments, Shipments)'
+
+\echo ''
+\echo '--- D2: Transaction Window Tabs ---'
+SELECT w.name AS window_name, tab.name AS tab_name,
+       st.label AS table_label, tab.seq_no, tab.parent_column
+FROM sys_tab tab
+JOIN sys_window w ON tab.window_id = w.id
+JOIN sys_table st ON tab.table_id = st.id
+WHERE w.name IN ('Sales Orders', 'Purchase Orders', 'Sales Invoices',
+                 'Purchase Invoices', 'Payments', 'Shipments')
+ORDER BY w.name, tab.seq_no;
+
+\echo 'Expected: Header tabs at seq 10, child tabs (Lines, Shipments) at seq 20/30'
+
+\echo ''
+\echo '--- D3: Transaction Window Field Counts ---'
+SELECT w.name AS window_name, count(wf.id) AS field_count
+FROM sys_window_field wf
+JOIN sys_tab t ON wf.tab_id = t.id
+JOIN sys_window w ON t.window_id = w.id
+WHERE w.name IN ('Sales Orders', 'Purchase Orders', 'Sales Invoices',
+                 'Purchase Invoices', 'Payments', 'Shipments')
+GROUP BY w.name
+ORDER BY w.name;
+
+\echo ''
+\echo '--- E: Physical Table Existence ---'
+SELECT tablename AS "Physical Business Tables"
+FROM pg_tables
+WHERE schemaname = 'public'
+  AND tablename IN ('md_business_partner','md_product','md_uom','md_uom_conversion','md_warehouse',
+                    'tx_order','tx_order_line','tx_invoice','tx_invoice_line',
+                    'tx_payment','tx_shipment','tx_shipment_line')
+ORDER BY tablename;
+
+\echo 'Expected: 12 physical tables (5 md_* + 7 tx_*)'
+
+\echo ''
+\echo '========================================'
+\echo 'PRD-003 (NEW SCHEMA) SUMMARY'
+\echo '========================================'
+SELECT
+  (SELECT count(*) FROM sys_table WHERE table_type = 'master_data') AS master_data_tables,
+  (SELECT count(*) FROM sys_table WHERE table_type = 'transaction') AS transaction_tables,
+  (SELECT count(*) FROM sys_window w JOIN sys_table t ON w.table_id = t.id WHERE t.table_type = 'master_data') AS master_data_windows,
+  (SELECT count(*) FROM sys_window w JOIN sys_table t ON w.table_id = t.id WHERE t.table_type = 'transaction') AS transaction_windows,
+  (SELECT count(*) FROM sys_column c JOIN sys_table t ON c.table_id = t.id WHERE t.table_type IN ('master_data', 'transaction')) AS total_registered_columns;
+
+\echo ''
+\echo 'Expected: master_data_tables=5, transaction_tables=7,'
+\echo '         master_data_windows=4, transaction_windows=6'

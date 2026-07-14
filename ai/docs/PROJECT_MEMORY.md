@@ -67,6 +67,12 @@ last_updated: 2026-07-13
 
 ---
 
+### Scope Awareness
+
+Tasks may require changes across frontend, backend, database, or all three. Every task's `scope:` field (in frontmatter) indicates which layers are affected. Always verify ALL scope layers before completing implementation. After schema changes, update the corresponding DDL file in `ai/schema/`.
+
+---
+
 # Known Limitations
 
 - Form Designer API (TASK-007) lacks tenant authorization — tracked as ENH-001

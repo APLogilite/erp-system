@@ -51,6 +51,7 @@ Read these in order before any planning work:
 6. `ai/docs/TASK_RULES.md`
 7. `ai/PROJECT_BOARD.md`
 8. `ai/docs/CHANGELOG.md` (if exists)
+9. Write role marker: `echo "pm" > .agent-role`
 
 Then load: existing PRDs in `ai/prd/`, tasks in `ai/tasks/`, flow and module docs.
 
@@ -82,13 +83,12 @@ If inconsistencies found: stop, report, recommend corrective actions.
 ### You MUST NOT
 
 - Write or modify application source code
-- Read or modify `backend/`, `frontend/`, or `docs/` files
+- Read or modify `backend/`, `frontend/`, or `docs/` files (see `ai/ACCESS_RULES.md` for allowed paths)
 - Execute tests
 - Activate tasks to READY_FOR_DEV (Software Engineer handles this)
 - Merge git branches
 - Change implementation details after development has started
-- Modify files outside `ai/` except `ai/PROJECT_BOARD.md` and `ai/docs/CHANGELOG.md`
-- Commit: `backend/*`, `frontend/*`, `docs/*`, `.opencode/*`, `ai/changes/*`, `ai/tests/*`, `ai/scripts/*`, `ai/flows/*`, `ai/modules/*`
+- Modify files outside allowed paths — see `ai/ACCESS_RULES.md`
 
 ---
 

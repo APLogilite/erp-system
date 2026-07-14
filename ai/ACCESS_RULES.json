@@ -1,0 +1,71 @@
+{
+  "description": "Centralized access control rules for AI agents. All agents and the pre-commit hook read this file.",
+  "rules": {
+    "se": {
+      "label": "Software Engineer",
+      "allow_paths": [
+        "backend/**",
+        "frontend/**",
+        "ai/changes/**",
+        "ai/schema/**",
+        "ai/PROJECT_BOARD.md",
+        "ai/docs/CHANGELOG.md",
+        "ai/failures/**"
+      ],
+      "allow_branches": [
+        "feature/*",
+        "bugfix/*",
+        "enhancement/*",
+        "prd/*"
+      ]
+    },
+    "qa": {
+      "label": "QA Engineer",
+      "allow_paths": [
+        "ai/tests/**",
+        "ai/scripts/**",
+        "ai/schema/**",
+        "ai/tasks/BUG-*.md",
+        "ai/PROJECT_BOARD.md",
+        "ai/docs/CHANGELOG.md",
+        "ai/failures/**"
+      ],
+      "allow_branches": [
+        "prd/*"
+      ]
+    },
+    "pm": {
+      "label": "Product Manager",
+      "allow_paths": [
+        "ai/prd/**",
+        "ai/tasks/**",
+        "ai/docs/*.md",
+        "ai/PROJECT_BOARD.md",
+        "ai/docs/CHANGELOG.md",
+        "ai/schema/**"
+      ],
+      "allow_branches": [
+        "main"
+      ]
+    },
+    "tw": {
+      "label": "Technical Writer",
+      "allow_paths": [
+        "ai/modules/**",
+        "ai/flows/**",
+        "ai/schema/**"
+      ],
+      "allow_branches": [
+        "*"
+      ]
+    }
+  },
+  "shared_paths": {
+    "ai/PROJECT_BOARD.md": {
+      "agents": ["se", "qa", "pm"]
+    },
+    "ai/docs/CHANGELOG.md": {
+      "agents": ["se", "qa", "pm"]
+    }
+  }
+}

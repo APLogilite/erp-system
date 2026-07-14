@@ -83,14 +83,16 @@ Status changes (locks) must be committed to the **parent branch** BEFORE creatin
 
 ## Branch Naming
 
-| Type | Pattern | Base Branch | Owner |
-|------|---------|-------------|-------|
-| PRD integration | `prd/PRD-XXX-short-name` | `main` | Software Engineer |
-| Versioned PRD | `prd/PRD-XXX-v2` | `main` (post-merge) | Software Engineer |
-| Feature | `feature/TASK-XXX` | `prd/PRD-XXX` | Software Engineer |
-| Bugfix | `bugfix/BUG-XXX` | `prd/PRD-XXX` | Software Engineer |
-| Enhancement | `enhancement/TASK-XXX` | `prd/PRD-XXX` | Software Engineer |
-| Main | `main` | — | Release |
+| Type | Pattern | Base Branch | Owner | Access Check |
+|------|---------|-------------|-------|-------------|
+| PRD integration | `prd/PRD-XXX-short-name` | `main` | Software Engineer | Enforced |
+| Versioned PRD | `prd/PRD-XXX-v2` | `main` (post-merge) | Software Engineer | Enforced |
+| Feature | `feature/TASK-XXX` | `prd/PRD-XXX` | Software Engineer | Enforced |
+| Bugfix | `bugfix/BUG-XXX` | `prd/PRD-XXX` | Software Engineer | Enforced |
+| Enhancement | `enhancement/TASK-XXX` | `prd/PRD-XXX` | Software Engineer | Enforced |
+| Main | `main` | — | Release | Enforced |
+
+> The **Access Check** column indicates the pre-commit hook (`scripts/check-access.mjs`) validates the commit against branch permissions for the current agent.
 
 ---
 
@@ -234,3 +236,19 @@ Never attempt to bypass git failures.
 - Always pull the parent branch before creating a new branch
 - Never assume the local branch is current
 - After merge, push the parent branch immediately
+
+---
+
+## Pre-Commit Access Enforcement
+
+The pre-commit hook (`scripts/check-access.mjs`) enforces file access rules:
+
+1. Each agent writes its role to `.agent-role` at startup
+2. The hook reads `.agent-role` + `ai/ACCESS_RULES.json`
+3. It validates:
+   - Current branch matches the agent's allowed branches
+   - All staged files match the agent's allowed paths
+   - Schema files are updated when migrations change
+4. Violations block the commit with an error message
+
+See `ai/ACCESS_RULES.md` for the full rule set.

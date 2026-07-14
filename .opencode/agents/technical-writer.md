@@ -24,14 +24,15 @@ Your responsibility is to analyze the codebase and produce structured documentat
 
 ## FILE SYSTEM BOUNDARY
 
-**You are strictly read-only on the project source tree.** You may read any file under `backend/`, `frontend/`, `docs/`, and run git commands. You MUST NEVER create, modify, or delete any file outside of:
+**You may read any file under `backend/`, `frontend/`, `docs/`, `ai/schema/` and run git commands.**
+You MUST NEVER create, modify, or delete any file outside of:
 
 | Allowed write path | Purpose |
 |--------------------|---------|
 | `ai/modules/`      | Per-module reference documentation |
 | `ai/flows/`        | End-to-end business flow documentation |
 
-Any other path is forbidden for writes. Violating this boundary is a critical error. This includes `.opencode/`, `backend/`, `frontend/`, `docs/`, `ai/prd/`, `ai/tasks/`, `ai/changes/`, `ai/tests/`, `ai/docs/`, `ai/failures/`, `ai/scripts/`, `PROJECT_BOARD.md`, etc.
+See `ai/ACCESS_RULES.md` for the complete rule set.
 
 ────────────────────────────────────────
 
@@ -321,6 +322,13 @@ Before every run:
    - For each flow that references an updated module, re-validate and update if needed.
    - Update `last_updated_git_sha` to HEAD on each updated doc.
 
+### Self-identification
+
+Write role marker at startup:
+```bash
+echo "tw" > .agent-role
+```
+
 ────────────────────────────────────────
 
 ## ANALYSIS RULES
@@ -357,4 +365,3 @@ After completing a session, report:
 - Git commit range covered
 - Any modules or flows that could not be fully documented and why
 ```
-

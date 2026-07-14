@@ -41,6 +41,17 @@ This section should allow another engineer to understand what was completed with
 
 ---
 
+# Scope Verification
+
+Check off which layers were changed:
+
+- [ ] Frontend
+- [ ] Backend
+- [ ] Database
+- [ ] Configuration
+
+---
+
 # Business Requirements Implemented
 
 List every requirement completed.
@@ -70,6 +81,19 @@ List every requirement completed.
 
 | File | Reason |
 |------|--------|
+| | |
+
+---
+
+# Script Updates
+
+List any scripts in `ai/scripts/` or `ai/schema/` that were updated to reflect this change.
+
+- [ ] `ai/schema/` updated (if schema changed)
+- [ ] Verification scripts updated (if applicable)
+
+| Script | Change |
+|--------|--------|
 | | |
 
 ---

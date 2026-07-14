@@ -91,7 +91,7 @@ automation_required: false
 change_summary: CHANGE-ENH-002
 
 test_report: TEST-ENH-002
-ntest_script: ai/scripts/verify-prd-002-data.sql
+test_script: ai/scripts/verify-prd-002-data.sql
 
 history:
   - 2026-07-10 — Product Manager — Created ENH-002 from PRD-002 v1.1.0 (REQ-ISSUE-001). Parent tasks: TASK-034, TASK-035.

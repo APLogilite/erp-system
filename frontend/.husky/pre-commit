@@ -1,5 +1,6 @@
 #!/usr/bin/env sh
 . "$(dirname "$0")/_/husky.sh"
 
+node scripts/check-access.mjs
 pnpm lint-staged
 pnpm typecheck

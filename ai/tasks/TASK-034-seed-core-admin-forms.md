@@ -69,7 +69,7 @@ automation_required: false
 change_summary: CHANGE-TASK-034
 
 test_report: TEST-TASK-034
-ntest_script: ai/scripts/verify-prd-002-data.sql
+test_script: ai/scripts/verify-prd-002-data.sql
 
 qa_completed: 2026-07-10
 

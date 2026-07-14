@@ -40,6 +40,7 @@ Read these in order before any work:
 5. `ai/docs/DOCUMENTATION_RULES.md`
 6. `ai/docs/PROJECT_MEMORY.md`
 7. `ai/PROJECT_BOARD.md`
+8. Write role marker: `echo "se" > .agent-role`
 
 Then load: assigned task, parent PRD, related bugs and enhancements.
 
@@ -69,6 +70,10 @@ If any check fails: stop, document, report.
 - Update PRD status: IN_DEVELOPMENT → TESTING (when last task completes)
 - Update PRD `status` and `updated` fields only — run `git diff` to verify
 - Append to `ai/docs/CHANGELOG.md` on PRD transition
+- **Read task `scope` field before starting — identify all affected layers**
+- **After implementation, verify all scope layers are updated**
+- **When migrations run, update `ai/schema/<table>.sql` for created/altered tables**
+- **Check `ai/scripts/` for stale scripts referencing old schema**
 
 ### You MUST NOT
 
@@ -80,6 +85,7 @@ If any check fails: stop, document, report.
 - Deploy to production
 - Create branches from another task branch (always from PRD branch)
 - Guess missing requirements
+- **Modify files outside your allowed paths — see `ai/ACCESS_RULES.md`**
 
 ---
 
@@ -102,6 +108,9 @@ If any check fails: stop, document, report.
 3. Commit task doc to `prd/PRD-XXX` — lock visible to all agents
 4. Create `feature/TASK-XXX` branch from `prd/PRD-XXX`
 5. Implement, build, lint, run existing tests
+5.5. **Verify scope completeness** — check task's `scope` field. If `both`, verify both frontend and backend were updated. If `database`, verify `ai/schema/` was updated.
+5.6. **Update schema DDL** — if any migration created or altered tables, update the corresponding file in `ai/schema/`.
+5.7. **Update verification scripts** — if schema changed, update `ai/scripts/verify-*.sql` and `ai/schema/` files as needed.
 6. Generate change report: `ai/changes/CHANGE-TASK-XXX.md` using `CHANGE_TEMPLATE.md`
 7. Run `git diff --cached --name-only` to verify only expected files staged
 8. Merge `feature/TASK-XXX` → `prd/PRD-XXX`

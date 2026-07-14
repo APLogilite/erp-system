@@ -34,3 +34,6 @@ logs/
 *.tmp
 *.temp
 
+# Agent role file
+.agent-role
+

@@ -13,16 +13,12 @@ DO $$
 DECLARE
     v_sys_tenant UUID := '00000000-0000-0000-0000-000000000001';
 BEGIN
-    -- identity tables
-    UPDATE identity_tenants         SET tenant_id = v_sys_tenant WHERE tenant_id IS NULL;
+    -- V1 identity tables that have tenant_id column
     UPDATE identity_organizations   SET tenant_id = v_sys_tenant WHERE tenant_id IS NULL;
-    UPDATE identity_companies       SET tenant_id = v_sys_tenant WHERE tenant_id IS NULL;
-    UPDATE identity_branches        SET tenant_id = v_sys_tenant WHERE tenant_id IS NULL;
-    UPDATE identity_departments     SET tenant_id = v_sys_tenant WHERE tenant_id IS NULL;
     UPDATE identity_roles           SET tenant_id = v_sys_tenant WHERE tenant_id IS NULL;
     UPDATE identity_user_sessions   SET tenant_id = v_sys_tenant WHERE tenant_id IS NULL;
 
-    -- metadata tables
+    -- V24 metadata tables (all have tenant_id)
     UPDATE sys_table               SET tenant_id = v_sys_tenant WHERE tenant_id IS NULL;
     UPDATE sys_column              SET tenant_id = v_sys_tenant WHERE tenant_id IS NULL;
     UPDATE sys_window              SET tenant_id = v_sys_tenant WHERE tenant_id IS NULL;
