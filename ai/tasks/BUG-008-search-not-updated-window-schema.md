@@ -3,7 +3,7 @@ id: BUG-008
 
 title: Ctrl+K search still uses old PRD-001 form schema instead of new Window names
 
-status: READY_FOR_TEST
+status: TESTED
 
 priority: High
 
@@ -37,7 +37,7 @@ related_test: TEST-TASK-041
 
 fix_summary:
 
-verification_report:
+verification_report: TEST-BUG-008
 
 history:
   - 2026-07-14 — Product Manager — Created. Search still references old schema.
