@@ -19,12 +19,15 @@ export type { FieldState, FieldStateMap };
  */
 export function useFieldStates(
   fields: FieldDefinition[] | undefined,
-  values: Record<string, unknown>,
+  values: Record<string, unknown>
 ): FieldStateMap {
   // Build a stable dependency key from values
   const valuesKey = useMemo(
-    () => Object.entries(values).map(([k, v]) => `${k}:${String(v)}`).join('|'),
-    [values],
+    () =>
+      Object.entries(values)
+        .map(([k, v]) => `${k}:${String(v)}`)
+        .join('|'),
+    [values]
   );
 
   return useMemo(() => {
@@ -41,11 +44,14 @@ export function useFieldStates(
  */
 export function useFieldState(
   field: FieldDefinition | undefined,
-  values: Record<string, unknown>,
+  values: Record<string, unknown>
 ): FieldState {
   const valuesKey = useMemo(
-    () => Object.entries(values).map(([k, v]) => `${k}:${String(v)}`).join('|'),
-    [values],
+    () =>
+      Object.entries(values)
+        .map(([k, v]) => `${k}:${String(v)}`)
+        .join('|'),
+    [values]
   );
 
   return useMemo(() => {
@@ -75,7 +81,7 @@ export function getHiddenFields(stateMap: FieldStateMap): Set<string> {
  */
 export function filterHiddenValues(
   values: Record<string, unknown>,
-  stateMap: FieldStateMap,
+  stateMap: FieldStateMap
 ): Record<string, unknown> {
   const hidden = getHiddenFields(stateMap);
   const result: Record<string, unknown> = {};

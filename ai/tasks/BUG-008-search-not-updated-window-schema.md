@@ -90,18 +90,30 @@ This was never resolved — the search functionality was not part of TASK-041's 
 
 # Root Cause
 
-(To be filled by Software Engineer)
+The `FormSearchBar` component and its backing hook `useAccessibleForms` still query the old PRD-001 metadata schema via `GET /runtime/forms` (which queries `sys_metadata_views`). The returned `AccessibleForm` interface used `formCode`, `formLabel`, `modelName` fields from the old schema. Navigation targeted `/app/runtime?form={formCode}` (the old PRD-001 route).
 
-The `FormSearchBar` component queries the old metadata schema for form definitions. It was never updated to:
-- Query `sys_window` / `sys_menu` instead of old `sys_metadata_views`
-- Navigate to `/window/{windowName}` instead of `/runtime/{formCode}`
-- Display window names from the new schema
+Additionally, the dead-code component `FormNavigationMenu.tsx` still referenced the old `AccessibleForm` interface fields and would fail to compile with the updated interface.
 
 ---
 
 # Fix
 
-(To be filled by Software Engineer)
+## Backend
+- Added `findByRoleIdIn(List<UUID>)` method to `SysWindowAccessRepository` for batch lookup of window access by role IDs.
+- Added `GET /runtime/windows/accessible` endpoint to `WindowDefinitionController` that:
+  - Queries `sys_window` for all active windows
+  - Filters by role-based access via `sys_window_access`
+  - Resolves table labels from `sys_table` via the window's `table_id` FK
+  - Returns lightweight entries: `windowId`, `windowName`, `windowLabel`, `tableName`, `tableLabel`
+
+## Frontend
+- Updated `useAccessibleForms` hook to call `GET /runtime/windows/accessible` instead of `GET /runtime/forms`
+- Updated `AccessibleForm` interface to use new field names: `windowId`, `windowName`, `windowLabel`, `tableName`, `tableLabel`
+- Updated `FormSearchBar` component to:
+  - Display window labels/names instead of form labels/codes
+  - Navigate to `/window/{windowName}` (PRD-004 FR-012 route)
+  - Updated search text and tooltip to reference "windows" instead of "forms"
+- Updated `FormNavigationMenu` (dead code, kept for compatibility) to use the new interface and navigate to `/window/{windowName}`
 
 ---
 
@@ -119,11 +131,14 @@ After fix:
 
 # Files Changed
 
-(To be filled by Software Engineer)
+## Backend
+- `backend/src/main/java/com/erp/modules/metadata/repository/SysWindowAccessRepository.java` — Added `findByRoleIdIn` method
+- `backend/src/main/java/com/erp/core/runtime/controller/WindowDefinitionController.java` — Added `GET /runtime/windows/accessible` endpoint
 
-Likely files:
-- `frontend/src/core/runtime/components/FormSearchBar.tsx` (or similar)
-- `frontend/src/core/runtime/api/runtimeApi.ts` (new search API function)
+## Frontend
+- `frontend/src/core/runtime/hooks/useAccessibleForms.ts` — Updated to call new window endpoint with new interface
+- `frontend/src/core/runtime/components/FormSearchBar.tsx` — Updated to display windows and navigate to `/window/{windowName}`
+- `frontend/src/core/runtime/components/FormNavigationMenu.tsx` — Updated dead code to use new interface
 
 ---
 

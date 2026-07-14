@@ -15,10 +15,22 @@ import {
 } from '@mui/material';
 import { useState } from 'react';
 
-import { useAddValidation, useDeleteValidation, useFormValidations } from '../hooks/useFormValidations';
+import {
+  useAddValidation,
+  useDeleteValidation,
+  useFormValidations,
+} from '../hooks/useFormValidations';
 import type { FieldValidation } from '../hooks/useFormValidations';
 
-const VALIDATION_TYPES = ['required', 'min_length', 'max_length', 'min', 'max', 'pattern', 'custom_expression'];
+const VALIDATION_TYPES = [
+  'required',
+  'min_length',
+  'max_length',
+  'min',
+  'max',
+  'pattern',
+  'custom_expression',
+];
 
 interface Props {
   formId: string;
@@ -36,17 +48,31 @@ export function ValidationTab({ formId, fields, selectedFieldId }: Props) {
   const [newVal, setNewVal] = useState({ type: 'required', value: '', message: '' });
 
   const handleAdd = () => {
-    addValidation.mutate({ fieldId, data: newVal }, {
-      onSuccess: () => { setAdding(false); setNewVal({ type: 'required', value: '', message: '' }); },
-    });
+    addValidation.mutate(
+      { fieldId, data: newVal },
+      {
+        onSuccess: () => {
+          setAdding(false);
+          setNewVal({ type: 'required', value: '', message: '' });
+        },
+      }
+    );
   };
 
   return (
     <Box>
-      <TextField select size="small" label="Select Field" value={fieldId}
-        onChange={(e) => setFieldId(e.target.value)} sx={{ mb: 2, minWidth: 240 }}>
+      <TextField
+        select
+        size="small"
+        label="Select Field"
+        value={fieldId}
+        onChange={(e) => setFieldId(e.target.value)}
+        sx={{ mb: 2, minWidth: 240 }}
+      >
         {fields.map((f) => (
-          <MenuItem key={f.fieldId} value={f.fieldId}>{f.label} ({f.columnCode})</MenuItem>
+          <MenuItem key={f.fieldId} value={f.fieldId}>
+            {f.label} ({f.columnCode})
+          </MenuItem>
         ))}
       </TextField>
 
@@ -65,11 +91,17 @@ export function ValidationTab({ formId, fields, selectedFieldId }: Props) {
               <TableBody>
                 {validations?.map((v: FieldValidation) => (
                   <TableRow key={v.id}>
-                    <TableCell><strong>{v.type}</strong></TableCell>
+                    <TableCell>
+                      <strong>{v.type}</strong>
+                    </TableCell>
                     <TableCell>{v.value ?? '—'}</TableCell>
                     <TableCell>{v.message ?? '—'}</TableCell>
                     <TableCell>
-                      <IconButton size="small" color="error" onClick={() => deleteValidation.mutate(v.id)}>
+                      <IconButton
+                        size="small"
+                        color="error"
+                        onClick={() => deleteValidation.mutate(v.id)}
+                      >
                         <Delete fontSize="small" />
                       </IconButton>
                     </TableCell>
@@ -81,16 +113,40 @@ export function ValidationTab({ formId, fields, selectedFieldId }: Props) {
 
           {adding && (
             <Box sx={{ display: 'flex', gap: 1, mt: 2, flexWrap: 'wrap', alignItems: 'center' }}>
-              <TextField select size="small" label="Type" value={newVal.type}
-                onChange={(e) => setNewVal((p) => ({ ...p, type: e.target.value }))} sx={{ width: 160 }}>
-                {VALIDATION_TYPES.map((t) => <MenuItem key={t} value={t}>{t}</MenuItem>)}
+              <TextField
+                select
+                size="small"
+                label="Type"
+                value={newVal.type}
+                onChange={(e) => setNewVal((p) => ({ ...p, type: e.target.value }))}
+                sx={{ width: 160 }}
+              >
+                {VALIDATION_TYPES.map((t) => (
+                  <MenuItem key={t} value={t}>
+                    {t}
+                  </MenuItem>
+                ))}
               </TextField>
-              <TextField size="small" label="Value" value={newVal.value}
-                onChange={(e) => setNewVal((p) => ({ ...p, value: e.target.value }))} sx={{ width: 140 }} />
-              <TextField size="small" label="Message" value={newVal.message}
-                onChange={(e) => setNewVal((p) => ({ ...p, message: e.target.value }))} sx={{ width: 200 }} />
-              <Button size="small" variant="contained" onClick={handleAdd}>Save</Button>
-              <Button size="small" onClick={() => setAdding(false)}>Cancel</Button>
+              <TextField
+                size="small"
+                label="Value"
+                value={newVal.value}
+                onChange={(e) => setNewVal((p) => ({ ...p, value: e.target.value }))}
+                sx={{ width: 140 }}
+              />
+              <TextField
+                size="small"
+                label="Message"
+                value={newVal.message}
+                onChange={(e) => setNewVal((p) => ({ ...p, message: e.target.value }))}
+                sx={{ width: 200 }}
+              />
+              <Button size="small" variant="contained" onClick={handleAdd}>
+                Save
+              </Button>
+              <Button size="small" onClick={() => setAdding(false)}>
+                Cancel
+              </Button>
             </Box>
           )}
 
@@ -101,7 +157,9 @@ export function ValidationTab({ formId, fields, selectedFieldId }: Props) {
           )}
 
           {(!validations || validations.length === 0) && !adding && (
-            <Typography color="text.secondary" sx={{ mt: 2 }}>No validations configured for this field.</Typography>
+            <Typography color="text.secondary" sx={{ mt: 2 }}>
+              No validations configured for this field.
+            </Typography>
           )}
         </>
       )}

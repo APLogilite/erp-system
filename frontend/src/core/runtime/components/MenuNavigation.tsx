@@ -42,10 +42,7 @@ function MenuGroupItem({ node, depth = 0, onNavigate, currentPath }: MenuGroupPr
           <ListItemIcon sx={{ minWidth: 30 }}>
             <span style={{ fontSize: 16 }}>{WINDOW_ICON}</span>
           </ListItemIcon>
-          <ListItemText
-            primary={node.name}
-            primaryTypographyProps={{ fontSize: 13 }}
-          />
+          <ListItemText primary={node.name} primaryTypographyProps={{ fontSize: 13 }} />
         </ListItemButton>
       </ListItem>
     );
@@ -110,11 +107,7 @@ export function MenuNavigation() {
 
   return (
     <>
-      <ListSubheader
-        sx={{ fontWeight: 600, fontSize: 11, lineHeight: '28px' }}
-      >
-        MENU
-      </ListSubheader>
+      <ListSubheader sx={{ fontWeight: 600, fontSize: 11, lineHeight: '28px' }}>MENU</ListSubheader>
       <List dense>
         {menuTree.map((node) => (
           <MenuGroupItem

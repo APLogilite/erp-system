@@ -139,7 +139,11 @@ function RecordDialog({ open, windowName, windowDef, recordId, onClose }: Record
                 onChange={(e) => handleFieldChange(field.column.code, e.target.value)}
                 disabled={field.isReadonly || isSaving}
                 required={field.isMandatory}
-                type={field.column.type === 'integer' || field.column.type === 'decimal' ? 'number' : 'text'}
+                type={
+                  field.column.type === 'integer' || field.column.type === 'decimal'
+                    ? 'number'
+                    : 'text'
+                }
                 multiline={field.column.type === 'text'}
                 rows={field.numLines > 1 ? field.numLines : undefined}
                 sx={{ mb: 1 }}
@@ -150,11 +154,7 @@ function RecordDialog({ open, windowName, windowDef, recordId, onClose }: Record
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose}>Cancel</Button>
-        <Button
-          onClick={handleSave}
-          variant="contained"
-          disabled={isSaving || isLoadingRecord}
-        >
+        <Button onClick={handleSave} variant="contained" disabled={isSaving || isLoadingRecord}>
           {isSaving ? 'Saving...' : 'Save'}
         </Button>
       </DialogActions>
@@ -190,10 +190,7 @@ export function WindowPage() {
   });
 
   // Fetch records
-  const {
-    data: recordsData,
-    isLoading: isLoadingRecords,
-  } = useQuery({
+  const { data: recordsData, isLoading: isLoadingRecords } = useQuery({
     queryKey: ['window-records', windowName, page],
     queryFn: () => fetchWindowRecords(windowName!, page, pageSize),
     enabled: !!windowName && !!windowDef,
@@ -202,9 +199,7 @@ export function WindowPage() {
   if (!windowName) {
     return (
       <PageContainer title="Window" subtitle="No window selected">
-        <Typography color="text.secondary">
-          Select a window from the menu.
-        </Typography>
+        <Typography color="text.secondary">Select a window from the menu.</Typography>
       </PageContainer>
     );
   }

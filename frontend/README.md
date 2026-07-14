@@ -83,6 +83,7 @@ Run the automated setup script:
 ```
 
 This will:
+
 - Download and install Node.js 22 locally into `.local/`
 - Install pnpm
 - Install project dependencies
@@ -137,13 +138,13 @@ Backend API ──→ Form Definition Bundle (cached 5 min)
 
 ### State Management
 
-| Concern | Tool | Store |
-|---------|------|-------|
-| Auth (JWT, user) | Zustand | `authStore` |
-| UI (sidebar, theme) | Zustand | `uiStore` |
-| Notifications | Zustand | `notificationStore` |
-| Metadata cache | Zustand + React Query | `metadataStore` + query cache |
-| Record/form data | React Query | Query cache (auto-refetch) |
+| Concern             | Tool                  | Store                         |
+| ------------------- | --------------------- | ----------------------------- |
+| Auth (JWT, user)    | Zustand               | `authStore`                   |
+| UI (sidebar, theme) | Zustand               | `uiStore`                     |
+| Notifications       | Zustand               | `notificationStore`           |
+| Metadata cache      | Zustand + React Query | `metadataStore` + query cache |
+| Record/form data    | React Query           | Query cache (auto-refetch)    |
 
 ### Component Registry
 

@@ -266,13 +266,8 @@ export async function updateWindowRecord(
  * Soft-deletes a record in a window.
  * DELETE /api/v1/runtime/windows/{windowName}/records/{id}
  */
-export async function deleteWindowRecord(
-  windowName: string,
-  recordId: string
-): Promise<void> {
-  await apiClient.delete(
-    `/runtime/windows/${encodeURIComponent(windowName)}/records/${recordId}`
-  );
+export async function deleteWindowRecord(windowName: string, recordId: string): Promise<void> {
+  await apiClient.delete(`/runtime/windows/${encodeURIComponent(windowName)}/records/${recordId}`);
 }
 
 // ---- Menu API (PRD-004) ----

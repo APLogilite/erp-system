@@ -44,14 +44,17 @@ export function DynamicListView({ formDefinition }: Props) {
     pageSize,
     sortField,
     sortDir,
-    search,
+    search
   );
 
   // Debounced search
   const handleSearchChange = (val: string) => {
     setSearchInput(val);
     if (searchTimer[0]) clearTimeout(searchTimer[0]);
-    const t = setTimeout(() => { setSearch(val); setPage(0); }, 300);
+    const t = setTimeout(() => {
+      setSearch(val);
+      setPage(0);
+    }, 300);
     searchTimer[1]?.(t);
   };
 
@@ -140,15 +143,11 @@ export function DynamicListView({ formDefinition }: Props) {
                       hover
                       sx={{ cursor: 'pointer' }}
                       onClick={() =>
-                        navigate(
-                          `/app/runtime?form=${formDefinition.formCode}&record=${rec.id}`,
-                        )
+                        navigate(`/app/runtime?form=${formDefinition.formCode}&record=${rec.id}`)
                       }
                     >
                       {visibleFields.map((f) => (
-                        <TableCell key={f.fieldId}>
-                          {formatCellValue(rec[f.columnCode])}
-                        </TableCell>
+                        <TableCell key={f.fieldId}>{formatCellValue(rec[f.columnCode])}</TableCell>
                       ))}
                     </TableRow>
                   ))}
@@ -157,16 +156,14 @@ export function DynamicListView({ formDefinition }: Props) {
             </TableContainer>
 
             {/* Pagination */}
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', p: 2 }}>
+            <Box
+              sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', p: 2 }}
+            >
               <Typography variant="body2" color="text.secondary">
                 Showing {page * pageSize + 1}–{Math.min((page + 1) * pageSize, total)} of {total}
               </Typography>
               <Box sx={{ display: 'flex', gap: 1 }}>
-                <Button
-                  size="small"
-                  disabled={page === 0}
-                  onClick={() => setPage((p) => p - 1)}
-                >
+                <Button size="small" disabled={page === 0} onClick={() => setPage((p) => p - 1)}>
                   Previous
                 </Button>
                 <Typography variant="body2" sx={{ alignSelf: 'center' }}>

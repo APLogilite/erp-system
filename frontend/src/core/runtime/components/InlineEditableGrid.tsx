@@ -60,7 +60,9 @@ export function InlineEditableGrid({
 
   const handleAdd = () => {
     const entry: Record<string, string> = {};
-    columns.forEach((c) => { entry[c.key] = newRow[c.key] ?? ''; });
+    columns.forEach((c) => {
+      entry[c.key] = newRow[c.key] ?? '';
+    });
     onAdd(entry as unknown as Omit<RecordEntry, 'id'>);
     setNewRow({});
     setAdding(false);
@@ -73,7 +75,9 @@ export function InlineEditableGrid({
           <TableHead>
             <TableRow>
               {columns.map((c) => (
-                <TableCell key={c.key} sx={{ fontWeight: 600 }}>{c.label}</TableCell>
+                <TableCell key={c.key} sx={{ fontWeight: 600 }}>
+                  {c.label}
+                </TableCell>
               ))}
               <TableCell width={80} />
             </TableRow>
@@ -89,19 +93,31 @@ export function InlineEditableGrid({
               </TableRow>
             )}
             {records.map((rec, rowIdx) => (
-              <TableRow key={rec.id} hover
+              <TableRow
+                key={rec.id}
+                hover
                 sx={{ cursor: onRowClick ? 'pointer' : undefined }}
-                onClick={() => onRowClick?.(rec.id)}>
+                onClick={() => onRowClick?.(rec.id)}
+              >
                 {columns.map((c) => (
-                  <TableCell key={c.key}
-                    onDoubleClick={() => c.editable !== false && startEdit(rowIdx, c.key, rec[c.key])}>
+                  <TableCell
+                    key={c.key}
+                    onDoubleClick={() =>
+                      c.editable !== false && startEdit(rowIdx, c.key, rec[c.key])
+                    }
+                  >
                     {editingCell?.row === rowIdx && editingCell?.col === c.key ? (
                       <TextField
-                        size="small" variant="standard" autoFocus
+                        size="small"
+                        variant="standard"
+                        autoFocus
                         value={editValue}
                         onChange={(e) => setEditValue(e.target.value)}
                         onBlur={commitEdit}
-                        onKeyDown={(e) => { if (e.key === 'Enter') commitEdit(); if (e.key === 'Escape') setEditingCell(null); }}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter') commitEdit();
+                          if (e.key === 'Escape') setEditingCell(null);
+                        }}
                         sx={{ width: '100%' }}
                       />
                     ) : (
@@ -110,7 +126,14 @@ export function InlineEditableGrid({
                   </TableCell>
                 ))}
                 <TableCell>
-                  <IconButton size="small" color="error" onClick={(e) => { e.stopPropagation(); onDelete(rec.id); }}>
+                  <IconButton
+                    size="small"
+                    color="error"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onDelete(rec.id);
+                    }}
+                  >
                     <Delete fontSize="small" />
                   </IconButton>
                 </TableCell>
@@ -120,15 +143,22 @@ export function InlineEditableGrid({
               <TableRow>
                 {columns.map((c) => (
                   <TableCell key={c.key}>
-                    <TextField size="small" variant="standard"
+                    <TextField
+                      size="small"
+                      variant="standard"
                       value={newRow[c.key] ?? ''}
                       onChange={(e) => setNewRow((p) => ({ ...p, [c.key]: e.target.value }))}
-                      placeholder={c.label} />
+                      placeholder={c.label}
+                    />
                   </TableCell>
                 ))}
                 <TableCell>
-                  <Button size="small" variant="contained" onClick={handleAdd}>Save</Button>
-                  <Button size="small" onClick={() => setAdding(false)} sx={{ ml: 0.5 }}>Cancel</Button>
+                  <Button size="small" variant="contained" onClick={handleAdd}>
+                    Save
+                  </Button>
+                  <Button size="small" onClick={() => setAdding(false)} sx={{ ml: 0.5 }}>
+                    Cancel
+                  </Button>
                 </TableCell>
               </TableRow>
             )}

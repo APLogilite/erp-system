@@ -6,7 +6,7 @@ import { useEffect, useRef, useState } from 'react';
  */
 export function useDirtyTracking(
   currentValues: Record<string, unknown>,
-  initialValues?: Record<string, unknown>,
+  initialValues?: Record<string, unknown>
 ) {
   const isDirty = useRef(false);
   const [dirty, setDirty] = useState(false);

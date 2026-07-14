@@ -11,7 +11,11 @@ import type { ModelDefinition } from '@/core/metadata/schema/model/ModelDefiniti
 import type { FieldDefinition as SchemaField } from '@/core/metadata/schema/field/FieldDefinition';
 import { ViewType } from '@/core/metadata/schema/view/ViewDefinition';
 import { LayoutType } from '@/core/metadata/schema/layout/LayoutDefinition';
-import type { FormDefinition, FieldDefinition as ApiField, LayoutSection } from '../hooks/useForm.types';
+import type {
+  FormDefinition,
+  FieldDefinition as ApiField,
+  LayoutSection,
+} from '../hooks/useForm.types';
 
 /**
  * Converts an API field type string to the schema field type.
@@ -100,14 +104,19 @@ export function formDefinitionToBundle(formDef: FormDefinition): RuntimeMetadata
     active: true,
     layout: {
       type: LayoutType.PAGE as const,
-      children: childSections.length > 0 ? childSections : [{
-        type: LayoutType.SECTION as const,
-        config: { code: 'default', label: 'General', columns: 2 },
-        children: formDef.fields.map((f) => ({
-          type: LayoutType.GROUP as const,
-          config: { fieldId: f.fieldId },
-        })),
-      }],
+      children:
+        childSections.length > 0
+          ? childSections
+          : [
+              {
+                type: LayoutType.SECTION as const,
+                config: { code: 'default', label: 'General', columns: 2 },
+                children: formDef.fields.map((f) => ({
+                  type: LayoutType.GROUP as const,
+                  config: { fieldId: f.fieldId },
+                })),
+              },
+            ],
     },
   };
 

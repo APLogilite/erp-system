@@ -30,17 +30,16 @@ export function SubFormTabPanel({ subForms, subFormRecords, onDrillDown }: Props
 
   return (
     <Box sx={{ mt: 3, borderTop: 1, borderColor: 'divider', pt: 2 }}>
-      <Tabs value={activeTab} onChange={handleTabChange}
-        variant="scrollable" scrollButtons="auto" sx={{ mb: 2 }}>
+      <Tabs
+        value={activeTab}
+        onChange={handleTabChange}
+        variant="scrollable"
+        scrollButtons="auto"
+        sx={{ mb: 2 }}
+      >
         {subForms.map((sf, idx) => {
           const count = subFormRecords?.[sf.relationCode]?.length ?? 0;
-          return (
-            <Tab
-              key={sf.id}
-              label={`${sf.label} (${count})`}
-              value={idx}
-            />
-          );
+          return <Tab key={sf.id} label={`${sf.label} (${count})`} value={idx} />;
         })}
       </Tabs>
 
@@ -58,9 +57,11 @@ export function SubFormTabPanel({ subForms, subFormRecords, onDrillDown }: Props
           onDelete={(id) => {
             console.debug('Sub-form delete:', currentSubForm.relationCode, id);
           }}
-          onRowClick={onDrillDown
-            ? (recordId) => onDrillDown(currentSubForm.childFormCode, recordId)
-            : undefined}
+          onRowClick={
+            onDrillDown
+              ? (recordId) => onDrillDown(currentSubForm.childFormCode, recordId)
+              : undefined
+          }
         />
       )}
     </Box>

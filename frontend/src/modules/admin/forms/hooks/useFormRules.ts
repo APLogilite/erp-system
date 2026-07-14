@@ -32,7 +32,9 @@ export function useAddRule(formId: string) {
       return res.data.data;
     },
     onSuccess: (_, vars) => {
-      qc.invalidateQueries({ queryKey: ['admin', 'forms', formId, 'fields', vars.fieldId, 'rules'] });
+      qc.invalidateQueries({
+        queryKey: ['admin', 'forms', formId, 'fields', vars.fieldId, 'rules'],
+      });
     },
   });
 }
@@ -41,7 +43,10 @@ export function useUpdateRule(formId: string, fieldId: string) {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: async ({ ruleId, data }: { ruleId: string; data: Record<string, unknown> }) => {
-      const res = await apiClient.put(`/metadata/forms/${formId}/fields/${fieldId}/rules/${ruleId}`, data);
+      const res = await apiClient.put(
+        `/metadata/forms/${formId}/fields/${fieldId}/rules/${ruleId}`,
+        data
+      );
       return res.data.data;
     },
     onSuccess: () => {

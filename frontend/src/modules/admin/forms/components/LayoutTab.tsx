@@ -14,7 +14,12 @@ import {
 } from '@mui/material';
 import { useState } from 'react';
 
-import { useAddSection, useDeleteSection, useFormLayout, useUpdateSection } from '../hooks/useFormLayout';
+import {
+  useAddSection,
+  useDeleteSection,
+  useFormLayout,
+  useUpdateSection,
+} from '../hooks/useFormLayout';
 import type { LayoutSection } from '../types';
 
 interface Props {
@@ -31,7 +36,12 @@ export function LayoutTab({ formId }: Props) {
 
   const handleAdd = () => {
     if (!newLabel.trim()) return;
-    addSection.mutate({ label: newLabel, columns: 1, collapsible: false, position: (sections?.length ?? 0) + 1 });
+    addSection.mutate({
+      label: newLabel,
+      columns: 1,
+      collapsible: false,
+      position: (sections?.length ?? 0) + 1,
+    });
     setNewLabel('');
   };
 
@@ -58,14 +68,23 @@ export function LayoutTab({ formId }: Props) {
           <CardContent sx={{ '&:last-child': { pb: 2 } }}>
             <Grid container spacing={2} alignItems="center">
               <Grid item xs={12} sm={4}>
-                <TextField size="small" fullWidth label="Section Label"
+                <TextField
+                  size="small"
+                  fullWidth
+                  label="Section Label"
                   value={section.label}
-                  onChange={(e) => handleUpdate(section, 'label', e.target.value)} />
+                  onChange={(e) => handleUpdate(section, 'label', e.target.value)}
+                />
               </Grid>
               <Grid item xs={6} sm={2}>
-                <TextField size="small" fullWidth select label="Columns"
+                <TextField
+                  size="small"
+                  fullWidth
+                  select
+                  label="Columns"
                   value={section.columns}
-                  onChange={(e) => handleUpdate(section, 'columns', parseInt(e.target.value, 10))}>
+                  onChange={(e) => handleUpdate(section, 'columns', parseInt(e.target.value, 10))}
+                >
                   <MenuItem value={1}>1</MenuItem>
                   <MenuItem value={2}>2</MenuItem>
                   <MenuItem value={3}>3</MenuItem>
@@ -73,17 +92,27 @@ export function LayoutTab({ formId }: Props) {
               </Grid>
               <Grid item xs={6} sm={3}>
                 <FormControlLabel
-                  control={<Switch size="small" checked={section.collapsible === true}
-                    onChange={(e) => handleUpdate(section, 'collapsible', e.target.checked)} />}
-                  label="Collapsible" />
+                  control={
+                    <Switch
+                      size="small"
+                      checked={section.collapsible === true}
+                      onChange={(e) => handleUpdate(section, 'collapsible', e.target.checked)}
+                    />
+                  }
+                  label="Collapsible"
+                />
               </Grid>
               <Grid item xs={12} sm={2}>
                 <Typography variant="caption" color="text.secondary">
-                  {(section.fields?.length ?? 0)} fields
+                  {section.fields?.length ?? 0} fields
                 </Typography>
               </Grid>
               <Grid item xs={12} sm={1}>
-                <IconButton color="error" size="small" onClick={() => deleteSection.mutate(section.id)}>
+                <IconButton
+                  color="error"
+                  size="small"
+                  onClick={() => deleteSection.mutate(section.id)}
+                >
                   <Delete fontSize="small" />
                 </IconButton>
               </Grid>
@@ -93,10 +122,20 @@ export function LayoutTab({ formId }: Props) {
       ))}
 
       <Box sx={{ display: 'flex', gap: 1, mt: 2 }}>
-        <TextField size="small" placeholder="New section label" value={newLabel}
-          onChange={(e) => setNewLabel(e.target.value)} sx={{ width: 240 }} />
-        <Button startIcon={<Add />} variant="outlined" size="small"
-          onClick={handleAdd} disabled={!newLabel.trim()}>
+        <TextField
+          size="small"
+          placeholder="New section label"
+          value={newLabel}
+          onChange={(e) => setNewLabel(e.target.value)}
+          sx={{ width: 240 }}
+        />
+        <Button
+          startIcon={<Add />}
+          variant="outlined"
+          size="small"
+          onClick={handleAdd}
+          disabled={!newLabel.trim()}
+        >
           Add Section
         </Button>
       </Box>

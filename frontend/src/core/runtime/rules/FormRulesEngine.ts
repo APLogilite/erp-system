@@ -28,7 +28,7 @@ export type FieldStateMap = Record<string, FieldState>;
  */
 export function evaluateFieldState(
   field: FieldDefinition,
-  values: Record<string, unknown>,
+  values: Record<string, unknown>
 ): FieldState {
   const state: FieldState = {
     visible: field.visible,
@@ -63,7 +63,7 @@ export function evaluateFieldState(
  */
 export function evaluateAllFields(
   fields: FieldDefinition[],
-  values: Record<string, unknown>,
+  values: Record<string, unknown>
 ): FieldStateMap {
   const map: FieldStateMap = {};
   for (const field of fields) {
@@ -78,7 +78,7 @@ export function evaluateAllFields(
  */
 export function getChangedFields(
   prevValues: Record<string, unknown>,
-  nextValues: Record<string, unknown>,
+  nextValues: Record<string, unknown>
 ): Set<string> {
   const changed = new Set<string>();
   const allKeys = new Set([...Object.keys(prevValues), ...Object.keys(nextValues)]);
@@ -96,7 +96,7 @@ export function getChangedFields(
  */
 export function getAffectedFields(
   changedCodes: Set<string>,
-  allFields: FieldDefinition[],
+  allFields: FieldDefinition[]
 ): FieldDefinition[] {
   return allFields.filter((field) => {
     if (!field.rules || field.rules.length === 0) return false;
@@ -116,10 +116,7 @@ function groupRulesByLogicGroup(rules: FieldRule[]): Map<number, FieldRule[]> {
   return groups;
 }
 
-function evaluateRule(
-  rule: FieldRule,
-  values: Record<string, unknown>,
-): boolean {
+function evaluateRule(rule: FieldRule, values: Record<string, unknown>): boolean {
   const fieldValue = values[rule.conditionField];
   const operator = getOperator(rule.conditionOperator);
   return operator(fieldValue, rule.conditionValue);

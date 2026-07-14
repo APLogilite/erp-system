@@ -59,10 +59,16 @@ export function CreateFormDialog({ open, onClose, onCreated }: Props) {
     <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
       <DialogTitle>Create Form</DialogTitle>
       <DialogContent>
-        {error && <Typography color="error" sx={{ mb: 2 }}>{error}</Typography>}
+        {error && (
+          <Typography color="error" sx={{ mb: 2 }}>
+            {error}
+          </Typography>
+        )}
 
         <FormControl component="fieldset" sx={{ mb: 2 }}>
-          <Typography variant="body2" sx={{ mb: 1, fontWeight: 500 }}>Scope</Typography>
+          <Typography variant="body2" sx={{ mb: 1, fontWeight: 500 }}>
+            Scope
+          </Typography>
           <RadioGroup row value={scope} onChange={(e) => setScope(e.target.value as FormScope)}>
             <FormControlLabel value="global" control={<Radio />} label="Global" />
             <FormControlLabel value="tenant" control={<Radio />} label="Tenant" />
@@ -85,17 +91,39 @@ export function CreateFormDialog({ open, onClose, onCreated }: Props) {
           </Select>
         </FormControl>
 
-        <TextField label="Code" value={code} onChange={(e) => setCode(e.target.value)}
-          fullWidth required margin="dense" />
-        <TextField label="Label" value={label} onChange={(e) => setLabel(e.target.value)}
-          fullWidth required margin="dense" />
-        <TextField label="Description" value={description} onChange={(e) => setDescription(e.target.value)}
-          fullWidth multiline rows={2} margin="dense" />
+        <TextField
+          label="Code"
+          value={code}
+          onChange={(e) => setCode(e.target.value)}
+          fullWidth
+          required
+          margin="dense"
+        />
+        <TextField
+          label="Label"
+          value={label}
+          onChange={(e) => setLabel(e.target.value)}
+          fullWidth
+          required
+          margin="dense"
+        />
+        <TextField
+          label="Description"
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+          fullWidth
+          multiline
+          rows={2}
+          margin="dense"
+        />
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose}>Cancel</Button>
-        <Button variant="contained" onClick={handleCreate}
-          disabled={!canCreate || createMutation.isPending}>
+        <Button
+          variant="contained"
+          onClick={handleCreate}
+          disabled={!canCreate || createMutation.isPending}
+        >
           {createMutation.isPending ? 'Creating...' : 'Create'}
         </Button>
       </DialogActions>

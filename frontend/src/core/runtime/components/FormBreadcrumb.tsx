@@ -30,7 +30,7 @@ export function FormBreadcrumb({ breadcrumb }: Props) {
             sx={{ cursor: 'pointer' }}
             onClick={() =>
               navigate(
-                `/app/runtime?form=${encodeURIComponent(entry.formCode)}&record=${entry.recordId}`,
+                `/app/runtime?form=${encodeURIComponent(entry.formCode)}&record=${entry.recordId}`
               )
             }
           >

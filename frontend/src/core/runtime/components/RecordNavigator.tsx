@@ -22,15 +22,18 @@ export function RecordNavigator({
 
   return (
     <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-      <IconButton size="small" onClick={onPrevious} disabled={!hasPrevious}
-        title="Previous record (Alt+Left)">
+      <IconButton
+        size="small"
+        onClick={onPrevious}
+        disabled={!hasPrevious}
+        title="Previous record (Alt+Left)"
+      >
         <ChevronLeft />
       </IconButton>
       <Typography variant="body2" sx={{ minWidth: 80, textAlign: 'center', whiteSpace: 'nowrap' }}>
         {recordIndex} of {totalRecords}
       </Typography>
-      <IconButton size="small" onClick={onNext} disabled={!hasNext}
-        title="Next record (Alt+Right)">
+      <IconButton size="small" onClick={onNext} disabled={!hasNext} title="Next record (Alt+Right)">
         <ChevronRight />
       </IconButton>
     </Box>

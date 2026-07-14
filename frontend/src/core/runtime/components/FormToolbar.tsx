@@ -1,11 +1,4 @@
-import {
-  Add,
-  ContentCopy,
-  Delete,
-  Refresh,
-  Save,
-  Undo,
-} from '@mui/icons-material';
+import { Add, ContentCopy, Delete, Refresh, Save, Undo } from '@mui/icons-material';
 import {
   AppBar,
   Box,
@@ -82,7 +75,13 @@ export function FormToolbar({
   // Keyboard shortcuts
   useKeyboardShortcuts([
     { key: 's', ctrlKey: true, action: onSave, enabled: () => isSaving || (!isList && !isDirty) },
-    { key: 's', ctrlKey: true, shiftKey: true, action: () => onSaveAndNew?.(), enabled: () => !isCreate || isSaving },
+    {
+      key: 's',
+      ctrlKey: true,
+      shiftKey: true,
+      action: () => onSaveAndNew?.(),
+      enabled: () => !isCreate || isSaving,
+    },
     { key: 'Escape', action: handleDiscard, enabled: () => isList },
     { key: 'F5', action: onRefresh },
     { key: 'ArrowLeft', altKey: true, action: onPrevious, enabled: () => !hasPrevious },
@@ -119,15 +118,28 @@ export function FormToolbar({
         elevation={1}
         sx={{ top: 0, zIndex: 10, bgcolor: 'background.paper' }}
       >
-        <Toolbar variant="dense" sx={{ gap: 0.5, justifyContent: 'space-between', flexWrap: 'wrap' }}>
+        <Toolbar
+          variant="dense"
+          sx={{ gap: 0.5, justifyContent: 'space-between', flexWrap: 'wrap' }}
+        >
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, flexWrap: 'wrap' }}>
             {isList && btn(<Add />, 'Create', onCreateNew)}
             {!isList && btn(<Add />, 'New', onCreateNew)}
-            {!isList && btn(<Save fontSize="small" />, isSaving ? 'Saving...' : 'Save', onSave, isSaving || !isDirty)}
-            {isCreate && onSaveAndNew && btn(<ContentCopy fontSize="small" />, 'Save & New', onSaveAndNew, isSaving)}
+            {!isList &&
+              btn(
+                <Save fontSize="small" />,
+                isSaving ? 'Saving...' : 'Save',
+                onSave,
+                isSaving || !isDirty
+              )}
+            {isCreate &&
+              onSaveAndNew &&
+              btn(<ContentCopy fontSize="small" />, 'Save & New', onSaveAndNew, isSaving)}
             {!isList && btn(<Undo fontSize="small" />, 'Discard', handleDiscard, false)}
             {btn(<Refresh fontSize="small" />, 'Refresh', onRefresh, false)}
-            {!isList && onDelete && btn(<Delete fontSize="small" color="error" />, 'Delete', handleDelete, !canDelete)}
+            {!isList &&
+              onDelete &&
+              btn(<Delete fontSize="small" color="error" />, 'Delete', handleDelete, !canDelete)}
           </Box>
 
           {!isList && (

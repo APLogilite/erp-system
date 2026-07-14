@@ -26,10 +26,7 @@ export function useKeyboardShortcuts(shortcuts: KeyboardShortcut[]) {
           if (s.enabled && !s.enabled()) continue;
 
           // Prevent browser defaults for common shortcuts
-          if (
-            (s.key === 's' && (e.ctrlKey || e.metaKey)) ||
-            s.key === 'F5'
-          ) {
+          if ((s.key === 's' && (e.ctrlKey || e.metaKey)) || s.key === 'F5') {
             e.preventDefault();
           }
 

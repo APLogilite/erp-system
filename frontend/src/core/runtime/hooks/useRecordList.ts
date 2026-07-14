@@ -15,7 +15,7 @@ export function useRecordList(
   pageSize: number,
   sortField?: string,
   sortDir?: string,
-  search?: string,
+  search?: string
 ) {
   return useQuery<ListResponse>({
     queryKey: ['runtime', 'records', formCode, { page, pageSize, sortField, sortDir, search }],
@@ -27,9 +27,12 @@ export function useRecordList(
       if (sortDir) params.set('sortDir', sortDir);
       if (search) params.set('search', search);
 
-      const response = await fetch(`/api/runtime/forms/${encodeURIComponent(formCode)}/records?${params}`, {
-        headers: { Authorization: `Bearer ${localStorage.getItem('token') ?? ''}` },
-      });
+      const response = await fetch(
+        `/api/runtime/forms/${encodeURIComponent(formCode)}/records?${params}`,
+        {
+          headers: { Authorization: `Bearer ${localStorage.getItem('token') ?? ''}` },
+        }
+      );
       if (!response.ok) throw new Error(`Failed to load records: ${response.statusText}`);
       const json = await response.json();
       return json.data as ListResponse;

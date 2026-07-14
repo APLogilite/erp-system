@@ -29,8 +29,17 @@ export function useAddSection(formId: string) {
 export function useUpdateSection(formId: string) {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: async ({ sectionId, data }: { sectionId: string; data: Record<string, unknown> }) => {
-      const res = await apiClient.put(`/metadata/forms/${formId}/layout/sections/${sectionId}`, data);
+    mutationFn: async ({
+      sectionId,
+      data,
+    }: {
+      sectionId: string;
+      data: Record<string, unknown>;
+    }) => {
+      const res = await apiClient.put(
+        `/metadata/forms/${formId}/layout/sections/${sectionId}`,
+        data
+      );
       return res.data.data;
     },
     onSuccess: () => qc.invalidateQueries({ queryKey: ['admin', 'forms', formId, 'layout'] }),

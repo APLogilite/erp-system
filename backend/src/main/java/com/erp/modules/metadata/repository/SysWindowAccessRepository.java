@@ -11,5 +11,6 @@ import org.springframework.stereotype.Repository;
 public interface SysWindowAccessRepository extends JpaRepository<SysWindowAccess, UUID> {
   List<SysWindowAccess> findByWindowId(UUID windowId);
   List<SysWindowAccess> findByRoleId(UUID roleId);
+  List<SysWindowAccess> findByRoleIdIn(List<UUID> roleIds);
   Optional<SysWindowAccess> findByWindowIdAndRoleId(UUID windowId, UUID roleId);
 }

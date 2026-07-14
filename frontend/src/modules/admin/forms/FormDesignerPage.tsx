@@ -36,7 +36,12 @@ export function FormDesignerPage() {
   const isSystemAdmin = user?.roles?.includes('SYSTEM_ADMIN') ?? false;
   const showTenantAccess = form?.scope === 'global' && isSystemAdmin;
 
-  if (isLoading) return <Box sx={{ display: 'flex', justifyContent: 'center', p: 8 }}><CircularProgress /></Box>;
+  if (isLoading)
+    return (
+      <Box sx={{ display: 'flex', justifyContent: 'center', p: 8 }}>
+        <CircularProgress />
+      </Box>
+    );
   if (error) return <ErrorState message={(error as Error).message} onRetry={refetch} />;
   if (!form) return null;
 
@@ -49,17 +54,30 @@ export function FormDesignerPage() {
   return (
     <Box sx={{ p: 3 }}>
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
-        <Button startIcon={<ArrowBack />} onClick={() => navigate('/app/admin/forms')}
-          sx={{ textTransform: 'none' }}>Back</Button>
-        <Typography variant="h5" fontWeight={700}>{form.label || form.code}</Typography>
-        <IconButton onClick={() => refetch()}><Refresh /></IconButton>
+        <Button
+          startIcon={<ArrowBack />}
+          onClick={() => navigate('/app/admin/forms')}
+          sx={{ textTransform: 'none' }}
+        >
+          Back
+        </Button>
+        <Typography variant="h5" fontWeight={700}>
+          {form.label || form.code}
+        </Typography>
+        <IconButton onClick={() => refetch()}>
+          <Refresh />
+        </IconButton>
       </Box>
 
       <Box sx={{ display: 'flex', gap: 1, mb: 3, flexWrap: 'wrap' }}>
         <Chip label={`Code: ${form.code}`} size="small" variant="outlined" />
         <Chip label={`Model: ${form.modelName}`} size="small" variant="outlined" />
-        <Chip label={`Scope: ${form.scope}`} size="small"
-          color={form.scope === 'global' ? 'primary' : 'secondary'} variant="outlined" />
+        <Chip
+          label={`Scope: ${form.scope}`}
+          size="small"
+          color={form.scope === 'global' ? 'primary' : 'secondary'}
+          variant="outlined"
+        />
       </Box>
 
       <Tabs value={tab} onChange={(_, v) => setTab(v)} sx={{ mb: 2 }} variant="scrollable">
@@ -78,7 +96,9 @@ export function FormDesignerPage() {
           {tab === 2 && formId && <RulesTab formId={formId} fields={fieldOptions} />}
           {tab === 3 && formId && <ValidationTab formId={formId} fields={fieldOptions} />}
           {tab === 4 && formId && <SubFormsTab formId={formId} />}
-          {showTenantAccess && tab === 5 && formId && <GlobalFormTenantAccessTable formId={formId} />}
+          {showTenantAccess && tab === 5 && formId && (
+            <GlobalFormTenantAccessTable formId={formId} />
+          )}
         </CardContent>
       </Card>
     </Box>

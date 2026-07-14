@@ -46,7 +46,12 @@ export function SubFormsTab({ formId }: Props) {
   const [relations, setRelations] = useState<AvailableRelation[]>([]);
   const [loading, setLoading] = useState(true);
   const [adding, setAdding] = useState(false);
-  const [newSf, setNewSf] = useState({ relationCode: '', childFormCode: '', label: '', displayAs: 'tab' });
+  const [newSf, setNewSf] = useState({
+    relationCode: '',
+    childFormCode: '',
+    label: '',
+    displayAs: 'tab',
+  });
 
   useEffect(() => {
     loadData();
@@ -61,7 +66,9 @@ export function SubFormsTab({ formId }: Props) {
       ]);
       setSubForms(sfRes.data.data ?? []);
       setRelations(relRes.data.data ?? []);
-    } catch { /* handled */ }
+    } catch {
+      /* handled */
+    }
     setLoading(false);
   };
 
@@ -91,10 +98,14 @@ export function SubFormsTab({ formId }: Props) {
 
   return (
     <Box>
-      <Typography variant="subtitle2" sx={{ mb: 2 }}>Configured Sub-Forms</Typography>
+      <Typography variant="subtitle2" sx={{ mb: 2 }}>
+        Configured Sub-Forms
+      </Typography>
 
       {subForms.length === 0 && !adding && (
-        <Typography color="text.secondary" sx={{ mb: 2 }}>No sub-forms configured.</Typography>
+        <Typography color="text.secondary" sx={{ mb: 2 }}>
+          No sub-forms configured.
+        </Typography>
       )}
 
       {subForms.length > 0 && (
@@ -113,8 +124,12 @@ export function SubFormsTab({ formId }: Props) {
               {subForms.map((sf) => (
                 <TableRow key={sf.id}>
                   <TableCell>{sf.label}</TableCell>
-                  <TableCell><code>{sf.relationCode}</code></TableCell>
-                  <TableCell><code>{sf.childFormCode}</code></TableCell>
+                  <TableCell>
+                    <code>{sf.relationCode}</code>
+                  </TableCell>
+                  <TableCell>
+                    <code>{sf.childFormCode}</code>
+                  </TableCell>
                   <TableCell>{sf.displayAs}</TableCell>
                   <TableCell>
                     <IconButton size="small" color="error" onClick={() => handleDelete(sf.id)}>
@@ -130,7 +145,11 @@ export function SubFormsTab({ formId }: Props) {
 
       {adding && (
         <Box sx={{ display: 'flex', gap: 1, mt: 2, flexWrap: 'wrap', alignItems: 'center' }}>
-          <TextField select size="small" label="Relation" value={newSf.relationCode}
+          <TextField
+            select
+            size="small"
+            label="Relation"
+            value={newSf.relationCode}
             onChange={(e) => {
               const rel = relations.find((r) => r.relationCode === e.target.value);
               setNewSf((p) => ({
@@ -139,26 +158,45 @@ export function SubFormsTab({ formId }: Props) {
                 childFormCode: rel?.existingFormCodes?.[0] ?? '',
                 label: rel?.relationColumnLabel ?? e.target.value,
               }));
-            }} sx={{ width: 180 }}>
+            }}
+            sx={{ width: 180 }}
+          >
             {relations.map((r) => (
               <MenuItem key={r.relationCode} value={r.relationCode}>
                 {r.childTableLabel} ({r.relationCode})
               </MenuItem>
             ))}
           </TextField>
-          <TextField size="small" label="Label" value={newSf.label}
-            onChange={(e) => setNewSf((p) => ({ ...p, label: e.target.value }))} sx={{ width: 140 }} />
-          <TextField select size="small" label="Display" value={newSf.displayAs}
-            onChange={(e) => setNewSf((p) => ({ ...p, displayAs: e.target.value }))} sx={{ width: 100 }}>
+          <TextField
+            size="small"
+            label="Label"
+            value={newSf.label}
+            onChange={(e) => setNewSf((p) => ({ ...p, label: e.target.value }))}
+            sx={{ width: 140 }}
+          />
+          <TextField
+            select
+            size="small"
+            label="Display"
+            value={newSf.displayAs}
+            onChange={(e) => setNewSf((p) => ({ ...p, displayAs: e.target.value }))}
+            sx={{ width: 100 }}
+          >
             <MenuItem value="tab">Tab</MenuItem>
             <MenuItem value="grid">Grid</MenuItem>
             <MenuItem value="inline">Inline</MenuItem>
           </TextField>
-          <Button size="small" variant="contained" onClick={handleAdd}
-            disabled={!newSf.relationCode || !newSf.label}>
+          <Button
+            size="small"
+            variant="contained"
+            onClick={handleAdd}
+            disabled={!newSf.relationCode || !newSf.label}
+          >
             Save
           </Button>
-          <Button size="small" onClick={() => setAdding(false)}>Cancel</Button>
+          <Button size="small" onClick={() => setAdding(false)}>
+            Cancel
+          </Button>
         </Box>
       )}
 

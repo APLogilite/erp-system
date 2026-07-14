@@ -31,7 +31,7 @@ type FormSearchBarProps = {
 export function FormSearchBar({ ButtonProps }: FormSearchBarProps) {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState('');
-  const { data: forms, isLoading } = useAccessibleForms();
+  const { data: windows, isLoading } = useAccessibleForms();
   const navigate = useNavigate();
 
   // Ctrl+K / Cmd+K to open
@@ -46,25 +46,25 @@ export function FormSearchBar({ ButtonProps }: FormSearchBarProps) {
     return () => window.removeEventListener('keydown', handler);
   }, []);
 
-  const filtered = (forms ?? []).filter(
-    (f: AccessibleForm) =>
+  const filtered = (windows ?? []).filter(
+    (w: AccessibleForm) =>
       !query ||
-      f.formLabel.toLowerCase().includes(query.toLowerCase()) ||
-      f.formCode.toLowerCase().includes(query.toLowerCase()) ||
-      (f.modelLabel ?? f.modelName).toLowerCase().includes(query.toLowerCase())
+      w.windowLabel.toLowerCase().includes(query.toLowerCase()) ||
+      w.windowName.toLowerCase().includes(query.toLowerCase()) ||
+      (w.tableLabel ?? w.tableName).toLowerCase().includes(query.toLowerCase())
   );
 
-  const handleSelect = (f: AccessibleForm) => {
+  const handleSelect = (w: AccessibleForm) => {
     setOpen(false);
     setQuery('');
-    navigate(`/app/runtime?form=${encodeURIComponent(f.formCode)}`);
+    navigate(`/window/${encodeURIComponent(w.windowName)}`);
   };
 
   return (
     <>
       {/* Visible trigger button in the header */}
-      <Tooltip title="Search forms (Ctrl+K)">
-        <IconButton aria-label="Search forms" onClick={() => setOpen(true)} {...ButtonProps}>
+      <Tooltip title="Search windows (Ctrl+K)">
+        <IconButton aria-label="Search windows" onClick={() => setOpen(true)} {...ButtonProps}>
           <Search />
         </IconButton>
       </Tooltip>
@@ -75,7 +75,7 @@ export function FormSearchBar({ ButtonProps }: FormSearchBarProps) {
           <TextField
             autoFocus
             fullWidth
-            placeholder="Search forms..."
+            placeholder="Search windows..."
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             variant="standard"
@@ -92,22 +92,22 @@ export function FormSearchBar({ ButtonProps }: FormSearchBarProps) {
           {isLoading && <CircularProgress sx={{ display: 'block', mx: 'auto', my: 2 }} />}
           {!isLoading && filtered.length === 0 && query && (
             <Typography color="text.secondary" sx={{ py: 2, textAlign: 'center' }}>
-              No forms matching &quot;{query}&quot;.
+              No windows matching &quot;{query}&quot;.
             </Typography>
           )}
           {!isLoading && filtered.length === 0 && !query && (
             <Typography color="text.secondary" sx={{ py: 2, textAlign: 'center' }}>
-              {forms === undefined || forms.length === 0
-                ? 'No accessible forms. Contact your system administrator.'
-                : 'No forms found.'}
+              {windows === undefined || windows.length === 0
+                ? 'No accessible windows. Contact your system administrator.'
+                : 'No windows found.'}
             </Typography>
           )}
           <List dense>
-            {filtered.slice(0, 15).map((f) => (
-              <ListItemButton key={f.formCode} onClick={() => handleSelect(f)}>
+            {filtered.slice(0, 15).map((w) => (
+              <ListItemButton key={w.windowName} onClick={() => handleSelect(w)}>
                 <ListItemText
-                  primary={f.formLabel}
-                  secondary={`${f.modelLabel ?? f.modelName} — ${f.formCode}`}
+                  primary={w.windowLabel}
+                  secondary={`${w.tableLabel ?? w.tableName} — ${w.windowName}`}
                 />
               </ListItemButton>
             ))}

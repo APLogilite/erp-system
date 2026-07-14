@@ -26,11 +26,16 @@ export function useAddValidation(formId: string) {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: async ({ fieldId, data }: { fieldId: string; data: Record<string, unknown> }) => {
-      const res = await apiClient.post(`/metadata/forms/${formId}/fields/${fieldId}/validations`, data);
+      const res = await apiClient.post(
+        `/metadata/forms/${formId}/fields/${fieldId}/validations`,
+        data
+      );
       return res.data.data;
     },
     onSuccess: (_, vars) => {
-      qc.invalidateQueries({ queryKey: ['admin', 'forms', formId, 'fields', vars.fieldId, 'validations'] });
+      qc.invalidateQueries({
+        queryKey: ['admin', 'forms', formId, 'fields', vars.fieldId, 'validations'],
+      });
     },
   });
 }
@@ -39,11 +44,16 @@ export function useUpdateValidation(formId: string, fieldId: string) {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: async ({ valId, data }: { valId: string; data: Record<string, unknown> }) => {
-      const res = await apiClient.put(`/metadata/forms/${formId}/fields/${fieldId}/validations/${valId}`, data);
+      const res = await apiClient.put(
+        `/metadata/forms/${formId}/fields/${fieldId}/validations/${valId}`,
+        data
+      );
       return res.data.data;
     },
     onSuccess: () => {
-      qc.invalidateQueries({ queryKey: ['admin', 'forms', formId, 'fields', fieldId, 'validations'] });
+      qc.invalidateQueries({
+        queryKey: ['admin', 'forms', formId, 'fields', fieldId, 'validations'],
+      });
     },
   });
 }
@@ -55,7 +65,9 @@ export function useDeleteValidation(formId: string, fieldId: string) {
       await apiClient.delete(`/metadata/forms/${formId}/fields/${fieldId}/validations/${valId}`);
     },
     onSuccess: () => {
-      qc.invalidateQueries({ queryKey: ['admin', 'forms', formId, 'fields', fieldId, 'validations'] });
+      qc.invalidateQueries({
+        queryKey: ['admin', 'forms', formId, 'fields', fieldId, 'validations'],
+      });
     },
   });
 }

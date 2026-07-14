@@ -77,38 +77,62 @@ export function FieldsTab({ formId }: Props) {
                 <IconButton size="small" onClick={() => handleMove(idx, -1)} disabled={idx === 0}>
                   <ArrowUpward fontSize="small" />
                 </IconButton>
-                <IconButton size="small" onClick={() => handleMove(idx, 1)}
-                  disabled={idx === sorted.length - 1}>
+                <IconButton
+                  size="small"
+                  onClick={() => handleMove(idx, 1)}
+                  disabled={idx === sorted.length - 1}
+                >
                   <ArrowDownward fontSize="small" />
                 </IconButton>
               </TableCell>
-              <TableCell><code>{field.columnCode}</code></TableCell>
               <TableCell>
-                <TextField size="small" variant="standard"
-                  value={field.labelOverride ?? ''}
-                  onChange={(e) => handleLabelOverride(field, e.target.value)}
-                  sx={{ width: 140 }} />
+                <code>{field.columnCode}</code>
               </TableCell>
               <TableCell>
-                <TextField size="small" variant="standard"
+                <TextField
+                  size="small"
+                  variant="standard"
+                  value={field.labelOverride ?? ''}
+                  onChange={(e) => handleLabelOverride(field, e.target.value)}
+                  sx={{ width: 140 }}
+                />
+              </TableCell>
+              <TableCell>
+                <TextField
+                  size="small"
+                  variant="standard"
                   value={field.placeholder ?? ''}
                   onChange={(e) => handlePlaceholder(field, e.target.value)}
-                  sx={{ width: 120 }} />
+                  sx={{ width: 120 }}
+                />
               </TableCell>
               <TableCell>
                 <IconButton size="small" onClick={() => handleToggle(field, 'isVisible')}>
-                  {field.isVisible !== false ? <Visibility fontSize="small" color="primary" /> : <VisibilityOff fontSize="small" />}
+                  {field.isVisible !== false ? (
+                    <Visibility fontSize="small" color="primary" />
+                  ) : (
+                    <VisibilityOff fontSize="small" />
+                  )}
                 </IconButton>
               </TableCell>
               <TableCell>
-                <FormControlLabel control={
-                  <Switch size="small" checked={field.isEditable !== false}
-                    onChange={() => handleToggle(field, 'isEditable')} />
-                } label="" />
+                <FormControlLabel
+                  control={
+                    <Switch
+                      size="small"
+                      checked={field.isEditable !== false}
+                      onChange={() => handleToggle(field, 'isEditable')}
+                    />
+                  }
+                  label=""
+                />
               </TableCell>
               <TableCell>
-                <Checkbox size="small" checked={field.isRequired === true}
-                  onChange={() => handleToggle(field, 'isRequired')} />
+                <Checkbox
+                  size="small"
+                  checked={field.isRequired === true}
+                  onChange={() => handleToggle(field, 'isRequired')}
+                />
               </TableCell>
             </TableRow>
           ))}
