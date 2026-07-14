@@ -24,6 +24,19 @@ All 10 PRD-004 implementation tasks completed and advanced to READY_FOR_TEST. Th
   - All 36 backend tests pass
   - Frontend typecheck passes
 
+## 2026-07-14 (BUG-002/BUG-003/BUG-004 Marked TESTED — Fixes Already Verified)
+
+### Summary
+Three bugs (BUG-002, BUG-003, BUG-004) had test reports showing COMPLETED but their task files still showed IN_DEVELOPMENT/READY_FOR_TEST. Verified codebase confirms all fixes are in place. Updated task statuses to TESTED.
+
+| Bug | Was | Now | Fix verified |
+|-----|:---:|:---:|:------------|
+| BUG-002 | READY_FOR_TEST | **TESTED** | ApiVersionConfig.API_BASE = "/api/v1" ✅ |
+| BUG-003 | IN_DEVELOPMENT | **TESTED** | AppLayout has marginLeft compensation ✅ |
+| BUG-004 | IN_DEVELOPMENT | **TESTED** | FormSearchBar has search icon + loading ✅ |
+
+---
+
 ## 2026-07-14 (PRD-003 Marked COMPLETED — Branch Merged to Main)
 
 ### Summary

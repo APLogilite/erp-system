@@ -407,6 +407,17 @@ body {
 }
 .modal-related a { color: var(--accent2); text-decoration: none; }
 .modal-related a:hover { text-decoration: underline; }
+
+.refresh-btn {
+  background: var(--bg3); border: 1px solid var(--border);
+  color: var(--text2); padding: 4px 12px; border-radius: 4px;
+  cursor: pointer; font-size: 12px; display: flex; align-items: center; gap: 5px;
+  transition: background 0.15s;
+}
+.refresh-btn:hover { background: var(--card); color: var(--text); border-color: var(--accent); }
+.refresh-btn.spinning { pointer-events: none; }
+.refresh-btn.spinning .icon { display: inline-block; animation: spin 0.5s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
 </style>
 </head>
 <body>
@@ -415,6 +426,7 @@ body {
   <h1><span class="icon">&#9670;</span> Project Monitor</h1>
   <div class="header-right">
     <span><span class="live-dot" id="liveDot"></span><span id="liveLabel">Connecting...</span></span>
+    <button class="refresh-btn" id="refreshBtn" onclick="App.refresh()"><span class="icon">&#x27F3;</span> <span>Refresh</span></button>
     <span class="last-updated" id="lastUpdated">-</span>
   </div>
 </div>
@@ -536,9 +548,11 @@ function rankTasks(tasks) {
 const App = {
   data: null,
   conn: null,
+  pollTimer: null,
   init() {
     this.setupTabs();
     this.connectSSE();
+    this.startPolling();
   },
 
   setupTabs() {
@@ -578,6 +592,27 @@ const App = {
       document.getElementById("liveDot").className = "live-dot error";
       document.getElementById("liveLabel").textContent = "Reconnecting...";
     };
+  },
+
+  startPolling() {
+    this.pollTimer = setInterval(() => this.refresh(true), 30000);
+  },
+
+  refresh(silent) {
+    const btn = document.getElementById("refreshBtn");
+    if (!silent) btn.classList.add("spinning");
+    fetch("/api/board")
+      .then(r => r.json())
+      .then(d => {
+        this.data = d;
+        this.render();
+        if (!silent) {
+          document.getElementById("liveLabel").textContent = "Updated";
+          setTimeout(() => document.getElementById("liveLabel").textContent = "LIVE", 2000);
+        }
+      })
+      .catch(() => {})
+      .finally(() => { if (!silent) btn.classList.remove("spinning"); });
   },
 
   render() {

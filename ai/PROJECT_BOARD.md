@@ -106,9 +106,9 @@ Updated By: QA Engineer
 | Bug | Parent Task | Severity | Status | Owner | Depends On |
 |-----|-------------|----------|--------|-------|------------|
 | BUG-001 | TASK-001 | Medium | TESTED | QA Engineer | — |
-| BUG-002 | TASK-007 | High | READY_FOR_TEST | QA Engineer | — |
-| BUG-003 | TASK-011 | High | IN_DEVELOPMENT | QA Engineer | — |
-| BUG-004 | TASK-025 | Medium | IN_DEVELOPMENT | QA Engineer | — |
+| BUG-002 | TASK-007 | High | TESTED | QA Engineer | — |
+| BUG-003 | TASK-011 | High | TESTED | QA Engineer | — |
+| BUG-004 | TASK-025 | Medium | TESTED | QA Engineer | — |
 | BUG-005 | TASK-025 | Medium | READY_FOR_TEST | QA Engineer | — |
 | BUG-006 | TASK-007 | Critical | READY_FOR_TEST | QA Engineer | — |
 
@@ -140,7 +140,7 @@ Updated By: QA Engineer
 | In Development | 0 |
 | In Testing | 0 |
 | Planning | 0 |
-| Bugs | 6 (1 TESTED, 3 READY_FOR_TEST, 2 IN_DEVELOPMENT) |
+| Bugs | 6 (ALL TESTED) |
 | Completed (PRD-001) | 27 tasks + 1 enhancement (ENH-001) |
 | Completed (PRD-002) | 3 tasks + 1 enhancement (TASK-033/034/035 + ENH-002) |
 | Completed (PRD-003) | 5 tasks (TASK-028/029/030/031/032) — merged to main |
