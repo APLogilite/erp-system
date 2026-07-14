@@ -31,7 +31,7 @@ function MenuGroupItem({ node, depth = 0, onNavigate, currentPath }: MenuGroupPr
 
   if (node.type === 'window') {
     // Window leaf item
-    const isSelected = node.windowName ? currentPath === `/window/${node.windowName}` : false;
+    const isSelected = node.windowName ? currentPath === `/app/window/${node.windowName}` : false;
     return (
       <ListItem disablePadding>
         <ListItemButton
@@ -102,7 +102,7 @@ export function MenuNavigation() {
 
   const handleNavigate = (windowName: string | undefined) => {
     if (!windowName) return;
-    navigate(`/window/${encodeURIComponent(windowName)}`);
+    navigate(`/app/window/${encodeURIComponent(windowName)}`);
   };
 
   return (

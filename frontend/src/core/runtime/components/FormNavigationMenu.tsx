@@ -36,7 +36,7 @@ export function FormNavigationMenu() {
       <Collapse in={open}>
         <List dense>
           {windows.map((w) => {
-            const path = `/window/${encodeURIComponent(w.windowName)}`;
+            const path = `/app/window/${encodeURIComponent(w.windowName)}`;
             return (
               <ListItem key={w.windowName} disablePadding>
                 <ListItemButton

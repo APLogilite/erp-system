@@ -351,9 +351,12 @@ public class IdentitySeedData implements CommandLineRunner {
     }
 
     private Role makeRole(String code, String name, String description, boolean isSystem, Tenant tenant) {
-        Role r = new Role(); r.setCode(code); r.setName(name); r.setDescription(description);
-        r.setIsSystem(isSystem); r.setTenant(tenant);
-        return roleRepository.save(r);
+        // Idempotent: return existing role if already present
+        return roleRepository.findByCode(code).orElseGet(() -> {
+            Role r = new Role(); r.setCode(code); r.setName(name); r.setDescription(description);
+            r.setIsSystem(isSystem); r.setTenant(tenant);
+            return roleRepository.save(r);
+        });
     }
 
     private void assignRolePermission(Role role, Permission perm) {

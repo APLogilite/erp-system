@@ -57,7 +57,7 @@ export function FormSearchBar({ ButtonProps }: FormSearchBarProps) {
   const handleSelect = (w: AccessibleForm) => {
     setOpen(false);
     setQuery('');
-    navigate(`/window/${encodeURIComponent(w.windowName)}`);
+    navigate(`/app/window/${encodeURIComponent(w.windowName)}`);
   };
 
   return (
