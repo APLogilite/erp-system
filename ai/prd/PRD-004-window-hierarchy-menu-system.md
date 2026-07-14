@@ -5,7 +5,7 @@ title: Window Hierarchy & Menu System
 
 version: 1.0.0
 
-status: APPROVED
+status: TESTING
 
 priority: High
 
@@ -13,7 +13,7 @@ owner: planner
 
 created: 2026-07-13
 
-updated: 2026-07-13
+updated: 2026-07-14
 
 approved_by: user
 

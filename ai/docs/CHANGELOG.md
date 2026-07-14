@@ -8,6 +8,22 @@ last_updated: 2026-07-13
 
 # Changelog
 
+## 2026-07-13 (PRD-004 Advanced to TESTING — All 10 Tasks Complete)
+
+### Summary
+All 10 PRD-004 implementation tasks completed and advanced to READY_FOR_TEST. The new Window Hierarchy & Menu System is fully implemented:
+- New metadata schema (V24): sys_table, sys_column, sys_window, sys_tab, sys_window_field, sys_window_access, sys_menu
+- JPA entities + CRUD services for all 7 metadata tables
+- Runtime API: window definition endpoint, window data CRUD endpoints, menu endpoint
+- Frontend: WindowPage with /window/{windowName} routing, MenuNavigation component with collapsible hierarchy
+- Seed data: 12 business tables registered (V25), 7 admin windows with tabs/fields (V26), 10 ERP windows (V27), menu tree + access (V28)
+
+### PRD-004 Status
+- **PRD-004** — Window Hierarchy & Menu System → **TESTING** (v1.0.0)
+  - 10 tasks completed (TASK-036 through TASK-045)
+  - All 36 backend tests pass
+  - Frontend typecheck passes
+
 ## 2026-07-13 (PRD-004 Created — Window Hierarchy & Menu System)
 
 ### Summary

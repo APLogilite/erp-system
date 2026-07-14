@@ -5,29 +5,29 @@ title: Seed Data — ERP Windows with Tabs/Fields (replaces PRD-003)
 
 type: Database
 
-status: READY_FOR_DEV
+status: READY_FOR_TEST
 
 priority: High
 
-owner: planner
+owner: software_engineer
 
-assigned_to:
+assigned_to: software_engineer
 
-assigned_branch:
+assigned_branch: feature/TASK-044
 
-locked: false
+locked: true
 
 created: 2026-07-13
 
 updated: 2026-07-13
 
-started:
+started: 2026-07-13
 
-completed:
+completed: 2026-07-13
 
 estimated_hours: 10
 
-actual_hours:
+actual_hours: 2
 
 parent_prd: PRD-004
 
@@ -43,11 +43,19 @@ depends_on: [TASK-042, TASK-037]
 
 blocks: [TASK-045]
 
+change_report: ai/changes/CHANGE-TASK-044.md
+
 labels: [database, seed, flyway, erp]
+
+history:
+  - 2026-07-13: Status READY_FOR_DEV → IN_DEVELOPMENT. Assigned to software_engineer. Started implementation.
+  - 2026-07-13: V27 Flyway migration created. 10 ERP windows + tabs + fields seeded. Validation passed. Status → READY_FOR_TEST.
 
 review_required: true
 
 test_required: true
+
+change_report: ai/changes/CHANGE-TASK-044.md
 
 ---
 

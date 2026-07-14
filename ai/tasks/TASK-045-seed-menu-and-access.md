@@ -5,29 +5,29 @@ title: Seed Data — Menu Entries + Window Access
 
 type: Database
 
-status: PLANNED
+status: READY_FOR_TEST
 
 priority: High
 
-owner: planner
+owner: software_engineer
 
-assigned_to:
+assigned_to: software_engineer
 
-assigned_branch:
+assigned_branch: feature/TASK-045
 
-locked: false
+locked: true
 
 created: 2026-07-13
 
 updated: 2026-07-13
 
-started:
+started: 2026-07-13
 
-completed:
+completed: 2026-07-13
 
 estimated_hours: 3
 
-actual_hours:
+actual_hours: 1
 
 parent_prd: PRD-004
 
@@ -45,9 +45,15 @@ blocks: []
 
 labels: [database, seed, flyway, menu]
 
+history:
+  - 2026-07-13: Status PLANNED → IN_DEVELOPMENT. Assigned to software_engineer. Started implementation.
+  - 2026-07-13: V28 Flyway migration created. Menu tree + window access seeded. Validation passed. Status → READY_FOR_TEST.
+
 review_required: true
 
 test_required: true
+
+change_report: ai/changes/CHANGE-TASK-045.md
 
 ---
 
