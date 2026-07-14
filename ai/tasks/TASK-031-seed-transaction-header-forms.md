@@ -70,7 +70,7 @@ change_summary: ai/changes/CHANGE-TASK-031.md
 test_report:
 
 history:
-  - 2026-07-10 — Planner — Created task from PRD-002 v1.0.0
+  - 2026-07-10 — Product Manager — Created task from PRD-002 v1.0.0
   - 2026-07-13 — Software Engineer — Activated to IN_DEVELOPMENT, started implementation
   - 2026-07-13 — Software Engineer — Created V22 Flyway migration with 9 transaction header forms
 
@@ -303,7 +303,7 @@ Use `{next}` = TASK-030's version + 1.
 
 | Date | Agent | Action |
 |------|-------|--------|
-| 2026-07-10 | Planner | Created task from PRD-002 v1.0.0 |
+| 2026-07-10 | Product Manager | Created task from PRD-002 v1.0.0 |
 
 ---
 

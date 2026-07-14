@@ -193,7 +193,7 @@ Example
 
 2026-07-07 09:15
 
-Planner
+Product Manager
 
 Created Task
 
@@ -201,7 +201,7 @@ Created Task
 
 2026-07-07 09:32
 
-Planner
+Product Manager
 
 Approved
 

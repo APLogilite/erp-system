@@ -9,7 +9,7 @@ status: COMPLETED
 
 priority: High
 
-owner: Planner
+owner: Product Manager
 
 assigned_to: QA Engineer
 

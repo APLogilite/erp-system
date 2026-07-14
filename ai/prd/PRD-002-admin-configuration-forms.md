@@ -9,7 +9,7 @@ status: COMPLETED
 
 priority: High
 
-owner: Planner
+owner: Product Manager
 
 created: 2026-07-10
 

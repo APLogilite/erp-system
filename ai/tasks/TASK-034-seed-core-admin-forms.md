@@ -74,7 +74,7 @@ ntest_script: ai/scripts/verify-prd-002-data.sql
 qa_completed: 2026-07-10
 
 history:
-  - 2026-07-10 — Planner — Created task from PRD-002 v1.0.0
+  - 2026-07-10 — Product Manager — Created task from PRD-002 v1.0.0
   - 2026-07-10 — Software Engineer — Auto-activated from PLANNED (TASK-033 completed). Locked, created feature/TASK-034 branch, started implementation.
   - 2026-07-10 — Software Engineer — Created V16 Flyway migration (256 lines, 4 forms, 38 fields, 4 sections, 1 sub-form). Build passes.
   - 2026-07-10 — QA Engineer — Locked for testing. 15/15 structural tests passed. Identified tenant_id field visibility discrepancy between PRD-002 and task spec (Requirement Issue — Product Manager review needed).
@@ -238,7 +238,7 @@ The admin_form_definition to admin_form_field sub-form link will be added in TAS
 
 | Date | Agent | Action |
 |------|-------|--------|
-| 2026-07-10 | Planner | Created task from PRD-002 v1.0.0 |
+| 2026-07-10 | Product Manager | Created task from PRD-002 v1.0.0 |
 
 ---
 

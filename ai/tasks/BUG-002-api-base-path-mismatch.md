@@ -40,7 +40,7 @@ fix_summary: ai/changes/CHANGE-BUG-002.md
 verification_report:
 
 history:
-  - 2026-07-13 — Planner — Created bug task. User reported 500 errors on Table Designer, Form Designer, and all runtime form pages.
+  - 2026-07-13 — Product Manager — Created bug task. User reported 500 errors on Table Designer, Form Designer, and all runtime form pages.
   - 2026-07-13 — Software Engineer — Fixed API_BASE from "/api" to "/api/v1" in ApiVersionConfig.java. Verified: metadata endpoints now return 403 (auth required, not 500), runtime endpoints return 200.
 
 ---

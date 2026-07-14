@@ -2,7 +2,7 @@
 document: PROJECT_MEMORY
 version: 1.1.0
 status: ACTIVE
-owner: Planner
+owner: Product Manager
 last_updated: 2026-07-13
 ---
 

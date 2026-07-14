@@ -2,7 +2,7 @@
 document: PROJECT_BOARD
 version: 2.0.0
 status: ACTIVE
-owner: Planner
+owner: Product Manager
 last_updated: 2026-07-07
 ---
 
@@ -14,8 +14,8 @@ last_updated: 2026-07-07
 
 | Status | Description | Owner |
 |--------|-------------|-------|
-| 🔵 PLANNING | Task still being defined | Planner |
-| 🟤 PLANNED | Fully defined, waiting for dependencies | Planner |
+| 🔵 PLANNING | Task still being defined | Product Manager |
+| 🟤 PLANNED | Fully defined, waiting for dependencies | Product Manager |
 | 🟢 READY_FOR_DEV | Dependencies satisfied, available for Developer | Developer |
 | 🟡 IN_DEVELOPMENT | Developer actively working | Developer |
 | 🟣 READY_FOR_TEST | Implemented, awaiting Tester | Tester |

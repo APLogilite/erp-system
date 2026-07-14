@@ -34,7 +34,7 @@ fix_summary:
 verification_report:
 
 history:
-  - 2026-07-13 — Planner — Created enhancement task. RuntimePage needs proper API-driven form rendering.
+  - 2026-07-13 — Product Manager — Created enhancement task. RuntimePage needs proper API-driven form rendering.
 
 ---
 

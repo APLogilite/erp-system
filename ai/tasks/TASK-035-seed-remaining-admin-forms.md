@@ -74,7 +74,7 @@ ntest_script: ai/scripts/verify-prd-002-data.sql
 qa_completed: 2026-07-10
 
 history:
-  - 2026-07-10 — Planner — Created task from PRD-002 v1.0.0
+  - 2026-07-10 — Product Manager — Created task from PRD-002 v1.0.0
   - 2026-07-10 — Software Engineer — Auto-activated from PLANNED (TASK-034 completed). Locked, created feature/TASK-035 branch, started implementation.
   - 2026-07-10 — Software Engineer — Created V17 Flyway migration (440 lines, 7 forms, 26 fields, 7 sections, 4 sub-forms, 2 VIEWs with 10 column registrations). Build passes.
   - 2026-07-10 — QA Engineer — Locked for testing. 21/21 structural tests passed. Same tenant_id PRD discrepancy noted as TASK-034. VIEW-backed form limitation acknowledged.
@@ -272,7 +272,7 @@ Use `{next}` = TASK-034's version + 1.
 
 | Date | Agent | Action |
 |------|-------|--------|
-| 2026-07-10 | Planner | Created task from PRD-002 v1.0.0 |
+| 2026-07-10 | Product Manager | Created task from PRD-002 v1.0.0 |
 
 ---
 

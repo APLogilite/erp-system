@@ -68,8 +68,8 @@ change_summary: ai/changes/CHANGE-TASK-028.md
 test_report:
 
 history:
-  - 2026-07-10 — Planner — Created task from PRD-002 v1.0.0
-  - 2026-07-10 — Planner — Activated to READY_FOR_DEV (PRD-002 APPROVED, no task dependencies)
+  - 2026-07-10 — Product Manager — Created task from PRD-002 v1.0.0
+  - 2026-07-10 — Product Manager — Activated to READY_FOR_DEV (PRD-002 APPROVED, no task dependencies)
   - 2026-07-13 — Software Engineer — Activated to IN_DEVELOPMENT, started implementation
   - 2026-07-13 — Software Engineer — Created V19 Flyway migration with 5 master data tables + metadata registration
 
@@ -253,7 +253,7 @@ The `is_active` and `deleted_at` columns are handled by PRD-001's existing BaseE
 
 | Date | Agent | Action |
 |------|-------|--------|
-| 2026-07-10 | Planner | Created task from PRD-002 v1.0.0 |
+| 2026-07-10 | Product Manager | Created task from PRD-002 v1.0.0 |
 
 ---
 

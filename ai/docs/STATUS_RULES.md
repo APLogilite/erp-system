@@ -1,14 +1,14 @@
 # Status Rules
 
 ## PLANNING
-Owner: Planner
+Owner: Product Manager
 
 Task definition is incomplete.
 
 ---
 
 ## PLANNED
-Owner: Planner
+Owner: Product Manager
 
 Task definition complete.
 

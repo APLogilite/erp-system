@@ -29,7 +29,7 @@ parent_prd: PRD-001
 
 parent_task: TASK-001
 
-reported_by: Planner (build output)
+reported_by: Product Manager (build output)
 
 detected_in: mvn test
 
@@ -40,7 +40,7 @@ fix_summary: ai/changes/CHANGE-BUG-001.md
 verification_report: ai/tests/TEST-BUG-001.md
 
 history:
-  - 2026-07-13 — Planner — Created bug task from pre-existing test failures. Tests run: 3, Errors: 3, Failures: 0.
+  - 2026-07-13 — Product Manager — Created bug task from pre-existing test failures. Tests run: 3, Errors: 3, Failures: 0.
   - 2026-07-13 — Software Engineer — Rewrote DatabaseConnectionTest using JDBC DatabaseMetaData; disabled Flyway in tests. 36/36 PASS.
   - 2026-07-13 — QA Engineer — All 36 tests pass. BUILD SUCCESS. Database-agnostic (H2/PostgreSQL/Oracle).
 

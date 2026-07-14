@@ -8,7 +8,7 @@ status: ACTIVE
 
 ## Purpose
 
-This document defines how the Planner converts a PRD into implementation tasks.
+This document defines how the Product Manager converts a PRD into implementation tasks.
 
 Tasks should be:
 
@@ -199,7 +199,7 @@ A task is complete only when:
 
 ---
 
-# Planner Checklist
+# Product Manager Checklist
 
 Before creating tasks verify:
 

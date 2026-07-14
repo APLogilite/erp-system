@@ -20,7 +20,7 @@ priority: Medium
 # Medium
 # Low
 
-owner: Planner
+owner: Product Manager
 
 created:
 
@@ -395,7 +395,7 @@ These should become Enhancement Tasks later.
 
 Questions waiting for user clarification.
 
-Planner should not mark the PRD APPROVED while this section contains unresolved items.
+Product Manager should not mark the PRD APPROVED while this section contains unresolved items.
 
 ---
 

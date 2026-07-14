@@ -40,7 +40,7 @@ fix_summary: ai/changes/CHANGE-BUG-003.md
 verification_report:
 
 history:
-  - 2026-07-13 — Planner — Created bug task. Sidebar drawer overlaps main content area; was previously responsive.
+  - 2026-07-13 — Product Manager — Created bug task. Sidebar drawer overlaps main content area; was previously responsive.
   - 2026-07-13 — Software Engineer — Phase 1 done: added marginLeft compensation in AppLayout. Sidebar no longer overlaps content. Phase 2 (page responsiveness audit) and Phase 3 (ContentArea Container) still pending.
 
 ---

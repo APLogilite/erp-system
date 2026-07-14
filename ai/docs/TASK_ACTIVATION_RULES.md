@@ -10,4 +10,4 @@ A task may move from PLANNED to READY_FOR_DEV only if:
 
 Developer performs activation after completing work.
 
-Planner never performs automatic activation.
+Product Manager never performs automatic activation.

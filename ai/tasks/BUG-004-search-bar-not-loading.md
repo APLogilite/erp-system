@@ -40,7 +40,7 @@ fix_summary:
 verification_report:
 
 history:
-  - 2026-07-13 — Planner — Created bug task. Ctrl+K opens dialog but shows "No forms found". User requests default form list on open and visible search button in header.
+  - 2026-07-13 — Product Manager — Created bug task. Ctrl+K opens dialog but shows "No forms found". User requests default form list on open and visible search button in header.
 
 ---
 

@@ -109,8 +109,8 @@ CANCELLED
 
 | Status | Description | Owner |
 |----------|-------------|-------|
-| PLANNING | Task is still being defined. | Planner |
-| PLANNED | Task is complete but waiting for activation. | Planner |
+| PLANNING | Task is still being defined. | Product Manager |
+| PLANNED | Task is complete but waiting for activation. | Product Manager |
 | READY_FOR_DEV | All dependencies are satisfied and the task is ready for implementation. | Developer |
 | IN_DEVELOPMENT | Developer is actively implementing the task. | Developer |
 | READY_FOR_TEST | Implementation completed and waiting for QA. | Developer |
@@ -119,7 +119,7 @@ CANCELLED
 | COMPLETED | Task is closed and included in a completed release. | System |
 | BLOCKED | Work cannot continue. | Current Owner |
 | ON_HOLD | Temporarily paused. | Current Owner |
-| CANCELLED | Task will never be implemented. | Planner |
+| CANCELLED | Task will never be implemented. | Product Manager |
 
 ---
 
@@ -145,7 +145,7 @@ If testing fails again, the cycle repeats.
 
 # Agent Responsibilities
 
-## Planner
+## Product Manager
 
 Responsibilities
 
@@ -158,7 +158,7 @@ Responsibilities
 - Create enhancement tasks
 - Maintain project changelog
 
-Planner MUST NOT
+Product Manager MUST NOT
 
 - Write production code
 - Modify application source code
@@ -217,8 +217,8 @@ Ownership determines which agent is allowed to modify a task's implementation st
 
 | Task Status | Owner | Responsibilities |
 |--------------|--------|------------------|
-| PLANNING | Planner | Create and refine the task definition. |
-| PLANNED | Planner | Finalize planning and maintain task details until it becomes eligible for development. |
+| PLANNING | Product Manager | Create and refine the task definition. |
+| PLANNED | Product Manager | Finalize planning and maintain task details until it becomes eligible for development. |
 | READY_FOR_DEV | Developer | Select the task for implementation and begin work. |
 | IN_DEVELOPMENT | Developer | Implement the task and maintain implementation progress. |
 | READY_FOR_TEST | Tester | Accept the completed implementation for testing. |
@@ -227,7 +227,7 @@ Ownership determines which agent is allowed to modify a task's implementation st
 | COMPLETED | System | Closed task. No further modification unless a new Enhancement or Bug task is created. |
 | BLOCKED | Current Owner | Document the blocker and required action. |
 | ON_HOLD | Current Owner | Pause work until resumed. |
-| CANCELLED | Planner | Task permanently removed from execution. |
+| CANCELLED | Product Manager | Task permanently removed from execution. |
 
 ## Ownership Rules
 
@@ -301,7 +301,7 @@ READY_FOR_DEV
 
 Update PROJECT_BOARD.md.
 
-Planner involvement is NOT required.
+Product Manager involvement is NOT required.
 
 ---
 
@@ -341,7 +341,7 @@ When the PRD changes:
 - PLANNING
 - READY_FOR_DEV
 
-Planner updates the existing task.
+Product Manager updates the existing task.
 
 ## If task status is
 
@@ -351,7 +351,7 @@ Planner updates the existing task.
 - TESTED
 - COMPLETED
 
-Planner MUST create a new Enhancement Task.
+Product Manager MUST create a new Enhancement Task.
 
 Completed work must never be silently modified.
 
@@ -715,7 +715,7 @@ Failure Reports become part of the permanent project history.
 
 # File Ownership
 
-Planner manages
+Product Manager manages
 
 ```
 ai/prd/
@@ -753,7 +753,7 @@ Every AI agent MUST:
 6. Never overwrite another agent's work.
 7. Preserve project history.
 8. Never skip workflow stages.
-9. Never change project requirements without Planner approval.
+9. Never change project requirements without Product Manager approval.
 10. Stop and report when blocked instead of guessing.
 
 ---
@@ -781,7 +781,7 @@ All future agents must follow this workflow.
 User
  │
  ▼
-Planner
+Product Manager
  │
  ▼
 PRD

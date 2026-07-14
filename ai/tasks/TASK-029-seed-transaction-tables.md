@@ -68,7 +68,7 @@ change_summary: ai/changes/CHANGE-TASK-029.md
 test_report:
 
 history:
-  - 2026-07-10 — Planner — Created task from PRD-002 v1.0.0
+  - 2026-07-10 — Product Manager — Created task from PRD-002 v1.0.0
   - 2026-07-13 — Software Engineer — Activated to IN_DEVELOPMENT, started implementation
   - 2026-07-13 — Software Engineer — Created V20 Flyway migration with 9 transaction tables + metadata registration
 
@@ -401,7 +401,7 @@ Since these are dynamic tables managed by the metadata engine, do NOT add hard P
 
 | Date | Agent | Action |
 |------|-------|--------|
-| 2026-07-10 | Planner | Created task from PRD-002 v1.0.0 |
+| 2026-07-10 | Product Manager | Created task from PRD-002 v1.0.0 |
 
 ---
 
