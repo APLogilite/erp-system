@@ -13,6 +13,39 @@
 -- ============================================================
 
 -- ============================================================
+-- Part 0 — Metadata Tables (sys_*) — must be registered first
+-- so admin windows (V26) can reference them.
+-- ============================================================
+
+INSERT INTO sys_table (id, name, label, plural_label, table_type, table_name, description, is_active, created_at, updated_at)
+SELECT gen_random_uuid(), 'sys_table', 'Table', 'Tables', 'static', 'sys_table', 'Database table definitions', true, now(), now()
+WHERE NOT EXISTS (SELECT 1 FROM sys_table WHERE name = 'sys_table');
+
+INSERT INTO sys_table (id, name, label, plural_label, table_type, table_name, description, is_active, created_at, updated_at)
+SELECT gen_random_uuid(), 'sys_column', 'Column', 'Columns', 'static', 'sys_column', 'Table column definitions', true, now(), now()
+WHERE NOT EXISTS (SELECT 1 FROM sys_table WHERE name = 'sys_column');
+
+INSERT INTO sys_table (id, name, label, plural_label, table_type, table_name, description, is_active, created_at, updated_at)
+SELECT gen_random_uuid(), 'sys_window', 'Window', 'Windows', 'static', 'sys_window', 'Window definitions', true, now(), now()
+WHERE NOT EXISTS (SELECT 1 FROM sys_table WHERE name = 'sys_window');
+
+INSERT INTO sys_table (id, name, label, plural_label, table_type, table_name, description, is_active, created_at, updated_at)
+SELECT gen_random_uuid(), 'sys_tab', 'Tab', 'Tabs', 'static', 'sys_tab', 'Window tab definitions', true, now(), now()
+WHERE NOT EXISTS (SELECT 1 FROM sys_table WHERE name = 'sys_tab');
+
+INSERT INTO sys_table (id, name, label, plural_label, table_type, table_name, description, is_active, created_at, updated_at)
+SELECT gen_random_uuid(), 'sys_window_field', 'Window Field', 'Window Fields', 'static', 'sys_window_field', 'Window field definitions', true, now(), now()
+WHERE NOT EXISTS (SELECT 1 FROM sys_table WHERE name = 'sys_window_field');
+
+INSERT INTO sys_table (id, name, label, plural_label, table_type, table_name, description, is_active, created_at, updated_at)
+SELECT gen_random_uuid(), 'sys_window_access', 'Window Access', 'Window Access', 'static', 'sys_window_access', 'Window access control entries', true, now(), now()
+WHERE NOT EXISTS (SELECT 1 FROM sys_table WHERE name = 'sys_window_access');
+
+INSERT INTO sys_table (id, name, label, plural_label, table_type, table_name, description, is_active, created_at, updated_at)
+SELECT gen_random_uuid(), 'sys_menu', 'Menu', 'Menus', 'static', 'sys_menu', 'Menu tree entries', true, now(), now()
+WHERE NOT EXISTS (SELECT 1 FROM sys_table WHERE name = 'sys_menu');
+
+-- ============================================================
 -- Part 1 — Master Data Tables (md_*)
 -- ============================================================
 
