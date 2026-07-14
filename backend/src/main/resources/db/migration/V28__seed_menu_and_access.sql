@@ -52,13 +52,8 @@ SELECT add_menu('Administration', 'group', NULL, NULL, 10, 'settings');
 SELECT add_menu('Master Data',    'group', NULL, NULL, 20, 'storage');
 SELECT add_menu('Transactions',   'group', NULL, NULL, 30, 'receipt');
 
--- 1b. Administration menu items
-SELECT add_menu('Table Definitions',   'window', 'Administration', 'admin_table_definitions',  10);
-SELECT add_menu('Window Definitions',  'window', 'Administration', 'admin_window_definitions', 20);
-SELECT add_menu('Window Tabs',         'window', 'Administration', 'admin_window_tabs',        30);
-SELECT add_menu('Window Fields',       'window', 'Administration', 'admin_window_fields',      40);
-SELECT add_menu('Window Access',       'window', 'Administration', 'admin_window_access',      50);
-SELECT add_menu('Menu Configuration',  'window', 'Administration', 'admin_menu_configuration', 60);
+-- 1b. Administration menu item — single entry opening the consolidated admin window
+SELECT add_menu('Administration', 'window', 'Administration', 'admin', 10);
 
 -- 1c. Master Data menu items
 SELECT add_menu('Business Partners', 'window', 'Master Data', 'Business Partners', 10);
