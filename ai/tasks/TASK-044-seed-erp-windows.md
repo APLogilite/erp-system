@@ -5,7 +5,7 @@ title: Seed Data — ERP Windows with Tabs/Fields (replaces PRD-003)
 
 type: Database
 
-status: PLANNED
+status: READY_FOR_DEV
 
 priority: High
 

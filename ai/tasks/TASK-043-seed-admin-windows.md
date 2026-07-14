@@ -5,7 +5,7 @@ title: Seed Data — Admin Windows for Metadata Management (replaces PRD-002)
 
 type: Database
 
-status: PLANNED
+status: READY_FOR_DEV
 
 priority: High
 
