@@ -4,7 +4,7 @@ Last Updated: 2026-07-14
 
 Updated By: Software Engineer
 
-(BUG-007 → READY_FOR_TEST; BUG-008 now eligible for dev)
+(BUG-007 → READY_FOR_TEST; BUG-008 → READY_FOR_TEST; all bugs now ready for QA)
 
 ---
 
@@ -35,9 +35,7 @@ See `ai/docs/STATUS_TRANSITIONS.md` for full transition rules.
 
 ## Ready For Development
 
-| Bug | Priority | Parent PRD | Depends On |
-|-----|----------|------------|------------|
-| BUG-008 | Medium | PRD-004 | BUG-007 |
+*(none)*
 
 ---
 
@@ -46,6 +44,7 @@ See `ai/docs/STATUS_TRANSITIONS.md` for full transition rules.
 | Bug | Priority | Parent PRD | Depends On |
 |-----|----------|------------|------------|
 | BUG-007 | Critical | PRD-004 | — |
+| BUG-008 | Medium | PRD-004 | BUG-007 |
 
 ---
 
@@ -132,7 +131,7 @@ See `ai/docs/STATUS_TRANSITIONS.md` for full transition rules.
 | BUG-005 | TASK-025 | Medium | READY_FOR_TEST | QA Engineer | — |
 | BUG-006 | TASK-007 | Critical | READY_FOR_TEST | QA Engineer | — |
 | BUG-007 | TASK-036 | Critical | READY_FOR_TEST | QA Engineer | — |
-| BUG-008 | TASK-041 | Medium | READY_FOR_DEV | Software Engineer | BUG-007 |
+| BUG-008 | TASK-041 | Medium | READY_FOR_TEST | QA Engineer | BUG-007 |
 
 ---
 
@@ -157,12 +156,12 @@ See `ai/docs/STATUS_TRANSITIONS.md` for full transition rules.
 | Status | Count |
 |--------|-------|
 | PRDs | 4 (ALL COMPLETED: PRD-001, PRD-002, PRD-003, PRD-004) |
-| Ready For Dev | 1 bug (BUG-008) |
-| Ready For Test | 1 bug (BUG-007) |
+| Ready For Dev | 0 |
+| Ready For Test | 2 bugs (BUG-007, BUG-008) |
 | In Development | 0 |
 | In Testing | 0 |
 | Planning | 0 |
-| Bugs | 8 (1 at READY_FOR_DEV, 3 at READY_FOR_TEST, 4 at TESTED) |
+| Bugs | 8 (0 at READY_FOR_DEV, 4 at READY_FOR_TEST, 4 at TESTED) |
 | Completed (PRD-001) | 27 tasks + 1 enhancement (ENH-001) |
 | Completed (PRD-002) | 3 tasks + 1 enhancement (TASK-033/034/035 + ENH-002) |
 | Completed (PRD-003) | 5 tasks (TASK-028/029/030/031/032) — merged to main |

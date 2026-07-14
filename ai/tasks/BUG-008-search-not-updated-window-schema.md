@@ -3,19 +3,19 @@ id: BUG-008
 
 title: Ctrl+K search still uses old PRD-001 form schema instead of new Window names
 
-status: IN_DEVELOPMENT
+status: READY_FOR_TEST
 
 priority: High
 
 severity: Medium
 
-owner: Software Engineer
+owner: QA Engineer
 
 assigned_to: Software Engineer
 
 assigned_branch: bugfix/BUG-008
 
-locked: true
+locked: false
 
 created: 2026-07-14
 
@@ -23,7 +23,7 @@ updated: 2026-07-14
 
 started: 2026-07-14
 
-completed:
+completed: 2026-07-14
 
 parent_prd: PRD-004
 
