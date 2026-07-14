@@ -380,6 +380,19 @@ function ChildFieldCell({
     return <Checkbox checked={!!value} onChange={(e) => onChange(e.target.checked)} size="small" />;
   }
 
+  if (col.type === 'date') {
+    return (
+      <TextField
+        type="date"
+        value={typeof value === 'string' ? value.slice(0, 10) : ''}
+        onChange={(e) => onChange(e.target.value)}
+        size="small"
+        InputLabelProps={{ shrink: true }}
+        sx={{ fontSize: 12, minWidth: 120 }}
+      />
+    );
+  }
+
   if (col.type === 'enum' && col.enumOptions) {
     const options: string[] = JSON.parse(col.enumOptions);
     return (

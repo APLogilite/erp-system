@@ -70,7 +70,7 @@ FROM sys_window w, sys_table t WHERE w.name = 'sys_window' AND t.name = 'sys_win
 AND NOT EXISTS (SELECT 1 FROM sys_tab WHERE window_id = w.id AND seq_no = 30);
 
 INSERT INTO sys_tab (id, window_id, name, table_id, seq_no, is_single_row, where_clause, parent_column, is_active, created_at, updated_at)
-SELECT gen_random_uuid(), w.id, 'Access', t.id, 40, false, NULL, NULL, true, now(), now()
+SELECT gen_random_uuid(), w.id, 'Access', t.id, 40, false, NULL, 'window_id', true, now(), now()
 FROM sys_window w, sys_table t WHERE w.name = 'sys_window' AND t.name = 'sys_window_access'
 AND NOT EXISTS (SELECT 1 FROM sys_tab WHERE window_id = w.id AND seq_no = 40);
 
