@@ -1,11 +1,17 @@
 import {
   Box,
   Button,
+  Checkbox,
   CircularProgress,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
+  FormControl,
+  FormControlLabel,
+  InputLabel,
+  MenuItem,
+  Select,
   Table,
   TableBody,
   TableCell,
@@ -13,6 +19,8 @@ import {
   TableHead,
   TablePagination,
   TableRow,
+  Tabs,
+  Tab,
   TextField,
   Typography,
 } from '@mui/material';
@@ -129,26 +137,140 @@ function RecordDialog({ open, windowName, windowDef, recordId, onClose }: Record
           </Box>
         ) : (
           <Box sx={{ pt: 2 }}>
-            {fields.map((field) => (
-              <TextField
-                key={field.column.code}
-                fullWidth
-                margin="dense"
-                label={field.labelOverride ?? field.column.label}
-                value={formData[field.column.code] ?? ''}
-                onChange={(e) => handleFieldChange(field.column.code, e.target.value)}
-                disabled={field.isReadonly || isSaving}
-                required={field.isMandatory}
-                type={
-                  field.column.type === 'integer' || field.column.type === 'decimal'
-                    ? 'number'
-                    : 'text'
+            {fields.map((field) => {
+              const value = formData[field.column.code] ?? '';
+              const label = field.labelOverride ?? field.column.label;
+
+              switch (field.column.type) {
+                case 'boolean':
+                  return (
+                    <FormControlLabel
+                      key={field.column.code}
+                      control={
+                        <Checkbox
+                          checked={!!value}
+                          onChange={(e) => handleFieldChange(field.column.code, e.target.checked)}
+                          disabled={field.isReadonly || isSaving}
+                        />
+                      }
+                      label={label}
+                      sx={{ mb: 1, display: 'flex' }}
+                    />
+                  );
+
+                case 'enum': {
+                  const options = field.column.enumOptions
+                    ? JSON.parse(field.column.enumOptions)
+                    : [];
+                  return (
+                    <FormControl key={field.column.code} fullWidth margin="dense" sx={{ mb: 1 }}>
+                      <InputLabel>{label}</InputLabel>
+                      <Select
+                        value={value as string}
+                        label={label}
+                        onChange={(e) => handleFieldChange(field.column.code, e.target.value)}
+                        disabled={field.isReadonly || isSaving}
+                        required={field.isMandatory}
+                      >
+                        {options.map((opt: string) => (
+                          <MenuItem key={opt} value={opt}>
+                            {opt}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
+                  );
                 }
-                multiline={field.column.type === 'text'}
-                rows={field.numLines > 1 ? field.numLines : undefined}
-                sx={{ mb: 1 }}
-              />
-            ))}
+
+                case 'date':
+                  return (
+                    <TextField
+                      key={field.column.code}
+                      fullWidth
+                      margin="dense"
+                      label={label}
+                      type="date"
+                      value={typeof value === 'string' ? value.slice(0, 10) : ''}
+                      onChange={(e) => handleFieldChange(field.column.code, e.target.value)}
+                      disabled={field.isReadonly || isSaving}
+                      required={field.isMandatory}
+                      InputLabelProps={{ shrink: true }}
+                      sx={{ mb: 1 }}
+                    />
+                  );
+
+                case 'many2one':
+                case 'many2many':
+                case 'one2many':
+                  return (
+                    <TextField
+                      key={field.column.code}
+                      fullWidth
+                      margin="dense"
+                      label={label}
+                      value={String(value ?? '')}
+                      onChange={(e) => handleFieldChange(field.column.code, e.target.value)}
+                      disabled={field.isReadonly || isSaving}
+                      required={field.isMandatory}
+                      placeholder="Reference ID"
+                      sx={{ mb: 1 }}
+                    />
+                  );
+
+                case 'text':
+                  return (
+                    <TextField
+                      key={field.column.code}
+                      fullWidth
+                      margin="dense"
+                      label={label}
+                      value={String(value ?? '')}
+                      onChange={(e) => handleFieldChange(field.column.code, e.target.value)}
+                      disabled={field.isReadonly || isSaving}
+                      required={field.isMandatory}
+                      multiline
+                      rows={field.numLines > 1 ? field.numLines : 3}
+                      sx={{ mb: 1 }}
+                    />
+                  );
+
+                case 'integer':
+                case 'decimal':
+                case 'numeric':
+                  return (
+                    <TextField
+                      key={field.column.code}
+                      fullWidth
+                      margin="dense"
+                      label={label}
+                      type="number"
+                      value={value}
+                      onChange={(e) => handleFieldChange(field.column.code, e.target.value)}
+                      disabled={field.isReadonly || isSaving}
+                      required={field.isMandatory}
+                      inputProps={{
+                        step: field.column.type === 'integer' ? '1' : '0.01',
+                      }}
+                      sx={{ mb: 1 }}
+                    />
+                  );
+
+                default:
+                  return (
+                    <TextField
+                      key={field.column.code}
+                      fullWidth
+                      margin="dense"
+                      label={label}
+                      value={String(value ?? '')}
+                      onChange={(e) => handleFieldChange(field.column.code, e.target.value)}
+                      disabled={field.isReadonly || isSaving}
+                      required={field.isMandatory}
+                      sx={{ mb: 1 }}
+                    />
+                  );
+              }
+            })}
           </Box>
         )}
       </DialogContent>
@@ -177,6 +299,7 @@ export function WindowPage() {
   const [pageSize] = useState(20);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editRecordId, setEditRecordId] = useState<string | undefined>();
+  const [activeTab, setActiveTab] = useState(0);
 
   // Fetch window definition
   const {
@@ -224,8 +347,20 @@ export function WindowPage() {
     );
   }
 
-  const mainTab = windowDef.tabs.find((t) => !t.parentColumn);
-  const fields = mainTab ? getDisplayedFields(mainTab) : [];
+  // Build tab hierarchy: top-level tabs (no parentColumn) + their children
+  const topTabs = windowDef.tabs.filter((t) => !t.parentColumn).sort((a, b) => a.seqNo - b.seqNo);
+  const currentTab = topTabs[activeTab] ?? topTabs[0];
+  const childTabs = currentTab
+    ? windowDef.tabs
+        .filter(
+          (t) =>
+            t.parentColumn === currentTab.name.toLowerCase().replace(/\s/g, '_') ||
+            t.parentColumn === currentTab.name
+        )
+        .sort((a, b) => a.seqNo - b.seqNo)
+    : [];
+
+  const fields = currentTab ? getDisplayedFields(currentTab) : [];
   const records = (recordsData as { items?: Record<string, unknown>[] })?.items ?? [];
   const totalRecords = (recordsData as { total?: number })?.total ?? 0;
 
@@ -257,9 +392,25 @@ export function WindowPage() {
       title={windowDef.window.name}
       subtitle={windowDef.window.description ?? undefined}
     >
+      {/* Tab navigation */}
+      {topTabs.length > 1 && (
+        <Tabs
+          value={activeTab < topTabs.length ? activeTab : 0}
+          onChange={(_e, newValue) => {
+            setActiveTab(newValue);
+            setPage(0);
+          }}
+          sx={{ mb: 2, borderBottom: 1, borderColor: 'divider' }}
+        >
+          {topTabs.map((tab) => (
+            <Tab key={tab.id} label={tab.name} />
+          ))}
+        </Tabs>
+      )}
+
       <Box sx={{ mb: 2, display: 'flex', gap: 1 }}>
         <Button variant="contained" onClick={handleCreate}>
-          New Record
+          New {currentTab?.name ?? 'Record'}
         </Button>
       </Box>
 
@@ -322,6 +473,20 @@ export function WindowPage() {
             rowsPerPageOptions={[pageSize]}
           />
         </>
+      )}
+
+      {/* Child tab indicators */}
+      {childTabs.length > 0 && (
+        <Box sx={{ mt: 3, px: 1 }}>
+          <Typography variant="subtitle2" color="text.secondary" sx={{ mb: 1 }}>
+            Related records:
+          </Typography>
+          {childTabs.map((ct) => (
+            <Typography key={ct.id} variant="body2" sx={{ ml: 2, mb: 0.5 }}>
+              • {ct.name}
+            </Typography>
+          ))}
+        </Box>
       )}
 
       <RecordDialog
