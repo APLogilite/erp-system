@@ -5,23 +5,23 @@ title: Frontend — Menu Component + Navigation
 
 type: UI
 
-status: READY_FOR_DEV
+status: IN_DEVELOPMENT
 
 priority: Critical
 
-owner: planner
+owner: software_engineer
 
-assigned_to:
+assigned_to: software_engineer
 
-assigned_branch:
+assigned_branch: feature/TASK-040
 
-locked: false
+locked: true
 
 created: 2026-07-13
 
 updated: 2026-07-13
 
-started:
+started: 2026-07-13
 
 completed:
 
@@ -44,6 +44,9 @@ depends_on: [TASK-037]
 blocks: [TASK-041, TASK-045]
 
 labels: [frontend, ui, navigation, menu]
+
+history:
+  - 2026-07-13: Status READY_FOR_DEV → IN_DEVELOPMENT. Assigned to software_engineer. Started implementation.
 
 review_required: true
 
