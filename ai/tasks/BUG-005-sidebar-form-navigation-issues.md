@@ -3,7 +3,7 @@ id: BUG-005
 
 title: Sidebar FormNavigationMenu shows model names and sub-forms — should show only top-level form labels
 
-status: READY_FOR_TEST
+status: CANCELLED
 
 priority: Medium
 
@@ -15,7 +15,7 @@ assigned_to: Software Engineer
 
 assigned_branch: (merged to main)
 
-locked: true
+locked: false
 
 created: 2026-07-13
 
@@ -41,6 +41,7 @@ verification_report:
 
 history:
   - 2026-07-13 — Product Manager — Created bug task. User reported sidebar DYNAMIC FORMS section shows table/model names and sub-forms.
+  - 2026-07-14 — QA Engineer — CANCELLED. Superseded by PRD-004 — old FormNavigationMenu replaced by MenuNavigation (sys_menu-based hierarchical menu).
 
 ---
 

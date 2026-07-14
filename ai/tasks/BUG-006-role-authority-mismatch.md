@@ -3,7 +3,7 @@ id: BUG-006
 
 title: Backend @PreAuthorize uses SYSTEM_ADMIN but seeded role code is sys_admin — causes 403 on all admin endpoints
 
-status: READY_FOR_TEST
+status: RESOLVED
 
 priority: Critical
 
@@ -15,7 +15,7 @@ assigned_to: Software Engineer
 
 assigned_branch: (merged to main)
 
-locked: true
+locked: false
 
 created: 2026-07-13
 
@@ -41,6 +41,7 @@ verification_report:
 
 history:
   - 2026-07-13 — Product Manager — Created bug task. After BUG-002 fixed the 500 errors, all metadata/runtime endpoints return 403 Access Denied for admin user because role codes don't match.
+  - 2026-07-14 — QA Engineer — RESOLVED. Fix verified on main: `@PreAuthorize("hasAuthority('sys_admin')")` present in all affected controllers.
 
 ---
 

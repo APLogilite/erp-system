@@ -4,7 +4,7 @@ Last Updated: 2026-07-14
 
 Updated By: QA Engineer
 
-(BUG-007 → TESTED; BUG-008 → TESTED; QA verification complete for PRD-004 bugfixes)
+(BUG-005 → CANCELLED; BUG-006 → RESOLVED; ENH-003 → TESTED; BUG-007/BUG-008 → TESTED; all ready for merge to main)
 
 ---
 
@@ -125,8 +125,8 @@ See `ai/docs/STATUS_TRANSITIONS.md` for full transition rules.
 | BUG-002 | TASK-007 | High | TESTED | QA Engineer | — |
 | BUG-003 | TASK-011 | High | TESTED | QA Engineer | — |
 | BUG-004 | TASK-025 | Medium | TESTED | QA Engineer | — |
-| BUG-005 | TASK-025 | Medium | READY_FOR_TEST | QA Engineer | — |
-| BUG-006 | TASK-007 | Critical | READY_FOR_TEST | QA Engineer | — |
+| BUG-005 | TASK-025 | Medium | CANCELLED | QA Engineer | — |
+| BUG-006 | TASK-007 | Critical | RESOLVED | QA Engineer | — |
 | BUG-007 | TASK-036 | Critical | TESTED | QA Engineer | — |
 | BUG-008 | TASK-041 | Medium | TESTED | QA Engineer | BUG-007 |
 
@@ -138,7 +138,7 @@ See `ai/docs/STATUS_TRANSITIONS.md` for full transition rules.
 |------|------------|-------------|--------|--------|
 | ENH-001 | PRD-001 | TASK-007 | Form Designer API tenant authorization | COMPLETED |
 | ENH-002 | PRD-002 | TASK-034, TASK-035 | Add tenant_id to all admin forms (REQ-ISSUE-001) | COMPLETED |
-| ENH-003 | PRD-001 | TASK-026 | RuntimePage not integrated with API — uses hardcoded sample bundles instead of dynamic form rendering | READY_FOR_TEST |
+| ENH-003 | PRD-001 | TASK-026 | RuntimePage not integrated with API — uses hardcoded sample bundles instead of dynamic form rendering | TESTED |
 
 ---
 
@@ -154,11 +154,11 @@ See `ai/docs/STATUS_TRANSITIONS.md` for full transition rules.
 |--------|-------|
 | PRDs | 4 (ALL COMPLETED: PRD-001, PRD-002, PRD-003, PRD-004) |
 | Ready For Dev | 0 |
-| Ready For Test | 2 bugs (BUG-005, BUG-006) |
+| Ready For Test | 0 |
 | In Development | 0 |
 | In Testing | 0 |
 | Planning | 0 |
-| Bugs | 8 (0 at READY_FOR_DEV, 2 at READY_FOR_TEST, 6 at TESTED) |
+| Bugs | 8 (all resolved: 6 TESTED, 1 RESOLVED, 1 CANCELLED) |
 | Completed (PRD-001) | 27 tasks + 1 enhancement (ENH-001) |
 | Completed (PRD-002) | 3 tasks + 1 enhancement (TASK-033/034/035 + ENH-002) |
 | Completed (PRD-003) | 5 tasks (TASK-028/029/030/031/032) — merged to main |

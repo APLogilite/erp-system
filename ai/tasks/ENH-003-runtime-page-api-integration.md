@@ -3,7 +3,7 @@ id: ENH-003
 
 title: RuntimePage needs proper API integration for dynamic form rendering
 
-status: READY_FOR_TEST
+status: TESTED
 
 priority: High
 
@@ -13,7 +13,7 @@ assigned_to: Software Engineer
 
 assigned_branch: (merged to main)
 
-locked: true
+locked: false
 
 created: 2026-07-13
 
@@ -31,10 +31,11 @@ reason: PRD-001 FR-014 requires dynamic runtime form rendering via API, but Runt
 
 fix_summary:
 
-verification_report:
+verification_report: TEST-ENH-003
 
 history:
   - 2026-07-13 — Product Manager — Created enhancement task. RuntimePage needs proper API-driven form rendering.
+  - 2026-07-14 — QA Engineer — TESTED. All 10 test cases passed. See TEST-ENH-003.md for details.
 
 ---
 
