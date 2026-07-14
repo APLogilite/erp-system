@@ -122,72 +122,30 @@ On a fresh DB with `spring.flyway.enabled=true`:
 
 # Root Cause
 
-(To be filled by Software Engineer)
+The old V1–V23 migration chain was designed assuming JPA `ddl-auto=update` would create base tables (like `sys_metadata_models`) first. Since BUG-007 switched to `ddl-auto=validate` and enabled Flyway, the migrations run without JPA pre-creating tables. V3 (`sys_table_columns`) has `REFERENCES sys_metadata_models(id)` but no migration in the chain ever creates `sys_metadata_models` — it was exclusively created by JPA. On a fresh DB, this FK constraint causes Flyway to fail at V3.
 
-The old V1–V23 migration chain was designed assuming JPA `ddl-auto=update` would create base tables first. Since PRD-004 now replaces all old metadata (V24 drops old schema, V25–V28 seed new schema), but the old migrations still run first (V3 is before V24 in version order), the chain breaks.
+Additionally, V3–V18 and V21–V23 all create/alter/seed the old PRD-001 metadata schema (11 tables), which is entirely dropped and replaced by V24. These migrations are obsolete scaffolding — they exist only to create schema that V24 immediately destroys.
 
 ---
 
 # Fix
 
-(To be filled by Software Engineer)
+Removed all obsolete old-metadata migrations and their undo scripts. Stripped old metadata registration from business table migrations.
 
-**Suggested approach — Create a consolidated migration chain:**
+### Removed (old metadata scaffolding — 18 files):
+**V3–V18, V21–V23**: All create/alter/seed the old PRD-001 metadata schema (`sys_metadata_models`, `sys_metadata_views`, `sys_form_fields`, etc.) which is entirely dropped by V24. These migrations are superseded by V24–V28 (the new Window/Menu schema).
 
-The current files (38 files: V1–V28 + U3–U13) need to be restructured so a fresh DB works cleanly. The recommended strategy:
+### Removed (undo scripts — 11 files):
+**U3–U13**: Undo scripts for the deleted migrations.
 
-### Keep these migrations (essential base tables):
-| File | Content | Why Keep |
-|------|---------|----------|
-| V1__init_identity_schema.sql | `identity_tenants`, `identity_orgs`, `identity_users`, `identity_roles`, `identity_permissions`, etc. | Core auth entities |
-| V2__identity_audit_events.sql | `identity_audit_records` | Audit trail |
+### Modified (kept business DDL, removed obsolescent metadata registration):
 
-### Remove or absorb these (old metadata scaffolding — superseded by V24):
-| File | Reason |
-|------|--------|
-| V3__create_sys_table_columns.sql | FK to non-existent table; schema dropped by V24 |
-| V4__alter_sys_metadata_models.sql | References old table dropped by V24 |
-| V5__alter_sys_metadata_views.sql | References old table dropped by V24 |
-| V6__create_sys_form_fields.sql | Obsolete schema, dropped by V24 |
-| V7__create_sys_form_field_rules.sql | Obsolete schema, dropped by V24 |
-| V8__create_sys_form_field_validations.sql | Obsolete schema, dropped by V24 |
-| V9__create_sys_form_layout_sections.sql | Obsolete schema, dropped by V24 |
-| V10__create_sys_form_section_fields.sql | Obsolete schema, dropped by V24 |
-| V11__create_sys_form_role_filters.sql | Obsolete schema, dropped by V24 |
-| V12__create_sys_form_sub_forms.sql | Obsolete schema, dropped by V24 |
-| V13__create_sys_form_tenant_role.sql | Obsolete schema, dropped by V24 |
-| V14__alter_sys_metadata_versions.sql | References old schema |
-| V15__register_metadata_tables_static.sql | Seeds OLD metadata — superseded by V25–V28 |
-| V16__seed_core_admin_forms.sql | Seeds OLD admin forms — superseded by V26 |
-| V17__seed_remaining_admin_forms.sql | Seeds OLD admin forms — superseded by V26 |
-| V18__add_tenant_id_to_admin_forms.sql | Modifies OLD admin forms — superseded by V26 |
-| V21__seed_master_data_forms.sql | Seeds OLD metadata — superseded by V27 |
-| V22__seed_transaction_header_forms.sql | Seeds OLD metadata — superseded by V27 |
-| V23__seed_line_forms_and_sub_forms.sql | Seeds OLD metadata — superseded by V27 |
+- **V19__seed_master_data_tables.sql**: Removed Parts 3–4 (INSERT into `sys_metadata_models` / `sys_table_columns`). Kept Parts 1–2 (CREATE TABLE for md_business_partner, md_product, md_uom, md_uom_conversion, md_warehouse + indexes). Business tables are re-registered in the new schema by V25.
 
-### Modify these (keep business DDL, remove old metadata registration):
-| File | Action |
-|------|--------|
-| V19__seed_master_data_tables.sql | Keep Part 1 (CREATE TABLE md_*), Part 2 (indexes). Remove Parts 3–4 (INSERT INTO sys_metadata_models / sys_table_columns). These business tables are still needed. |
-| V20__seed_transaction_tables.sql | Keep Part 1 (CREATE TABLE tx_*), Part 2 (indexes). Remove Parts 5–6 (INSERT INTO sys_metadata_models / sys_table_columns). These transaction tables are still needed. |
+- **V20__seed_transaction_tables.sql**: Removed Parts 5–6 (INSERT into `sys_metadata_models` / `sys_table_columns`). Kept Parts 1–4 (CREATE TABLE for tx_order, tx_invoice, tx_payment, tx_shipment, tx_material_receipt + line tables + indexes).
 
-### Keep these as-is (new schema — PRD-004):
-| File | Content |
-|------|---------|
-| V24__drop_old_metadata_create_new_schema.sql | Drop old metadata, create new schema (now safe since old scaffolding migrations are removed) |
-| V25__register_business_tables.sql | Register business tables in new schema |
-| V26__seed_admin_windows.sql | Seed admin windows |
-| V27__seed_erp_windows.sql | Seed ERP windows |
-| V28__seed_menu_and_access.sql | Seed menu tree + access |
-
-### Undo scripts
-The U3–U13 undo scripts reference the same old schema. They should be removed alongside their corresponding V files.
-
-### Alternative approach — Consolidate into a single V1__init.sql
-Instead of removing individual files, the SE could create a single `V1__init.sql` that contains ALL current table definitions (identity + business + metadata), then remove V1–V28 and replace with just the init file. This is cleaner but more work.
-
-### Also remove:
-The old `U*.sql` undo scripts (U3–U13) that reference the old schema — they are no longer relevant.
+### Updated configuration:
+**application.properties**: Commented out `baseline-on-migrate` / `baseline-version=24` by default. Fresh DBs now run the full chain (V1 → V2 → V19 → V20 → V24 → V25 → V26 → V27 → V28). Existing DBs with old flyway_schema_history should uncomment these to skip V1-V23.
 
 ---
 
@@ -211,15 +169,15 @@ After fix:
 
 # Files Changed
 
-(To be filled by Software Engineer)
+## Deleted (29 files):
+- V3__create_sys_table_columns.sql through V18__add_tenant_id_to_admin_forms.sql (16 old metadata migrations)
+- V21__seed_master_data_forms.sql through V23__seed_line_forms_and_sub_forms.sql (3 old metadata seeding migrations)
+- U3__create_sys_table_columns.sql through U13__create_sys_form_tenant_role.sql (11 undo scripts)
 
-Likely files (in `backend/src/main/resources/db/migration/`):
-- V3–V18: Removed or consolidated
-- V19–V20: Modified (remove old metadata registration sections)
-- V21–V23: Removed or consolidated
-- V24–V28: Renumbered or kept as-is
-- U3–U13: Removed
-- New `V1__init.sql` or similar baseline if consolidation approach is chosen
+## Modified:
+- `backend/src/main/resources/db/migration/V19__seed_master_data_tables.sql` — Removed Parts 3–4 (old metadata registration)
+- `backend/src/main/resources/db/migration/V20__seed_transaction_tables.sql` — Removed Parts 5–6 (old metadata registration)
+- `backend/src/main/resources/application.properties` — Commented out baseline config for fresh-DB default; updated comments
 
 ---
 
