@@ -94,15 +94,29 @@ After enabling Flyway and applying V24–V28:
 
 # Root Cause
 
-(To be filled by Software Engineer)
-
-`spring.flyway.enabled=false` in the application configuration prevents Flyway from running migrations V24–V28.
+`spring.flyway.enabled=false` in `backend/src/main/resources/application.properties` (line 36) prevents Flyway from running migrations V24–V28. With Flyway disabled, only JPA `ddl-auto=update` runs, which creates empty table shells for JPA entities but:
+- Never drops the old PRD-001 metadata tables (11 old tables)
+- Never creates the new PRD-004 schema tables properly with FK constraints
+- Never runs seed data (V25-V28) — no sys_table/sys_column registrations, no windows, no menu entries, no access control entries
 
 ---
 
 # Fix
 
-(To be filled by Software Engineer)
+Three changes to `backend/src/main/resources/application.properties`:
+
+1. **`spring.jpa.hibernate.ddl-auto=validate`** — Changed from `update` to `validate`. With Flyway managing the schema, Hibernate should only validate that entities match the database, not create/update tables.
+
+2. **`spring.flyway.enabled=true`** — Changed from `false` to `true`. Enables Flyway migration execution on startup.
+
+3. **`spring.flyway.baseline-version=24`** — Added. Since V1–V23 were effectively applied by JPA's `ddl-auto=update` during initial development, Flyway baselines at V24 and only runs migrations V24–V28. This avoids conflicts with tables already created by Hibernate.
+
+The fix ensures:
+- V24 drops the 11 old PRD-001 metadata tables and creates the 7 new schema tables (sys_table, sys_column, sys_window, sys_tab, sys_window_field, sys_window_access, sys_menu)
+- V25 registers 12 business tables as sys_table/sys_column entries
+- V26 seeds 7 admin windows with tabs/fields
+- V27 seeds 10 ERP windows with tabs/fields
+- V28 seeds the menu tree and window access entries
 
 ---
 
@@ -122,7 +136,7 @@ After fix:
 
 # Files Changed
 
-(To be filled by Software Engineer)
+- `backend/src/main/resources/application.properties` — Enable Flyway, switch JPA to validate mode, set baseline version
 
 ---
 
