@@ -356,60 +356,135 @@ function RecordDialog({ open, windowName, windowDef, recordId, onClose }: Record
   );
 }
 
-// ---- Child Tab Grid ----
+// ---- Inline-Editable Child Tab Grid ----
 
 interface ChildTabGridProps {
   tab: WindowTabDefinition;
   childRecords: Record<string, unknown>[];
 }
 
-function ChildTabGrid({ tab, childRecords }: ChildTabGridProps) {
-  const fields = tab.fields
-    .filter((f) => f.isDisplayed !== false)
-    .sort((a, b) => a.seqNo - b.seqNo);
+/** Renders a single field value inside a table cell for inline editing. */
+function ChildFieldCell({
+  field,
+  value,
+  onChange,
+}: {
+  field: WindowFieldDefinition;
+  value: unknown;
+  onChange: (val: unknown) => void;
+}) {
+  const col = field.column;
+  const numType = col.type === 'integer' || col.type === 'decimal' || col.type === 'numeric';
 
-  if (childRecords.length === 0) {
+  if (col.type === 'boolean') {
+    return <Checkbox checked={!!value} onChange={(e) => onChange(e.target.checked)} size="small" />;
+  }
+
+  if (col.type === 'enum' && col.enumOptions) {
+    const options: string[] = JSON.parse(col.enumOptions);
     return (
-      <Box sx={{ mb: 2, px: 1 }}>
-        <Typography variant="subtitle2" sx={{ mb: 0.5, fontWeight: 600 }}>
-          {tab.name}
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
-          No related records found.
-        </Typography>
-      </Box>
+      <Select
+        value={(value as string) ?? ''}
+        onChange={(e) => onChange(e.target.value)}
+        size="small"
+        sx={{ fontSize: 12, minWidth: 100 }}
+      >
+        <MenuItem value="">
+          <em>None</em>
+        </MenuItem>
+        {options.map((opt) => (
+          <MenuItem key={opt} value={opt}>
+            {opt}
+          </MenuItem>
+        ))}
+      </Select>
     );
   }
 
   return (
+    <TextField
+      value={String(value ?? '')}
+      onChange={(e) => onChange(numType ? e.target.value : e.target.value)}
+      size="small"
+      type={numType ? 'number' : 'text'}
+      inputProps={numType ? { step: col.type === 'integer' ? '1' : '0.01' } : undefined}
+      sx={{ fontSize: 12, minWidth: 80 }}
+    />
+  );
+}
+
+function ChildTabGrid({ tab, childRecords }: ChildTabGridProps) {
+  const [rows, setRows] = useState<Record<string, unknown>[]>(() => [...childRecords]);
+  const fields = tab.fields
+    .filter((f) => f.isDisplayed !== false)
+    .sort((a, b) => a.seqNo - b.seqNo);
+
+  const updateCell = (rowIdx: number, colCode: string, val: unknown) => {
+    setRows((prev) => {
+      const next = prev.map((r, i) => (i === rowIdx ? { ...r, [colCode]: val } : r));
+      return next;
+    });
+  };
+
+  const addRow = () => {
+    const newRow: Record<string, unknown> = { _new: true };
+    setRows((prev) => [...prev, newRow]);
+  };
+
+  const deleteRow = (rowIdx: number) => {
+    setRows((prev) => prev.filter((_, i) => i !== rowIdx));
+  };
+
+  return (
     <Box sx={{ mb: 2 }}>
-      <Typography variant="subtitle2" sx={{ mb: 0.5, fontWeight: 600, px: 1 }}>
-        {tab.name}
-      </Typography>
-      <TableContainer>
-        <Table size="small">
-          <TableHead>
-            <TableRow>
-              {fields.map((f) => (
-                <TableCell key={f.column.code} sx={{ fontWeight: 600, fontSize: 12 }}>
-                  {f.labelOverride ?? f.column.label}
-                </TableCell>
-              ))}
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {childRecords.map((rec) => (
-              <TableRow key={rec.id as string}>
+      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, px: 1, mb: 0.5 }}>
+        <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
+          {tab.name}
+        </Typography>
+        <Button size="small" variant="outlined" onClick={addRow} sx={{ ml: 'auto' }}>
+          + Add {tab.name}
+        </Button>
+      </Box>
+      {rows.length === 0 ? (
+        <Typography variant="body2" color="text.secondary" sx={{ px: 1 }}>
+          No related records found. Click "+ Add" to create one.
+        </Typography>
+      ) : (
+        <TableContainer>
+          <Table size="small">
+            <TableHead>
+              <TableRow>
                 {fields.map((f) => (
-                  <TableCell key={f.column.code} sx={{ fontSize: 12 }}>
-                    {String(rec[f.column.code] ?? '')}
+                  <TableCell key={f.column.code} sx={{ fontWeight: 600, fontSize: 12 }}>
+                    {f.labelOverride ?? f.column.label}
                   </TableCell>
                 ))}
+                <TableCell sx={{ fontWeight: 600, fontSize: 12 }}>Actions</TableCell>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+            </TableHead>
+            <TableBody>
+              {rows.map((rec, rowIdx) => (
+                <TableRow key={(rec.id as string) ?? `new-${rowIdx}`}>
+                  {fields.map((f) => (
+                    <TableCell key={f.column.code} sx={{ p: 0.5 }}>
+                      <ChildFieldCell
+                        field={f}
+                        value={rec[f.column.code]}
+                        onChange={(val) => updateCell(rowIdx, f.column.code, val)}
+                      />
+                    </TableCell>
+                  ))}
+                  <TableCell sx={{ p: 0.5 }}>
+                    <Button size="small" color="error" onClick={() => deleteRow(rowIdx)}>
+                      Del
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      )}
     </Box>
   );
 }
