@@ -119,6 +119,162 @@ export async function deleteRecord(formCode: string, recordId: string): Promise<
   await apiClient.delete(`/runtime/forms/${encodeURIComponent(formCode)}/records/${recordId}`);
 }
 
+// ---- Window API (PRD-004) ----
+
+/** Column type metadata within a window field. */
+export interface ColumnInfo {
+  code: string;
+  label: string;
+  type: string;
+  required: boolean;
+  maxLength?: number;
+  precision?: number;
+  scale?: number;
+  relationTable?: string;
+  enumOptions?: string;
+}
+
+/** A field definition within a window tab. */
+export interface WindowFieldDefinition {
+  id: string;
+  seqNo: number;
+  isSameLine: boolean;
+  numLines: number;
+  columnWidth: number;
+  isDisplayed: boolean;
+  isReadonly: boolean;
+  isMandatory: boolean;
+  displayLogic: string | null;
+  readonlyLogic: string | null;
+  defaultValue: string | null;
+  labelOverride: string | null;
+  column: ColumnInfo;
+}
+
+/** Table metadata within a tab. */
+export interface TabTableInfo {
+  id: string;
+  name: string;
+  label: string;
+}
+
+/** A tab definition within a window. */
+export interface WindowTabDefinition {
+  id: string;
+  name: string;
+  seqNo: number;
+  isSingleRow: boolean;
+  whereClause: string | null;
+  parentColumn: string | null;
+  table: TabTableInfo;
+  fields: WindowFieldDefinition[];
+}
+
+/** Window metadata. */
+export interface WindowInfo {
+  id: string;
+  name: string;
+  tableId: string;
+  description: string | null;
+}
+
+/** Full window definition bundle. */
+export interface WindowDefinition {
+  window: WindowInfo;
+  tabs: WindowTabDefinition[];
+}
+
+/**
+ * Fetches the window definition for a given window name.
+ * GET /api/v1/runtime/windows/{windowName}/definition
+ */
+export async function fetchWindowDefinition(windowName: string): Promise<WindowDefinition> {
+  const response = await apiClient.get<ApiResponse<WindowDefinition>>(
+    `/runtime/windows/${encodeURIComponent(windowName)}/definition`
+  );
+  return unwrap(response);
+}
+
+/**
+ * Fetches paginated records for a window's main tab.
+ * GET /api/v1/runtime/windows/{windowName}/records
+ */
+export async function fetchWindowRecords(
+  windowName: string,
+  page: number = 0,
+  pageSize: number = 20,
+  sortField?: string,
+  sortDir?: string
+): Promise<Record<string, unknown>> {
+  const params: Record<string, string | number> = { page, size: pageSize };
+  if (sortField) params.sortField = sortField;
+  if (sortDir) params.sortDir = sortDir;
+
+  const response = await apiClient.get<ApiResponse<Record<string, unknown>>>(
+    `/runtime/windows/${encodeURIComponent(windowName)}/records`,
+    { params }
+  );
+  return unwrap(response);
+}
+
+/**
+ * Fetches a single record with child tab records.
+ * GET /api/v1/runtime/windows/{windowName}/records/{id}
+ */
+export async function fetchWindowRecord(
+  windowName: string,
+  recordId: string
+): Promise<Record<string, unknown>> {
+  const response = await apiClient.get<ApiResponse<Record<string, unknown>>>(
+    `/runtime/windows/${encodeURIComponent(windowName)}/records/${recordId}`
+  );
+  return unwrap(response);
+}
+
+/**
+ * Creates a new record in a window.
+ * POST /api/v1/runtime/windows/{windowName}/records
+ */
+export async function createWindowRecord(
+  windowName: string,
+  data: Record<string, unknown>
+): Promise<Record<string, unknown>> {
+  const response = await apiClient.post<ApiResponse<Record<string, unknown>>>(
+    `/runtime/windows/${encodeURIComponent(windowName)}/records`,
+    data
+  );
+  return unwrap(response);
+}
+
+/**
+ * Updates an existing record in a window.
+ * PUT /api/v1/runtime/windows/{windowName}/records/{id}
+ */
+export async function updateWindowRecord(
+  windowName: string,
+  recordId: string,
+  data: Record<string, unknown>
+): Promise<Record<string, unknown>> {
+  const response = await apiClient.put<ApiResponse<Record<string, unknown>>>(
+    `/runtime/windows/${encodeURIComponent(windowName)}/records/${recordId}`,
+    data
+  );
+  return unwrap(response);
+}
+
+/**
+ * Soft-deletes a record in a window.
+ * DELETE /api/v1/runtime/windows/{windowName}/records/{id}
+ */
+export async function deleteWindowRecord(
+  windowName: string,
+  recordId: string
+): Promise<void> {
+  await apiClient.delete(
+    `/runtime/windows/${encodeURIComponent(windowName)}/records/${recordId}`
+  );
+}
+
 // ---- Menu API (PRD-004) ----
 
 /** A single menu tree node returned from the menu API. */
