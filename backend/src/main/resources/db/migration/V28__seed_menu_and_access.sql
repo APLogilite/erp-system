@@ -53,7 +53,7 @@ SELECT add_menu('Master Data',    'group', NULL, NULL, 20, 'storage');
 SELECT add_menu('Transactions',   'group', NULL, NULL, 30, 'receipt');
 
 -- 1b. Administration menu items — 3 entries for admin configuration windows
-SELECT add_menu('Table && Columns',     'window', 'Administration', 'admin_table_column',    10);
+SELECT add_menu('Table & Columns',     'window', 'Administration', 'admin_table_column',    10);
 SELECT add_menu('Window, Tab & Field',  'window', 'Administration', 'admin_window_tab_field', 20);
 SELECT add_menu('Menu Configuration',   'window', 'Administration', 'admin_menu_config',      30);
 

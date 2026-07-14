@@ -63,6 +63,29 @@ function RecordDialog({ open, windowName, windowDef, recordId, onClose }: Record
   const mainTab = windowDef.tabs.find((t) => !t.parentColumn);
   const childTabs = windowDef.tabs.filter((t) => t.parentColumn);
   const [formData, setFormData] = useState<Record<string, unknown>>({});
+  const [saveError, setSaveError] = useState<string | null>(null);
+
+  // Collect unique relation table names for lookup dropdowns
+  const lookupTables = [
+    ...new Set(
+      (mainTab?.fields ?? [])
+        .filter((f) => f.column.relationTable)
+        .map((f) => f.column.relationTable!)
+    ),
+  ];
+
+  // Fetch all lookup data upfront (avoids hooks-in-loop violation)
+  const lookupQueries: Record<string, Record<string, unknown>[]> = {};
+  for (const tableName of lookupTables) {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const { data } = useQuery({
+      queryKey: ['lookup', tableName],
+      queryFn: () => fetchLookupRecords(tableName),
+      staleTime: 30000,
+      gcTime: 60000,
+    });
+    lookupQueries[tableName] = data ?? [];
+  }
 
   // Fetch record data if editing
   const { data: recordData, isLoading: isLoadingRecord } = useQuery({
@@ -78,8 +101,6 @@ function RecordDialog({ open, windowName, windowDef, recordId, onClose }: Record
       setFormData(record as Record<string, unknown>);
     }
   }, [recordData]);
-
-  const [saveError, setSaveError] = useState<string | null>(null);
 
   // Create mutation
   const createMutation = useMutation({
@@ -101,13 +122,24 @@ function RecordDialog({ open, windowName, windowDef, recordId, onClose }: Record
     onError: (err: Error) => setSaveError(err.message),
   });
 
+  // Parse numeric fields before saving (form sends strings, DB expects numbers)
   const handleSave = useCallback(() => {
-    if (recordId) {
-      updateMutation.mutate(formData);
-    } else {
-      createMutation.mutate(formData);
+    const parsed = { ...formData };
+    for (const field of mainTab?.fields ?? []) {
+      const val = parsed[field.column.code];
+      if (val === '' || val === undefined || val === null) continue;
+      if (field.column.type === 'integer') {
+        parsed[field.column.code] = parseInt(val as string, 10);
+      } else if (field.column.type === 'decimal' || field.column.type === 'numeric') {
+        parsed[field.column.code] = parseFloat(val as string);
+      }
     }
-  }, [recordId, formData, createMutation, updateMutation]);
+    if (recordId) {
+      updateMutation.mutate(parsed);
+    } else {
+      createMutation.mutate(parsed);
+    }
+  }, [recordId, formData, mainTab, createMutation, updateMutation]);
 
   const handleFieldChange = useCallback((fieldCode: string, value: unknown) => {
     setFormData((prev) => ({ ...prev, [fieldCode]: value }));
@@ -213,31 +245,23 @@ function RecordDialog({ open, windowName, windowDef, recordId, onClose }: Record
                 case 'many2one':
                 case 'many2many':
                 case 'one2many': {
-                  const relationTable = field.column.relationTable;
-                  const colCode = field.column.code;
-                  // eslint-disable-next-line react-hooks/rules-of-hooks
-                  const { data: lookupOptions } = useQuery({
-                    queryKey: ['lookup', relationTable],
-                    queryFn: () => fetchLookupRecords(relationTable!),
-                    enabled: !!relationTable,
-                    staleTime: 30000,
-                    gcTime: 60000,
-                  });
+                  const relationTable = field.column.relationTable!;
+                  const lookupOptions = lookupQueries[relationTable] ?? [];
 
                   return (
-                    <FormControl key={colCode} fullWidth margin="dense" sx={{ mb: 1 }}>
+                    <FormControl key={field.column.code} fullWidth margin="dense" sx={{ mb: 1 }}>
                       <InputLabel>{label}</InputLabel>
                       <Select
                         value={value as string}
                         label={label}
-                        onChange={(e) => handleFieldChange(colCode, e.target.value)}
+                        onChange={(e) => handleFieldChange(field.column.code, e.target.value)}
                         disabled={field.isReadonly || isSaving || !relationTable}
                         required={field.isMandatory}
                       >
                         <MenuItem value="">
                           <em>None</em>
                         </MenuItem>
-                        {(lookupOptions ?? []).map((opt) => (
+                        {lookupOptions.map((opt) => (
                           <MenuItem key={opt.id as string} value={opt.id as string}>
                             {(opt._display as string) ?? (opt.id as string)}
                           </MenuItem>
