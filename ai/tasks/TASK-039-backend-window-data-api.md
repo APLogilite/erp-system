@@ -5,7 +5,7 @@ title: Backend — Runtime Window Data API (CRUD Records)
 
 type: API
 
-status: PLANNED
+status: READY_FOR_DEV
 
 priority: Critical
 
