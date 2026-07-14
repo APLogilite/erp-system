@@ -30,8 +30,14 @@ public class ContextFilter extends OncePerRequestFilter {
       Authentication auth = SecurityContextHolder.getContext().getAuthentication();
       if (auth != null && auth.isAuthenticated() && auth.getPrincipal() instanceof JwtPrincipal) {
         JwtPrincipal principal = (JwtPrincipal) auth.getPrincipal();
-        RuntimeContext context = runtimeContextService.resolve(principal.getUserId());
-        RuntimeContextHolder.set(context);
+        try {
+          RuntimeContext context = runtimeContextService.resolve(principal.getUserId());
+          RuntimeContextHolder.set(context);
+        } catch (IllegalArgumentException e) {
+          // User not found (e.g. after DB reset with stale JWT token).
+          // Clear authentication so the request is treated as unauthenticated.
+          SecurityContextHolder.clearContext();
+        }
       }
       filterChain.doFilter(request, response);
     } finally {
