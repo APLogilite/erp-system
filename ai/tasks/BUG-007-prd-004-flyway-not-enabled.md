@@ -3,7 +3,7 @@ id: BUG-007
 
 title: PRD-004 schema and seed data not applied — Flyway disabled
 
-status: READY_FOR_TEST
+status: TESTING
 
 priority: Critical
 
@@ -15,7 +15,7 @@ assigned_to: Software Engineer
 
 assigned_branch: bugfix/BUG-007
 
-locked: false
+locked: true
 
 created: 2026-07-14
 
