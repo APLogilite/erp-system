@@ -5,7 +5,7 @@ title: Window Hierarchy & Menu System
 
 version: 1.0.0
 
-status: REOPENED
+status: IN_DEVELOPMENT
 
 priority: High
 
@@ -21,7 +21,7 @@ project: Dynamic ERP Platform
 
 repository: erp-system
 
-prd_branch: prd/PRD-004-window-hierarchy-menu
+prd_branch: prd/PRD-004-v2
 
 target_branch: main
 
