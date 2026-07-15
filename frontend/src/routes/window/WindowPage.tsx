@@ -1,4 +1,7 @@
 import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
   Box,
   Button,
   Checkbox,
@@ -9,6 +12,7 @@ import {
   DialogTitle,
   FormControl,
   FormControlLabel,
+  Grid,
   InputLabel,
   MenuItem,
   Select,
@@ -25,14 +29,15 @@ import {
   Typography,
 } from '@mui/material';
 import { useMutation, useQueries, useQuery, useQueryClient } from '@tanstack/react-query';
-import { useCallback, useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import React, { useCallback, useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 
 import { PageContainer } from '@/components/layouts/PageContainer';
 import {
   fetchWindowDefinition,
   fetchWindowRecords,
   fetchWindowRecord,
+  fetchTabRecord,
   fetchLookupRecords,
   createWindowRecord,
   updateWindowRecord,
@@ -48,7 +53,18 @@ function getDisplayedFields(tab: WindowTabDefinition): WindowFieldDefinition[] {
   return tab.fields.filter((f) => f.isDisplayed !== false).sort((a, b) => a.seqNo - b.seqNo);
 }
 
+// ---- Drill Level (breadcrumb entry) ----
+interface DrillLevel {
+  tab: WindowTabDefinition;
+  recordId: string;
+  title: string;
+  recordData: Record<string, unknown>;
+}
+
 // ---- Record Dialog ----
+// Supports drill-down navigation through the tab hierarchy.
+// Child records are shown as expandable Accordion panels below the form.
+// Clicking a child record drills down (pushes breadcrumb stack).
 
 interface RecordDialogProps {
   open: boolean;
@@ -56,16 +72,22 @@ interface RecordDialogProps {
   windowDef: WindowDefinition;
   recordId?: string;
   onClose: () => void;
+  onDrillDown?: (tab: WindowTabDefinition, recordId: string) => void;
 }
 
 function RecordDialog({ open, windowName, windowDef, recordId, onClose }: RecordDialogProps) {
   const queryClient = useQueryClient();
   const mainTab = windowDef.tabs.find((t) => !t.parentColumn);
-  const childTabs = windowDef.tabs.filter((t) => t.parentColumn);
   const [formData, setFormData] = useState<Record<string, unknown>>({});
   const [saveError, setSaveError] = useState<string | null>(null);
-  const [activeDialogTab, setActiveDialogTab] = useState(0);
-  const navigate = useNavigate();
+
+  // Drill-down state
+  const [drillStack, setDrillStack] = useState<DrillLevel[]>([]);
+  const [expandedPanels, setExpandedPanels] = useState<Set<string>>(new Set());
+
+  // Determine which tab provides the form fields for the current level
+  const currentLevelTab: WindowTabDefinition =
+    drillStack.length > 0 ? drillStack[drillStack.length - 1].tab : mainTab!;
 
   // Collect unique relation table names for lookup dropdowns
   const lookupTables = [
@@ -76,7 +98,6 @@ function RecordDialog({ open, windowName, windowDef, recordId, onClose }: Record
     ),
   ];
 
-  // Fetch ALL lookups — useQueries always returns same number of results
   const lookupResults = useQueries({
     queries: lookupTables.map((tableName) => ({
       queryKey: ['lookup', tableName],
@@ -91,20 +112,31 @@ function RecordDialog({ open, windowName, windowDef, recordId, onClose }: Record
     lookupQueries[tableName] = lookupResults[idx]?.data ?? [];
   });
 
-  // Fetch record data if editing
+  // Fetch the CURRENT LEVEL's record data
+  const currentRecordId =
+    drillStack.length > 0 ? drillStack[drillStack.length - 1].recordId : recordId;
+
   const { data: recordData, isLoading: isLoadingRecord } = useQuery({
-    queryKey: ['window-record', windowName, recordId],
-    queryFn: () => fetchWindowRecord(windowName, recordId!),
-    enabled: !!recordId,
+    queryKey: ['window-record', windowName, currentLevelTab.id, currentRecordId],
+    queryFn: () => {
+      if (drillStack.length > 0) {
+        // Drilled: find child tabs of the current level
+        const childTabIds = findChildTabs(windowDef.tabs, currentLevelTab).map((t) => t.id);
+        return fetchTabRecord(windowName, currentLevelTab.id, currentRecordId!, childTabIds);
+      }
+      // Parent level
+      return fetchWindowRecord(windowName, currentRecordId!);
+    },
+    enabled: !!currentRecordId,
   });
 
-  // Extract child records from recordData
+  // Extract child records for the current level
   const childRecordsMap = recordData
     ? ((recordData as { childRecords?: Record<string, Record<string, unknown>[]> }).childRecords ??
       {})
     : {};
 
-  // Initialize form data when record data loads
+  // Initialize form data
   useEffect(() => {
     if (recordData) {
       const record = (recordData as { record?: Record<string, unknown> }).record ?? recordData;
@@ -112,7 +144,7 @@ function RecordDialog({ open, windowName, windowDef, recordId, onClose }: Record
     }
   }, [recordData]);
 
-  // Create mutation
+  // Mutations
   const createMutation = useMutation({
     mutationFn: (data: Record<string, unknown>) => createWindowRecord(windowName, data),
     onSuccess: () => {
@@ -122,9 +154,9 @@ function RecordDialog({ open, windowName, windowDef, recordId, onClose }: Record
     onError: (err: Error) => setSaveError(err.message),
   });
 
-  // Update mutation
   const updateMutation = useMutation({
-    mutationFn: (data: Record<string, unknown>) => updateWindowRecord(windowName, recordId!, data),
+    mutationFn: (data: Record<string, unknown>) =>
+      updateWindowRecord(windowName, currentRecordId!, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['window-records', windowName] });
       onClose();
@@ -132,30 +164,79 @@ function RecordDialog({ open, windowName, windowDef, recordId, onClose }: Record
     onError: (err: Error) => setSaveError(err.message),
   });
 
-  // Parse numeric fields before saving (form sends strings, DB expects numbers)
   const handleSave = useCallback(() => {
     const parsed = { ...formData };
-    for (const field of mainTab?.fields ?? []) {
+    for (const field of currentLevelTab?.fields ?? []) {
       const val = parsed[field.column.code];
       if (val === '' || val === undefined || val === null) continue;
-      if (field.column.type === 'integer') {
-        parsed[field.column.code] = parseInt(val as string, 10);
-      } else if (field.column.type === 'decimal' || field.column.type === 'numeric') {
+      if (field.column.type === 'integer') parsed[field.column.code] = parseInt(val as string, 10);
+      else if (field.column.type === 'decimal' || field.column.type === 'numeric')
         parsed[field.column.code] = parseFloat(val as string);
-      }
     }
-    if (recordId) {
-      updateMutation.mutate(parsed);
-    } else {
-      createMutation.mutate(parsed);
-    }
-  }, [recordId, formData, mainTab, createMutation, updateMutation]);
+    if (currentRecordId) updateMutation.mutate(parsed);
+    else createMutation.mutate(parsed);
+  }, [currentRecordId, formData, currentLevelTab, createMutation, updateMutation]);
 
   const handleFieldChange = useCallback((fieldCode: string, value: unknown) => {
     setFormData((prev) => ({ ...prev, [fieldCode]: value }));
   }, []);
 
   const isSaving = createMutation.isPending || updateMutation.isPending;
+
+  // Find child tabs of a given tab (for accordion panels)
+  function findChildTabs(
+    allTabs: WindowTabDefinition[],
+    parentTab: WindowTabDefinition
+  ): WindowTabDefinition[] {
+    const parentTable = parentTab.table.name; // e.g., 'sys_window'
+    return allTabs.filter((t) => {
+      if (!t.parentColumn || !t.parentColumn.endsWith('_id')) return false;
+      const colStub = t.parentColumn.slice(0, -3); // 'window_id' → 'window'
+      return parentTable.includes(colStub);
+    });
+  }
+
+  const currentChildTabs = currentLevelTab ? findChildTabs(windowDef.tabs, currentLevelTab) : [];
+
+  // Drill down: user clicked a row in a child grid
+  const handleDrillDown = (childTab: WindowTabDefinition, childRecordId: string) => {
+    const rd = recordData as Record<string, unknown>;
+    const children = ((rd.childRecords as Record<string, unknown[]>) ?? {})[childTab.name] ?? [];
+    const childRecord = (children as Array<Record<string, unknown>>).find(
+      (r) => r.id === childRecordId
+    );
+    const title = childRecord
+      ? ((Object.values(childRecord).find(
+          (v) => typeof v === 'string' && v.length > 0 && v !== childRecordId
+        ) as string) ?? childRecordId)
+      : childRecordId;
+    setDrillStack((prev) => [
+      ...prev,
+      {
+        tab: childTab,
+        recordId: childRecordId,
+        title,
+        recordData: childRecord ?? ({} as Record<string, unknown>),
+      },
+    ]);
+    setExpandedPanels(new Set());
+  };
+
+  // Go back to a specific breadcrumb level
+  const goToLevel = (level: number) => {
+    setDrillStack((prev) => prev.slice(0, level));
+    setExpandedPanels(new Set());
+  };
+
+  // Toggle accordion panel
+  const togglePanel = (panelId: string) => {
+    setExpandedPanels((prev) => {
+      const next = new Set(prev);
+      if (next.has(panelId)) next.delete(panelId);
+      else next.add(panelId);
+      return next;
+    });
+  };
 
   if (!mainTab) {
     return (
@@ -171,26 +252,42 @@ function RecordDialog({ open, windowName, windowDef, recordId, onClose }: Record
     );
   }
 
-  const fields = getDisplayedFields(mainTab);
-  const dialogTabs = [{ id: '_form', name: 'Form' }, ...childTabs];
-  const currentDialogTab = dialogTabs[activeDialogTab] ?? dialogTabs[0];
+  const fields = getDisplayedFields(currentLevelTab);
+  const dialogTitle =
+    drillStack.length > 0
+      ? drillStack[drillStack.length - 1].title
+      : (recordId ? 'Edit' : 'New') + ' - ' + windowDef.window.name;
 
   return (
     <Dialog open={open} onClose={onClose} maxWidth="md" fullWidth>
-      <DialogTitle sx={{ pb: 0 }}>
-        {recordId ? 'Edit Record' : 'New Record'} - {windowDef.window.name}
+      <DialogTitle sx={{ pb: 1 }}>
+        {/* Breadcrumb */}
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, mb: 0.5 }}>
+          <Button
+            size="small"
+            onClick={() => {
+              if (drillStack.length > 0) goToLevel(drillStack.length - 1);
+              else onClose();
+            }}
+            sx={{ minWidth: 30, px: 0.5 }}
+          >
+            ←
+          </Button>
+          {drillStack.map((level, i) => (
+            <React.Fragment key={i}>
+              <Button
+                size="small"
+                sx={{ textTransform: 'none', minWidth: 0, px: 0.5, fontSize: 13 }}
+                onClick={() => goToLevel(i)}
+              >
+                {level.title}
+              </Button>
+              {i < drillStack.length - 1 && <Typography sx={{ fontSize: 13 }}>&gt;</Typography>}
+            </React.Fragment>
+          ))}
+        </Box>
+        {dialogTitle}
       </DialogTitle>
-
-      {/* Tab bar: Form | ChildTab1 | ChildTab2 | ... */}
-      <Tabs
-        value={activeDialogTab < dialogTabs.length ? activeDialogTab : 0}
-        onChange={(_, v) => setActiveDialogTab(v)}
-        sx={{ px: 2, borderBottom: 1, borderColor: 'divider' }}
-      >
-        {dialogTabs.map((t) => (
-          <Tab key={t.id} label={t.name} />
-        ))}
-      </Tabs>
 
       <DialogContent sx={{ mt: 1 }}>
         {saveError && (
@@ -199,162 +296,185 @@ function RecordDialog({ open, windowName, windowDef, recordId, onClose }: Record
           </Typography>
         )}
 
-        {/* Form tab: show parent record fields */}
-        {currentDialogTab.id === '_form' &&
-          (isLoadingRecord && recordId ? (
-            <Box sx={{ display: 'flex', justifyContent: 'center', py: 4 }}>
-              <CircularProgress />
-            </Box>
-          ) : (
-            <Box sx={{ pt: 1 }}>
-              {fields.map((field) => {
-                const value = formData[field.column.code] ?? '';
-                const label = field.labelOverride ?? field.column.label;
-
-                switch (field.column.type) {
-                  case 'boolean':
-                    return (
-                      <FormControlLabel
-                        key={field.column.code}
-                        control={
-                          <Checkbox
-                            checked={!!value}
-                            onChange={(e) => handleFieldChange(field.column.code, e.target.checked)}
-                            disabled={field.isReadonly || isSaving}
-                          />
-                        }
-                        label={label}
-                        sx={{ mb: 1, display: 'flex' }}
-                      />
-                    );
-                  case 'enum': {
-                    const options = field.column.enumOptions
-                      ? JSON.parse(field.column.enumOptions)
-                      : [];
-                    return (
-                      <FormControl key={field.column.code} fullWidth margin="dense" sx={{ mb: 1 }}>
-                        <InputLabel>{label}</InputLabel>
-                        <Select
-                          value={value as string}
-                          label={label}
-                          onChange={(e) => handleFieldChange(field.column.code, e.target.value)}
+        {/* Form fields for the current level */}
+        {isLoadingRecord && currentRecordId ? (
+          <Box sx={{ display: 'flex', justifyContent: 'center', py: 4 }}>
+            <CircularProgress />
+          </Box>
+        ) : (
+          <Box sx={{ pt: 1 }}>
+            {fields.map((field) => {
+              const value = formData[field.column.code] ?? '';
+              const label = field.labelOverride ?? field.column.label;
+              switch (field.column.type) {
+                case 'boolean':
+                  return (
+                    <FormControlLabel
+                      key={field.column.code}
+                      control={
+                        <Checkbox
+                          checked={!!value}
+                          onChange={(e) => handleFieldChange(field.column.code, e.target.checked)}
                           disabled={field.isReadonly || isSaving}
-                          required={field.isMandatory}
-                        >
-                          {options.map((opt: string) => (
-                            <MenuItem key={opt} value={opt}>
-                              {opt}
-                            </MenuItem>
-                          ))}
-                        </Select>
-                      </FormControl>
-                    );
-                  }
-                  case 'date':
-                    return (
-                      <TextField
-                        key={field.column.code}
-                        fullWidth
-                        margin="dense"
+                        />
+                      }
+                      label={label}
+                      sx={{ mb: 1, display: 'flex' }}
+                    />
+                  );
+                case 'enum': {
+                  const opts: string[] = field.column.enumOptions
+                    ? JSON.parse(field.column.enumOptions)
+                    : [];
+                  return (
+                    <FormControl key={field.column.code} fullWidth margin="dense" sx={{ mb: 1 }}>
+                      <InputLabel>{label}</InputLabel>
+                      <Select
+                        value={value as string}
                         label={label}
-                        type="date"
-                        value={typeof value === 'string' ? value.slice(0, 10) : ''}
                         onChange={(e) => handleFieldChange(field.column.code, e.target.value)}
                         disabled={field.isReadonly || isSaving}
                         required={field.isMandatory}
-                        InputLabelProps={{ shrink: true }}
-                        sx={{ mb: 1 }}
-                      />
-                    );
-                  case 'many2one':
-                  case 'many2many':
-                  case 'one2many': {
-                    const lookupOptions = lookupQueries[field.column.relationTable!] ?? [];
-                    return (
-                      <FormControl key={field.column.code} fullWidth margin="dense" sx={{ mb: 1 }}>
-                        <InputLabel>{label}</InputLabel>
-                        <Select
-                          value={value as string}
-                          label={label}
-                          onChange={(e) => handleFieldChange(field.column.code, e.target.value)}
-                          disabled={field.isReadonly || isSaving || !field.column.relationTable}
-                          required={field.isMandatory}
-                        >
-                          <MenuItem value="">
-                            <em>None</em>
+                      >
+                        {opts.map((o) => (
+                          <MenuItem key={o} value={o}>
+                            {o}
                           </MenuItem>
-                          {lookupOptions.map((opt) => (
-                            <MenuItem key={opt.id as string} value={opt.id as string}>
-                              {(opt._display as string) ?? (opt.id as string)}
-                            </MenuItem>
-                          ))}
-                        </Select>
-                      </FormControl>
-                    );
-                  }
-                  case 'text':
-                    return (
-                      <TextField
-                        key={field.column.code}
-                        fullWidth
-                        margin="dense"
-                        label={label}
-                        value={String(value ?? '')}
-                        onChange={(e) => handleFieldChange(field.column.code, e.target.value)}
-                        disabled={field.isReadonly || isSaving}
-                        required={field.isMandatory}
-                        multiline
-                        rows={field.numLines > 1 ? field.numLines : 3}
-                        sx={{ mb: 1 }}
-                      />
-                    );
-                  case 'integer':
-                  case 'decimal':
-                  case 'numeric':
-                    return (
-                      <TextField
-                        key={field.column.code}
-                        fullWidth
-                        margin="dense"
-                        label={label}
-                        type="number"
-                        value={value}
-                        onChange={(e) => handleFieldChange(field.column.code, e.target.value)}
-                        disabled={field.isReadonly || isSaving}
-                        required={field.isMandatory}
-                        inputProps={{ step: field.column.type === 'integer' ? '1' : '0.01' }}
-                        sx={{ mb: 1 }}
-                      />
-                    );
-                  default:
-                    return (
-                      <TextField
-                        key={field.column.code}
-                        fullWidth
-                        margin="dense"
-                        label={label}
-                        value={String(value ?? '')}
-                        onChange={(e) => handleFieldChange(field.column.code, e.target.value)}
-                        disabled={field.isReadonly || isSaving}
-                        required={field.isMandatory}
-                        sx={{ mb: 1 }}
-                      />
-                    );
+                        ))}
+                      </Select>
+                    </FormControl>
+                  );
                 }
-              })}
-            </Box>
-          ))}
+                case 'date':
+                  return (
+                    <TextField
+                      key={field.column.code}
+                      fullWidth
+                      margin="dense"
+                      label={label}
+                      type="date"
+                      value={typeof value === 'string' ? value.slice(0, 10) : ''}
+                      onChange={(e) => handleFieldChange(field.column.code, e.target.value)}
+                      disabled={field.isReadonly || isSaving}
+                      required={field.isMandatory}
+                      InputLabelProps={{ shrink: true }}
+                      sx={{ mb: 1 }}
+                    />
+                  );
+                case 'many2one':
+                case 'many2many':
+                case 'one2many': {
+                  const lo = lookupQueries[field.column.relationTable!] ?? [];
+                  return (
+                    <FormControl key={field.column.code} fullWidth margin="dense" sx={{ mb: 1 }}>
+                      <InputLabel>{label}</InputLabel>
+                      <Select
+                        value={value as string}
+                        label={label}
+                        onChange={(e) => handleFieldChange(field.column.code, e.target.value)}
+                        disabled={field.isReadonly || isSaving || !field.column.relationTable}
+                        required={field.isMandatory}
+                      >
+                        <MenuItem value="">
+                          <em>None</em>
+                        </MenuItem>
+                        {lo.map((o) => (
+                          <MenuItem key={o.id as string} value={o.id as string}>
+                            {(o._display as string) ?? (o.id as string)}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
+                  );
+                }
+                case 'text':
+                  return (
+                    <TextField
+                      key={field.column.code}
+                      fullWidth
+                      margin="dense"
+                      label={label}
+                      value={String(value ?? '')}
+                      onChange={(e) => handleFieldChange(field.column.code, e.target.value)}
+                      disabled={field.isReadonly || isSaving}
+                      required={field.isMandatory}
+                      multiline
+                      rows={field.numLines > 1 ? field.numLines : 3}
+                      sx={{ mb: 1 }}
+                    />
+                  );
+                case 'integer':
+                case 'decimal':
+                case 'numeric':
+                  return (
+                    <TextField
+                      key={field.column.code}
+                      fullWidth
+                      margin="dense"
+                      label={label}
+                      type="number"
+                      value={value}
+                      onChange={(e) => handleFieldChange(field.column.code, e.target.value)}
+                      disabled={field.isReadonly || isSaving}
+                      required={field.isMandatory}
+                      inputProps={{ step: field.column.type === 'integer' ? '1' : '0.01' }}
+                      sx={{ mb: 1 }}
+                    />
+                  );
+                default:
+                  return (
+                    <TextField
+                      key={field.column.code}
+                      fullWidth
+                      margin="dense"
+                      label={label}
+                      value={String(value ?? '')}
+                      onChange={(e) => handleFieldChange(field.column.code, e.target.value)}
+                      disabled={field.isReadonly || isSaving}
+                      required={field.isMandatory}
+                      sx={{ mb: 1 }}
+                    />
+                  );
+              }
+            })}
+          </Box>
+        )}
 
-        {/* Child tab: show child records grid */}
-        {currentDialogTab.id !== '_form' && recordId && (
-          <ChildTabGrid
-            tab={currentDialogTab as WindowTabDefinition}
-            childRecords={childRecordsMap[(currentDialogTab as WindowTabDefinition).name] ?? []}
-            onNavigate={(tableName: string) => {
-              onClose();
-              navigate(`/app/window/${tableName}`);
-            }}
-          />
+        {/* Accordion panels for child records of the current level */}
+        {currentRecordId && currentChildTabs.length > 0 && (
+          <Box sx={{ mt: 2 }}>
+            <Grid container spacing={currentChildTabs.length > 1 ? 2 : 0}>
+              {currentChildTabs.map((ct) => {
+                const childRecords = childRecordsMap[ct.name] ?? [];
+                const panelId = ct.id;
+                return (
+                  <Grid item xs={currentChildTabs.length > 1 ? 6 : 12} key={panelId}>
+                    <Accordion
+                      expanded={
+                        expandedPanels.has(panelId) ||
+                        (expandedPanels.size === 0 && currentChildTabs.indexOf(ct) === 0)
+                      }
+                      onChange={() => togglePanel(panelId)}
+                    >
+                      <AccordionSummary>
+                        <Typography variant="subtitle2" sx={{ fontWeight: 600, fontSize: 13 }}>
+                          {expandedPanels.has(panelId) ? '▼' : '▶'} {ct.name} ({childRecords.length}
+                          )
+                        </Typography>
+                      </AccordionSummary>
+                      <AccordionDetails sx={{ p: 1 }}>
+                        <ChildTabGrid
+                          tab={ct}
+                          childRecords={childRecords}
+                          onRowClick={(rid: string) => handleDrillDown(ct, rid)}
+                        />
+                      </AccordionDetails>
+                    </Accordion>
+                  </Grid>
+                );
+              })}
+            </Grid>
+          </Box>
         )}
       </DialogContent>
 
@@ -373,7 +493,7 @@ function RecordDialog({ open, windowName, windowDef, recordId, onClose }: Record
 interface ChildTabGridProps {
   tab: WindowTabDefinition;
   childRecords: Record<string, unknown>[];
-  onNavigate?: (tableName: string, recordId: string) => void;
+  onRowClick?: (recordId: string) => void;
 }
 
 /** Renders a single field value inside a table cell for inline editing. */
@@ -439,7 +559,7 @@ function ChildFieldCell({
   );
 }
 
-function ChildTabGrid({ tab, childRecords, onNavigate }: ChildTabGridProps) {
+function ChildTabGrid({ tab, childRecords, onRowClick }: ChildTabGridProps) {
   const [editMode, setEditMode] = useState(false);
   const [rows, setRows] = useState<Record<string, unknown>[]>(() => [...childRecords]);
   const fields = tab.fields
@@ -508,7 +628,7 @@ function ChildTabGrid({ tab, childRecords, onNavigate }: ChildTabGridProps) {
                   sx={{ cursor: editMode ? 'default' : 'pointer' }}
                   onClick={() => {
                     if (!editMode && rec.id) {
-                      onNavigate?.(tab.table?.name ?? '', rec.id as string);
+                      onRowClick?.(rec.id as string);
                     }
                   }}
                 >

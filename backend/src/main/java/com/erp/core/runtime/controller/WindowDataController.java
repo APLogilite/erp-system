@@ -111,6 +111,53 @@ public class WindowDataController {
   }
 
   /**
+   * Fetches a record from a specific tab's table (drill-down support).
+   * The tabId determines which tab's table to query.
+   * Optional childTabs comma-separated list fetches child records.
+   *
+   * GET /api/v1/runtime/windows/{windowName}/tabs/{tabId}/records/{id}?childTabs=uuid1,uuid2
+   */
+  @GetMapping("/{windowName}/tabs/{tabId}/records/{id}")
+  public ResponseEntity<ApiResponse<Map<String, Object>>> getTabRecord(
+      @PathVariable String windowName,
+      @PathVariable UUID tabId,
+      @PathVariable UUID id,
+      @RequestParam(name = "childTabs", required = false) String childTabsParam) {
+
+    RuntimeContext ctx = requireContext();
+    if (ctx == null || ctx.getTenantId() == null) {
+      ApiResponse<Map<String, Object>> errorResp = new ApiResponse<>(
+          false, null, "Authentication required.", "UNAUTHORIZED", Collections.emptyList());
+      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResp);
+    }
+
+    // Parse child tab IDs from comma-separated string
+    List<UUID> childTabIds = Collections.emptyList();
+    if (childTabsParam != null && !childTabsParam.isBlank()) {
+      childTabIds = java.util.Arrays.stream(childTabsParam.split(","))
+          .map(String::trim)
+          .filter(s -> !s.isEmpty())
+          .map(UUID::fromString)
+          .toList();
+    }
+
+    try {
+      Map<String, Object> result = windowDataService.getTabRecordWithChildren(
+          windowName, tabId, id, ctx.getTenantId(), childTabIds);
+
+      if (result == null) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+            .body(new ApiResponse<>(false, null, "Record not found.", "NOT_FOUND", Collections.emptyList()));
+      }
+
+      return ResponseEntity.ok(ApiResponse.success(result, "Tab record retrieved."));
+    } catch (IllegalArgumentException e) {
+      return ResponseEntity.status(HttpStatus.NOT_FOUND)
+          .body(new ApiResponse<>(false, null, e.getMessage(), "NOT_FOUND", Collections.emptyList()));
+    }
+  }
+
+  /**
    * Create a record in the window's main tab.
    */
   @PostMapping("/{windowName}/records")

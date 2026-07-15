@@ -106,6 +106,17 @@ public class WindowDataService {
     return conditions;
   }
 
+  /**
+   * Finds a tab by its UUID in the window definition.
+   */
+  private TabDefinitionResponse findTabById(WindowDefinitionResponse def, UUID tabId) {
+    if (def.getTabs() == null || tabId == null) return null;
+    return def.getTabs().stream()
+        .filter(t -> tabId.equals(t.getId()))
+        .findFirst()
+        .orElse(null);
+  }
+
   // ---------------------------------------------------------------
   // Public API
   // ---------------------------------------------------------------
@@ -341,5 +352,72 @@ public class WindowDataService {
     }
 
     dynamicCrudService.deleteRecord(tableName, recordId, tenantId);
+  }
+
+  /**
+   * Fetches a record from a specific tab's table (not just the main tab).
+   * Used for drill-down navigation through the tab hierarchy.
+   *
+   * @param windowName  the window name (for definition context)
+   * @param tabId       the tab UUID whose table contains the record
+   * @param recordId    the record UUID to fetch
+   * @param tenantId    the current tenant ID
+   * @param childTabIds UUIDs of child tabs whose records should also be fetched
+   * @return map with "record" and "childRecords" keys, or null if record not found
+   */
+  @Transactional(readOnly = true)
+  public Map<String, Object> getTabRecordWithChildren(
+      String windowName,
+      UUID tabId,
+      UUID recordId,
+      UUID tenantId,
+      List<UUID> childTabIds) {
+
+    WindowDefinitionResponse def = windowAssemblyService.assembleDefinition(windowName);
+    if (def == null) {
+      throw new IllegalArgumentException("Window not found: " + windowName);
+    }
+
+    TabDefinitionResponse tab = findTabById(def, tabId);
+    if (tab == null) {
+      throw new IllegalArgumentException("Tab not found in window: " + tabId);
+    }
+
+    String tableName = getTableName(tab);
+    if (tableName == null) {
+      throw new IllegalArgumentException("Tab has no associated table: " + tab.getName());
+    }
+
+    // Fetch the record
+    Map<String, Object> record = dynamicCrudService.getRecord(tableName, recordId, tenantId, null);
+    if (record == null) {
+      return null;
+    }
+
+    // Fetch child records for each child tab
+    Map<String, Object> childRecords = new LinkedHashMap<>();
+    if (childTabIds != null) {
+      for (UUID childTabId : childTabIds) {
+        TabDefinitionResponse childTab = findTabById(def, childTabId);
+        if (childTab == null) continue;
+
+        String childTableName = getTableName(childTab);
+        if (childTableName == null) continue;
+
+        String relationColumn = childTab.getParentColumn();
+        if (relationColumn == null || relationColumn.isBlank()) continue;
+
+        // Apply where_clause if present
+        Map<String, String> conditions = buildTabConditions(childTab, recordId);
+        List<Map<String, Object>> children =
+            dynamicCrudService.getChildRecords(childTableName, relationColumn, recordId, tenantId);
+        childRecords.put(childTab.getName(), children);
+      }
+    }
+
+    Map<String, Object> result = new LinkedHashMap<>();
+    result.put("record", record);
+    result.put("childRecords", childRecords);
+    return result;
   }
 }

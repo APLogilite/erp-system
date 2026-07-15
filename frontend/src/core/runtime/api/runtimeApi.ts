@@ -270,6 +270,30 @@ export async function deleteWindowRecord(windowName: string, recordId: string): 
   await apiClient.delete(`/runtime/windows/${encodeURIComponent(windowName)}/records/${recordId}`);
 }
 
+// ---- Tab Record API (drill-down) ----
+
+/**
+ * Fetches a record from a specific tab's table (not just the main tab).
+ * Used for drill-down navigation through the tab hierarchy.
+ * GET /api/v1/runtime/windows/{windowName}/tabs/{tabId}/records/{recordId}?childTabs=...
+ */
+export async function fetchTabRecord(
+  windowName: string,
+  tabId: string,
+  recordId: string,
+  childTabIds?: string[]
+): Promise<Record<string, unknown>> {
+  const params: Record<string, string> = {};
+  if (childTabIds && childTabIds.length > 0) {
+    params.childTabs = childTabIds.join(',');
+  }
+  const response = await apiClient.get<ApiResponse<Record<string, unknown>>>(
+    `/runtime/windows/${encodeURIComponent(windowName)}/tabs/${encodeURIComponent(tabId)}/records/${encodeURIComponent(recordId)}`,
+    { params }
+  );
+  return unwrap(response);
+}
+
 // ---- Lookup API ----
 
 /**
