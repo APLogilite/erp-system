@@ -3,7 +3,7 @@ id: BUG-009
 
 title: Flyway migration chain broken on fresh database — old metadata FK reference fails
 
-status: TESTED
+status: COMPLETED
 
 priority: Critical
 
@@ -19,11 +19,11 @@ locked: false
 
 created: 2026-07-14
 
-updated: 2026-07-14
+updated: 2026-07-15
 
 started: 2026-07-14
 
-completed: 2026-07-14
+completed: 2026-07-15
 
 parent_prd: PRD-004
 

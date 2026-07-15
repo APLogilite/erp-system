@@ -2,9 +2,9 @@
 
 Last Updated: 2026-07-15
 
-Updated By: QA Engineer
+Updated By: Software Engineer
 
-(BUG-009 → TESTED — all 36 backend tests pass, frontend typecheck passes, API endpoints verified. PRD-004 stabilization complete.)
+(PRD-004 fully merged to main. BUG-009 cascaded to COMPLETED. All PRD-004 work finalized.)
 
 ---
 
@@ -130,7 +130,7 @@ See `ai/docs/STATUS_TRANSITIONS.md` for full transition rules.
 | BUG-006 | TASK-007 | Critical | COMPLETED | QA Engineer | — |
 | BUG-007 | TASK-036 | Critical | COMPLETED | QA Engineer | — |
 | BUG-008 | TASK-041 | Medium | COMPLETED | QA Engineer | BUG-007 |
-| BUG-009 | TASK-036 | Critical | TESTED | QA Engineer | — |
+| BUG-009 | TASK-036 | Critical | COMPLETED | QA Engineer | — |
 
 ---
 
