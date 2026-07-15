@@ -6,10 +6,10 @@ _AI agents read this file at startup to determine their permitted paths and bran
 
 | Role | Label | Allow Paths | Allow Branches |
 |------|-------|-------------|----------------|
-| `se` | Software Engineer | `backend/**`, `frontend/**`, `ai/changes/**`, `ai/schema/**`, `ai/PROJECT_BOARD.md`, `ai/docs/CHANGELOG.md`, `ai/failures/**` | `feature/*`, `bugfix/*`, `enhancement/*`, `prd/*` |
-| `qa` | QA Engineer | `ai/tests/**`, `ai/scripts/**`, `ai/schema/**`, `ai/tasks/BUG-*.md`, `ai/PROJECT_BOARD.md`, `ai/docs/CHANGELOG.md`, `ai/failures/**` | `prd/*` |
-| `pm` | Product Manager | `ai/prd/**`, `ai/tasks/**`, `ai/docs/*.md`, `ai/PROJECT_BOARD.md`, `ai/docs/CHANGELOG.md`, `ai/schema/**` | `main` |
-| `tw` | Technical Writer | `ai/modules/**`, `ai/flows/**`, `ai/schema/**` | `*` |
+| `se` | Software Engineer | `backend/**`, `frontend/**`, `ai/tasks/**`, `ai/changes/**`, `ai/schema/**`, `ai/PROJECT_BOARD.md`, `ai/docs/CHANGELOG.md`, `ai/failures/**` | `feature/*`, `bugfix/*`, `enhancement/*`, `prd/*` |
+| `qa` | QA Engineer | `ai/tasks/**`, `ai/tests/**`, `ai/scripts/**`, `ai/schema/**`, `ai/PROJECT_BOARD.md`, `ai/docs/CHANGELOG.md`, `ai/failures/**` | `prd/*` |
+| `pm` | Product Manager | `ai/prd/**`, `ai/tasks/**`, `ai/docs/*.md`, `ai/PROJECT_BOARD.md`, `ai/docs/CHANGELOG.md`, `ai/schema/**`, `ai/failures/**` | `main` |
+| `tw` | Technical Writer | `ai/modules/**`, `ai/flows/**`, `ai/schema/**`, `ai/failures/**` | `*` |
 
 ## Shared Paths
 

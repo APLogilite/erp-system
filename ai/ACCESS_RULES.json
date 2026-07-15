@@ -6,6 +6,7 @@
       "allow_paths": [
         "backend/**",
         "frontend/**",
+        "ai/tasks/**",
         "ai/changes/**",
         "ai/schema/**",
         "ai/PROJECT_BOARD.md",
@@ -22,10 +23,10 @@
     "qa": {
       "label": "QA Engineer",
       "allow_paths": [
+        "ai/tasks/**",
         "ai/tests/**",
         "ai/scripts/**",
         "ai/schema/**",
-        "ai/tasks/BUG-*.md",
         "ai/PROJECT_BOARD.md",
         "ai/docs/CHANGELOG.md",
         "ai/failures/**"
@@ -42,7 +43,8 @@
         "ai/docs/*.md",
         "ai/PROJECT_BOARD.md",
         "ai/docs/CHANGELOG.md",
-        "ai/schema/**"
+        "ai/schema/**",
+        "ai/failures/**"
       ],
       "allow_branches": [
         "main"
@@ -53,7 +55,8 @@
       "allow_paths": [
         "ai/modules/**",
         "ai/flows/**",
-        "ai/schema/**"
+        "ai/schema/**",
+        "ai/failures/**"
       ],
       "allow_branches": [
         "*"
