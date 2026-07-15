@@ -4,7 +4,7 @@ Last Updated: 2026-07-15
 
 Updated By: Software Engineer
 
-(PRD-004 fully merged to main. BUG-009 cascaded to COMPLETED. All PRD-004 work finalized.)
+(PRD-004 REOPENED — BUG-010 and BUG-011 fixed, awaiting QA)
 
 ---
 
@@ -41,7 +41,10 @@ See `ai/docs/STATUS_TRANSITIONS.md` for full transition rules.
 
 ## Ready For Test
 
-*(none)*
+| Bug | Severity | Status |
+|-----|----------|--------|
+| BUG-010 | Critical | **READY_FOR_TEST** — Missing required field validation added, DataAccessException handler |
+| BUG-011 | Critical | **READY_FOR_TEST** — where_clause conditions now applied to child tab queries |
 
 ---
 
@@ -131,8 +134,8 @@ See `ai/docs/STATUS_TRANSITIONS.md` for full transition rules.
 | BUG-007 | TASK-036 | Critical | COMPLETED | QA Engineer | — |
 | BUG-008 | TASK-041 | Medium | COMPLETED | QA Engineer | BUG-007 |
 | BUG-009 | TASK-036 | Critical | COMPLETED | QA Engineer | — |
-| BUG-010 | TASK-039 | Critical | **READY_FOR_DEV** | Product Manager | — |
-| BUG-011 | TASK-041 | Critical | **READY_FOR_DEV** | Product Manager | — |
+| BUG-010 | TASK-039 | Critical | **READY_FOR_TEST** | Software Engineer | — |
+| BUG-011 | TASK-041 | Critical | **READY_FOR_TEST** | Software Engineer | — |
 
 ---
 
@@ -162,7 +165,7 @@ See `ai/docs/STATUS_TRANSITIONS.md` for full transition rules.
 | In Development | 0 |
 | In Testing | 0 |
 | Planning | 0 |
-| Bugs | 11 (8 COMPLETED, 1 CANCELLED, 2 READY_FOR_DEV) |
+| Bugs | 11 (8 COMPLETED, 1 CANCELLED, 2 READY_FOR_TEST) |
 | Completed (PRD-001) | 27 tasks + 2 enhancements (ENH-001, ENH-003) |
 | Completed (PRD-002) | 3 tasks + 1 enhancement (TASK-033/034/035 + ENH-002) |
 | Completed (PRD-003) | 5 tasks (TASK-028/029/030/031/032) — merged to main |
