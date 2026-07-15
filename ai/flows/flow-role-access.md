@@ -1,8 +1,8 @@
 ---
 module: flow-role-access
 type: flow
-last_updated: 2026-07-10T18:37:40+05:30
-last_updated_git_sha: e599b75716403f982bcb643899a0a9590d11af9a
+last_updated: 2026-07-15T22:00:00+05:30
+last_updated_git_sha: 22ede02
 ---
 
 # Flow: Role-Based Access Control
@@ -99,26 +99,32 @@ sequenceDiagram
 
 ---
 
-## Overview
+## Status Lifecycle
 
 ```mermaid
 stateDiagram-v2
-  state "User logs in" as Login
-  state "JWT contains roles[]" as JWT
-  state "Frontend route guards" as Guards
-  state "Backend @PreAuthorize" as Backend
+  state "PRD Lifecycle" as PRD
+  state "Task Lifecycle" as Task
+  state "Bug Lifecycle" as Bug
 
-  Login --> JWT: AuthenticationService resolves roles + permissions
-  JWT --> Guards: AuthStore.user.roles[]
-  JWT --> Backend: JWT claims → GrantedAuthority
+  PRD: DRAFT → REVIEW → APPROVED → IN_DEVELOPMENT → TESTING → READY_FOR_DEPLOYMENT → COMPLETED
+  PRD: COMPLETED → REOPENED → IN_DEVELOPMENT
 
-  Guards --> AdminRoute: Check sys_admin / tnt_admin
-  Guards --> ContextGuard: Check role scope
+  Task: PLANNING → PLANNED → READY_FOR_DEV → IN_DEVELOPMENT → READY_FOR_TEST → TESTING → TESTED → COMPLETED
 
-  Backend --> SecurityConfig: Endpoint-level matchers
-  Backend --> AccessScopeService: Data-level row filtering
-  Backend --> PermissionEvaluator: Method-level @PreAuthorize
+  Bug: READY_FOR_DEV → IN_DEVELOPMENT → READY_FOR_TEST → TESTING → RESOLVED
+
+  note right of PRD
+    REOPENED when post-release
+    bug is found against a
+    COMPLETED PRD
+  end note
 ```
+
+**Key changes from v1:**
+- **REOPENED** status added to PRD lifecycle — enables post-release bug fixes
+- Bugs cascade to **RESOLVED** (not COMPLETED) on PRD merge
+- Default starting statuses: PRD→DRAFT, Task→PLANNING, Bug→READY_FOR_DEV
 
 ## Layer 1: JWT Token Claims
 
