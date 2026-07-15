@@ -37,7 +37,6 @@ import {
   fetchWindowDefinition,
   fetchWindowRecords,
   fetchWindowRecord,
-  fetchTabRecord,
   fetchLookupRecords,
   createWindowRecord,
   updateWindowRecord,
@@ -112,28 +111,31 @@ function RecordDialog({ open, windowName, windowDef, recordId, onClose }: Record
     lookupQueries[tableName] = lookupResults[idx]?.data ?? [];
   });
 
-  // Fetch the CURRENT LEVEL's record data
-  const currentRecordId =
-    drillStack.length > 0 ? drillStack[drillStack.length - 1].recordId : recordId;
+  // Determine if we're at root level or drilled into a child record
+  const isDrilled = drillStack.length > 0;
+  const currentDrillLevel = isDrilled ? drillStack[drillStack.length - 1] : null;
+
+  // For drill-down, use data already in the drill stack (no separate API call needed)
+  // The child record data was already loaded as part of the parent's childRecords
+  const drillLocalData = isDrilled && currentDrillLevel
+    ? { record: currentDrillLevel.recordData, childRecords: {} as Record<string, unknown[]> }
+    : null;
+
+  // Fetch the root record data (only for initial load, NOT for drill-down)
+  const currentRecordId = isDrilled ? drillStack[drillStack.length - 1].recordId : recordId;
 
   const { data: recordData, isLoading: isLoadingRecord, error: recordError } = useQuery({
     queryKey: ['window-record', windowName, drillStack.length, currentLevelTab.id, currentRecordId],
-    queryFn: () => {
-      if (drillStack.length > 0) {
-        // Drilled: find child tabs of the current level
-        const childTabIds = findChildTabs(windowDef.tabs, currentLevelTab).map((t) => t.id);
-        return fetchTabRecord(windowName, currentLevelTab.id, currentRecordId!, childTabIds);
-      }
-      // Parent level
-      return fetchWindowRecord(windowName, currentRecordId!);
-    },
-    enabled: !!currentRecordId,
+    queryFn: () => fetchWindowRecord(windowName, currentRecordId!),
+    enabled: !!currentRecordId && !isDrilled, // Only fetch for root level, use drill stack data for drill-down
   });
 
+  // Use drill stack data when drilled, otherwise use API response
+  const effectiveRecordData = isDrilled ? drillLocalData : recordData;
+
   // Extract child records for the current level
-  const childRecordsMap = recordData
-    ? ((recordData as { childRecords?: Record<string, Record<string, unknown>[]> }).childRecords ??
-      {})
+  const childRecordsMap = effectiveRecordData
+    ? ((effectiveRecordData as { childRecords?: Record<string, Record<string, unknown>[]> }).childRecords ?? {})
     : {};
 
   // Reset drill stack when opening a different record

@@ -453,8 +453,13 @@ public class WindowDataService {
           throw new IllegalArgumentException("Tab " + tabId + " does not belong to window: " + windowName);
         }
       } else {
-        log.error("Tab UUID {} not found in sys_tab table at all", tabId);
-        throw new IllegalArgumentException("Tab not found in window: " + tabId);
+        log.error("Tab UUID {} not found in sys_tab table at all. Window '{}' has {} tabs in def: {}",
+            tabId, windowName,
+            def.getTabs() != null ? def.getTabs().size() : 0,
+            def.getTabs() != null
+                ? def.getTabs().stream().map(t -> t.getName() + "(" + t.getId() + ")").collect(java.util.stream.Collectors.joining(", "))
+                : "null");
+        throw new IllegalArgumentException("Tab not found in window '" + windowName + "': " + tabId);
       }
     }
 
