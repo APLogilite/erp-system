@@ -116,7 +116,7 @@ function RecordDialog({ open, windowName, windowDef, recordId, onClose }: Record
   const currentRecordId =
     drillStack.length > 0 ? drillStack[drillStack.length - 1].recordId : recordId;
 
-  const { data: recordData, isLoading: isLoadingRecord } = useQuery({
+  const { data: recordData, isLoading: isLoadingRecord, error: recordError } = useQuery({
     queryKey: ['window-record', windowName, drillStack.length, currentLevelTab.id, currentRecordId],
     queryFn: () => {
       if (drillStack.length > 0) {
@@ -306,6 +306,11 @@ function RecordDialog({ open, windowName, windowDef, recordId, onClose }: Record
         {saveError && (
           <Typography color="error" sx={{ mb: 2, p: 1, bgcolor: 'error.light', borderRadius: 1 }}>
             {saveError}
+          </Typography>
+        )}
+        {recordError && (
+          <Typography color="error" sx={{ mb: 2, p: 1, bgcolor: 'error.light', borderRadius: 1 }}>
+            Failed to load record: {(recordError as Error).message}
           </Typography>
         )}
 
