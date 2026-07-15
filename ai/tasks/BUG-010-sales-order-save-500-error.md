@@ -3,13 +3,19 @@ id: BUG-010
 
 title: Saving Sales Order data returns HTTP 500 — POST /runtime/windows/Sales Orders/records fails
 
-status: READY_FOR_DEV
+status: IN_DEVELOPMENT
 
 priority: Critical
 
 severity: Critical
 
-owner: Product Manager
+owner: Software Engineer
+
+assigned_to: Software Engineer
+
+assigned_branch: bugfix/BUG-010
+
+locked: true
 
 assigned_to:
 
