@@ -217,6 +217,7 @@ public class DynamicCrudService {
 
     validateTableName(tableName);
     validateColumns(tableName, data.keySet());
+    convertUuidStrings(data); // Convert UUID strings to UUID objects for FK columns
 
     String tableRef = escapeIdentifier(tableName);
     MapSqlParameterSource params = new MapSqlParameterSource();
@@ -314,6 +315,7 @@ public class DynamicCrudService {
 
     validateTableName(tableName);
     validateColumns(tableName, data.keySet());
+    convertUuidStrings(data); // Convert UUID strings to UUID objects for FK columns
 
     String tableRef = escapeIdentifier(tableName);
     MapSqlParameterSource params = new MapSqlParameterSource();
@@ -428,6 +430,26 @@ public class DynamicCrudService {
         + String.join(" AND ", conditions);
 
     return jdbcTemplate.queryForList(sql, params);
+  }
+
+  /**
+   * Converts string values in FK columns (_id suffix) from JSON strings to UUID objects.
+   * Frontend JSON always sends UUIDs as strings, but PostgreSQL UUID columns
+   * expect UUID objects. Only converts columns whose name ends with "_id".
+   */
+  private void convertUuidStrings(Map<String, Object> data) {
+    if (data == null) return;
+    for (Map.Entry<String, Object> entry : data.entrySet()) {
+      String col = entry.getKey();
+      Object val = entry.getValue();
+      if (val instanceof String str && col.endsWith("_id") && str.length() == 36) {
+        try {
+          data.put(col, UUID.fromString(str));
+        } catch (IllegalArgumentException ignored) {
+          // Not a valid UUID format, leave as string
+        }
+      }
+    }
   }
 
   // ---------------------------------------------------------------
