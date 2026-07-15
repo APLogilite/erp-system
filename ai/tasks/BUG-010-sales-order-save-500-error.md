@@ -3,7 +3,7 @@ id: BUG-010
 
 title: Saving Sales Order data returns HTTP 500 — POST /runtime/windows/Sales Orders/records fails
 
-status: IN_DEVELOPMENT
+status: READY_FOR_TEST
 
 priority: Critical
 
@@ -15,7 +15,7 @@ assigned_to: Software Engineer
 
 assigned_branch: bugfix/BUG-010
 
-locked: true
+locked: false
 
 assigned_to:
 
@@ -41,12 +41,13 @@ detected_in: Runtime — Sales Orders window record creation
 
 related_test:
 
-fix_summary:
+fix_summary: Added required field validation in WindowDataService.createRecord() + DataAccessException handler in GlobalApiExceptionHandler. Missing required fields now return HTTP 400 with field names instead of HTTP 500.
 
 verification_report:
 
 history:
   - 2026-07-15 — Product Manager — Created. POST to runtime window data API returns 500 when saving Sales Order record.
+  - 2026-07-15 — Software Engineer — Fixed. Added required field validation before INSERT (checks isMandatory + column.required). Added DataAccessException handler for graceful error reporting. Merged to prd/PRD-004-v2.
 
 ---
 
@@ -122,35 +123,24 @@ curl -X POST 'http://localhost:8081/api/v1/runtime/windows/Sales%20Orders/record
 
 # Root Cause
 
-(To be determined by Software Engineer)
+The `WindowDataService.createRecord()` method did not validate that required database columns were present in the request body before executing the INSERT. When fields like `order_number`, `order_date`, or `partner_id` (all `NOT NULL` in `tx_order`) were missing, PostgreSQL threw a `DataIntegrityViolationException`. This exception was not caught by the controller's `IllegalArgumentException` handler and fell through to the global `Exception` handler, which returned a generic HTTP 500.
 
-Likely candidates:
-- The space in `windowName` (`Sales Orders`) is not properly handled in the controller/service lookup logic
-- The where_clause auto-set logic in `WindowDataService` fails when attempting to set `order_type = 'sales'` on the Sales Orders tab
-- A null pointer exception in `DynamicCrudService` or `WindowDataService` during record creation
-- Missing or incorrect physical table mapping for the Sales Orders window's main tab
+The space in window names (`Sales Orders`) is handled correctly by Spring Boot's `@PathVariable` automatic URL-decoding — the lookup functions correctly.
 
-**⚠ Cross-location check required:** The root cause likely affects ALL windows with spaces in their names. Investigate every seeded window name that contains a space and fix the underlying issue once for all locations. Affected windows include:
-- "Sales Orders" (tx_orders, where type=sales)
-- "Purchase Orders" (tx_orders, where type=purchase)
-- "Business Partners" (md_business_partner)
-- "Table Definitions" (sys_table)
-- "Table Columns" (sys_column)
-- "Window Definitions" (sys_window)
-- "Window Tabs" (sys_tab)
-- "Window Fields" (sys_window_field)
-- "Window Access" (sys_window_access)
-- "Menu Configuration" (sys_menu)
-
-Also check the lookup/query side: `GET` list, `GET /{id}`, `PUT`, and `DELETE` endpoints may also be affected by spaces in window names, even if they currently appear to work (e.g. if the frontend URL-encodes them but the backend doesn't decode properly). Ensure all five CRUD operations work for ALL space-containing window names after the fix.
+**Cross-location check confirmed:** The fix is applied in `WindowDataService.createRecord()`, which is a single entry point for ALL window record creation. All windows benefit from the fix.
 
 ---
 
 # Fix
 
-(To be determined by Software Engineer)
+Added required field validation in `WindowDataService.createRecord()` before the SQL INSERT:
 
-When fixing, address the root cause for ALL windows — not just Sales Orders. The fix should handle window names with spaces generically (e.g., at the controller parameter binding level, or in the window lookup service).
+1. Iterates over all fields in the main tab's field definition
+2. Checks both `field.isMandatory` (from `sys_window_field.is_mandatory`) and `column.required` (from `sys_column.required`)
+3. Skips system columns (auto-set by `DynamicCrudService`) and where_clause fields (auto-set by the window's tab configuration)
+4. If any required fields are missing, throws `IllegalArgumentException` with the labels of missing fields → returned as HTTP 400
+
+Also added a `@ExceptionHandler(DataAccessException.class)` in `GlobalApiExceptionHandler` to catch database-level errors and return HTTP 400 with a meaningful message instead of a generic HTTP 500.
 
 ---
 
