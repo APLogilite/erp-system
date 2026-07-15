@@ -434,15 +434,15 @@ public class DynamicCrudService {
 
   /**
    * Converts string values in FK columns (_id suffix) from JSON strings to UUID objects.
-   * Frontend JSON always sends UUIDs as strings, but PostgreSQL UUID columns
-   * expect UUID objects. Only converts columns whose name ends with "_id".
+   * PostgreSQL UUID columns reject string values — they expect UUID objects.
+   * Attempts conversion on any string value in an _id column that looks like a UUID.
    */
   private void convertUuidStrings(Map<String, Object> data) {
     if (data == null) return;
     for (Map.Entry<String, Object> entry : data.entrySet()) {
       String col = entry.getKey();
       Object val = entry.getValue();
-      if (val instanceof String str && col.endsWith("_id") && str.length() == 36) {
+      if (val instanceof String str && col.endsWith("_id")) {
         try {
           data.put(col, UUID.fromString(str));
         } catch (IllegalArgumentException ignored) {

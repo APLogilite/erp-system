@@ -123,13 +123,12 @@ function RecordDialog({ open, windowName, windowDef, recordId, onClose }: Record
     queryKey: ['window-record', windowName, drillStack.length, currentLevelTab.id, currentRecordId],
     queryFn: () => {
       if (isDrilled) {
-        // Drilled: fetch grandchildren for the current tab
+        // Drilled: always use fetchTabRecord which targets the correct tab's table,
+        // even if there are no grandchildren (empty childTabIds is fine)
         const childTabIds = findChildTabs(windowDef.tabs, currentLevelTab).map((t) => t.id);
-        return childTabIds.length > 0
-          ? fetchTabRecord(windowName, currentLevelTab.id, currentRecordId!, childTabIds)
-          : fetchWindowRecord(windowName, currentRecordId!);
+        return fetchTabRecord(windowName, currentLevelTab.id, currentRecordId!, childTabIds);
       }
-      // Root level: fetch record with children
+      // Root level: fetch record with children from main tab
       return fetchWindowRecord(windowName, currentRecordId!);
     },
     enabled: !!currentRecordId,
