@@ -64,6 +64,7 @@ function RecordDialog({ open, windowName, windowDef, recordId, onClose }: Record
   const childTabs = windowDef.tabs.filter((t) => t.parentColumn);
   const [formData, setFormData] = useState<Record<string, unknown>>({});
   const [saveError, setSaveError] = useState<string | null>(null);
+  const [activeDialogTab, setActiveDialogTab] = useState(0);
 
   // Collect unique relation table names for lookup dropdowns
   const lookupTables = [
@@ -170,183 +171,187 @@ function RecordDialog({ open, windowName, windowDef, recordId, onClose }: Record
   }
 
   const fields = getDisplayedFields(mainTab);
+  const dialogTabs = [{ id: '_form', name: 'Form' }, ...childTabs];
+  const currentDialogTab = dialogTabs[activeDialogTab] ?? dialogTabs[0];
 
   return (
     <Dialog open={open} onClose={onClose} maxWidth="md" fullWidth>
-      <DialogTitle>
+      <DialogTitle sx={{ pb: 0 }}>
         {recordId ? 'Edit Record' : 'New Record'} - {windowDef.window.name}
       </DialogTitle>
-      <DialogContent>
+
+      {/* Tab bar: Form | ChildTab1 | ChildTab2 | ... */}
+      <Tabs
+        value={activeDialogTab < dialogTabs.length ? activeDialogTab : 0}
+        onChange={(_, v) => setActiveDialogTab(v)}
+        sx={{ px: 2, borderBottom: 1, borderColor: 'divider' }}
+      >
+        {dialogTabs.map((t) => (
+          <Tab key={t.id} label={t.name} />
+        ))}
+      </Tabs>
+
+      <DialogContent sx={{ mt: 1 }}>
         {saveError && (
           <Typography color="error" sx={{ mb: 2, p: 1, bgcolor: 'error.light', borderRadius: 1 }}>
             {saveError}
           </Typography>
         )}
-        {isLoadingRecord && recordId ? (
-          <Box sx={{ display: 'flex', justifyContent: 'center', py: 4 }}>
-            <CircularProgress />
-          </Box>
-        ) : (
-          <Box sx={{ pt: 2 }}>
-            {fields.map((field) => {
-              const value = formData[field.column.code] ?? '';
-              const label = field.labelOverride ?? field.column.label;
 
-              switch (field.column.type) {
-                case 'boolean':
-                  return (
-                    <FormControlLabel
-                      key={field.column.code}
-                      control={
-                        <Checkbox
-                          checked={!!value}
-                          onChange={(e) => handleFieldChange(field.column.code, e.target.checked)}
-                          disabled={field.isReadonly || isSaving}
-                        />
-                      }
-                      label={label}
-                      sx={{ mb: 1, display: 'flex' }}
-                    />
-                  );
+        {/* Form tab: show parent record fields */}
+        {currentDialogTab.id === '_form' &&
+          (isLoadingRecord && recordId ? (
+            <Box sx={{ display: 'flex', justifyContent: 'center', py: 4 }}>
+              <CircularProgress />
+            </Box>
+          ) : (
+            <Box sx={{ pt: 1 }}>
+              {fields.map((field) => {
+                const value = formData[field.column.code] ?? '';
+                const label = field.labelOverride ?? field.column.label;
 
-                case 'enum': {
-                  const options = field.column.enumOptions
-                    ? JSON.parse(field.column.enumOptions)
-                    : [];
-                  return (
-                    <FormControl key={field.column.code} fullWidth margin="dense" sx={{ mb: 1 }}>
-                      <InputLabel>{label}</InputLabel>
-                      <Select
-                        value={value as string}
+                switch (field.column.type) {
+                  case 'boolean':
+                    return (
+                      <FormControlLabel
+                        key={field.column.code}
+                        control={
+                          <Checkbox
+                            checked={!!value}
+                            onChange={(e) => handleFieldChange(field.column.code, e.target.checked)}
+                            disabled={field.isReadonly || isSaving}
+                          />
+                        }
                         label={label}
+                        sx={{ mb: 1, display: 'flex' }}
+                      />
+                    );
+                  case 'enum': {
+                    const options = field.column.enumOptions
+                      ? JSON.parse(field.column.enumOptions)
+                      : [];
+                    return (
+                      <FormControl key={field.column.code} fullWidth margin="dense" sx={{ mb: 1 }}>
+                        <InputLabel>{label}</InputLabel>
+                        <Select
+                          value={value as string}
+                          label={label}
+                          onChange={(e) => handleFieldChange(field.column.code, e.target.value)}
+                          disabled={field.isReadonly || isSaving}
+                          required={field.isMandatory}
+                        >
+                          {options.map((opt: string) => (
+                            <MenuItem key={opt} value={opt}>
+                              {opt}
+                            </MenuItem>
+                          ))}
+                        </Select>
+                      </FormControl>
+                    );
+                  }
+                  case 'date':
+                    return (
+                      <TextField
+                        key={field.column.code}
+                        fullWidth
+                        margin="dense"
+                        label={label}
+                        type="date"
+                        value={typeof value === 'string' ? value.slice(0, 10) : ''}
                         onChange={(e) => handleFieldChange(field.column.code, e.target.value)}
                         disabled={field.isReadonly || isSaving}
                         required={field.isMandatory}
-                      >
-                        {options.map((opt: string) => (
-                          <MenuItem key={opt} value={opt}>
-                            {opt}
+                        InputLabelProps={{ shrink: true }}
+                        sx={{ mb: 1 }}
+                      />
+                    );
+                  case 'many2one':
+                  case 'many2many':
+                  case 'one2many': {
+                    const lookupOptions = lookupQueries[field.column.relationTable!] ?? [];
+                    return (
+                      <FormControl key={field.column.code} fullWidth margin="dense" sx={{ mb: 1 }}>
+                        <InputLabel>{label}</InputLabel>
+                        <Select
+                          value={value as string}
+                          label={label}
+                          onChange={(e) => handleFieldChange(field.column.code, e.target.value)}
+                          disabled={field.isReadonly || isSaving || !field.column.relationTable}
+                          required={field.isMandatory}
+                        >
+                          <MenuItem value="">
+                            <em>None</em>
                           </MenuItem>
-                        ))}
-                      </Select>
-                    </FormControl>
-                  );
-                }
-
-                case 'date':
-                  return (
-                    <TextField
-                      key={field.column.code}
-                      fullWidth
-                      margin="dense"
-                      label={label}
-                      type="date"
-                      value={typeof value === 'string' ? value.slice(0, 10) : ''}
-                      onChange={(e) => handleFieldChange(field.column.code, e.target.value)}
-                      disabled={field.isReadonly || isSaving}
-                      required={field.isMandatory}
-                      InputLabelProps={{ shrink: true }}
-                      sx={{ mb: 1 }}
-                    />
-                  );
-
-                case 'many2one':
-                case 'many2many':
-                case 'one2many': {
-                  const relationTable = field.column.relationTable!;
-                  const lookupOptions = lookupQueries[relationTable] ?? [];
-
-                  return (
-                    <FormControl key={field.column.code} fullWidth margin="dense" sx={{ mb: 1 }}>
-                      <InputLabel>{label}</InputLabel>
-                      <Select
-                        value={value as string}
+                          {lookupOptions.map((opt) => (
+                            <MenuItem key={opt.id as string} value={opt.id as string}>
+                              {(opt._display as string) ?? (opt.id as string)}
+                            </MenuItem>
+                          ))}
+                        </Select>
+                      </FormControl>
+                    );
+                  }
+                  case 'text':
+                    return (
+                      <TextField
+                        key={field.column.code}
+                        fullWidth
+                        margin="dense"
                         label={label}
+                        value={String(value ?? '')}
                         onChange={(e) => handleFieldChange(field.column.code, e.target.value)}
-                        disabled={field.isReadonly || isSaving || !relationTable}
+                        disabled={field.isReadonly || isSaving}
                         required={field.isMandatory}
-                      >
-                        <MenuItem value="">
-                          <em>None</em>
-                        </MenuItem>
-                        {lookupOptions.map((opt) => (
-                          <MenuItem key={opt.id as string} value={opt.id as string}>
-                            {(opt._display as string) ?? (opt.id as string)}
-                          </MenuItem>
-                        ))}
-                      </Select>
-                    </FormControl>
-                  );
+                        multiline
+                        rows={field.numLines > 1 ? field.numLines : 3}
+                        sx={{ mb: 1 }}
+                      />
+                    );
+                  case 'integer':
+                  case 'decimal':
+                  case 'numeric':
+                    return (
+                      <TextField
+                        key={field.column.code}
+                        fullWidth
+                        margin="dense"
+                        label={label}
+                        type="number"
+                        value={value}
+                        onChange={(e) => handleFieldChange(field.column.code, e.target.value)}
+                        disabled={field.isReadonly || isSaving}
+                        required={field.isMandatory}
+                        inputProps={{ step: field.column.type === 'integer' ? '1' : '0.01' }}
+                        sx={{ mb: 1 }}
+                      />
+                    );
+                  default:
+                    return (
+                      <TextField
+                        key={field.column.code}
+                        fullWidth
+                        margin="dense"
+                        label={label}
+                        value={String(value ?? '')}
+                        onChange={(e) => handleFieldChange(field.column.code, e.target.value)}
+                        disabled={field.isReadonly || isSaving}
+                        required={field.isMandatory}
+                        sx={{ mb: 1 }}
+                      />
+                    );
                 }
+              })}
+            </Box>
+          ))}
 
-                case 'text':
-                  return (
-                    <TextField
-                      key={field.column.code}
-                      fullWidth
-                      margin="dense"
-                      label={label}
-                      value={String(value ?? '')}
-                      onChange={(e) => handleFieldChange(field.column.code, e.target.value)}
-                      disabled={field.isReadonly || isSaving}
-                      required={field.isMandatory}
-                      multiline
-                      rows={field.numLines > 1 ? field.numLines : 3}
-                      sx={{ mb: 1 }}
-                    />
-                  );
-
-                case 'integer':
-                case 'decimal':
-                case 'numeric':
-                  return (
-                    <TextField
-                      key={field.column.code}
-                      fullWidth
-                      margin="dense"
-                      label={label}
-                      type="number"
-                      value={value}
-                      onChange={(e) => handleFieldChange(field.column.code, e.target.value)}
-                      disabled={field.isReadonly || isSaving}
-                      required={field.isMandatory}
-                      inputProps={{
-                        step: field.column.type === 'integer' ? '1' : '0.01',
-                      }}
-                      sx={{ mb: 1 }}
-                    />
-                  );
-
-                default:
-                  return (
-                    <TextField
-                      key={field.column.code}
-                      fullWidth
-                      margin="dense"
-                      label={label}
-                      value={String(value ?? '')}
-                      onChange={(e) => handleFieldChange(field.column.code, e.target.value)}
-                      disabled={field.isReadonly || isSaving}
-                      required={field.isMandatory}
-                      sx={{ mb: 1 }}
-                    />
-                  );
-              }
-            })}
-          </Box>
+        {/* Child tab: show child records grid */}
+        {currentDialogTab.id !== '_form' && recordId && (
+          <ChildTabGrid
+            tab={currentDialogTab as WindowTabDefinition}
+            childRecords={childRecordsMap[(currentDialogTab as WindowTabDefinition).name] ?? []}
+          />
         )}
       </DialogContent>
-      {/* Child tab records (only shown when editing an existing record) */}
-      {recordId && childTabs.length > 0 && (
-        <Box sx={{ mt: 3, pt: 2, borderTop: 1, borderColor: 'divider' }}>
-          <Typography variant="subtitle1" sx={{ mb: 2, fontWeight: 600 }}>
-            Related Records
-          </Typography>
-          {childTabs.map((ct) => (
-            <ChildTabGrid key={ct.id} tab={ct} childRecords={childRecordsMap[ct.name] ?? []} />
-          ))}
-        </Box>
-      )}
 
       <DialogActions>
         <Button onClick={onClose}>Cancel</Button>
