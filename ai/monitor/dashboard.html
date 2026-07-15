@@ -927,9 +927,10 @@ function showTaskDetail(taskId) {
         }
       }
 
-      if (fm.history && Array.isArray(fm.history) && fm.history.length) {
+      const history = Array.isArray(fm.history) ? fm.history : [];
+      if (history.length) {
         bodyHtml += '<div class="modal-section"><h4>History</h4><div class="modal-history">';
-        for (const entry of fm.history) {
+        for (const entry of history) {
           bodyHtml += `<div class="modal-history-item">${esc(entry)}</div>`;
         }
         bodyHtml += '</div></div>';

@@ -103,10 +103,18 @@ def parse_frontmatter(text):
         except Exception:
             pass
     fm = {}
+    current_list_key = None
     for line in raw.split("\n"):
-        line = line.strip()
-        if not line or line.startswith("#"):
+        line_stripped = line.strip()
+        if not line_stripped or line_stripped.startswith("#"):
             continue
+        if line_stripped.startswith("- ") and current_list_key:
+            item = line_stripped[2:].strip()
+            if not isinstance(fm.get(current_list_key), list):
+                fm[current_list_key] = []
+            fm[current_list_key].append(item)
+            continue
+        current_list_key = None
         if ":" in line:
             k, _, v = line.partition(":")
             k = k.strip()
@@ -123,7 +131,11 @@ def parse_frontmatter(text):
                 try:
                     fm[k] = float(v)
                 except ValueError:
-                    fm[k] = v
+                    if v:
+                        fm[k] = v
+            if not v:
+                current_list_key = k
+                fm[k] = []
     return _json_safe(fm), body
 
 def list_files(dirpath, pattern="*.md"):
