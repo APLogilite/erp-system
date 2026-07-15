@@ -55,11 +55,12 @@ WHERE NOT EXISTS (SELECT 1 FROM sys_table WHERE name = 'tx_shipment_line');
 -- ============================================================
 CREATE OR REPLACE FUNCTION ensure_column(
   p_table_name TEXT, p_code TEXT, p_label TEXT,
-  p_type TEXT, p_required BOOLEAN, p_max_length INTEGER, p_position INTEGER
+  p_type TEXT, p_required BOOLEAN, p_max_length INTEGER, p_position INTEGER,
+  p_relation_table TEXT DEFAULT NULL
 ) RETURNS void AS $$
 BEGIN
-  INSERT INTO sys_column (id, table_id, code, label, type, required, max_length, position, is_active, tenant_id, created_at, updated_at)
-  SELECT gen_random_uuid(), (SELECT id FROM sys_table WHERE name = p_table_name), p_code, p_label, p_type, p_required, p_max_length, p_position, true, '00000000-0000-0000-0000-000000000001', now(), now()
+  INSERT INTO sys_column (id, table_id, code, label, type, required, max_length, position, relation_table, is_active, tenant_id, created_at, updated_at)
+  SELECT gen_random_uuid(), (SELECT id FROM sys_table WHERE name = p_table_name), p_code, p_label, p_type, p_required, p_max_length, p_position, p_relation_table, true, '00000000-0000-0000-0000-000000000001', now(), now()
   WHERE NOT EXISTS (SELECT 1 FROM sys_column WHERE table_id = (SELECT id FROM sys_table WHERE name = p_table_name) AND code = p_code);
 END;
 $$ LANGUAGE plpgsql;
@@ -76,7 +77,7 @@ SELECT ensure_column('md_business_partner', 'tax_id', 'Tax ID', 'string', false,
 SELECT ensure_column('md_product', 'code', 'Code', 'string', true, 50, 1);
 SELECT ensure_column('md_product', 'name', 'Name', 'string', true, 200, 2);
 SELECT ensure_column('md_product', 'product_type', 'Type', 'string', true, 20, 3);
-SELECT ensure_column('md_product', 'uom_id', 'UOM', 'many2one', false, null, 4);
+SELECT ensure_column('md_product', 'uom_id', 'UOM', 'many2one', false, null, 4, 'md_uom');
 SELECT ensure_column('md_product', 'unit_price', 'Unit Price', 'decimal', false, null, 5);
 SELECT ensure_column('md_product', 'description', 'Description', 'text', false, null, 6);
 
@@ -92,8 +93,8 @@ SELECT ensure_column('md_warehouse', 'name', 'Name', 'string', true, 100, 2);
 SELECT ensure_column('tx_order', 'order_number', 'Order Number', 'string', true, 50, 1);
 SELECT ensure_column('tx_order', 'order_date', 'Order Date', 'date', true, null, 2);
 SELECT ensure_column('tx_order', 'order_type', 'Order Type', 'enum', true, 20, 3);
-SELECT ensure_column('tx_order', 'partner_id', 'Partner', 'many2one', true, null, 4);
-SELECT ensure_column('tx_order', 'warehouse_id', 'Warehouse', 'many2one', false, null, 5);
+SELECT ensure_column('tx_order', 'partner_id', 'Partner', 'many2one', true, null, 4, 'md_business_partner');
+SELECT ensure_column('tx_order', 'warehouse_id', 'Warehouse', 'many2one', false, null, 5, 'md_warehouse');
 SELECT ensure_column('tx_order', 'currency', 'Currency', 'string', false, 3, 6);
 SELECT ensure_column('tx_order', 'subtotal', 'Subtotal', 'decimal', false, null, 7);
 SELECT ensure_column('tx_order', 'tax_amount', 'Tax', 'decimal', false, null, 8);
@@ -103,10 +104,10 @@ SELECT ensure_column('tx_order', 'notes', 'Notes', 'text', false, null, 11);
 
 -- tx_order_line
 SELECT ensure_column('tx_order_line', 'line_number', 'Line', 'integer', true, null, 1);
-SELECT ensure_column('tx_order_line', 'product_id', 'Product', 'many2one', true, null, 2);
+SELECT ensure_column('tx_order_line', 'product_id', 'Product', 'many2one', true, null, 2, 'md_product');
 SELECT ensure_column('tx_order_line', 'description', 'Description', 'text', false, null, 3);
 SELECT ensure_column('tx_order_line', 'quantity', 'Quantity', 'decimal', false, null, 4);
-SELECT ensure_column('tx_order_line', 'uom_id', 'UOM', 'many2one', false, null, 5);
+SELECT ensure_column('tx_order_line', 'uom_id', 'UOM', 'many2one', false, null, 5, 'md_uom');
 SELECT ensure_column('tx_order_line', 'unit_price', 'Unit Price', 'decimal', false, null, 6);
 SELECT ensure_column('tx_order_line', 'line_total', 'Line Total', 'decimal', false, null, 7);
 
@@ -115,14 +116,14 @@ SELECT ensure_column('tx_invoice', 'invoice_number', 'Invoice Number', 'string',
 SELECT ensure_column('tx_invoice', 'invoice_date', 'Invoice Date', 'date', true, null, 2);
 SELECT ensure_column('tx_invoice', 'due_date', 'Due Date', 'date', false, null, 3);
 SELECT ensure_column('tx_invoice', 'invoice_type', 'Invoice Type', 'enum', true, 20, 4);
-SELECT ensure_column('tx_invoice', 'partner_id', 'Partner', 'many2one', true, null, 5);
+SELECT ensure_column('tx_invoice', 'partner_id', 'Partner', 'many2one', true, null, 5, 'md_business_partner');
 SELECT ensure_column('tx_invoice', 'currency', 'Currency', 'string', false, 3, 6);
 SELECT ensure_column('tx_invoice', 'grand_total', 'Total', 'decimal', false, null, 7);
 SELECT ensure_column('tx_invoice', 'status', 'Status', 'string', false, 30, 8);
 
 -- tx_invoice_line
 SELECT ensure_column('tx_invoice_line', 'line_number', 'Line', 'integer', true, null, 1);
-SELECT ensure_column('tx_invoice_line', 'product_id', 'Product', 'many2one', true, null, 2);
+SELECT ensure_column('tx_invoice_line', 'product_id', 'Product', 'many2one', true, null, 2, 'md_product');
 SELECT ensure_column('tx_invoice_line', 'description', 'Description', 'text', false, null, 3);
 SELECT ensure_column('tx_invoice_line', 'quantity', 'Quantity', 'decimal', false, null, 4);
 SELECT ensure_column('tx_invoice_line', 'unit_price', 'Unit Price', 'decimal', false, null, 5);
@@ -132,7 +133,7 @@ SELECT ensure_column('tx_invoice_line', 'line_total', 'Line Total', 'decimal', f
 SELECT ensure_column('tx_payment', 'payment_number', 'Payment Number', 'string', true, 50, 1);
 SELECT ensure_column('tx_payment', 'payment_date', 'Payment Date', 'date', true, null, 2);
 SELECT ensure_column('tx_payment', 'payment_type', 'Payment Type', 'string', true, 20, 3);
-SELECT ensure_column('tx_payment', 'partner_id', 'Partner', 'many2one', true, null, 4);
+SELECT ensure_column('tx_payment', 'partner_id', 'Partner', 'many2one', true, null, 4, 'md_business_partner');
 SELECT ensure_column('tx_payment', 'payment_method', 'Method', 'string', false, 30, 5);
 SELECT ensure_column('tx_payment', 'amount', 'Amount', 'decimal', true, null, 6);
 SELECT ensure_column('tx_payment', 'reference', 'Reference', 'string', false, 100, 7);
@@ -142,18 +143,18 @@ SELECT ensure_column('tx_payment', 'status', 'Status', 'string', false, 30, 8);
 SELECT ensure_column('tx_shipment', 'shipment_number', 'Shipment Number', 'string', true, 50, 1);
 SELECT ensure_column('tx_shipment', 'shipment_date', 'Shipment Date', 'date', true, null, 2);
 SELECT ensure_column('tx_shipment', 'shipment_type', 'Type', 'string', true, 20, 3);
-SELECT ensure_column('tx_shipment', 'partner_id', 'Partner', 'many2one', true, null, 4);
-SELECT ensure_column('tx_shipment', 'warehouse_id', 'Warehouse', 'many2one', false, null, 5);
-SELECT ensure_column('tx_shipment', 'order_id', 'Order', 'many2one', false, null, 6);
+SELECT ensure_column('tx_shipment', 'partner_id', 'Partner', 'many2one', true, null, 4, 'md_business_partner');
+SELECT ensure_column('tx_shipment', 'warehouse_id', 'Warehouse', 'many2one', false, null, 5, 'md_warehouse');
+SELECT ensure_column('tx_shipment', 'order_id', 'Order', 'many2one', false, null, 6, 'tx_order');
 SELECT ensure_column('tx_shipment', 'status', 'Status', 'string', false, 30, 7);
 
 -- tx_shipment_line
 SELECT ensure_column('tx_shipment_line', 'line_number', 'Line', 'integer', true, null, 1);
-SELECT ensure_column('tx_shipment_line', 'product_id', 'Product', 'many2one', true, null, 2);
+SELECT ensure_column('tx_shipment_line', 'product_id', 'Product', 'many2one', true, null, 2, 'md_product');
 SELECT ensure_column('tx_shipment_line', 'description', 'Description', 'text', false, null, 3);
 SELECT ensure_column('tx_shipment_line', 'quantity', 'Quantity', 'decimal', false, null, 4);
 
-DROP FUNCTION IF EXISTS ensure_column(TEXT, TEXT, TEXT, TEXT, BOOLEAN, INTEGER, INTEGER);
+DROP FUNCTION IF EXISTS ensure_column(TEXT, TEXT, TEXT, TEXT, BOOLEAN, INTEGER, INTEGER, TEXT);
 
 -- ============================================================
 -- Part 3 — Master Data Windows
