@@ -3,7 +3,7 @@ id: BUG-004
 
 title: FormSearchBar shows empty results — needs default form list and visible header button
 
-status: TESTED
+status: COMPLETED
 
 priority: Medium
 

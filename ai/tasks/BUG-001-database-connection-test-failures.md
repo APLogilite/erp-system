@@ -3,7 +3,7 @@ id: BUG-001
 
 title: Fix pre-existing DatabaseConnectionTest failures (3 errors)
 
-status: TESTED
+status: COMPLETED
 
 priority: High
 

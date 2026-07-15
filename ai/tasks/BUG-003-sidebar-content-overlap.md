@@ -3,7 +3,7 @@ id: BUG-003
 
 title: Sidebar and main content overlap — AppLayout missing margin compensation for permanent Drawer
 
-status: TESTED
+status: COMPLETED
 
 priority: High
 

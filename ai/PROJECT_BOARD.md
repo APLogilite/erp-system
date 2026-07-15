@@ -122,10 +122,10 @@ See `ai/docs/STATUS_TRANSITIONS.md` for full transition rules.
 
 | Bug | Parent Task | Severity | Status | Owner | Depends On |
 |-----|-------------|----------|--------|-------|------------|
-| BUG-001 | TASK-001 | Medium | TESTED | QA Engineer | — |
-| BUG-002 | TASK-007 | High | TESTED | QA Engineer | — |
-| BUG-003 | TASK-011 | High | TESTED | QA Engineer | — |
-| BUG-004 | TASK-025 | Medium | TESTED | QA Engineer | — |
+| BUG-001 | TASK-001 | Medium | COMPLETED | QA Engineer | — |
+| BUG-002 | TASK-007 | High | COMPLETED | QA Engineer | — |
+| BUG-003 | TASK-011 | High | COMPLETED | QA Engineer | — |
+| BUG-004 | TASK-025 | Medium | COMPLETED | QA Engineer | — |
 | BUG-005 | TASK-025 | Medium | CANCELLED | QA Engineer | — |
 | BUG-006 | TASK-007 | Critical | COMPLETED | QA Engineer | — |
 | BUG-007 | TASK-036 | Critical | COMPLETED | QA Engineer | — |
@@ -160,7 +160,7 @@ See `ai/docs/STATUS_TRANSITIONS.md` for full transition rules.
 | In Development | 0 |
 | In Testing | 0 |
 | Planning | 0 |
-| Bugs | 9 (0 at READY_FOR_DEV, 0 at READY_FOR_TEST, 5 TESTED, 3 COMPLETED, 1 CANCELLED) |
+| Bugs | 9 (8 COMPLETED, 1 CANCELLED) |
 | Completed (PRD-001) | 27 tasks + 2 enhancements (ENH-001, ENH-003) |
 | Completed (PRD-002) | 3 tasks + 1 enhancement (TASK-033/034/035 + ENH-002) |
 | Completed (PRD-003) | 5 tasks (TASK-028/029/030/031/032) — merged to main |

@@ -3,7 +3,7 @@ id: BUG-002
 
 title: ApiVersionConfig.API_BASE uses /api instead of /api/v1 causing 500 errors on all metadata/runtime endpoints
 
-status: TESTED
+status: COMPLETED
 
 priority: High
 
