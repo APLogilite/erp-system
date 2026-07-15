@@ -266,10 +266,13 @@ def load_all_data():
         prd_tasks = [t for t in tasks.values() if t.get("parent_prd") == pid]
         total = len(prd_tasks)
         completed = sum(1 for t in prd_tasks if t.get("status") == "COMPLETED")
+        cancelled = sum(1 for t in prd_tasks if t.get("status") == "CANCELLED")
+        active = total - cancelled
         p["_task_count"] = total
         p["_completed_count"] = completed
-        if total:
-            p["_completion_pct"] = round(completed / total * 100)
+        p["_cancelled_count"] = cancelled
+        if active:
+            p["_completion_pct"] = round(completed / active * 100)
         else:
             p["_completion_pct"] = 0
         p["_statuses"] = defaultdict(int)

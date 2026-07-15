@@ -631,12 +631,14 @@ const App = {
     const stats = d.stats || {};
     const prds = Object.values(d.prds || {});
     const all = tasks.length;
-    const completed = tasks.filter(t => t.status === "COMPLETED").length;
+    const activeTasks = tasks.filter(t => t.status !== "CANCELLED");
+    const allActive = activeTasks.length;
+    const completed = activeTasks.filter(t => t.status === "COMPLETED").length;
     const inDev = tasks.filter(t => t.status === "IN_DEVELOPMENT").length;
     const readyTest = tasks.filter(t => t.status === "READY_FOR_TEST").length;
     const bugs = tasks.filter(t => t.id && t.id.startsWith("BUG")).length;
     const prdCount = prds.length;
-    const pct = all ? Math.round(completed / all * 100) : 0;
+    const pct = allActive ? Math.round(completed / allActive * 100) : 0;
 
     let html = `
     <div class="stats-row">
@@ -658,7 +660,10 @@ const App = {
       for (const p of prds) {
         const pct2 = p._completion_pct || 0;
         const statuses = p._statuses || {};
-        const breakdown = Object.entries(statuses).map(([k, v]) => `${k}: ${v}`).join(" &middot; ");
+        const breakdown = Object.entries(statuses).sort().map(([k, v]) => `<span>${badge(k)} ${v}</span>`).join(" ");
+        const total = p._task_count || 0;
+        const cancelled = p._cancelled_count || 0;
+        const label = cancelled ? `${p._completed_count || 0} / ${total - cancelled} (${cancelled} cancelled)` : `${p._completed_count || 0} / ${total}`;
         html += `
         <div class="prd-card">
           <div class="prd-header">
@@ -667,7 +672,7 @@ const App = {
           </div>
           <div class="prd-progress">
             <div class="prd-bar-bg"><div class="prd-bar-fill" style="width:${pct2}%;background:var(--accent2)"></div></div>
-            <div class="prd-bar-label"><span>${p._completed_count || 0} / ${p._task_count || 0} tasks</span><span>${pct2}%</span></div>
+            <div class="prd-bar-label"><span>${label}</span><span>${pct2}%</span></div>
           </div>
           <div style="font-size:11px;color:var(--text3);margin-top:4px">${breakdown}</div>
         </div>`;
@@ -701,6 +706,9 @@ const App = {
       const prdTasks = Object.values(d.tasks || {}).filter(t => (t.parent_prd || "").replace("-", "") === prdId);
       prdTasks.sort(byStatus);
 
+      const cTotal = p._task_count || 0;
+      const cCancelled = p._cancelled_count || 0;
+      const cLabel = cCancelled ? `${p._completed_count || 0} / ${cTotal - cCancelled} (${cCancelled} cancelled)` : `${p._completed_count || 0} / ${cTotal}`;
       html += `
       <div class="prd-card">
         <div class="prd-header">
@@ -709,7 +717,7 @@ const App = {
         </div>
         <div class="prd-progress">
           <div class="prd-bar-bg"><div class="prd-bar-fill" style="width:${pct}%;background:var(--accent2)"></div></div>
-          <div class="prd-bar-label"><span>${p._completed_count || 0} / ${p._task_count || 0} tasks</span><span>${pct}%</span></div>
+          <div class="prd-bar-label"><span>${cLabel}</span><span>${pct}%</span></div>
         </div>
         <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px">
           ${Object.entries(statuses).sort().map(([k, v]) => `<span>${badge(k)} ${v}</span>`).join("")}
@@ -815,6 +823,7 @@ const App = {
       const inProgress = tasks.filter(t => t.status === "IN_DEVELOPMENT" || t.status === "TESTING");
       const completed = tasks.filter(t => t.status === "COMPLETED");
       const readyTest = tasks.filter(t => t.status === "READY_FOR_TEST");
+      const agentActive = tasks.filter(t => t.status !== "CANCELLED");
       const visible = tasks.slice(0, AGENT_SHOW);
       const hidden = tasks.slice(AGENT_SHOW);
       html += `
@@ -827,7 +836,7 @@ const App = {
           <span style="color:var(--purple)">${readyTest.length} ready</span>
         </div>
         <div style="height:4px;background:var(--bg3);border-radius:2px;margin:8px 0;overflow:hidden">
-          <div style="height:100%;width:${tasks.length ? Math.round(completed.length / tasks.length * 100) : 0}%;background:var(--green);border-radius:2px;transition:width 0.5s"></div>
+          <div style="height:100%;width:${agentActive.length ? Math.round(completed.length / agentActive.length * 100) : 0}%;background:var(--green);border-radius:2px;transition:width 0.5s"></div>
         </div>
         ${visible.map(t => agentTaskHtml(t)).join("")}
         ${hidden.length ? `<div class="agent-more" onclick="this.nextElementSibling.classList.toggle('open');this.textContent=this.nextElementSibling.classList.contains('open')?'Show less':'Show all ${tasks.length} tasks'">Show all ${tasks.length} tasks</div><div class="agent-hidden">${hidden.map(t => agentTaskHtml(t)).join("")}</div>` : ""}
