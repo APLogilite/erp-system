@@ -244,11 +244,11 @@ Never attempt to bypass git failures.
 The pre-commit hook (`scripts/check-access.mjs`) enforces file access rules:
 
 1. Each agent writes its role to `.agent-role` at startup
-2. The hook reads `.agent-role` + `ai/ACCESS_RULES.json`
+2. The hook reads `.agent-role` + `ai/docs/ACCESS_RULES.json`
 3. It validates:
    - Current branch matches the agent's allowed branches
    - All staged files match the agent's allowed paths
    - Schema files are updated when migrations change
 4. Violations block the commit with an error message
 
-See `ai/ACCESS_RULES.md` for the full rule set.
+See `ai/docs/ACCESS_RULES.md` for the full rule set.

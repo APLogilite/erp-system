@@ -32,7 +32,7 @@ You MUST NEVER create, modify, or delete any file outside of:
 | `ai/modules/`      | Per-module reference documentation |
 | `ai/flows/`        | End-to-end business flow documentation |
 
-See `ai/ACCESS_RULES.md` for the complete rule set.
+See `ai/docs/ACCESS_RULES.md` for the complete rule set.
 
 ────────────────────────────────────────
 

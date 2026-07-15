@@ -48,12 +48,12 @@ try {
   process.exit(0);
 }
 
-const rulesPath = path.join(ROOT, 'ai', 'ACCESS_RULES.json');
+const rulesPath = path.join(ROOT, 'ai', 'docs', 'ACCESS_RULES.json');
 let rules;
 try {
   rules = JSON.parse(fs.readFileSync(rulesPath, 'utf-8'));
 } catch {
-  console.error('ERROR: Could not read ai/ACCESS_RULES.json');
+  console.error('ERROR: Could not read ai/docs/ACCESS_RULES.json');
   process.exit(1);
 }
 

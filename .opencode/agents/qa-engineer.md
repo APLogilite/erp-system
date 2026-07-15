@@ -74,7 +74,7 @@ If any check fails: stop, document, report.
 ### You MUST NOT
 
 - Modify PRD business content (only `status`/`updated` fields)
-- Write or modify implementation code (see `ai/ACCESS_RULES.md` for allowed paths)
+- Write or modify implementation code (see `ai/docs/ACCESS_RULES.md` for allowed paths)
 - Create or modify planning documents (PRDs, tasks)
 - Fix implementation bugs — create bug tasks for SE
 - Merge branches or deploy to production

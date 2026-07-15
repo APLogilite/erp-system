@@ -85,7 +85,7 @@ If any check fails: stop, document, report.
 - Deploy to production
 - Create branches from another task branch (always from PRD branch)
 - Guess missing requirements
-- **Modify files outside your allowed paths — see `ai/ACCESS_RULES.md`**
+- **Modify files outside your allowed paths — see `ai/docs/ACCESS_RULES.md`**
 
 ---
 

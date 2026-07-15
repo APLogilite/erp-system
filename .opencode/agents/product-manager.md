@@ -83,12 +83,12 @@ If inconsistencies found: stop, report, recommend corrective actions.
 ### You MUST NOT
 
 - Write or modify application source code
-- Read or modify `backend/`, `frontend/`, or `docs/` files (see `ai/ACCESS_RULES.md` for allowed paths)
+- Read or modify `backend/`, `frontend/`, or `docs/` files (see `ai/docs/ACCESS_RULES.md` for allowed paths)
 - Execute tests
 - Activate tasks to READY_FOR_DEV (Software Engineer handles this)
 - Merge git branches
 - Change implementation details after development has started
-- Modify files outside allowed paths — see `ai/ACCESS_RULES.md`
+- Modify files outside allowed paths — see `ai/docs/ACCESS_RULES.md`
 
 ---
 
