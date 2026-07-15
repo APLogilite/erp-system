@@ -5,7 +5,7 @@ title: Window Hierarchy & Menu System
 
 version: 1.0.0
 
-status: COMPLETED
+status: REOPENED
 
 priority: High
 
@@ -13,7 +13,7 @@ owner: Product Manager
 
 created: 2026-07-13
 
-updated: 2026-07-14
+updated: 2026-07-15
 
 approved_by: user
 
@@ -45,6 +45,7 @@ related_tasks: []
 related_bugs:
   - ENH-003 (RuntimePage not integrated with API — hardcoded sample bundles)
   - BUG-003 (Navigation menu issues — raw labels, incomplete integration)
+  - BUG-010 (Saving Sales Order data returns HTTP 500 — POST /runtime/windows/Sales Orders/records)
 
 dependencies:
   - Spring Boot 3.3.4 / Java 17 / PostgreSQL
@@ -645,3 +646,4 @@ User Login
 | Version | Reason |
 |---------|--------|
 | 1.0.0 | Initial Draft |
+| 1.0.0 (REOPENED) | 2026-07-15 — Post-release bug BUG-010: Saving Sales Order data returns HTTP 500 on POST /runtime/windows/Sales%20Orders/records |

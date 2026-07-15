@@ -3,10 +3,25 @@ document: CHANGELOG
 version: 1.0.0
 status: ACTIVE
 owner: Product Manager
-last_updated: 2026-07-14
+last_updated: 2026-07-15
 ---
 
 # Changelog
+
+## 2026-07-15 (BUG-010 — POST Sales Orders Record Returns HTTP 500)
+
+### Summary
+Post-release bug filed against PRD-004 (COMPLETED). Saving a Sales Order record via `POST /api/v1/runtime/windows/Sales%20Orders/records` returns HTTP 500 Internal Server Error. PRD-004 status changed to REOPENED. BUG-010 created with Critical severity.
+
+### Bug Created
+| Bug | Severity | Status | Parent PRD | Parent Task |
+|-----|----------|--------|------------|-------------|
+| BUG-010 | Critical | READY_FOR_DEV | PRD-004 | TASK-039 |
+
+### PRD Status Changed
+- **PRD-004** — Window Hierarchy & Menu System v1.0.0: **COMPLETED → REOPENED**
+
+---
 
 ## 2026-07-14 (BUG-009 — Flyway Migration Chain Broken on Fresh DB)
 
