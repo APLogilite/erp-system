@@ -56,18 +56,18 @@ WHERE NOT EXISTS (SELECT 1 FROM sys_table WHERE name = 'tx_shipment_line');
 CREATE OR REPLACE FUNCTION ensure_column(
   p_table_name TEXT, p_code TEXT, p_label TEXT,
   p_type TEXT, p_required BOOLEAN, p_max_length INTEGER, p_position INTEGER,
-  p_relation_table TEXT DEFAULT NULL
+  p_relation_table TEXT DEFAULT NULL, p_is_display BOOLEAN DEFAULT false
 ) RETURNS void AS $$
 BEGIN
-  INSERT INTO sys_column (id, table_id, code, label, type, required, max_length, position, relation_table, is_active, tenant_id, created_at, updated_at)
-  SELECT gen_random_uuid(), (SELECT id FROM sys_table WHERE name = p_table_name), p_code, p_label, p_type, p_required, p_max_length, p_position, p_relation_table, true, '00000000-0000-0000-0000-000000000001', now(), now()
+  INSERT INTO sys_column (id, table_id, code, label, type, required, max_length, position, relation_table, is_display_column, is_active, tenant_id, created_at, updated_at)
+  SELECT gen_random_uuid(), (SELECT id FROM sys_table WHERE name = p_table_name), p_code, p_label, p_type, p_required, p_max_length, p_position, p_relation_table, p_is_display, true, '00000000-0000-0000-0000-000000000001', now(), now()
   WHERE NOT EXISTS (SELECT 1 FROM sys_column WHERE table_id = (SELECT id FROM sys_table WHERE name = p_table_name) AND code = p_code);
 END;
 $$ LANGUAGE plpgsql;
 
 -- md_business_partner
 SELECT ensure_column('md_business_partner', 'code', 'Code', 'string', true, 50, 1);
-SELECT ensure_column('md_business_partner', 'name', 'Name', 'string', true, 200, 2);
+SELECT ensure_column('md_business_partner', 'name', 'Name', 'string', true, 200, 2, NULL, true);
 SELECT ensure_column('md_business_partner', 'partner_type', 'Type', 'string', true, 20, 3);
 SELECT ensure_column('md_business_partner', 'email', 'Email', 'string', false, 100, 4);
 SELECT ensure_column('md_business_partner', 'phone', 'Phone', 'string', false, 30, 5);
@@ -75,7 +75,7 @@ SELECT ensure_column('md_business_partner', 'tax_id', 'Tax ID', 'string', false,
 
 -- md_product
 SELECT ensure_column('md_product', 'code', 'Code', 'string', true, 50, 1);
-SELECT ensure_column('md_product', 'name', 'Name', 'string', true, 200, 2);
+SELECT ensure_column('md_product', 'name', 'Name', 'string', true, 200, 2, NULL, true);
 SELECT ensure_column('md_product', 'product_type', 'Type', 'string', true, 20, 3);
 SELECT ensure_column('md_product', 'uom_id', 'UOM', 'many2one', false, null, 4, 'md_uom');
 SELECT ensure_column('md_product', 'unit_price', 'Unit Price', 'decimal', false, null, 5);
@@ -83,14 +83,14 @@ SELECT ensure_column('md_product', 'description', 'Description', 'text', false, 
 
 -- md_uom
 SELECT ensure_column('md_uom', 'code', 'Code', 'string', true, 10, 1);
-SELECT ensure_column('md_uom', 'name', 'Name', 'string', true, 50, 2);
+SELECT ensure_column('md_uom', 'name', 'Name', 'string', true, 50, 2, NULL, true);
 
 -- md_warehouse
 SELECT ensure_column('md_warehouse', 'code', 'Code', 'string', true, 20, 1);
-SELECT ensure_column('md_warehouse', 'name', 'Name', 'string', true, 100, 2);
+SELECT ensure_column('md_warehouse', 'name', 'Name', 'string', true, 100, 2, NULL, true);
 
 -- tx_order
-SELECT ensure_column('tx_order', 'order_number', 'Order Number', 'string', true, 50, 1);
+SELECT ensure_column('tx_order', 'order_number', 'Order Number', 'string', true, 50, 1, NULL, true);
 SELECT ensure_column('tx_order', 'order_date', 'Order Date', 'date', true, null, 2);
 SELECT ensure_column('tx_order', 'order_type', 'Order Type', 'enum', true, 20, 3);
 SELECT ensure_column('tx_order', 'partner_id', 'Partner', 'many2one', true, null, 4, 'md_business_partner');
@@ -112,7 +112,7 @@ SELECT ensure_column('tx_order_line', 'unit_price', 'Unit Price', 'decimal', fal
 SELECT ensure_column('tx_order_line', 'line_total', 'Line Total', 'decimal', false, null, 7);
 
 -- tx_invoice
-SELECT ensure_column('tx_invoice', 'invoice_number', 'Invoice Number', 'string', true, 50, 1);
+SELECT ensure_column('tx_invoice', 'invoice_number', 'Invoice Number', 'string', true, 50, 1, NULL, true);
 SELECT ensure_column('tx_invoice', 'invoice_date', 'Invoice Date', 'date', true, null, 2);
 SELECT ensure_column('tx_invoice', 'due_date', 'Due Date', 'date', false, null, 3);
 SELECT ensure_column('tx_invoice', 'invoice_type', 'Invoice Type', 'enum', true, 20, 4);
@@ -130,7 +130,7 @@ SELECT ensure_column('tx_invoice_line', 'unit_price', 'Unit Price', 'decimal', f
 SELECT ensure_column('tx_invoice_line', 'line_total', 'Line Total', 'decimal', false, null, 6);
 
 -- tx_payment
-SELECT ensure_column('tx_payment', 'payment_number', 'Payment Number', 'string', true, 50, 1);
+SELECT ensure_column('tx_payment', 'payment_number', 'Payment Number', 'string', true, 50, 1, NULL, true);
 SELECT ensure_column('tx_payment', 'payment_date', 'Payment Date', 'date', true, null, 2);
 SELECT ensure_column('tx_payment', 'payment_type', 'Payment Type', 'string', true, 20, 3);
 SELECT ensure_column('tx_payment', 'partner_id', 'Partner', 'many2one', true, null, 4, 'md_business_partner');
@@ -140,7 +140,7 @@ SELECT ensure_column('tx_payment', 'reference', 'Reference', 'string', false, 10
 SELECT ensure_column('tx_payment', 'status', 'Status', 'string', false, 30, 8);
 
 -- tx_shipment
-SELECT ensure_column('tx_shipment', 'shipment_number', 'Shipment Number', 'string', true, 50, 1);
+SELECT ensure_column('tx_shipment', 'shipment_number', 'Shipment Number', 'string', true, 50, 1, NULL, true);
 SELECT ensure_column('tx_shipment', 'shipment_date', 'Shipment Date', 'date', true, null, 2);
 SELECT ensure_column('tx_shipment', 'shipment_type', 'Type', 'string', true, 20, 3);
 SELECT ensure_column('tx_shipment', 'partner_id', 'Partner', 'many2one', true, null, 4, 'md_business_partner');
@@ -154,7 +154,7 @@ SELECT ensure_column('tx_shipment_line', 'product_id', 'Product', 'many2one', tr
 SELECT ensure_column('tx_shipment_line', 'description', 'Description', 'text', false, null, 3);
 SELECT ensure_column('tx_shipment_line', 'quantity', 'Quantity', 'decimal', false, null, 4);
 
-DROP FUNCTION IF EXISTS ensure_column(TEXT, TEXT, TEXT, TEXT, BOOLEAN, INTEGER, INTEGER, TEXT);
+DROP FUNCTION IF EXISTS ensure_column(TEXT, TEXT, TEXT, TEXT, BOOLEAN, INTEGER, INTEGER, TEXT, BOOLEAN);
 
 -- ============================================================
 -- Part 3 — Master Data Windows

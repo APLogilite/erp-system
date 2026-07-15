@@ -114,14 +114,9 @@ public class WindowDataService {
     return conditions;
   }
 
-  /** Known display column names — checked in priority order when resolving FK values. */
-  private static final java.util.Set<String> DISPLAY_COLUMNS = java.util.Set.of(
-      "name", "code", "order_number", "invoice_number", "payment_number",
-      "shipment_number", "receipt_number", "title", "label");
-
   /**
-   * Resolves FK display names in a list of records for the given tab's many2one fields.
-   * Adds a {@code <fieldCode>_display} key to each record with the human-readable label.
+   * Resolves FK display names in records by querying sys_column for is_display_column=true
+   * on each related table. Adds a {@code <fieldCode>_display} key with the human-readable label.
    */
   private void resolveDisplayNames(List<Map<String, Object>> records, TabDefinitionResponse tab) {
     if (records == null || records.isEmpty() || tab.getFields() == null) return;
@@ -148,19 +143,32 @@ public class WindowDataService {
 
     if (fkByTable.isEmpty()) return;
 
-    // Query each relation table once, build UUID→display map
+    // Query sys_column to find the display column for each relation table
+    java.util.Map<String, String> displayColForTable = new java.util.LinkedHashMap<>();
+    for (String tableName : fkByTable.keySet()) {
+      try {
+        String sql = "SELECT code FROM sys_column WHERE table_id = (SELECT id FROM sys_table WHERE name = '"
+            + tableName + "') AND is_display_column = true LIMIT 1";
+        List<Map<String, Object>> cols = dynamicCrudService.queryForList(sql);
+        if (!cols.isEmpty() && cols.get(0).get("code") != null) {
+          displayColForTable.put(tableName, cols.get(0).get("code").toString());
+        }
+      } catch (Exception e) {
+        log.warn("Failed to find display column for table '{}': {}", tableName, e.getMessage());
+      }
+    }
+
+    // Resolve FK values to display names
     for (java.util.Map.Entry<String, java.util.List<UUID>> entry : fkByTable.entrySet()) {
       String relTable = entry.getKey();
+      String displayCol = displayColForTable.get(relTable);
+      if (displayCol == null) continue;
+
       java.util.List<UUID> ids = entry.getValue().stream().distinct().toList();
       if (ids.isEmpty()) continue;
 
-      // Build a single query: SELECT id, <display_col> FROM table WHERE id IN (...)
       String idList = ids.stream().map(u -> "'" + u + "'").collect(java.util.stream.Collectors.joining(","));
-      // Try known display columns in order
-      String displayCol = findDisplayColumn(relTable);
-      if (displayCol == null) continue;
-
-      String sql = "SELECT id, " + displayCol + " AS _display FROM \"" + relTable + "\" WHERE id IN (" + idList + ")";
+      String sql = "SELECT id, \"" + displayCol + "\" AS _display FROM \"" + relTable + "\" WHERE id IN (" + idList + ")";
       try {
         List<Map<String, Object>> refRecords = dynamicCrudService.queryForList(sql);
         java.util.Map<String, String> displayMap = new java.util.LinkedHashMap<>();
@@ -171,7 +179,6 @@ public class WindowDataService {
             displayMap.put(refId.toString(), refDisplay.toString());
           }
         }
-        // Assign display values to original records
         for (java.util.Map.Entry<String, String> fe : fkToField.entrySet()) {
           String fkCol = fe.getKey();
           String displayKey = fe.getValue();
@@ -187,28 +194,6 @@ public class WindowDataService {
         log.warn("Failed to resolve display names from table '{}': {}", relTable, e.getMessage());
       }
     }
-  }
-
-  /**
-   * Finds the best display column name for a given table by checking known label columns.
-   */
-  private String findDisplayColumn(String tableName) {
-    if (tableName == null) return null;
-    // Check known display columns against what the table likely has
-    for (String col : DISPLAY_COLUMNS) {
-      // We don't know the table schema here, so try common patterns
-      if (tableName.equals("md_uom") && col.equals("name")) return "name";
-      if (tableName.equals("md_product") && col.equals("name")) return "name";
-      if (tableName.equals("md_business_partner") && col.equals("name")) return "name";
-      if (tableName.equals("md_warehouse") && col.equals("name")) return "name";
-      if (tableName.equals("tx_order") && col.equals("order_number")) return "order_number";
-      if (tableName.equals("tx_invoice") && col.equals("invoice_number")) return "invoice_number";
-      if (tableName.equals("tx_payment") && col.equals("payment_number")) return "payment_number";
-      if (tableName.equals("tx_shipment") && col.equals("shipment_number")) return "shipment_number";
-      // Fallback: name, code, or label
-      return "name";
-    }
-    return null;
   }
 
   /**

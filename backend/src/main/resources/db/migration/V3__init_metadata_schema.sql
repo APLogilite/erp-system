@@ -41,6 +41,7 @@ CREATE TABLE sys_column (
     relation_table VARCHAR(100),
     enum_options JSONB,
     position INTEGER,
+    is_display_column BOOLEAN DEFAULT false,
     is_active BOOLEAN DEFAULT true,
     tenant_id UUID,
     created_at TIMESTAMP NOT NULL,
