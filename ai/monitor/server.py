@@ -216,14 +216,17 @@ def load_all_data():
         cache["stats"] = {}
 
     tasks = {}
+    tasks_by_id = {}
     for fp in list_files(TASKS_DIR):
         tid = os.path.basename(fp).replace(".md", "")
         try:
             fm, body = parse_task_file(fp)
             tasks[tid] = fm
+            tasks_by_id[fm.get("id", tid)] = fm
         except Exception as e:
             log.warning("Failed to parse %s: %s", fp, e)
     cache["tasks"] = tasks
+    cache["tasks_by_id"] = tasks_by_id
 
     changes = {}
     for fp in list_files(CHANGES_DIR):

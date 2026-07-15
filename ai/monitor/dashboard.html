@@ -867,7 +867,7 @@ const App = {
       const extraHeader = isCompleted ? "<th>Parent PRD</th>" : "";
       const extraCells = isCompleted ? rows.map(row => {
         const taskId = row[0]?.trim();
-        const task = d.tasks?.[taskId];
+        const task = d.tasks_by_id?.[taskId];
         return `<td>${task?.parent_prd ? esc(task.parent_prd) : "-"}</td>`;
       }) : [];
       html += `<div class="board-section"><h3>${esc(section)}</h3><div class="board-table-wrap"><table class="board-table"><tr>${headers.map(h => `<th>${esc(h)}</th>`).join("")}${extraHeader}</tr>`;
