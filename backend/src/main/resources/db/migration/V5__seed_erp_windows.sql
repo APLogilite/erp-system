@@ -6,48 +6,48 @@
 -- ============================================================
 -- Part 1 — Register Business Tables in sys_table
 -- ============================================================
-INSERT INTO sys_table (id, name, label, plural_label, table_type, table_name, description, is_active, created_at, updated_at)
-SELECT gen_random_uuid(), 'md_business_partner', 'Business Partner', 'Business Partners', 'static', 'md_business_partner', 'Customers, vendors and contacts', true, now(), now()
+INSERT INTO sys_table (id, name, label, plural_label, table_type, table_name, description, is_active, tenant_id, created_at, updated_at)
+SELECT gen_random_uuid(), '00000000-0000-0000-0000-000000000001', 'md_business_partner', 'Business Partner', 'Business Partners', 'static', 'md_business_partner', 'Customers, vendors and contacts', true, now(), now()
 WHERE NOT EXISTS (SELECT 1 FROM sys_table WHERE name = 'md_business_partner');
 
-INSERT INTO sys_table (id, name, label, plural_label, table_type, table_name, description, is_active, created_at, updated_at)
-SELECT gen_random_uuid(), 'md_product', 'Product', 'Products', 'static', 'md_product', 'Product catalog', true, now(), now()
+INSERT INTO sys_table (id, name, label, plural_label, table_type, table_name, description, is_active, tenant_id, created_at, updated_at)
+SELECT gen_random_uuid(), '00000000-0000-0000-0000-000000000001', 'md_product', 'Product', 'Products', 'static', 'md_product', 'Product catalog', true, now(), now()
 WHERE NOT EXISTS (SELECT 1 FROM sys_table WHERE name = 'md_product');
 
-INSERT INTO sys_table (id, name, label, plural_label, table_type, table_name, description, is_active, created_at, updated_at)
-SELECT gen_random_uuid(), 'md_uom', 'UOM', 'UOMs', 'static', 'md_uom', 'Units of measure', true, now(), now()
+INSERT INTO sys_table (id, name, label, plural_label, table_type, table_name, description, is_active, tenant_id, created_at, updated_at)
+SELECT gen_random_uuid(), '00000000-0000-0000-0000-000000000001', 'md_uom', 'UOM', 'UOMs', 'static', 'md_uom', 'Units of measure', true, now(), now()
 WHERE NOT EXISTS (SELECT 1 FROM sys_table WHERE name = 'md_uom');
 
-INSERT INTO sys_table (id, name, label, plural_label, table_type, table_name, description, is_active, created_at, updated_at)
-SELECT gen_random_uuid(), 'md_warehouse', 'Warehouse', 'Warehouses', 'static', 'md_warehouse', 'Warehouse locations', true, now(), now()
+INSERT INTO sys_table (id, name, label, plural_label, table_type, table_name, description, is_active, tenant_id, created_at, updated_at)
+SELECT gen_random_uuid(), '00000000-0000-0000-0000-000000000001', 'md_warehouse', 'Warehouse', 'Warehouses', 'static', 'md_warehouse', 'Warehouse locations', true, now(), now()
 WHERE NOT EXISTS (SELECT 1 FROM sys_table WHERE name = 'md_warehouse');
 
-INSERT INTO sys_table (id, name, label, plural_label, table_type, table_name, description, is_active, created_at, updated_at)
-SELECT gen_random_uuid(), 'tx_order', 'Order', 'Orders', 'static', 'tx_order', 'Purchase and sales order header', true, now(), now()
+INSERT INTO sys_table (id, name, label, plural_label, table_type, table_name, description, is_active, tenant_id, created_at, updated_at)
+SELECT gen_random_uuid(), '00000000-0000-0000-0000-000000000001', 'tx_order', 'Order', 'Orders', 'static', 'tx_order', 'Purchase and sales order header', true, now(), now()
 WHERE NOT EXISTS (SELECT 1 FROM sys_table WHERE name = 'tx_order');
 
-INSERT INTO sys_table (id, name, label, plural_label, table_type, table_name, description, is_active, created_at, updated_at)
-SELECT gen_random_uuid(), 'tx_order_line', 'Order Line', 'Order Lines', 'static', 'tx_order_line', 'Order line items', true, now(), now()
+INSERT INTO sys_table (id, name, label, plural_label, table_type, table_name, description, is_active, tenant_id, created_at, updated_at)
+SELECT gen_random_uuid(), '00000000-0000-0000-0000-000000000001', 'tx_order_line', 'Order Line', 'Order Lines', 'static', 'tx_order_line', 'Order line items', true, now(), now()
 WHERE NOT EXISTS (SELECT 1 FROM sys_table WHERE name = 'tx_order_line');
 
-INSERT INTO sys_table (id, name, label, plural_label, table_type, table_name, description, is_active, created_at, updated_at)
-SELECT gen_random_uuid(), 'tx_invoice', 'Invoice', 'Invoices', 'static', 'tx_invoice', 'Invoice header', true, now(), now()
+INSERT INTO sys_table (id, name, label, plural_label, table_type, table_name, description, is_active, tenant_id, created_at, updated_at)
+SELECT gen_random_uuid(), '00000000-0000-0000-0000-000000000001', 'tx_invoice', 'Invoice', 'Invoices', 'static', 'tx_invoice', 'Invoice header', true, now(), now()
 WHERE NOT EXISTS (SELECT 1 FROM sys_table WHERE name = 'tx_invoice');
 
-INSERT INTO sys_table (id, name, label, plural_label, table_type, table_name, description, is_active, created_at, updated_at)
-SELECT gen_random_uuid(), 'tx_invoice_line', 'Invoice Line', 'Invoice Lines', 'static', 'tx_invoice_line', 'Invoice line items', true, now(), now()
+INSERT INTO sys_table (id, name, label, plural_label, table_type, table_name, description, is_active, tenant_id, created_at, updated_at)
+SELECT gen_random_uuid(), '00000000-0000-0000-0000-000000000001', 'tx_invoice_line', 'Invoice Line', 'Invoice Lines', 'static', 'tx_invoice_line', 'Invoice line items', true, now(), now()
 WHERE NOT EXISTS (SELECT 1 FROM sys_table WHERE name = 'tx_invoice_line');
 
-INSERT INTO sys_table (id, name, label, plural_label, table_type, table_name, description, is_active, created_at, updated_at)
-SELECT gen_random_uuid(), 'tx_payment', 'Payment', 'Payments', 'static', 'tx_payment', 'Payment records', true, now(), now()
+INSERT INTO sys_table (id, name, label, plural_label, table_type, table_name, description, is_active, tenant_id, created_at, updated_at)
+SELECT gen_random_uuid(), '00000000-0000-0000-0000-000000000001', 'tx_payment', 'Payment', 'Payments', 'static', 'tx_payment', 'Payment records', true, now(), now()
 WHERE NOT EXISTS (SELECT 1 FROM sys_table WHERE name = 'tx_payment');
 
-INSERT INTO sys_table (id, name, label, plural_label, table_type, table_name, description, is_active, created_at, updated_at)
-SELECT gen_random_uuid(), 'tx_shipment', 'Shipment', 'Shipments', 'static', 'tx_shipment', 'Shipment and receipt header', true, now(), now()
+INSERT INTO sys_table (id, name, label, plural_label, table_type, table_name, description, is_active, tenant_id, created_at, updated_at)
+SELECT gen_random_uuid(), '00000000-0000-0000-0000-000000000001', 'tx_shipment', 'Shipment', 'Shipments', 'static', 'tx_shipment', 'Shipment and receipt header', true, now(), now()
 WHERE NOT EXISTS (SELECT 1 FROM sys_table WHERE name = 'tx_shipment');
 
-INSERT INTO sys_table (id, name, label, plural_label, table_type, table_name, description, is_active, created_at, updated_at)
-SELECT gen_random_uuid(), 'tx_shipment_line', 'Shipment Line', 'Shipment Lines', 'static', 'tx_shipment_line', 'Shipment line items', true, now(), now()
+INSERT INTO sys_table (id, name, label, plural_label, table_type, table_name, description, is_active, tenant_id, created_at, updated_at)
+SELECT gen_random_uuid(), '00000000-0000-0000-0000-000000000001', 'tx_shipment_line', 'Shipment Line', 'Shipment Lines', 'static', 'tx_shipment_line', 'Shipment line items', true, now(), now()
 WHERE NOT EXISTS (SELECT 1 FROM sys_table WHERE name = 'tx_shipment_line');
 
 -- ============================================================
@@ -58,8 +58,8 @@ CREATE OR REPLACE FUNCTION ensure_column(
   p_type TEXT, p_required BOOLEAN, p_max_length INTEGER, p_position INTEGER
 ) RETURNS void AS $$
 BEGIN
-  INSERT INTO sys_column (id, table_id, code, label, type, required, max_length, position, is_active, created_at, updated_at)
-  SELECT gen_random_uuid(), (SELECT id FROM sys_table WHERE name = p_table_name), p_code, p_label, p_type, p_required, p_max_length, p_position, true, now(), now()
+  INSERT INTO sys_column (id, table_id, code, label, type, required, max_length, position, is_active, tenant_id, created_at, updated_at)
+  SELECT gen_random_uuid(), (SELECT id FROM sys_table WHERE name = p_table_name), p_code, p_label, p_type, p_required, p_max_length, p_position, true, '00000000-0000-0000-0000-000000000001', now(), now()
   WHERE NOT EXISTS (SELECT 1 FROM sys_column WHERE table_id = (SELECT id FROM sys_table WHERE name = p_table_name) AND code = p_code);
 END;
 $$ LANGUAGE plpgsql;
@@ -306,84 +306,84 @@ SELECT ensure_field('Shipments', 20, 'quantity',    40, true,  true, false, fals
 -- ============================================================
 
 -- Menu root: Administration
-INSERT INTO sys_menu (id, name, type, parent_id, window_id, seq_no, is_active, created_at, updated_at)
-SELECT gen_random_uuid(), 'Administration', 'group', NULL, NULL, 10, true, now(), now()
+INSERT INTO sys_menu (id, name, type, parent_id, window_id, seq_no, is_active, tenant_id, created_at, updated_at)
+SELECT gen_random_uuid(), '00000000-0000-0000-0000-000000000001', 'Administration', 'group', NULL, NULL, 10, true, now(), now()
 WHERE NOT EXISTS (SELECT 1 FROM sys_menu WHERE name = 'Administration' AND type = 'group' AND parent_id IS NULL);
 -- Administration → Table Definitions
-INSERT INTO sys_menu (id, name, type, parent_id, window_id, seq_no, is_active, created_at, updated_at)
-SELECT gen_random_uuid(), 'Table Definitions', 'window', (SELECT id FROM sys_menu WHERE name = 'Administration' AND type = 'group' AND parent_id IS NULL), (SELECT id FROM sys_window WHERE name = 'Table Definitions'), 10, true, now(), now()
+INSERT INTO sys_menu (id, name, type, parent_id, window_id, seq_no, is_active, tenant_id, created_at, updated_at)
+SELECT gen_random_uuid(), '00000000-0000-0000-0000-000000000001', 'Table Definitions', 'window', (SELECT id FROM sys_menu WHERE name = 'Administration' AND type = 'group' AND parent_id IS NULL), (SELECT id FROM sys_window WHERE name = 'Table Definitions'), 10, true, now(), now()
 WHERE NOT EXISTS (SELECT 1 FROM sys_menu WHERE name = 'Table Definitions' AND type = 'window');
 -- Administration → Window Definitions
-INSERT INTO sys_menu (id, name, type, parent_id, window_id, seq_no, is_active, created_at, updated_at)
-SELECT gen_random_uuid(), 'Window Definitions', 'window', (SELECT id FROM sys_menu WHERE name = 'Administration' AND type = 'group' AND parent_id IS NULL), (SELECT id FROM sys_window WHERE name = 'Window Definitions'), 20, true, now(), now()
+INSERT INTO sys_menu (id, name, type, parent_id, window_id, seq_no, is_active, tenant_id, created_at, updated_at)
+SELECT gen_random_uuid(), '00000000-0000-0000-0000-000000000001', 'Window Definitions', 'window', (SELECT id FROM sys_menu WHERE name = 'Administration' AND type = 'group' AND parent_id IS NULL), (SELECT id FROM sys_window WHERE name = 'Window Definitions'), 20, true, now(), now()
 WHERE NOT EXISTS (SELECT 1 FROM sys_menu WHERE name = 'Window Definitions' AND type = 'window');
 -- Administration → Menu Configuration
-INSERT INTO sys_menu (id, name, type, parent_id, window_id, seq_no, is_active, created_at, updated_at)
-SELECT gen_random_uuid(), 'Menu Configuration', 'window', (SELECT id FROM sys_menu WHERE name = 'Administration' AND type = 'group' AND parent_id IS NULL), (SELECT id FROM sys_window WHERE name = 'Menu Configuration'), 30, true, now(), now()
+INSERT INTO sys_menu (id, name, type, parent_id, window_id, seq_no, is_active, tenant_id, created_at, updated_at)
+SELECT gen_random_uuid(), '00000000-0000-0000-0000-000000000001', 'Menu Configuration', 'window', (SELECT id FROM sys_menu WHERE name = 'Administration' AND type = 'group' AND parent_id IS NULL), (SELECT id FROM sys_window WHERE name = 'Menu Configuration'), 30, true, now(), now()
 WHERE NOT EXISTS (SELECT 1 FROM sys_menu WHERE name = 'Menu Configuration' AND type = 'window');
 
 -- Menu root: Master Data
-INSERT INTO sys_menu (id, name, type, parent_id, window_id, seq_no, is_active, created_at, updated_at)
-SELECT gen_random_uuid(), 'Master Data', 'group', NULL, NULL, 20, true, now(), now()
+INSERT INTO sys_menu (id, name, type, parent_id, window_id, seq_no, is_active, tenant_id, created_at, updated_at)
+SELECT gen_random_uuid(), '00000000-0000-0000-0000-000000000001', 'Master Data', 'group', NULL, NULL, 20, true, now(), now()
 WHERE NOT EXISTS (SELECT 1 FROM sys_menu WHERE name = 'Master Data' AND type = 'group' AND parent_id IS NULL);
 -- Master Data → Business Partners
-INSERT INTO sys_menu (id, name, type, parent_id, window_id, seq_no, is_active, created_at, updated_at)
-SELECT gen_random_uuid(), 'Business Partners', 'window', (SELECT id FROM sys_menu WHERE name = 'Master Data' AND type = 'group'), (SELECT id FROM sys_window WHERE name = 'Business Partners'), 10, true, now(), now()
+INSERT INTO sys_menu (id, name, type, parent_id, window_id, seq_no, is_active, tenant_id, created_at, updated_at)
+SELECT gen_random_uuid(), '00000000-0000-0000-0000-000000000001', 'Business Partners', 'window', (SELECT id FROM sys_menu WHERE name = 'Master Data' AND type = 'group'), (SELECT id FROM sys_window WHERE name = 'Business Partners'), 10, true, now(), now()
 WHERE NOT EXISTS (SELECT 1 FROM sys_menu WHERE name = 'Business Partners' AND type = 'window');
 -- Master Data → Products
-INSERT INTO sys_menu (id, name, type, parent_id, window_id, seq_no, is_active, created_at, updated_at)
-SELECT gen_random_uuid(), 'Products', 'window', (SELECT id FROM sys_menu WHERE name = 'Master Data' AND type = 'group'), (SELECT id FROM sys_window WHERE name = 'Products'), 20, true, now(), now()
+INSERT INTO sys_menu (id, name, type, parent_id, window_id, seq_no, is_active, tenant_id, created_at, updated_at)
+SELECT gen_random_uuid(), '00000000-0000-0000-0000-000000000001', 'Products', 'window', (SELECT id FROM sys_menu WHERE name = 'Master Data' AND type = 'group'), (SELECT id FROM sys_window WHERE name = 'Products'), 20, true, now(), now()
 WHERE NOT EXISTS (SELECT 1 FROM sys_menu WHERE name = 'Products' AND type = 'window');
 -- Master Data → UOM
-INSERT INTO sys_menu (id, name, type, parent_id, window_id, seq_no, is_active, created_at, updated_at)
-SELECT gen_random_uuid(), 'UOM', 'window', (SELECT id FROM sys_menu WHERE name = 'Master Data' AND type = 'group'), (SELECT id FROM sys_window WHERE name = 'UOM'), 30, true, now(), now()
+INSERT INTO sys_menu (id, name, type, parent_id, window_id, seq_no, is_active, tenant_id, created_at, updated_at)
+SELECT gen_random_uuid(), '00000000-0000-0000-0000-000000000001', 'UOM', 'window', (SELECT id FROM sys_menu WHERE name = 'Master Data' AND type = 'group'), (SELECT id FROM sys_window WHERE name = 'UOM'), 30, true, now(), now()
 WHERE NOT EXISTS (SELECT 1 FROM sys_menu WHERE name = 'UOM' AND type = 'window');
 -- Master Data → Warehouses
-INSERT INTO sys_menu (id, name, type, parent_id, window_id, seq_no, is_active, created_at, updated_at)
-SELECT gen_random_uuid(), 'Warehouses', 'window', (SELECT id FROM sys_menu WHERE name = 'Master Data' AND type = 'group'), (SELECT id FROM sys_window WHERE name = 'Warehouses'), 40, true, now(), now()
+INSERT INTO sys_menu (id, name, type, parent_id, window_id, seq_no, is_active, tenant_id, created_at, updated_at)
+SELECT gen_random_uuid(), '00000000-0000-0000-0000-000000000001', 'Warehouses', 'window', (SELECT id FROM sys_menu WHERE name = 'Master Data' AND type = 'group'), (SELECT id FROM sys_window WHERE name = 'Warehouses'), 40, true, now(), now()
 WHERE NOT EXISTS (SELECT 1 FROM sys_menu WHERE name = 'Warehouses' AND type = 'window');
 
 -- Menu root: Transactions
-INSERT INTO sys_menu (id, name, type, parent_id, window_id, seq_no, is_active, created_at, updated_at)
-SELECT gen_random_uuid(), 'Transactions', 'group', NULL, NULL, 30, true, now(), now()
+INSERT INTO sys_menu (id, name, type, parent_id, window_id, seq_no, is_active, tenant_id, created_at, updated_at)
+SELECT gen_random_uuid(), '00000000-0000-0000-0000-000000000001', 'Transactions', 'group', NULL, NULL, 30, true, now(), now()
 WHERE NOT EXISTS (SELECT 1 FROM sys_menu WHERE name = 'Transactions' AND type = 'group' AND parent_id IS NULL);
 -- Transactions → Sales
-INSERT INTO sys_menu (id, name, type, parent_id, window_id, seq_no, is_active, created_at, updated_at)
-SELECT gen_random_uuid(), 'Sales', 'group', (SELECT id FROM sys_menu WHERE name = 'Transactions' AND type = 'group'), NULL, 10, true, now(), now()
+INSERT INTO sys_menu (id, name, type, parent_id, window_id, seq_no, is_active, tenant_id, created_at, updated_at)
+SELECT gen_random_uuid(), '00000000-0000-0000-0000-000000000001', 'Sales', 'group', (SELECT id FROM sys_menu WHERE name = 'Transactions' AND type = 'group'), NULL, 10, true, now(), now()
 WHERE NOT EXISTS (SELECT 1 FROM sys_menu WHERE name = 'Sales' AND parent_id = (SELECT id FROM sys_menu WHERE name = 'Transactions' AND type = 'group'));
 -- Sales → Sales Orders
-INSERT INTO sys_menu (id, name, type, parent_id, window_id, seq_no, is_active, created_at, updated_at)
-SELECT gen_random_uuid(), 'Sales Orders', 'window', (SELECT id FROM sys_menu WHERE name = 'Sales' AND parent_id = (SELECT id FROM sys_menu WHERE name = 'Transactions' AND type = 'group')), (SELECT id FROM sys_window WHERE name = 'Sales Orders'), 10, true, now(), now()
+INSERT INTO sys_menu (id, name, type, parent_id, window_id, seq_no, is_active, tenant_id, created_at, updated_at)
+SELECT gen_random_uuid(), '00000000-0000-0000-0000-000000000001', 'Sales Orders', 'window', (SELECT id FROM sys_menu WHERE name = 'Sales' AND parent_id = (SELECT id FROM sys_menu WHERE name = 'Transactions' AND type = 'group')), (SELECT id FROM sys_window WHERE name = 'Sales Orders'), 10, true, now(), now()
 WHERE NOT EXISTS (SELECT 1 FROM sys_menu WHERE name = 'Sales Orders' AND type = 'window');
 -- Sales → Sales Invoices
-INSERT INTO sys_menu (id, name, type, parent_id, window_id, seq_no, is_active, created_at, updated_at)
-SELECT gen_random_uuid(), 'Sales Invoices', 'window', (SELECT id FROM sys_menu WHERE name = 'Sales' AND parent_id = (SELECT id FROM sys_menu WHERE name = 'Transactions' AND type = 'group')), (SELECT id FROM sys_window WHERE name = 'Sales Invoices'), 20, true, now(), now()
+INSERT INTO sys_menu (id, name, type, parent_id, window_id, seq_no, is_active, tenant_id, created_at, updated_at)
+SELECT gen_random_uuid(), '00000000-0000-0000-0000-000000000001', 'Sales Invoices', 'window', (SELECT id FROM sys_menu WHERE name = 'Sales' AND parent_id = (SELECT id FROM sys_menu WHERE name = 'Transactions' AND type = 'group')), (SELECT id FROM sys_window WHERE name = 'Sales Invoices'), 20, true, now(), now()
 WHERE NOT EXISTS (SELECT 1 FROM sys_menu WHERE name = 'Sales Invoices' AND type = 'window');
 -- Sales → Payments
-INSERT INTO sys_menu (id, name, type, parent_id, window_id, seq_no, is_active, created_at, updated_at)
-SELECT gen_random_uuid(), 'Payments', 'window', (SELECT id FROM sys_menu WHERE name = 'Sales' AND parent_id = (SELECT id FROM sys_menu WHERE name = 'Transactions' AND type = 'group')), (SELECT id FROM sys_window WHERE name = 'Payments'), 30, true, now(), now()
+INSERT INTO sys_menu (id, name, type, parent_id, window_id, seq_no, is_active, tenant_id, created_at, updated_at)
+SELECT gen_random_uuid(), '00000000-0000-0000-0000-000000000001', 'Payments', 'window', (SELECT id FROM sys_menu WHERE name = 'Sales' AND parent_id = (SELECT id FROM sys_menu WHERE name = 'Transactions' AND type = 'group')), (SELECT id FROM sys_window WHERE name = 'Payments'), 30, true, now(), now()
 WHERE NOT EXISTS (SELECT 1 FROM sys_menu WHERE name = 'Payments' AND type = 'window');
 -- Transactions → Purchasing
-INSERT INTO sys_menu (id, name, type, parent_id, window_id, seq_no, is_active, created_at, updated_at)
-SELECT gen_random_uuid(), 'Purchasing', 'group', (SELECT id FROM sys_menu WHERE name = 'Transactions' AND type = 'group'), NULL, 20, true, now(), now()
+INSERT INTO sys_menu (id, name, type, parent_id, window_id, seq_no, is_active, tenant_id, created_at, updated_at)
+SELECT gen_random_uuid(), '00000000-0000-0000-0000-000000000001', 'Purchasing', 'group', (SELECT id FROM sys_menu WHERE name = 'Transactions' AND type = 'group'), NULL, 20, true, now(), now()
 WHERE NOT EXISTS (SELECT 1 FROM sys_menu WHERE name = 'Purchasing' AND parent_id = (SELECT id FROM sys_menu WHERE name = 'Transactions' AND type = 'group'));
 -- Purchasing → Purchase Orders
-INSERT INTO sys_menu (id, name, type, parent_id, window_id, seq_no, is_active, created_at, updated_at)
-SELECT gen_random_uuid(), 'Purchase Orders', 'window', (SELECT id FROM sys_menu WHERE name = 'Purchasing' AND parent_id = (SELECT id FROM sys_menu WHERE name = 'Transactions' AND type = 'group')), (SELECT id FROM sys_window WHERE name = 'Purchase Orders'), 10, true, now(), now()
+INSERT INTO sys_menu (id, name, type, parent_id, window_id, seq_no, is_active, tenant_id, created_at, updated_at)
+SELECT gen_random_uuid(), '00000000-0000-0000-0000-000000000001', 'Purchase Orders', 'window', (SELECT id FROM sys_menu WHERE name = 'Purchasing' AND parent_id = (SELECT id FROM sys_menu WHERE name = 'Transactions' AND type = 'group')), (SELECT id FROM sys_window WHERE name = 'Purchase Orders'), 10, true, now(), now()
 WHERE NOT EXISTS (SELECT 1 FROM sys_menu WHERE name = 'Purchase Orders' AND type = 'window');
 -- Purchasing → Purchase Invoices
-INSERT INTO sys_menu (id, name, type, parent_id, window_id, seq_no, is_active, created_at, updated_at)
-SELECT gen_random_uuid(), 'Purchase Invoices', 'window', (SELECT id FROM sys_menu WHERE name = 'Purchasing' AND parent_id = (SELECT id FROM sys_menu WHERE name = 'Transactions' AND type = 'group')), (SELECT id FROM sys_window WHERE name = 'Purchase Invoices'), 20, true, now(), now()
+INSERT INTO sys_menu (id, name, type, parent_id, window_id, seq_no, is_active, tenant_id, created_at, updated_at)
+SELECT gen_random_uuid(), '00000000-0000-0000-0000-000000000001', 'Purchase Invoices', 'window', (SELECT id FROM sys_menu WHERE name = 'Purchasing' AND parent_id = (SELECT id FROM sys_menu WHERE name = 'Transactions' AND type = 'group')), (SELECT id FROM sys_window WHERE name = 'Purchase Invoices'), 20, true, now(), now()
 WHERE NOT EXISTS (SELECT 1 FROM sys_menu WHERE name = 'Purchase Invoices' AND type = 'window');
 -- Transactions → Shipments
-INSERT INTO sys_menu (id, name, type, parent_id, window_id, seq_no, is_active, created_at, updated_at)
-SELECT gen_random_uuid(), 'Shipments', 'window', (SELECT id FROM sys_menu WHERE name = 'Transactions' AND type = 'group'), (SELECT id FROM sys_window WHERE name = 'Shipments'), 30, true, now(), now()
+INSERT INTO sys_menu (id, name, type, parent_id, window_id, seq_no, is_active, tenant_id, created_at, updated_at)
+SELECT gen_random_uuid(), '00000000-0000-0000-0000-000000000001', 'Shipments', 'window', (SELECT id FROM sys_menu WHERE name = 'Transactions' AND type = 'group'), (SELECT id FROM sys_window WHERE name = 'Shipments'), 30, true, now(), now()
 WHERE NOT EXISTS (SELECT 1 FROM sys_menu WHERE name = 'Shipments' AND type = 'window');
 
 -- ============================================================
 -- Part 6 — Window Access for sys_admin
 -- ============================================================
-INSERT INTO sys_window_access (id, window_id, is_active, created_at, updated_at)
-SELECT gen_random_uuid(), w.id, true, now(), now()
+INSERT INTO sys_window_access (id, window_id, is_active, tenant_id, created_at, updated_at)
+SELECT gen_random_uuid(), w.id, true, '00000000-0000-0000-0000-000000000001', now(), now()
 FROM sys_window w
 WHERE NOT EXISTS (SELECT 1 FROM sys_window_access WHERE window_id = w.id);

@@ -248,16 +248,21 @@ export async function createWindowRecord(
 
 /**
  * Updates an existing record in a window.
- * PUT /api/v1/runtime/windows/{windowName}/records/{id}
+ * Optionally specify tabId to update a record in a child tab's table.
+ * PUT /api/v1/runtime/windows/{windowName}/records/{id}?tabId={tabId}
  */
 export async function updateWindowRecord(
   windowName: string,
   recordId: string,
-  data: Record<string, unknown>
+  data: Record<string, unknown>,
+  tabId?: string
 ): Promise<Record<string, unknown>> {
+  const params: Record<string, string> = {};
+  if (tabId) params.tabId = tabId;
   const response = await apiClient.put<ApiResponse<Record<string, unknown>>>(
     `/runtime/windows/${encodeURIComponent(windowName)}/records/${recordId}`,
-    data
+    data,
+    { params }
   );
   return unwrap(response);
 }

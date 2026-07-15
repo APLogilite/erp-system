@@ -13,15 +13,16 @@ CREATE OR REPLACE FUNCTION create_window(
 DECLARE
   v_window_id UUID;
   v_table_id UUID;
+  v_tenant_id CONSTANT UUID := '00000000-0000-0000-0000-000000000001';
 BEGIN
   SELECT id INTO v_table_id FROM sys_table WHERE name = p_table_name;
-  INSERT INTO sys_window (id, name, table_id, description, is_active, created_at, updated_at)
-  SELECT gen_random_uuid(), p_name, v_table_id, p_description, true, now(), now()
+  INSERT INTO sys_window (id, name, table_id, description, is_active, tenant_id, created_at, updated_at)
+  SELECT gen_random_uuid(), p_name, v_table_id, p_description, true, v_tenant_id, now(), now()
   WHERE NOT EXISTS (SELECT 1 FROM sys_window WHERE name = p_name)
   RETURNING id INTO v_window_id;
   IF v_window_id IS NOT NULL THEN
-    INSERT INTO sys_tab (id, window_id, name, table_id, seq_no, is_single_row, is_active, created_at, updated_at)
-    SELECT gen_random_uuid(), v_window_id, p_tab_name, v_table_id, p_tab_seq, false, true, now(), now();
+    INSERT INTO sys_tab (id, window_id, name, table_id, seq_no, is_single_row, is_active, tenant_id, created_at, updated_at)
+    SELECT gen_random_uuid(), v_window_id, p_tab_name, v_table_id, p_tab_seq, false, true, v_tenant_id, now(), now();
   END IF;
   RETURN v_window_id;
 END;
@@ -35,11 +36,12 @@ DECLARE
   v_window_id UUID;
   v_table_id UUID;
   v_tab_id UUID;
+  v_tenant_id CONSTANT UUID := '00000000-0000-0000-0000-000000000001';
 BEGIN
   SELECT id INTO v_window_id FROM sys_window WHERE name = p_window_name;
   SELECT id INTO v_table_id FROM sys_table WHERE name = p_table_name;
-  INSERT INTO sys_tab (id, window_id, name, table_id, seq_no, is_single_row, where_clause, parent_column, is_active, created_at, updated_at)
-  SELECT gen_random_uuid(), v_window_id, p_tab_name, v_table_id, p_seq, false, p_where_clause, p_parent_column, true, now(), now()
+  INSERT INTO sys_tab (id, window_id, name, table_id, seq_no, is_single_row, where_clause, parent_column, is_active, tenant_id, created_at, updated_at)
+  SELECT gen_random_uuid(), v_window_id, p_tab_name, v_table_id, p_seq, false, p_where_clause, p_parent_column, true, v_tenant_id, now(), now()
   WHERE NOT EXISTS (SELECT 1 FROM sys_tab WHERE window_id = v_window_id AND seq_no = p_seq)
   RETURNING id INTO v_tab_id;
   RETURN v_tab_id;
@@ -55,6 +57,7 @@ DECLARE
   v_tab_id UUID;
   v_column_id UUID;
   v_table_name TEXT;
+  v_tenant_id CONSTANT UUID := '00000000-0000-0000-0000-000000000001';
 BEGIN
   SELECT st.id, st2.name INTO v_tab_id, v_table_name
   FROM sys_tab st
@@ -66,8 +69,8 @@ BEGIN
   JOIN sys_table t ON c.table_id = t.id
   WHERE t.name = v_table_name AND c.code = p_column_code;
   IF v_tab_id IS NOT NULL AND v_column_id IS NOT NULL THEN
-    INSERT INTO sys_window_field (id, tab_id, column_id, seq_no, is_same_line, num_lines, column_width, is_displayed, is_readonly, is_mandatory, is_active, created_at, updated_at)
-    SELECT gen_random_uuid(), v_tab_id, v_column_id, p_seq_no, p_is_same_line, 1, 12, p_is_displayed, p_is_readonly, p_is_mandatory, true, now(), now()
+    INSERT INTO sys_window_field (id, tab_id, column_id, seq_no, is_same_line, num_lines, column_width, is_displayed, is_readonly, is_mandatory, is_active, tenant_id, created_at, updated_at)
+    SELECT gen_random_uuid(), v_tab_id, v_column_id, p_seq_no, p_is_same_line, 1, 12, p_is_displayed, p_is_readonly, p_is_mandatory, true, v_tenant_id, now(), now()
     WHERE NOT EXISTS (SELECT 1 FROM sys_window_field WHERE tab_id = v_tab_id AND column_id = v_column_id);
   END IF;
 END;
@@ -76,32 +79,32 @@ $$ LANGUAGE plpgsql;
 -- ============================================================
 -- Part 1 — Register Metadata Tables (sys_*) in sys_table
 -- ============================================================
-INSERT INTO sys_table (id, name, label, plural_label, table_type, table_name, description, is_active, created_at, updated_at)
-SELECT gen_random_uuid(), 'sys_table', 'Table', 'Tables', 'static', 'sys_table', 'Database table definitions', true, now(), now()
+INSERT INTO sys_table (id, name, label, plural_label, table_type, table_name, description, is_active, tenant_id, created_at, updated_at)
+SELECT gen_random_uuid(), 'sys_table', 'Table', 'Tables', 'static', 'sys_table', 'Database table definitions', true, '00000000-0000-0000-0000-000000000001', now(), now()
 WHERE NOT EXISTS (SELECT 1 FROM sys_table WHERE name = 'sys_table');
 
-INSERT INTO sys_table (id, name, label, plural_label, table_type, table_name, description, is_active, created_at, updated_at)
-SELECT gen_random_uuid(), 'sys_column', 'Column', 'Columns', 'static', 'sys_column', 'Table column definitions', true, now(), now()
+INSERT INTO sys_table (id, name, label, plural_label, table_type, table_name, description, is_active, tenant_id, created_at, updated_at)
+SELECT gen_random_uuid(), 'sys_column', 'Column', 'Columns', 'static', 'sys_column', 'Table column definitions', true, '00000000-0000-0000-0000-000000000001', now(), now()
 WHERE NOT EXISTS (SELECT 1 FROM sys_table WHERE name = 'sys_column');
 
-INSERT INTO sys_table (id, name, label, plural_label, table_type, table_name, description, is_active, created_at, updated_at)
-SELECT gen_random_uuid(), 'sys_window', 'Window', 'Windows', 'static', 'sys_window', 'Window definitions', true, now(), now()
+INSERT INTO sys_table (id, name, label, plural_label, table_type, table_name, description, is_active, tenant_id, created_at, updated_at)
+SELECT gen_random_uuid(), 'sys_window', 'Window', 'Windows', 'static', 'sys_window', 'Window definitions', true, '00000000-0000-0000-0000-000000000001', now(), now()
 WHERE NOT EXISTS (SELECT 1 FROM sys_table WHERE name = 'sys_window');
 
-INSERT INTO sys_table (id, name, label, plural_label, table_type, table_name, description, is_active, created_at, updated_at)
-SELECT gen_random_uuid(), 'sys_tab', 'Tab', 'Tabs', 'static', 'sys_tab', 'Window tab definitions', true, now(), now()
+INSERT INTO sys_table (id, name, label, plural_label, table_type, table_name, description, is_active, tenant_id, created_at, updated_at)
+SELECT gen_random_uuid(), 'sys_tab', 'Tab', 'Tabs', 'static', 'sys_tab', 'Window tab definitions', true, '00000000-0000-0000-0000-000000000001', now(), now()
 WHERE NOT EXISTS (SELECT 1 FROM sys_table WHERE name = 'sys_tab');
 
-INSERT INTO sys_table (id, name, label, plural_label, table_type, table_name, description, is_active, created_at, updated_at)
-SELECT gen_random_uuid(), 'sys_window_field', 'Window Field', 'Window Fields', 'static', 'sys_window_field', 'Window field definitions', true, now(), now()
+INSERT INTO sys_table (id, name, label, plural_label, table_type, table_name, description, is_active, tenant_id, created_at, updated_at)
+SELECT gen_random_uuid(), 'sys_window_field', 'Window Field', 'Window Fields', 'static', 'sys_window_field', 'Window field definitions', true, '00000000-0000-0000-0000-000000000001', now(), now()
 WHERE NOT EXISTS (SELECT 1 FROM sys_table WHERE name = 'sys_window_field');
 
-INSERT INTO sys_table (id, name, label, plural_label, table_type, table_name, description, is_active, created_at, updated_at)
-SELECT gen_random_uuid(), 'sys_window_access', 'Window Access', 'Window Access', 'static', 'sys_window_access', 'Window access control entries', true, now(), now()
+INSERT INTO sys_table (id, name, label, plural_label, table_type, table_name, description, is_active, tenant_id, created_at, updated_at)
+SELECT gen_random_uuid(), 'sys_window_access', 'Window Access', 'Window Access', 'static', 'sys_window_access', 'Window access control entries', true, '00000000-0000-0000-0000-000000000001', now(), now()
 WHERE NOT EXISTS (SELECT 1 FROM sys_table WHERE name = 'sys_window_access');
 
-INSERT INTO sys_table (id, name, label, plural_label, table_type, table_name, description, is_active, created_at, updated_at)
-SELECT gen_random_uuid(), 'sys_menu', 'Menu', 'Menus', 'static', 'sys_menu', 'Menu tree entries', true, now(), now()
+INSERT INTO sys_table (id, name, label, plural_label, table_type, table_name, description, is_active, tenant_id, created_at, updated_at)
+SELECT gen_random_uuid(), 'sys_menu', 'Menu', 'Menus', 'static', 'sys_menu', 'Menu tree entries', true, '00000000-0000-0000-0000-000000000001', now(), now()
 WHERE NOT EXISTS (SELECT 1 FROM sys_table WHERE name = 'sys_menu');
 
 -- ============================================================

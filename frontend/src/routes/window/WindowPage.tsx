@@ -168,8 +168,11 @@ function RecordDialog({ open, windowName, windowDef, recordId, onClose }: Record
   });
 
   const updateMutation = useMutation({
-    mutationFn: (data: Record<string, unknown>) =>
-      updateWindowRecord(windowName, currentRecordId!, data),
+    mutationFn: (data: Record<string, unknown>) => {
+      // When drilled down, pass the child tab ID so the backend updates the correct table
+      const tabId = isDrilled ? currentLevelTab.id : undefined;
+      return updateWindowRecord(windowName, currentRecordId!, data, tabId);
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['window-records', windowName] });
       onClose();

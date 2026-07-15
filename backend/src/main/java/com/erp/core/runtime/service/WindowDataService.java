@@ -354,7 +354,8 @@ public class WindowDataService {
   }
 
   /**
-   * Update a record in the window's main tab table.
+   * Update a record — either in the main tab's table (default) or in a specific
+   * child tab's table (when {@code tabId} is provided, e.g. for drill-down edits).
    */
   @Transactional
   public Map<String, Object> updateRecord(
@@ -362,21 +363,37 @@ public class WindowDataService {
       UUID recordId,
       Map<String, Object> data,
       UUID tenantId,
-      UUID userId) {
+      UUID userId,
+      UUID tabId) {
 
     WindowDefinitionResponse def = windowAssemblyService.assembleDefinition(windowName);
     if (def == null) {
       throw new IllegalArgumentException("Window not found: " + windowName);
     }
 
-    TabDefinitionResponse mainTab = findMainTab(def);
-    if (mainTab == null) {
-      throw new IllegalArgumentException("Window has no main tab: " + windowName);
+    // Determine which tab's table to update (main tab by default, child tab if tabId provided)
+    TabDefinitionResponse targetTab;
+    if (tabId != null) {
+      targetTab = findTabById(def, tabId);
+      if (targetTab == null) {
+        // Fallback: direct DB lookup
+        Optional<SysTab> sysTabOpt = sysTabService.findById(tabId);
+        if (sysTabOpt.isPresent() && sysTabOpt.get().getWindowId().equals(def.getWindow().getId())) {
+          targetTab = windowAssemblyService.assembleTab(sysTabOpt.get());
+        } else {
+          throw new IllegalArgumentException("Tab not found in window: " + tabId);
+        }
+      }
+    } else {
+      targetTab = findMainTab(def);
+      if (targetTab == null) {
+        throw new IllegalArgumentException("Window has no main tab: " + windowName);
+      }
     }
 
-    String tableName = getTableName(mainTab);
+    String tableName = getTableName(targetTab);
     if (tableName == null) {
-      throw new IllegalArgumentException("Main tab has no associated table: " + windowName);
+      throw new IllegalArgumentException("Tab has no associated table: " + targetTab.getName());
     }
 
     return dynamicCrudService.updateRecord(tableName, recordId, data, tenantId, userId, null);

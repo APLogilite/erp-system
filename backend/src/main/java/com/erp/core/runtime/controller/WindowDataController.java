@@ -184,12 +184,15 @@ public class WindowDataController {
 
   /**
    * Update an existing record.
+   * Optionally specify tabId to update a record in a child tab's table
+   * instead of the main tab's table.
    */
   @PutMapping("/{windowName}/records/{id}")
   public ResponseEntity<ApiResponse<Map<String, Object>>> updateRecord(
       @PathVariable String windowName,
       @PathVariable UUID id,
-      @RequestBody Map<String, Object> data) {
+      @RequestBody Map<String, Object> data,
+      @RequestParam(name = "tabId", required = false) UUID tabId) {
 
     RuntimeContext ctx = requireContext();
     if (ctx == null || ctx.getTenantId() == null) {
@@ -200,7 +203,7 @@ public class WindowDataController {
 
     try {
       Map<String, Object> record = windowDataService.updateRecord(
-          windowName, id, data, ctx.getTenantId(), ctx.getUserId());
+          windowName, id, data, ctx.getTenantId(), ctx.getUserId(), tabId);
       return ResponseEntity.ok(ApiResponse.success(record, "Record updated."));
     } catch (IllegalArgumentException e) {
       return ResponseEntity.status(HttpStatus.BAD_REQUEST)
