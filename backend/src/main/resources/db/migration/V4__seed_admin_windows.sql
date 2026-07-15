@@ -114,11 +114,12 @@ WHERE NOT EXISTS (SELECT 1 FROM sys_table WHERE name = 'sys_menu');
 -- Helper: register a column if not exists
 CREATE OR REPLACE FUNCTION ensure_column(
   p_table_name TEXT, p_code TEXT, p_label TEXT,
-  p_type TEXT, p_required BOOLEAN, p_max_length INTEGER, p_position INTEGER
+  p_type TEXT, p_required BOOLEAN, p_max_length INTEGER, p_position INTEGER,
+  p_relation_table TEXT DEFAULT NULL, p_is_display BOOLEAN DEFAULT false
 ) RETURNS void AS $$
 BEGIN
-  INSERT INTO sys_column (id, table_id, code, label, type, required, max_length, position, is_active, created_at, updated_at)
-  SELECT gen_random_uuid(), (SELECT id FROM sys_table WHERE name = p_table_name), p_code, p_label, p_type, p_required, p_max_length, p_position, true, now(), now()
+  INSERT INTO sys_column (id, table_id, code, label, type, required, max_length, position, relation_table, is_display_column, is_active, tenant_id, created_at, updated_at)
+  SELECT gen_random_uuid(), (SELECT id FROM sys_table WHERE name = p_table_name), p_code, p_label, p_type, p_required, p_max_length, p_position, p_relation_table, p_is_display, true, '00000000-0000-0000-0000-000000000001', now(), now()
   WHERE NOT EXISTS (SELECT 1 FROM sys_column WHERE table_id = (SELECT id FROM sys_table WHERE name = p_table_name) AND code = p_code);
 END;
 $$ LANGUAGE plpgsql;
@@ -156,13 +157,19 @@ SELECT ensure_column('sys_tab', 'parent_column', 'Parent Column', 'string', fals
 SELECT ensure_column('sys_tab', 'is_active', 'Is Active', 'boolean', false, null, 6);
 
 -- sys_window_field columns
-SELECT ensure_column('sys_window_field', 'seq_no', 'Seq No', 'integer', true, null, 1);
-SELECT ensure_column('sys_window_field', 'is_same_line', 'Is Same Line', 'boolean', false, null, 2);
-SELECT ensure_column('sys_window_field', 'is_displayed', 'Is Displayed', 'boolean', false, null, 3);
-SELECT ensure_column('sys_window_field', 'is_readonly', 'Is Readonly', 'boolean', false, null, 4);
-SELECT ensure_column('sys_window_field', 'is_mandatory', 'Is Mandatory', 'boolean', false, null, 5);
-SELECT ensure_column('sys_window_field', 'label_override', 'Label Override', 'string', false, 200, 6);
-SELECT ensure_column('sys_window_field', 'is_active', 'Is Active', 'boolean', false, null, 7);
+SELECT ensure_column('sys_window_field', 'column_id', 'Column', 'many2one', true, null, 1, 'sys_column');
+SELECT ensure_column('sys_window_field', 'seq_no', 'Seq No', 'integer', true, null, 2);
+SELECT ensure_column('sys_window_field', 'label_override', 'Label Override', 'string', false, 200, 3);
+SELECT ensure_column('sys_window_field', 'is_same_line', 'Is Same Line', 'boolean', false, null, 4);
+SELECT ensure_column('sys_window_field', 'num_lines', 'Num Lines', 'integer', false, null, 5);
+SELECT ensure_column('sys_window_field', 'column_width', 'Column Width', 'integer', false, null, 6);
+SELECT ensure_column('sys_window_field', 'is_displayed', 'Is Displayed', 'boolean', false, null, 7);
+SELECT ensure_column('sys_window_field', 'is_readonly', 'Is Readonly', 'boolean', false, null, 8);
+SELECT ensure_column('sys_window_field', 'is_mandatory', 'Is Mandatory', 'boolean', false, null, 9);
+SELECT ensure_column('sys_window_field', 'display_logic', 'Display Logic', 'text', false, null, 10);
+SELECT ensure_column('sys_window_field', 'readonly_logic', 'Readonly Logic', 'text', false, null, 11);
+SELECT ensure_column('sys_window_field', 'default_value', 'Default Value', 'text', false, null, 12);
+SELECT ensure_column('sys_window_field', 'is_active', 'Is Active', 'boolean', false, null, 13);
 
 -- sys_window_access columns
 SELECT ensure_column('sys_window_access', 'is_active', 'Is Active', 'boolean', false, null, 1);
@@ -174,7 +181,7 @@ SELECT ensure_column('sys_menu', 'seq_no', 'Seq No', 'integer', true, null, 3);
 SELECT ensure_column('sys_menu', 'icon', 'Icon', 'string', false, 100, 4);
 SELECT ensure_column('sys_menu', 'is_active', 'Is Active', 'boolean', false, null, 5);
 
-DROP FUNCTION IF EXISTS ensure_column(TEXT, TEXT, TEXT, TEXT, BOOLEAN, INTEGER, INTEGER);
+DROP FUNCTION IF EXISTS ensure_column(TEXT, TEXT, TEXT, TEXT, BOOLEAN, INTEGER, INTEGER, TEXT, BOOLEAN);
 
 -- ============================================================
 -- Part 3 — Admin Windows
@@ -213,11 +220,13 @@ SELECT ensure_field('Window Definitions', 20, 'where_clause', 30, false, true, f
 SELECT ensure_field('Window Definitions', 20, 'parent_column', 40, false, true, false, false);
 SELECT ensure_field('Window Definitions', 20, 'is_single_row', 50, true, true, false, false);
 SELECT ensure_field('Window Definitions', 20, 'is_active', 60, false, true, false, false);
-SELECT ensure_field('Window Definitions', 15, 'seq_no', 10, false, true, false, true);
-SELECT ensure_field('Window Definitions', 15, 'is_displayed', 20, true, true, false, false);
-SELECT ensure_field('Window Definitions', 15, 'is_readonly', 30, true, true, false, false);
-SELECT ensure_field('Window Definitions', 15, 'is_mandatory', 40, true, true, false, false);
-SELECT ensure_field('Window Definitions', 15, 'is_active', 50, false, true, false, false);
+SELECT ensure_field('Window Definitions', 15, 'column_id', 5, false, true, false, true);
+SELECT ensure_field('Window Definitions', 15, 'label_override', 10, false, true, false, false);
+SELECT ensure_field('Window Definitions', 15, 'seq_no', 20, false, true, false, true);
+SELECT ensure_field('Window Definitions', 15, 'is_displayed', 30, true, true, false, false);
+SELECT ensure_field('Window Definitions', 15, 'is_readonly', 40, true, true, false, false);
+SELECT ensure_field('Window Definitions', 15, 'is_mandatory', 50, true, true, false, false);
+SELECT ensure_field('Window Definitions', 15, 'is_active', 60, false, true, false, false);
 SELECT ensure_field('Window Definitions', 30, 'is_active', 10, false, true, false, false);
 
 -- Window 3: Menu Configuration
