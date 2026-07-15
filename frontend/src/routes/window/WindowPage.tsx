@@ -149,13 +149,18 @@ function RecordDialog({ open, windowName, windowDef, recordId, onClose }: Record
     setFormData({});
   }, [drillStack.length, currentLevelTab.id]);
 
-  // Initialize form data when effective record data changes (API load OR drill-down)
+  // Track which record+tab the form is initialized for (to avoid overwriting user edits on refetch)
+  const formKey = `${currentRecordId ?? ''}-${currentLevelTab?.id ?? ''}`;
+  const [initializedKey, setInitializedKey] = useState<string>('');
+
+  // Initialize form data when opening a new record or changing drill level (NOT on refetches)
   useEffect(() => {
-    if (effectiveRecordData) {
+    if (effectiveRecordData && formKey !== initializedKey) {
       const record = (effectiveRecordData as { record?: Record<string, unknown> }).record ?? effectiveRecordData;
       setFormData(record as Record<string, unknown>);
+      setInitializedKey(formKey);
     }
-  }, [effectiveRecordData]);
+  }, [effectiveRecordData, formKey, initializedKey]);
 
   // Mutations
   const createMutation = useMutation({
