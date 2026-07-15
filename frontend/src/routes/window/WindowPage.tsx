@@ -243,9 +243,9 @@ function RecordDialog({ open, windowName, windowDef, recordId, onClose }: Record
     const childRecord = (children as Array<Record<string, unknown>>).find(
       (r) => r.id === childRecordId
     );
-    // Use _display value if available (resolved FK display name), otherwise find any name-like field
+    // Use _display (record's own display column value), then FK display, then fallback
     const title = childRecord
-      ? ((childRecord[childTab.name.toLowerCase() + '_display'] as string)
+      ? ((childRecord._display as string)
         ?? (childRecord.name as string)
         ?? (childRecord.code as string)
         ?? childRecordId)

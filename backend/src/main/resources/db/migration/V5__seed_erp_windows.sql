@@ -103,7 +103,7 @@ SELECT ensure_column('tx_order', 'status', 'Status', 'string', false, 30, 10);
 SELECT ensure_column('tx_order', 'notes', 'Notes', 'text', false, null, 11);
 
 -- tx_order_line
-SELECT ensure_column('tx_order_line', 'line_number', 'Line', 'integer', true, null, 1);
+SELECT ensure_column('tx_order_line', 'line_number', 'Line', 'integer', true, null, 1, NULL, true);
 SELECT ensure_column('tx_order_line', 'product_id', 'Product', 'many2one', true, null, 2, 'md_product');
 SELECT ensure_column('tx_order_line', 'description', 'Description', 'text', false, null, 3);
 SELECT ensure_column('tx_order_line', 'quantity', 'Quantity', 'decimal', false, null, 4);

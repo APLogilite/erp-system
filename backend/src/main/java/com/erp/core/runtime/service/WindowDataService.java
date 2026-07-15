@@ -115,11 +115,27 @@ public class WindowDataService {
   }
 
   /**
-   * Resolves FK display names in records by querying sys_column for is_display_column=true
-   * on each related table. Adds a {@code <fieldCode>_display} key with the human-readable label.
+   * Resolves FK display names in records and adds a {@code _display} key with the
+   * record's own display column value. Uses {@code sys_column.is_display_column}
+   * metadata to find the right column for each table.
    */
   private void resolveDisplayNames(List<Map<String, Object>> records, TabDefinitionResponse tab) {
-    if (records == null || records.isEmpty() || tab.getFields() == null) return;
+    if (records == null || records.isEmpty()) return;
+
+    // First, try to populate _display on each record from its own display column
+    if (tab.getTable() != null && tab.getTable().getName() != null) {
+      String displayCol = findDisplayColumnForTable(tab.getTable().getName());
+      if (displayCol != null) {
+        for (Map<String, Object> rec : records) {
+          Object val = rec.get(displayCol);
+          if (val != null && !rec.containsKey("_display")) {
+            rec.put("_display", val.toString());
+          }
+        }
+      }
+    }
+
+    if (tab.getFields() == null) return;
 
     // Collect FK values grouped by relation table
     java.util.Map<String, java.util.List<UUID>> fkByTable = new java.util.LinkedHashMap<>();
@@ -143,19 +159,10 @@ public class WindowDataService {
 
     if (fkByTable.isEmpty()) return;
 
-    // Query sys_column to find the display column for each relation table
+    // Find display column for each relation table from sys_column metadata
     java.util.Map<String, String> displayColForTable = new java.util.LinkedHashMap<>();
     for (String tableName : fkByTable.keySet()) {
-      try {
-        String sql = "SELECT code FROM sys_column WHERE table_id = (SELECT id FROM sys_table WHERE name = '"
-            + tableName + "') AND is_display_column = true LIMIT 1";
-        List<Map<String, Object>> cols = dynamicCrudService.queryForList(sql);
-        if (!cols.isEmpty() && cols.get(0).get("code") != null) {
-          displayColForTable.put(tableName, cols.get(0).get("code").toString());
-        }
-      } catch (Exception e) {
-        log.warn("Failed to find display column for table '{}': {}", tableName, e.getMessage());
-      }
+      displayColForTable.put(tableName, findDisplayColumnForTable(tableName));
     }
 
     // Resolve FK values to display names
@@ -194,6 +201,23 @@ public class WindowDataService {
         log.warn("Failed to resolve display names from table '{}': {}", relTable, e.getMessage());
       }
     }
+  }
+
+  /**
+   * Queries sys_column for the display column of a given table.
+   */
+  private String findDisplayColumnForTable(String tableName) {
+    try {
+      String sql = "SELECT code FROM sys_column WHERE table_id = (SELECT id FROM sys_table WHERE name = '"
+          + tableName + "') AND is_display_column = true LIMIT 1";
+      List<Map<String, Object>> cols = dynamicCrudService.queryForList(sql);
+      if (!cols.isEmpty() && cols.get(0).get("code") != null) {
+        return cols.get(0).get("code").toString();
+      }
+    } catch (Exception e) {
+      log.warn("Failed to find display column for table '{}': {}", tableName, e.getMessage());
+    }
+    return null;
   }
 
   /**
