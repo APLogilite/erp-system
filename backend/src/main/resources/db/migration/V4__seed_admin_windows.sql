@@ -125,7 +125,7 @@ END;
 $$ LANGUAGE plpgsql;
 
 -- sys_table columns
-SELECT ensure_column('sys_table', 'name', 'Name', 'string', true, 100, 1);
+SELECT ensure_column('sys_table', 'name', 'Name', 'string', true, 100, 1, NULL, true);
 SELECT ensure_column('sys_table', 'label', 'Label', 'string', true, 100, 2);
 SELECT ensure_column('sys_table', 'plural_label', 'Plural Label', 'string', false, 100, 3);
 SELECT ensure_column('sys_table', 'table_type', 'Table Type', 'string', true, 20, 4);
@@ -134,7 +134,7 @@ SELECT ensure_column('sys_table', 'description', 'Description', 'text', false, n
 SELECT ensure_column('sys_table', 'is_active', 'Is Active', 'boolean', false, null, 7);
 
 -- sys_column columns
-SELECT ensure_column('sys_column', 'code', 'Code', 'string', true, 100, 1);
+SELECT ensure_column('sys_column', 'code', 'Code', 'string', true, 100, 1, NULL, true);
 SELECT ensure_column('sys_column', 'label', 'Label', 'string', true, 100, 2);
 SELECT ensure_column('sys_column', 'type', 'Type', 'string', true, 50, 3);
 SELECT ensure_column('sys_column', 'required', 'Required', 'boolean', false, null, 4);
@@ -144,12 +144,12 @@ SELECT ensure_column('sys_column', 'position', 'Position', 'integer', false, nul
 SELECT ensure_column('sys_column', 'is_active', 'Is Active', 'boolean', false, null, 8);
 
 -- sys_window columns
-SELECT ensure_column('sys_window', 'name', 'Name', 'string', true, 100, 1);
+SELECT ensure_column('sys_window', 'name', 'Name', 'string', true, 100, 1, NULL, true);
 SELECT ensure_column('sys_window', 'description', 'Description', 'text', false, null, 2);
 SELECT ensure_column('sys_window', 'is_active', 'Is Active', 'boolean', false, null, 3);
 
 -- sys_tab columns
-SELECT ensure_column('sys_tab', 'name', 'Name', 'string', true, 100, 1);
+SELECT ensure_column('sys_tab', 'name', 'Name', 'string', true, 100, 1, NULL, true);
 SELECT ensure_column('sys_tab', 'seq_no', 'Seq No', 'integer', true, null, 2);
 SELECT ensure_column('sys_tab', 'is_single_row', 'Is Single Row', 'boolean', false, null, 3);
 SELECT ensure_column('sys_tab', 'where_clause', 'Where Clause', 'text', false, null, 4);
@@ -157,9 +157,10 @@ SELECT ensure_column('sys_tab', 'parent_column', 'Parent Column', 'string', fals
 SELECT ensure_column('sys_tab', 'is_active', 'Is Active', 'boolean', false, null, 6);
 
 -- sys_window_field columns
-SELECT ensure_column('sys_window_field', 'column_id', 'Column', 'many2one', true, null, 1, 'sys_column');
+SELECT ensure_column('sys_window_field', 'column_id', 'Column', 'many2one', true, null, 0, 'sys_column');
+SELECT ensure_column('sys_window_field', 'label_override', 'Label', 'string', false, 200, 1, NULL, true);
 SELECT ensure_column('sys_window_field', 'seq_no', 'Seq No', 'integer', true, null, 2);
-SELECT ensure_column('sys_window_field', 'label_override', 'Label Override', 'string', false, 200, 3);
+-- label_override already registered above as display column
 SELECT ensure_column('sys_window_field', 'is_same_line', 'Is Same Line', 'boolean', false, null, 4);
 SELECT ensure_column('sys_window_field', 'num_lines', 'Num Lines', 'integer', false, null, 5);
 SELECT ensure_column('sys_window_field', 'column_width', 'Column Width', 'integer', false, null, 6);
@@ -175,7 +176,7 @@ SELECT ensure_column('sys_window_field', 'is_active', 'Is Active', 'boolean', fa
 SELECT ensure_column('sys_window_access', 'is_active', 'Is Active', 'boolean', false, null, 1);
 
 -- sys_menu columns
-SELECT ensure_column('sys_menu', 'name', 'Name', 'string', true, 100, 1);
+SELECT ensure_column('sys_menu', 'name', 'Name', 'string', true, 100, 1, NULL, true);
 SELECT ensure_column('sys_menu', 'type', 'Type', 'string', true, 20, 2);
 SELECT ensure_column('sys_menu', 'seq_no', 'Seq No', 'integer', true, null, 3);
 SELECT ensure_column('sys_menu', 'icon', 'Icon', 'string', false, 100, 4);
