@@ -117,7 +117,7 @@ function RecordDialog({ open, windowName, windowDef, recordId, onClose }: Record
     drillStack.length > 0 ? drillStack[drillStack.length - 1].recordId : recordId;
 
   const { data: recordData, isLoading: isLoadingRecord } = useQuery({
-    queryKey: ['window-record', windowName, currentLevelTab.id, currentRecordId],
+    queryKey: ['window-record', windowName, drillStack.length, currentLevelTab.id, currentRecordId],
     queryFn: () => {
       if (drillStack.length > 0) {
         // Drilled: find child tabs of the current level
@@ -142,7 +142,12 @@ function RecordDialog({ open, windowName, windowDef, recordId, onClose }: Record
     setExpandedPanels(new Set());
   }, [recordId, windowName]);
 
-  // Initialize form data
+  // Reset form data when drill level changes (before new data arrives)
+  useEffect(() => {
+    setFormData({});
+  }, [drillStack.length, currentLevelTab.id]);
+
+  // Initialize form data when record data loads
   useEffect(() => {
     if (recordData) {
       const record = (recordData as { record?: Record<string, unknown> }).record ?? recordData;
