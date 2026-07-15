@@ -1,12 +1,10 @@
 # Project Board
 
-Last Updated: 2026-07-14
+Last Updated: 2026-07-15
 
-Updated By: Software Engineer
+Updated By: QA Engineer
 
-(BUG-009 → READY_FOR_TEST; full PRD-004 stabilization complete — drill-down navigation, breadcrumb, accordion child panels, inline editing, SYS tenant seed data, consolidated admin windows, backend tab-record API)
-
-PRD-004 work concluded. Future corrections to be tracked as new tasks.
+(BUG-009 → TESTED — all 36 backend tests pass, frontend typecheck passes, API endpoints verified. PRD-004 stabilization complete.)
 
 ---
 
@@ -43,9 +41,7 @@ See `ai/docs/STATUS_TRANSITIONS.md` for full transition rules.
 
 ## Ready For Test
 
-| Bug | Priority | Parent PRD | Depends On | Description |
-|-----|----------|------------|------------|-------------|
-| BUG-009 | Critical | PRD-004 | — | Flyway migration chain broken on fresh DB (V3 FK error) |
+*(none)*
 
 ---
 
@@ -134,7 +130,7 @@ See `ai/docs/STATUS_TRANSITIONS.md` for full transition rules.
 | BUG-006 | TASK-007 | Critical | COMPLETED | QA Engineer | — |
 | BUG-007 | TASK-036 | Critical | COMPLETED | QA Engineer | — |
 | BUG-008 | TASK-041 | Medium | COMPLETED | QA Engineer | BUG-007 |
-| BUG-009 | TASK-036 | Critical | READY_FOR_TEST | QA Engineer | — |
+| BUG-009 | TASK-036 | Critical | TESTED | QA Engineer | — |
 
 ---
 
@@ -160,11 +156,11 @@ See `ai/docs/STATUS_TRANSITIONS.md` for full transition rules.
 |--------|-------|
 | PRDs | 4 (ALL COMPLETED: PRD-001, PRD-002, PRD-003, PRD-004) |
 | Ready For Dev | 0 |
-| Ready For Test | 1 bug (BUG-009) |
+| Ready For Test | 0 |
 | In Development | 0 |
 | In Testing | 0 |
 | Planning | 0 |
-| Bugs | 9 (0 at READY_FOR_DEV, 1 at READY_FOR_TEST, 3 COMPLETED, 4 TESTED, 1 CANCELLED) |
+| Bugs | 9 (0 at READY_FOR_DEV, 0 at READY_FOR_TEST, 5 TESTED, 3 COMPLETED, 1 CANCELLED) |
 | Completed (PRD-001) | 27 tasks + 2 enhancements (ENH-001, ENH-003) |
 | Completed (PRD-002) | 3 tasks + 1 enhancement (TASK-033/034/035 + ENH-002) |
 | Completed (PRD-003) | 5 tasks (TASK-028/029/030/031/032) — merged to main |
