@@ -26,7 +26,7 @@ import {
 } from '@mui/material';
 import { useMutation, useQueries, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useCallback, useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import { PageContainer } from '@/components/layouts/PageContainer';
 import {
@@ -65,6 +65,7 @@ function RecordDialog({ open, windowName, windowDef, recordId, onClose }: Record
   const [formData, setFormData] = useState<Record<string, unknown>>({});
   const [saveError, setSaveError] = useState<string | null>(null);
   const [activeDialogTab, setActiveDialogTab] = useState(0);
+  const navigate = useNavigate();
 
   // Collect unique relation table names for lookup dropdowns
   const lookupTables = [
@@ -349,6 +350,10 @@ function RecordDialog({ open, windowName, windowDef, recordId, onClose }: Record
           <ChildTabGrid
             tab={currentDialogTab as WindowTabDefinition}
             childRecords={childRecordsMap[(currentDialogTab as WindowTabDefinition).name] ?? []}
+            onNavigate={(tableName: string) => {
+              onClose();
+              navigate(`/app/window/${tableName}`);
+            }}
           />
         )}
       </DialogContent>
@@ -368,6 +373,7 @@ function RecordDialog({ open, windowName, windowDef, recordId, onClose }: Record
 interface ChildTabGridProps {
   tab: WindowTabDefinition;
   childRecords: Record<string, unknown>[];
+  onNavigate?: (tableName: string, recordId: string) => void;
 }
 
 /** Renders a single field value inside a table cell for inline editing. */
@@ -433,7 +439,7 @@ function ChildFieldCell({
   );
 }
 
-function ChildTabGrid({ tab, childRecords }: ChildTabGridProps) {
+function ChildTabGrid({ tab, childRecords, onNavigate }: ChildTabGridProps) {
   const [editMode, setEditMode] = useState(false);
   const [rows, setRows] = useState<Record<string, unknown>[]>(() => [...childRecords]);
   const fields = tab.fields
@@ -500,6 +506,11 @@ function ChildTabGrid({ tab, childRecords }: ChildTabGridProps) {
                   key={(rec.id as string) ?? `new-${rowIdx}`}
                   hover
                   sx={{ cursor: editMode ? 'default' : 'pointer' }}
+                  onClick={() => {
+                    if (!editMode && rec.id) {
+                      onNavigate?.(tab.table?.name ?? '', rec.id as string);
+                    }
+                  }}
                 >
                   {fields.map((f) => (
                     <TableCell key={f.column.code} sx={{ fontSize: 12, p: editMode ? 0.5 : 1 }}>
