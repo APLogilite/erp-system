@@ -458,15 +458,15 @@ function RecordDialog({ open, windowName, windowDef, recordId, onClose }: Record
           </Box>
         )}
 
-        {/* Accordion panels for child records of the current level */}
+        {/* Accordion panels for child records — each takes full width (iDempiere style) */}
         {currentRecordId && currentChildTabs.length > 0 && (
           <Box sx={{ mt: 2 }}>
-            <Grid container spacing={currentChildTabs.length > 1 ? 2 : 0}>
+            <Grid container spacing={1}>
               {currentChildTabs.map((ct) => {
                 const childRecords = childRecordsMap[ct.name] ?? [];
                 const panelId = ct.id;
                 return (
-                  <Grid item xs={currentChildTabs.length > 1 ? 6 : 12} key={panelId}>
+                  <Grid item xs={12} key={panelId}>
                     <Accordion
                       expanded={
                         expandedPanels.has(panelId) ||
