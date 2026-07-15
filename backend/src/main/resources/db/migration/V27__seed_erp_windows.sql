@@ -154,13 +154,7 @@ SELECT ensure_field('Sales Orders', 20, 'uom_id',      50, true,  true, false, f
 SELECT ensure_field('Sales Orders', 20, 'unit_price',  60, true,  true, false, false);
 SELECT ensure_field('Sales Orders', 20, 'line_total',  70, false, true, true,  false);
 
--- Sales Orders → Shipments child tab
-SELECT add_child_tab('Sales Orders', 'Shipments', 'tx_shipment', 30, 'order_id',
-  'shipment_type = ''outbound''');
-SELECT ensure_field('Sales Orders', 30, 'shipment_number', 10, false, true, false, true);
-SELECT ensure_field('Sales Orders', 30, 'shipment_date',   20, true,  true, false, true);
-SELECT ensure_field('Sales Orders', 30, 'partner_id',      30, false, true, false, true);
-SELECT ensure_field('Sales Orders', 30, 'status',          40, false, true, false, false);
+-- Sales Orders → Shipments child tab (removed — Shipments is a standalone window only)
 
 -- 2b. Purchase Orders (where order_type = 'purchase')
 SELECT create_window('Purchase Orders', 'tx_order',
