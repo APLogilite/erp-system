@@ -29,7 +29,7 @@ See `ai/docs/STATUS_TRANSITIONS.md` for full transition rules.
 | PRD-001 | Dynamic Form Configuration System | 1.6.0 | **COMPLETED** | High |
 | PRD-002 | Admin Configuration Forms | 1.1.0 | **COMPLETED** | High |
 | PRD-003 | ERP Order Flow — Transaction Forms | 1.0.0 | **COMPLETED** | High |
-| PRD-004 | Window Hierarchy & Menu System | 1.0.0 | **REOPENED** (BUG-010) | High |
+| PRD-004 | Window Hierarchy & Menu System | 1.0.0 | **REOPENED** (BUG-010, BUG-011) | High |
 
 ---
 
@@ -132,6 +132,7 @@ See `ai/docs/STATUS_TRANSITIONS.md` for full transition rules.
 | BUG-008 | TASK-041 | Medium | COMPLETED | QA Engineer | BUG-007 |
 | BUG-009 | TASK-036 | Critical | COMPLETED | QA Engineer | — |
 | BUG-010 | TASK-039 | Critical | **READY_FOR_DEV** | Product Manager | — |
+| BUG-011 | TASK-041 | Critical | **READY_FOR_DEV** | Product Manager | — |
 
 ---
 
@@ -161,10 +162,10 @@ See `ai/docs/STATUS_TRANSITIONS.md` for full transition rules.
 | In Development | 0 |
 | In Testing | 0 |
 | Planning | 0 |
-| Bugs | 10 (8 COMPLETED, 1 CANCELLED, 1 READY_FOR_DEV) |
+| Bugs | 11 (8 COMPLETED, 1 CANCELLED, 2 READY_FOR_DEV) |
 | Completed (PRD-001) | 27 tasks + 2 enhancements (ENH-001, ENH-003) |
 | Completed (PRD-002) | 3 tasks + 1 enhancement (TASK-033/034/035 + ENH-002) |
 | Completed (PRD-003) | 5 tasks (TASK-028/029/030/031/032) — merged to main |
 | Completed (PRD-004) | 10 tasks (TASK-036..045) — merged to main |
-| Total Tasks | 47 completed + 7 bugs |
-| PRD-004 Status | REOPENED (v1.0.0) — BUG-010: POST /runtime/windows/Sales%20Orders/records returns 500 |
+| Total Tasks | 47 completed + 8 bugs |
+| PRD-004 Status | REOPENED (v1.0.0) — BUG-010: POST/Save 500, BUG-011: Child tab form visible but no record data |

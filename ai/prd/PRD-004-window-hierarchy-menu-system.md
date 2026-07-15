@@ -46,6 +46,7 @@ related_bugs:
   - ENH-003 (RuntimePage not integrated with API — hardcoded sample bundles)
   - BUG-003 (Navigation menu issues — raw labels, incomplete integration)
   - BUG-010 (Saving Sales Order data returns HTTP 500 — POST /runtime/windows/Sales Orders/records)
+  - BUG-011 (Child tab opens blank with no data — record detail view shows empty child panels)
 
 dependencies:
   - Spring Boot 3.3.4 / Java 17 / PostgreSQL

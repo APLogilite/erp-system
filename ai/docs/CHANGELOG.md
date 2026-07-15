@@ -8,6 +8,21 @@ last_updated: 2026-07-15
 
 # Changelog
 
+## 2026-07-15 (BUG-011 — Child Tab Record Data Not Loading)
+
+### Summary
+Second post-release bug filed against PRD-004 (already REOPENED). Child tab form/layout renders correctly (fields visible) but the actual record data within the child tab does not load — the grid/table is empty for Lines, Shipments, Payments, etc.
+
+### Bug Created
+| Bug | Severity | Status | Parent PRD | Parent Task |
+|-----|----------|--------|------------|-------------|
+| BUG-011 | Critical | READY_FOR_DEV | PRD-004 | TASK-041 |
+
+### PRD-004 Status
+- Already REOPENED (BUG-010) — no status change needed
+
+---
+
 ## 2026-07-15 (BUG-010 — POST Sales Orders Record Returns HTTP 500)
 
 ### Summary
