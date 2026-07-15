@@ -86,7 +86,7 @@ public class WindowDefinitionAssemblyService {
   /**
    * Assembles a single tab response including table info and fields.
    */
-  private TabDefinitionResponse assembleTab(SysTab tab) {
+  public TabDefinitionResponse assembleTab(SysTab tab) {
     TabDefinitionResponse tabResponse = new TabDefinitionResponse();
     tabResponse.setId(tab.getId());
     tabResponse.setName(tab.getName());

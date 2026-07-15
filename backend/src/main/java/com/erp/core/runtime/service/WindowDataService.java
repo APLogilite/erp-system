@@ -3,11 +3,14 @@ package com.erp.core.runtime.service;
 import com.erp.core.runtime.dto.window.FieldDefinitionResponse;
 import com.erp.core.runtime.dto.window.TabDefinitionResponse;
 import com.erp.core.runtime.dto.window.WindowDefinitionResponse;
+import com.erp.modules.metadata.entity.SysTab;
+import com.erp.modules.metadata.service.SysTabService;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import org.slf4j.Logger;
@@ -37,11 +40,15 @@ public class WindowDataService {
   private final WindowDefinitionAssemblyService windowAssemblyService;
   private final DynamicCrudService dynamicCrudService;
 
+  private final SysTabService sysTabService;
+
   public WindowDataService(
       WindowDefinitionAssemblyService windowAssemblyService,
-      DynamicCrudService dynamicCrudService) {
+      DynamicCrudService dynamicCrudService,
+      SysTabService sysTabService) {
     this.windowAssemblyService = windowAssemblyService;
     this.dynamicCrudService = dynamicCrudService;
+    this.sysTabService = sysTabService;
   }
 
   /**
@@ -201,13 +208,14 @@ public class WindowDataService {
       return null;
     }
 
-    // Load child tab records
+    // Load child tab records (each child processed independently — failures don't block others)
     List<TabDefinitionResponse> childTabs = findChildTabs(def);
     Map<String, Object> childRecords = new LinkedHashMap<>();
 
     for (TabDefinitionResponse childTab : childTabs) {
       String childTableName = getTableName(childTab);
       if (childTableName == null) {
+        log.warn("Child tab '{}' has no table, skipping", childTab.getName());
         continue;
       }
 
@@ -219,9 +227,18 @@ public class WindowDataService {
       conditions.remove(relationColumn);
 
       if (relationColumn != null && !relationColumn.isBlank()) {
-        List<Map<String, Object>> children =
-            dynamicCrudService.getChildRecords(childTableName, relationColumn, recordId, tenantId, conditions);
-        childRecords.put(childTab.getName(), children);
+        try {
+          List<Map<String, Object>> children =
+              dynamicCrudService.getChildRecords(childTableName, relationColumn, recordId, tenantId, conditions);
+          childRecords.put(childTab.getName(), children);
+          log.debug("Loaded {} child records for tab '{}' from table '{}'", children.size(), childTab.getName(), childTableName);
+        } catch (Exception e) {
+          log.error("Failed to load child records for tab '{}' from table '{}': {}", childTab.getName(), childTableName, e.getMessage());
+          // Continue with other child tabs — one failure shouldn't block all children
+          childRecords.put(childTab.getName(), java.util.Collections.emptyList());
+        }
+      } else {
+        log.warn("Child tab '{}' has no parentColumn, skipping", childTab.getName());
       }
     }
 
@@ -415,12 +432,24 @@ public class WindowDataService {
 
     TabDefinitionResponse tab = findTabById(def, tabId);
     if (tab == null) {
-      throw new IllegalArgumentException("Tab not found in window: " + tabId);
+      // Fallback: try to find the tab directly from the database and assemble on the fly
+      Optional<SysTab> sysTabOpt = sysTabService.findById(tabId);
+      if (sysTabOpt.isPresent()) {
+        SysTab sysTab = sysTabOpt.get();
+        // Re-check: does this tab belong to this window?
+        if (sysTab.getWindowId().equals(def.getWindow().getId())) {
+          tab = windowAssemblyService.assembleTab(sysTab);
+        } else {
+          throw new IllegalArgumentException("Tab " + tabId + " does not belong to window: " + windowName);
+        }
+      } else {
+        throw new IllegalArgumentException("Tab not found in window: " + tabId);
+      }
     }
 
     String tableName = getTableName(tab);
     if (tableName == null) {
-      throw new IllegalArgumentException("Tab has no associated table: " + tab.getName());
+      throw new IllegalArgumentException("Tab has no associated table: " + (tab != null ? tab.getName() : tabId.toString()));
     }
 
     // Fetch the record
@@ -429,7 +458,7 @@ public class WindowDataService {
       return null;
     }
 
-    // Fetch child records for each child tab
+    // Fetch child records for each child tab (failures don't block others)
     Map<String, Object> childRecords = new LinkedHashMap<>();
     if (childTabIds != null) {
       for (UUID childTabId : childTabIds) {
@@ -446,9 +475,15 @@ public class WindowDataService {
         Map<String, String> conditions = buildTabConditions(childTab, recordId);
         // Remove the parent_column FK (passed separately)
         conditions.remove(relationColumn);
-        List<Map<String, Object>> children =
-            dynamicCrudService.getChildRecords(childTableName, relationColumn, recordId, tenantId, conditions);
-        childRecords.put(childTab.getName(), children);
+        try {
+          List<Map<String, Object>> children =
+              dynamicCrudService.getChildRecords(childTableName, relationColumn, recordId, tenantId, conditions);
+          childRecords.put(childTab.getName(), children);
+          log.debug("Loaded {} child records for tab '{}' from table '{}'", children.size(), childTab.getName(), childTableName);
+        } catch (Exception e) {
+          log.error("Failed to load child records for tab '{}' from table '{}': {}", childTab.getName(), childTableName, e.getMessage());
+          childRecords.put(childTab.getName(), java.util.Collections.emptyList());
+        }
       }
     }
 
