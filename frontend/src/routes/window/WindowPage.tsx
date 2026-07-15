@@ -136,6 +136,12 @@ function RecordDialog({ open, windowName, windowDef, recordId, onClose }: Record
       {})
     : {};
 
+  // Reset drill stack when opening a different record
+  useEffect(() => {
+    setDrillStack([]);
+    setExpandedPanels(new Set());
+  }, [recordId, windowName]);
+
   // Initialize form data
   useEffect(() => {
     if (recordData) {
@@ -192,7 +198,9 @@ function RecordDialog({ open, windowName, windowDef, recordId, onClose }: Record
     return allTabs.filter((t) => {
       if (!t.parentColumn || !t.parentColumn.endsWith('_id')) return false;
       const colStub = t.parentColumn.slice(0, -3); // 'window_id' → 'window'
-      return parentTable.includes(colStub);
+      // Match: parentColumn references parent's table name
+      // 'window_id' → colStub='window' → parentTable ends with '_window'
+      return parentTable.endsWith('_' + colStub);
     });
   }
 
