@@ -26,7 +26,7 @@ import {
 } from '@mui/material';
 import { useMutation, useQueries, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useCallback, useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 import { PageContainer } from '@/components/layouts/PageContainer';
 import {
@@ -56,16 +56,23 @@ interface RecordDialogProps {
   windowDef: WindowDefinition;
   recordId?: string;
   onClose: () => void;
+  onDrillDown?: (targetWindow: string, recordId: string) => void;
 }
 
-function RecordDialog({ open, windowName, windowDef, recordId, onClose }: RecordDialogProps) {
+function RecordDialog({
+  open,
+  windowName,
+  windowDef,
+  recordId,
+  onClose,
+  onDrillDown,
+}: RecordDialogProps) {
   const queryClient = useQueryClient();
   const mainTab = windowDef.tabs.find((t) => !t.parentColumn);
   const childTabs = windowDef.tabs.filter((t) => t.parentColumn);
   const [formData, setFormData] = useState<Record<string, unknown>>({});
   const [saveError, setSaveError] = useState<string | null>(null);
   const [activeDialogTab, setActiveDialogTab] = useState(0);
-  const navigate = useNavigate();
 
   // Collect unique relation table names for lookup dropdowns
   const lookupTables = [
@@ -350,9 +357,8 @@ function RecordDialog({ open, windowName, windowDef, recordId, onClose }: Record
           <ChildTabGrid
             tab={currentDialogTab as WindowTabDefinition}
             childRecords={childRecordsMap[(currentDialogTab as WindowTabDefinition).name] ?? []}
-            onNavigate={(tableName: string) => {
-              onClose();
-              navigate(`/app/window/${tableName}`);
+            onNavigate={(tableName: string, recordId: string) => {
+              onDrillDown?.(tableName, recordId);
             }}
           />
         )}
@@ -549,6 +555,13 @@ function ChildTabGrid({ tab, childRecords, onNavigate }: ChildTabGridProps) {
   );
 }
 
+// ---- Breadcrumb entry for drill-down ----
+interface BreadcrumbEntry {
+  windowName: string;
+  recordId?: string;
+  title: string;
+}
+
 // ---- Main WindowPage Component ----
 
 /**
@@ -556,32 +569,46 @@ function ChildTabGrid({ tab, childRecords, onNavigate }: ChildTabGridProps) {
  *
  * Shows a list view of records from the window's main tab table.
  * Clicking a record opens a detail dialog for editing.
+ * Clicking a child record drills down (breadcrumb stack) into its own dialog.
  */
 export function WindowPage() {
   const { windowName } = useParams<{ windowName: string }>();
   const queryClient = useQueryClient();
   const [page, setPage] = useState(0);
   const [pageSize] = useState(20);
-  const [dialogOpen, setDialogOpen] = useState(false);
-  const [editRecordId, setEditRecordId] = useState<string | undefined>();
   const [activeTab, setActiveTab] = useState(0);
 
-  // Fetch window definition
+  // Breadcrumb stack for drill-down navigation
+  const [breadcrumb, setBreadcrumb] = useState<BreadcrumbEntry[]>([]);
+
+  // Current context: breadcrumb top or root window
+  const currentCtx: BreadcrumbEntry =
+    breadcrumb.length > 0
+      ? breadcrumb[breadcrumb.length - 1]
+      : { windowName: windowName!, title: windowName ?? '' };
+
+  const popBreadcrumb = () => {
+    setBreadcrumb((prev) => prev.slice(0, -1));
+  };
+
+  const activeWindowName = currentCtx.windowName;
+
+  // Fetch window definition for current context
   const {
     data: windowDef,
     isLoading: isLoadingDef,
     error: defError,
   } = useQuery({
-    queryKey: ['window-definition', windowName],
-    queryFn: () => fetchWindowDefinition(windowName!),
-    enabled: !!windowName,
+    queryKey: ['window-definition', activeWindowName],
+    queryFn: () => fetchWindowDefinition(activeWindowName),
+    enabled: !!activeWindowName,
   });
 
-  // Fetch records
+  // Fetch records for current context
   const { data: recordsData, isLoading: isLoadingRecords } = useQuery({
-    queryKey: ['window-records', windowName, page],
-    queryFn: () => fetchWindowRecords(windowName!, page, pageSize),
-    enabled: !!windowName && !!windowDef,
+    queryKey: ['window-records', activeWindowName, page],
+    queryFn: () => fetchWindowRecords(activeWindowName, page, pageSize),
+    enabled: !!activeWindowName && !!windowDef,
   });
 
   if (!windowName) {
@@ -629,14 +656,18 @@ export function WindowPage() {
   const records = (recordsData as { items?: Record<string, unknown>[] })?.items ?? [];
   const totalRecords = (recordsData as { total?: number })?.total ?? 0;
 
-  const handleCreate = () => {
-    setEditRecordId(undefined);
+  // Dialog state (for the current record)
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [editRecordId, setEditRecordId] = useState<string | undefined>();
+
+  const openDialog = (id?: string) => {
+    setEditRecordId(id);
     setDialogOpen(true);
   };
 
-  const handleEdit = (id: string) => {
-    setEditRecordId(id);
-    setDialogOpen(true);
+  const closeDialog = () => {
+    setDialogOpen(false);
+    setEditRecordId(undefined);
   };
 
   const handleDelete = (id: string) => {
@@ -647,16 +678,35 @@ export function WindowPage() {
     }
   };
 
-  const handleDialogClose = () => {
-    setDialogOpen(false);
-    setEditRecordId(undefined);
+  // Drill-down: clicking a child record pushes breadcrumb
+  const handleDrillDown = (targetWindow: string, recordId: string) => {
+    closeDialog();
+    setBreadcrumb((prev) => [...prev, { windowName: targetWindow, recordId, title: targetWindow }]);
+  };
+
+  // Breadcrumb navigation
+  const handleBreadcrumbBack = () => {
+    popBreadcrumb();
+    setPage(0);
   };
 
   return (
     <PageContainer
-      title={windowDef.window.name}
-      subtitle={windowDef.window.description ?? undefined}
+      title={breadcrumb.length > 0 ? currentCtx.title : windowDef.window.name}
+      subtitle={breadcrumb.length > 0 ? undefined : (windowDef.window.description ?? undefined)}
     >
+      {/* Breadcrumb */}
+      {breadcrumb.length > 0 && (
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2 }}>
+          <Button size="small" onClick={handleBreadcrumbBack}>
+            ← Back
+          </Button>
+          <Typography variant="body2" color="text.secondary">
+            {breadcrumb.map((b) => b.title).join(' > ')}
+          </Typography>
+        </Box>
+      )}
+
       {/* Tab navigation */}
       {topTabs.length > 1 && (
         <Tabs
@@ -674,7 +724,7 @@ export function WindowPage() {
       )}
 
       <Box sx={{ mb: 2, display: 'flex', gap: 1 }}>
-        <Button variant="contained" onClick={handleCreate}>
+        <Button variant="contained" onClick={() => openDialog()}>
           New {currentTab?.name ?? 'Record'}
         </Button>
       </Box>
@@ -705,7 +755,7 @@ export function WindowPage() {
                     key={record.id as string}
                     hover
                     sx={{ cursor: 'pointer' }}
-                    onClick={() => handleEdit(record.id as string)}
+                    onClick={() => openDialog(record.id as string)}
                   >
                     {fields.map((f) => (
                       <TableCell key={f.column.code}>
@@ -756,10 +806,11 @@ export function WindowPage() {
 
       <RecordDialog
         open={dialogOpen}
-        windowName={windowName}
+        windowName={activeWindowName}
         windowDef={windowDef}
         recordId={editRecordId}
-        onClose={handleDialogClose}
+        onClose={closeDialog}
+        onDrillDown={handleDrillDown}
       />
     </PageContainer>
   );
