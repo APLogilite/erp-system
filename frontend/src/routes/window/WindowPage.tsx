@@ -149,13 +149,13 @@ function RecordDialog({ open, windowName, windowDef, recordId, onClose }: Record
     setFormData({});
   }, [drillStack.length, currentLevelTab.id]);
 
-  // Initialize form data when record data loads
+  // Initialize form data when effective record data changes (API load OR drill-down)
   useEffect(() => {
-    if (recordData) {
-      const record = (recordData as { record?: Record<string, unknown> }).record ?? recordData;
+    if (effectiveRecordData) {
+      const record = (effectiveRecordData as { record?: Record<string, unknown> }).record ?? effectiveRecordData;
       setFormData(record as Record<string, unknown>);
     }
-  }, [recordData]);
+  }, [effectiveRecordData]);
 
   // Mutations
   const createMutation = useMutation({
