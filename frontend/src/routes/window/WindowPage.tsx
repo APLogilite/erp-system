@@ -243,10 +243,12 @@ function RecordDialog({ open, windowName, windowDef, recordId, onClose }: Record
     const childRecord = (children as Array<Record<string, unknown>>).find(
       (r) => r.id === childRecordId
     );
+    // Use _display value if available (resolved FK display name), otherwise find any name-like field
     const title = childRecord
-      ? ((Object.values(childRecord).find(
-          (v) => typeof v === 'string' && v.length > 0 && v !== childRecordId
-        ) as string) ?? childRecordId)
+      ? ((childRecord[childTab.name.toLowerCase() + '_display'] as string)
+        ?? (childRecord.name as string)
+        ?? (childRecord.code as string)
+        ?? childRecordId)
       : childRecordId;
     setDrillStack((prev) => [
       ...prev,
@@ -684,7 +686,7 @@ function ChildTabGrid({ tab, childRecords, onRowClick }: ChildTabGridProps) {
                           onChange={(val) => updateCell(rowIdx, f.column.code, val)}
                         />
                       ) : (
-                        String(rec[f.column.code] ?? '')
+                        (rec[f.column.code + '_display'] as string) ?? String(rec[f.column.code] ?? '')
                       )}
                     </TableCell>
                   ))}
@@ -880,11 +882,16 @@ export function WindowPage() {
                     sx={{ cursor: 'pointer' }}
                     onClick={() => handleEdit(record.id as string)}
                   >
-                    {fields.map((f) => (
-                      <TableCell key={f.column.code}>
-                        {String(record[f.column.code] ?? '')}
-                      </TableCell>
-                    ))}
+                    {fields.map((f) => {
+                      // For many2one fields, show display name instead of UUID
+                      const displayVal = record[f.column.code + '_display'] as string | undefined;
+                      const rawVal = record[f.column.code];
+                      return (
+                        <TableCell key={f.column.code}>
+                          {displayVal ?? String(rawVal ?? '')}
+                        </TableCell>
+                      );
+                    })}
                     <TableCell>
                       <Button
                         size="small"

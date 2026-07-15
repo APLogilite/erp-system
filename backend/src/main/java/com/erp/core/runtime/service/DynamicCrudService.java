@@ -217,7 +217,7 @@ public class DynamicCrudService {
 
     validateTableName(tableName);
     validateColumns(tableName, data.keySet());
-    convertUuidStrings(data); // Convert UUID strings to UUID objects for FK columns
+    convertTypedStrings(data); // Convert strings to proper Java types (UUID, LocalDate) for SQL
 
     String tableRef = escapeIdentifier(tableName);
     MapSqlParameterSource params = new MapSqlParameterSource();
@@ -315,7 +315,7 @@ public class DynamicCrudService {
 
     validateTableName(tableName);
     validateColumns(tableName, data.keySet());
-    convertUuidStrings(data); // Convert UUID strings to UUID objects for FK columns
+    convertTypedStrings(data); // Convert strings to proper Java types (UUID, LocalDate) for SQL
 
     String tableRef = escapeIdentifier(tableName);
     MapSqlParameterSource params = new MapSqlParameterSource();
@@ -437,17 +437,41 @@ public class DynamicCrudService {
    * PostgreSQL UUID columns reject string values — they expect UUID objects.
    * Attempts conversion on any string value in an _id column that looks like a UUID.
    */
-  private void convertUuidStrings(Map<String, Object> data) {
+  /**
+   * Executes a raw SELECT query and returns the result list.
+   * Used by WindowDataService for resolving FK display names.
+   * WARNING: Only use with trusted SQL (no user-provided values are concatenated).
+   */
+  public List<Map<String, Object>> queryForList(String sql) {
+    return jdbcTemplate.queryForList(sql, new MapSqlParameterSource());
+  }
+
+  /**
+   * Converts string values in FK columns (_id suffix) to UUID objects,
+   * and string values in date columns (_date suffix or date named) to LocalDate.
+   * PostgreSQL type columns reject strings — they expect the correct Java type.
+   */
+  private void convertTypedStrings(Map<String, Object> data) {
     if (data == null) return;
     for (Map.Entry<String, Object> entry : data.entrySet()) {
       String col = entry.getKey();
       Object val = entry.getValue();
-      if (val instanceof String str && col.endsWith("_id")) {
+      if (!(val instanceof String str)) continue;
+
+      // UUID columns (FK references ending with _id)
+      if (col.endsWith("_id")) {
         try {
           data.put(col, UUID.fromString(str));
-        } catch (IllegalArgumentException ignored) {
-          // Not a valid UUID format, leave as string
-        }
+          continue;
+        } catch (IllegalArgumentException ignored) {}
+      }
+
+      // Date columns (ending with _date or named order_date, invoice_date, etc.)
+      if (col.endsWith("_date") || col.equals("date") || col.contains("date")) {
+        try {
+          data.put(col, java.time.LocalDate.parse(str));
+          continue;
+        } catch (Exception ignored) {}
       }
     }
   }
