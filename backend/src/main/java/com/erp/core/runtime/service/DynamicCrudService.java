@@ -29,7 +29,7 @@ public class DynamicCrudService {
 
   private static final Logger log = LoggerFactory.getLogger(DynamicCrudService.class);
 
-  private static final Set<String> SYSTEM_COLUMNS = Set.of(
+  public static final Set<String> SYSTEM_COLUMNS = Set.of(
       "id", "tenant_id", "created_at", "updated_at",
       "created_by", "updated_by", "is_active", "deleted_at");
 

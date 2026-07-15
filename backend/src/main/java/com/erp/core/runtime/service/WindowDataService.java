@@ -1,5 +1,6 @@
 package com.erp.core.runtime.service;
 
+import com.erp.core.runtime.dto.window.FieldDefinitionResponse;
 import com.erp.core.runtime.dto.window.TabDefinitionResponse;
 import com.erp.core.runtime.dto.window.WindowDefinitionResponse;
 import java.time.LocalDateTime;
@@ -295,6 +296,38 @@ public class WindowDataService {
     for (Map.Entry<String, String> entry : tabConditions.entrySet()) {
       if (!data.containsKey(entry.getKey())) {
         data.put(entry.getKey(), entry.getValue());
+      }
+    }
+
+    // Validate required fields are present before inserting
+    if (mainTab.getFields() != null) {
+      List<String> missingFields = new ArrayList<>();
+      for (FieldDefinitionResponse field : mainTab.getFields()) {
+        String colCode = field.getColumn() != null ? field.getColumn().getCode() : null;
+        if (colCode == null) continue;
+
+        // Skip system columns that are auto-set by DynamicCrudService
+        if (DynamicCrudService.SYSTEM_COLUMNS.contains(colCode)) continue;
+
+        // Skip fields that are auto-set by where_clause above
+        if (tabConditions.containsKey(colCode)) continue;
+
+        boolean isRequired = Boolean.TRUE.equals(field.getIsMandatory())
+            || Boolean.TRUE.equals(field.getColumn().getRequired());
+
+        if (isRequired) {
+          Object val = data.get(colCode);
+          if (val == null || val.toString().isBlank()) {
+            String label = field.getLabelOverride() != null
+                ? field.getLabelOverride()
+                : (field.getColumn() != null ? field.getColumn().getLabel() : colCode);
+            missingFields.add(label);
+          }
+        }
+      }
+      if (!missingFields.isEmpty()) {
+        throw new IllegalArgumentException(
+            "Required fields are missing: " + String.join(", ", missingFields));
       }
     }
 

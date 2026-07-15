@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.dao.DataAccessException;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -67,6 +68,19 @@ public class GlobalApiExceptionHandler {
 
     return ResponseEntity.badRequest()
         .body(ApiResponse.error("VALIDATION_FAILED", "One or more fields failed validation.", details));
+  }
+
+  @ExceptionHandler(DataAccessException.class)
+  public ResponseEntity<ApiResponse<Void>> handleDataAccess(DataAccessException exception) {
+    log.error("Database error: {}", exception.getMessage(), exception);
+    String message = "A database error occurred. Please check your data and try again.";
+    // Extract the most useful part of the error message
+    Throwable cause = exception.getMostSpecificCause();
+    if (cause != null && cause.getMessage() != null) {
+      message = cause.getMessage();
+    }
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+        .body(ApiResponse.error("DATABASE_ERROR", message));
   }
 
   @ExceptionHandler(Exception.class)
