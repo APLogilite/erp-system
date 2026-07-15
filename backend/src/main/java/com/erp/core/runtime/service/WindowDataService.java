@@ -432,6 +432,14 @@ public class WindowDataService {
 
     TabDefinitionResponse tab = findTabById(def, tabId);
     if (tab == null) {
+      // Log diagnostic info
+      log.warn("Tab ID {} not found in window '{}'. Window has {} tabs: [{}]",
+          tabId, windowName,
+          def.getTabs() != null ? def.getTabs().size() : 0,
+          def.getTabs() != null
+              ? def.getTabs().stream().map(t -> t.getId() + ":" + t.getName()).collect(java.util.stream.Collectors.joining(", "))
+              : "null");
+
       // Fallback: try to find the tab directly from the database and assemble on the fly
       Optional<SysTab> sysTabOpt = sysTabService.findById(tabId);
       if (sysTabOpt.isPresent()) {
@@ -439,10 +447,13 @@ public class WindowDataService {
         // Re-check: does this tab belong to this window?
         if (sysTab.getWindowId().equals(def.getWindow().getId())) {
           tab = windowAssemblyService.assembleTab(sysTab);
+          log.info("Fallback: found tab '{}' via direct DB lookup, assembled on the fly", sysTab.getName());
         } else {
+          log.error("Tab {} belongs to window {} but current window is {}", tabId, sysTab.getWindowId(), def.getWindow().getId());
           throw new IllegalArgumentException("Tab " + tabId + " does not belong to window: " + windowName);
         }
       } else {
+        log.error("Tab UUID {} not found in sys_tab table at all", tabId);
         throw new IllegalArgumentException("Tab not found in window: " + tabId);
       }
     }
