@@ -397,7 +397,8 @@ public class DynamicCrudService {
       String childTableName,
       String relationColumn,
       UUID parentRecordId,
-      UUID tenantId) {
+      UUID tenantId,
+      Map<String, String> additionalConditions) {
 
     validateTableName(childTableName);
     validateColumnName(childTableName, relationColumn);
@@ -407,8 +408,24 @@ public class DynamicCrudService {
     params.addValue("parentId", parentRecordId);
     params.addValue("tenantId", tenantId);
 
+    List<String> conditions = new ArrayList<>();
+    conditions.add(escapeIdentifier(relationColumn) + " = :parentId");
+    conditions.add(tableRef + ".tenant_id = :tenantId");
+
+    // Apply additional conditions (e.g., where_clause filters like shipment_type = 'outbound')
+    if (additionalConditions != null) {
+      int i = 0;
+      for (Map.Entry<String, String> entry : additionalConditions.entrySet()) {
+        validateColumnName(childTableName, entry.getKey());
+        String paramName = "ac_" + i;
+        conditions.add(escapeIdentifier(entry.getKey()) + " = :" + paramName);
+        params.addValue(paramName, entry.getValue());
+        i++;
+      }
+    }
+
     String sql = "SELECT * FROM " + tableRef + " WHERE "
-        + escapeIdentifier(relationColumn) + " = :parentId AND tenant_id = :tenantId";
+        + String.join(" AND ", conditions);
 
     return jdbcTemplate.queryForList(sql, params);
   }

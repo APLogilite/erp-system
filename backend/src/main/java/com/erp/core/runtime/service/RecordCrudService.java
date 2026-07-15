@@ -127,7 +127,8 @@ public class RecordCrudService {
               childDef.getTableName(),
               subForm.getRelationCode(),
               recordId,
-              tenantId);
+              tenantId,
+              null);
           // Apply row filters to children
           List<Map<String, Object>> filtered = new ArrayList<>();
           for (Map<String, Object> child : children) {

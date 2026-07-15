@@ -214,11 +214,13 @@ public class WindowDataService {
       // Build conditions including parent_column FK filter + where_clause
       Map<String, String> conditions = buildTabConditions(childTab, recordId);
 
-      // Use the parent_column as the FK relation
+      // Remove the parent_column FK from conditions (it's passed separately to getChildRecords)
       String relationColumn = childTab.getParentColumn();
+      conditions.remove(relationColumn);
+
       if (relationColumn != null && !relationColumn.isBlank()) {
         List<Map<String, Object>> children =
-            dynamicCrudService.getChildRecords(childTableName, relationColumn, recordId, tenantId);
+            dynamicCrudService.getChildRecords(childTableName, relationColumn, recordId, tenantId, conditions);
         childRecords.put(childTab.getName(), children);
       }
     }
@@ -440,10 +442,12 @@ public class WindowDataService {
         String relationColumn = childTab.getParentColumn();
         if (relationColumn == null || relationColumn.isBlank()) continue;
 
-        // Apply where_clause if present
+        // Build conditions including where_clause
         Map<String, String> conditions = buildTabConditions(childTab, recordId);
+        // Remove the parent_column FK (passed separately)
+        conditions.remove(relationColumn);
         List<Map<String, Object>> children =
-            dynamicCrudService.getChildRecords(childTableName, relationColumn, recordId, tenantId);
+            dynamicCrudService.getChildRecords(childTableName, relationColumn, recordId, tenantId, conditions);
         childRecords.put(childTab.getName(), children);
       }
     }
