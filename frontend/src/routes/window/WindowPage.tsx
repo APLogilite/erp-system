@@ -170,11 +170,18 @@ function RecordDialog({ open, windowName, windowDef, recordId, onClose }: Record
     }
   }, [effectiveFormRecord, formKey, initializedKey]);
 
+  // Helper to invalidate ALL queries for this window (list + record + definition)
+  const invalidateWindowCache = useCallback(() => {
+    queryClient.invalidateQueries({ queryKey: ['window-records', windowName] });
+    queryClient.invalidateQueries({ queryKey: ['window-record', windowName] });
+    queryClient.invalidateQueries({ queryKey: ['window-definition', windowName] });
+  }, [queryClient, windowName]);
+
   // Mutations
   const createMutation = useMutation({
     mutationFn: (data: Record<string, unknown>) => createWindowRecord(windowName, data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['window-records', windowName] });
+      invalidateWindowCache();
       onClose();
     },
     onError: (err: Error) => setSaveError(err.message),
@@ -182,12 +189,12 @@ function RecordDialog({ open, windowName, windowDef, recordId, onClose }: Record
 
   const updateMutation = useMutation({
     mutationFn: (data: Record<string, unknown>) => {
-      // When drilled down, pass the child tab ID so the backend updates the correct table
       const tabId = isDrilled ? currentLevelTab.id : undefined;
       return updateWindowRecord(windowName, currentRecordId!, data, tabId);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['window-records', windowName] });
+      invalidateWindowCache();
+      setInitializedKey(''); // Force re-initialize on next open
       onClose();
     },
     onError: (err: Error) => setSaveError(err.message),
@@ -832,6 +839,16 @@ export function WindowPage() {
       <Box sx={{ mb: 2, display: 'flex', gap: 1 }}>
         <Button variant="contained" onClick={handleCreate}>
           New {currentTab?.name ?? 'Record'}
+        </Button>
+        <Button
+          variant="outlined"
+          onClick={() => {
+            queryClient.invalidateQueries({ queryKey: ['window-definition', windowName] });
+            queryClient.invalidateQueries({ queryKey: ['window-records', windowName] });
+            queryClient.invalidateQueries({ queryKey: ['window-record', windowName] });
+          }}
+        >
+          ↻ Refresh
         </Button>
       </Box>
 
