@@ -429,10 +429,16 @@ function ChildFieldCell({
 }
 
 function ChildTabGrid({ tab, childRecords }: ChildTabGridProps) {
+  const [editMode, setEditMode] = useState(false);
   const [rows, setRows] = useState<Record<string, unknown>[]>(() => [...childRecords]);
   const fields = tab.fields
     .filter((f) => f.isDisplayed !== false)
     .sort((a, b) => a.seqNo - b.seqNo);
+
+  // Sync rows when childRecords prop changes (e.g. after record data reloads)
+  useEffect(() => {
+    if (!editMode) setRows([...childRecords]);
+  }, [childRecords, editMode]);
 
   const updateCell = (rowIdx: number, colCode: string, val: unknown) => {
     setRows((prev) => {
@@ -454,15 +460,21 @@ function ChildTabGrid({ tab, childRecords }: ChildTabGridProps) {
     <Box sx={{ mb: 2 }}>
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, px: 1, mb: 0.5 }}>
         <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
-          {tab.name}
+          {tab.name} ({rows.length})
         </Typography>
-        <Button size="small" variant="outlined" onClick={addRow} sx={{ ml: 'auto' }}>
-          + Add {tab.name}
+        <Button
+          size="small"
+          variant={editMode ? 'contained' : 'outlined'}
+          onClick={() => setEditMode(!editMode)}
+          color={editMode ? 'warning' : 'primary'}
+          sx={{ ml: 'auto' }}
+        >
+          {editMode ? 'Done Editing' : 'Quick Update'}
         </Button>
       </Box>
       {rows.length === 0 ? (
         <Typography variant="body2" color="text.secondary" sx={{ px: 1 }}>
-          No related records found. Click "+ Add" to create one.
+          {editMode ? 'No records. Click "+ Add Row" to create one.' : 'No related records found.'}
         </Typography>
       ) : (
         <TableContainer>
@@ -474,31 +486,48 @@ function ChildTabGrid({ tab, childRecords }: ChildTabGridProps) {
                     {f.labelOverride ?? f.column.label}
                   </TableCell>
                 ))}
-                <TableCell sx={{ fontWeight: 600, fontSize: 12 }}>Actions</TableCell>
+                {editMode && <TableCell sx={{ fontWeight: 600, fontSize: 12 }}>Actions</TableCell>}
               </TableRow>
             </TableHead>
             <TableBody>
               {rows.map((rec, rowIdx) => (
-                <TableRow key={(rec.id as string) ?? `new-${rowIdx}`}>
+                <TableRow
+                  key={(rec.id as string) ?? `new-${rowIdx}`}
+                  hover
+                  sx={{ cursor: editMode ? 'default' : 'pointer' }}
+                >
                   {fields.map((f) => (
-                    <TableCell key={f.column.code} sx={{ p: 0.5 }}>
-                      <ChildFieldCell
-                        field={f}
-                        value={rec[f.column.code]}
-                        onChange={(val) => updateCell(rowIdx, f.column.code, val)}
-                      />
+                    <TableCell key={f.column.code} sx={{ fontSize: 12, p: editMode ? 0.5 : 1 }}>
+                      {editMode ? (
+                        <ChildFieldCell
+                          field={f}
+                          value={rec[f.column.code]}
+                          onChange={(val) => updateCell(rowIdx, f.column.code, val)}
+                        />
+                      ) : (
+                        String(rec[f.column.code] ?? '')
+                      )}
                     </TableCell>
                   ))}
-                  <TableCell sx={{ p: 0.5 }}>
-                    <Button size="small" color="error" onClick={() => deleteRow(rowIdx)}>
-                      Del
-                    </Button>
-                  </TableCell>
+                  {editMode && (
+                    <TableCell sx={{ p: 0.5 }}>
+                      <Button size="small" color="error" onClick={() => deleteRow(rowIdx)}>
+                        Del
+                      </Button>
+                    </TableCell>
+                  )}
                 </TableRow>
               ))}
             </TableBody>
           </Table>
         </TableContainer>
+      )}
+      {editMode && (
+        <Box sx={{ px: 1, mt: 0.5 }}>
+          <Button size="small" variant="outlined" onClick={addRow}>
+            + Add Row
+          </Button>
+        </Box>
       )}
     </Box>
   );
