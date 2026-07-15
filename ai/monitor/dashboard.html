@@ -863,12 +863,20 @@ const App = {
         html += `<div class="board-section"><h3>${esc(section)}</h3><div class="empty-state" style="padding:12px;font-size:12px">(none)</div></div>`;
         continue;
       }
-      html += `<div class="board-section"><h3>${esc(section)}</h3><div class="board-table-wrap"><table class="board-table"><tr>${headers.map(h => `<th>${esc(h)}</th>`).join("")}</tr>`;
-      for (const row of rows) {
+      const isCompleted = section === "Completed";
+      const extraHeader = isCompleted ? "<th>Parent PRD</th>" : "";
+      const extraCells = isCompleted ? rows.map(row => {
+        const taskId = row[0]?.trim();
+        const task = d.tasks?.[taskId];
+        return `<td>${task?.parent_prd ? esc(task.parent_prd) : "-"}</td>`;
+      }) : [];
+      html += `<div class="board-section"><h3>${esc(section)}</h3><div class="board-table-wrap"><table class="board-table"><tr>${headers.map(h => `<th>${esc(h)}</th>`).join("")}${extraHeader}</tr>`;
+      for (let ri = 0; ri < rows.length; ri++) {
+        const row = rows[ri];
         html += `<tr>${row.map((c, i) => {
           if (i === 0 && headers[i] && headers[i].toLowerCase() === "status") return `<td>${badge(c)}</td>`;
           return `<td>${esc(c)}</td>`;
-        }).join("")}</tr>`;
+        }).join("")}${extraCells[ri] || ""}</tr>`;
       }
       html += `</table></div></div>`;
     }
