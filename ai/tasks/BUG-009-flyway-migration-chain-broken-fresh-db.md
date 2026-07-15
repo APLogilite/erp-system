@@ -46,15 +46,17 @@ history:
 
 # Summary
 
-When `spring.flyway.enabled=true` on a **fresh database**, Flyway fails at **V3__create_sys_table_columns.sql** with:
-```
-ERROR: relation "sys_metadata_models" does not exist
-Position: 101
-```
+This bug evolved from a simple Flyway migration chain fix into a comprehensive stabilization effort covering:
 
-The root cause: V3 creates `sys_table_columns` with `REFERENCES sys_metadata_models(id)`, but no migration in the chain ever creates `sys_metadata_models` — it was originally expected to be created by JPA `ddl-auto=update` (which is now disabled for Flyway-based setups).
+1. **Flyway migration chain** — Fixed failed migrations on fresh DB by removing obsolete old-metadata scaffolding (V3-V18, V21-V23), fixing CTE scoping in V25, and adding V30/V31 for SYS tenant seed data.
 
-Additionally, the old V1–V23 migration chain was designed to work **with** JPA `ddl-auto=update` creating the base tables first. Since PRD-004 now replaces the entire metadata schema via V24–V28, the old metadata-scaffolding migrations (V3–V23) are partially obsolete and interleaved with essential business table creation.
+2. **Backend APIs** — Added drill-down endpoint for tab-level record fetching, fixed tenant isolation (SYS tenant with fixed UUID), fixed ContextFilter for stale JWT handling, added lookup endpoint for dropdowns.
+
+3. **Frontend WindowPage** — Complete rewrite with tabbed dialog layout, breadcrumb drill-down, accordion child panels, inline-editable grids (Quick Update mode), proper field type rendering (date/enum/boolean/many2one), and child record navigation.
+
+4. **Admin windows** — Consolidated 7 separate admin windows into 3 properly structured windows (sys_table, sys_window, sys_menu) with correct hierarchical tab relationships.
+
+5. **Scripts** — Added db-reset.sh, setup.sh, start-all.sh for easy setup and development workflow.
 
 ---
 
@@ -130,22 +132,43 @@ Additionally, V3–V18 and V21–V23 all create/alter/seed the old PRD-001 metad
 
 # Fix
 
-Removed all obsolete old-metadata migrations and their undo scripts. Stripped old metadata registration from business table migrations.
+### Migration chain restructuring:
+- **Removed** 18 obsolete old-metadata migrations (V3-V18, V21-V23) + 11 undo scripts (U3-U13)
+- **Modified** V19/V20 to strip old metadata registration (keep business DDL only)
+- **Fixed** V25 CTE scoping issue (96 references) — replaced with direct subqueries
+- **V25** — Added Part 0 (register sys_* tables in sys_table) + Part 0b (register sys_* columns)
+- **V26** — Consolidated 7 separate admin windows into 3: sys_table, sys_window, sys_menu
+- **V28** — Updated menu items to reference consolidated windows; fixed menu names
+- **V29** — Migration for existing DBs to consolidate old admin windows
+- **V30** — Set NULL tenant_ids to SYS tenant UUID across all tables
+- **V31** — Create SYS tenant (fixed UUID), permissions, and sys_admin role in migration
+- **application.properties** — ddl-auto=update, Flyway enabled, ignore-missing-migrations=true
 
-### Removed (old metadata scaffolding — 18 files):
-**V3–V18, V21–V23**: All create/alter/seed the old PRD-001 metadata schema (`sys_metadata_models`, `sys_metadata_views`, `sys_form_fields`, etc.) which is entirely dropped by V24. These migrations are superseded by V24–V28 (the new Window/Menu schema).
+### Backend enhancements:
+- **WindowDataService** — Added `getTabRecordWithChildren()` for drill-down record fetching from any tab's table
+- **WindowDataController** — Added `GET /{windowName}/tabs/{tabId}/records/{id}?childTabs=` endpoint
+- **WindowDataController** — Added `GET /lookup/{tableName}` for dropdown/autocomplete data
+- **DynamicCrudService** — Tenant isolation on listRecords uses strict `tenant_id = :tenantId`
+- **ContextFilter** — Graceful handling of stale JWT tokens after DB reset
+- **IdentitySeedData** — Idempotent (find-or-create for roles/permissions), coexists with V31 migration
 
-### Removed (undo scripts — 11 files):
-**U3–U13**: Undo scripts for the deleted migrations.
+### Frontend enhancements:
+- **WindowPage.tsx** — Complete RecordDialog redesign:
+  - Tabbed dialog layout (Form + child tab panels)
+  - Breadcrumb drill-down navigation (clickable levels, ← back button)
+  - Accordion child panels (expandable, first open by default, side-by-side grid)
+  - Inline-editable child grids with Quick Update toggle
+  - Proper field type rendering (date, enum, boolean, many2one dropdowns with lookup data)
+  - Numeric field parsing on save
+  - Save error display
+- **ChildTabGrid** — Read-only by default, Quick Update toggles inline editing
+- **runtimeApi.ts** — Added fetchTabRecord(), fetchLookupRecords()
+- **MenuNavigation.tsx** — Fixed navigation path (`/app/window/{name}`)
 
-### Modified (kept business DDL, removed obsolescent metadata registration):
-
-- **V19__seed_master_data_tables.sql**: Removed Parts 3–4 (INSERT into `sys_metadata_models` / `sys_table_columns`). Kept Parts 1–2 (CREATE TABLE for md_business_partner, md_product, md_uom, md_uom_conversion, md_warehouse + indexes). Business tables are re-registered in the new schema by V25.
-
-- **V20__seed_transaction_tables.sql**: Removed Parts 5–6 (INSERT into `sys_metadata_models` / `sys_table_columns`). Kept Parts 1–4 (CREATE TABLE for tx_order, tx_invoice, tx_payment, tx_shipment, tx_material_receipt + line tables + indexes).
-
-### Updated configuration:
-**application.properties**: Commented out `baseline-on-migrate` / `baseline-version=24` by default. Fresh DBs now run the full chain (V1 → V2 → V19 → V20 → V24 → V25 → V26 → V27 → V28). Existing DBs with old flyway_schema_history should uncomment these to skip V1-V23.
+### Scripts added:
+- `backend/db-reset.sh` — Drop/recreate database with proper user management
+- `backend/setup.sh` — Full setup (reset DB + start app)
+- `start-all.sh` — One-command start for both frontend and backend
 
 ---
 
@@ -169,15 +192,41 @@ After fix:
 
 # Files Changed
 
-## Deleted (29 files):
-- V3__create_sys_table_columns.sql through V18__add_tenant_id_to_admin_forms.sql (16 old metadata migrations)
-- V21__seed_master_data_forms.sql through V23__seed_line_forms_and_sub_forms.sql (3 old metadata seeding migrations)
-- U3__create_sys_table_columns.sql through U13__create_sys_form_tenant_role.sql (11 undo scripts)
+## Deleted (29 files)
+- V3-V18, V21-V23 (16 + 3 = 19 old metadata migrations)
+- U3-U13 (11 undo scripts)
+- start.sh (root), ai/monitor/start.sh, ai/scripts/run-all-regression.sh
 
-## Modified:
-- `backend/src/main/resources/db/migration/V19__seed_master_data_tables.sql` — Removed Parts 3–4 (old metadata registration)
-- `backend/src/main/resources/db/migration/V20__seed_transaction_tables.sql` — Removed Parts 5–6 (old metadata registration)
-- `backend/src/main/resources/application.properties` — Commented out baseline config for fresh-DB default; updated comments
+## Migration files (modified or added)
+- `V19__seed_master_data_tables.sql` — Removed old metadata registration (kept business DDL)
+- `V20__seed_transaction_tables.sql` — Removed old metadata registration (kept business DDL)
+- `V25__register_business_tables.sql` — Added Part 0 (sys_* table registrations), Part 0b (sys_* column registrations), fixed CTE scoping
+- `V26__seed_admin_windows.sql` — Consolidated to 3 windows (sys_table, sys_window, sys_menu) with correct tab hierarchy
+- `V28__seed_menu_and_access.sql` — Updated menu items for consolidated windows
+- `V29__consolidate_admin_windows.sql` — New: consolidation for existing DBs
+- `V30__set_system_tenant_id.sql` — New: set NULL tenant_ids to SYS tenant UUID
+- `V31__seed_system_tenant_and_admin.sql` — New: create SYS tenant, permissions, sys_admin role
+
+## Backend Java files
+- `WindowDataService.java` — Added getTabRecordWithChildren()
+- `WindowDataController.java` — Added tab record + lookup endpoints
+- `DynamicCrudService.java` — Tenant isolation fix
+- `ContextFilter.java` — Graceful stale JWT handling
+- `IdentitySeedData.java` — Idempotent seed data, SYS tenant fixed UUID
+
+## Frontend files
+- `WindowPage.tsx` — Complete RecordDialog rewrite (drill-down, breadcrumb, accordion, inline editing)
+- `runtimeApi.ts` — Added fetchTabRecord(), fetchLookupRecords()
+- `MenuNavigation.tsx` — Fixed navigation path
+- `FormSearchBar.tsx` — Fixed navigation path
+- `FormNavigationMenu.tsx` — Fixed navigation path
+
+## Configuration
+- `application.properties` — ddl-auto=update, Flyway enabled, ignore-missing-migrations
+- `start.sh` (backend) — Added stale process cleanup
+- `start-all.sh` — New: one-command start for both servers
+- `db-reset.sh` — New: database reset with superuser credentials
+- `setup.sh` (backend) — New: full setup (reset + start)
 
 ---
 
