@@ -1,46 +1,102 @@
 -- ============================================================
--- PRD-003 / TASK-029 — Seed Transaction Tables
--- Creates 9 transaction tables for the Order Flow:
---   - tx_order              (Purchase/Sales order header)
---   - tx_order_line         (Order line items)
---   - tx_invoice            (Invoice header)
---   - tx_invoice_line       (Invoice line items)
---   - tx_payment            (Payment records)
---   - tx_shipment           (Shipment header)
---   - tx_shipment_line      (Shipment line items)
---   - tx_material_receipt   (Material receipt header)
---   - tx_mr_line            (Material receipt line items)
--- Registers all tables + columns in the metadata engine.
---
--- DEPENDS ON: V19__seed_master_data_tables.sql (TASK-028)
--- IMPORTANT: Set spring.flyway.enabled=true in
--- application-local.properties before running this migration.
+-- V2 — Business Tables: Master Data (md_*) + Transactions (tx_*)
 -- ============================================================
 
 -- ============================================================
--- Part 1 — Drop Existing Tables (Idempotency)
--- Order matters: drop child (line) tables before parent headers.
+-- Part 1 — Master Data Tables
 -- ============================================================
 
-DROP TABLE IF EXISTS tx_mr_line CASCADE;
-DROP TABLE IF EXISTS tx_shipment_line CASCADE;
-DROP TABLE IF EXISTS tx_invoice_line CASCADE;
-DROP TABLE IF EXISTS tx_order_line CASCADE;
-DROP TABLE IF EXISTS tx_material_receipt CASCADE;
-DROP TABLE IF EXISTS tx_shipment CASCADE;
-DROP TABLE IF EXISTS tx_payment CASCADE;
-DROP TABLE IF EXISTS tx_invoice CASCADE;
-DROP TABLE IF EXISTS tx_order CASCADE;
+-- md_business_partner — Customers, suppliers, and other contacts
+CREATE TABLE md_business_partner (
+    id          UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    tenant_id   UUID NOT NULL,
+    code        VARCHAR(50) NOT NULL,
+    name        VARCHAR(200) NOT NULL,
+    partner_type VARCHAR(20) NOT NULL,
+    email       VARCHAR(100),
+    phone       VARCHAR(30),
+    address     TEXT,
+    tax_id      VARCHAR(50),
+    created_at  TIMESTAMP NOT NULL DEFAULT now(),
+    updated_at  TIMESTAMP NOT NULL DEFAULT now(),
+    created_by  UUID,
+    updated_by  UUID,
+    is_active   BOOLEAN NOT NULL DEFAULT true,
+    deleted_at  TIMESTAMP,
+    CONSTRAINT uq_business_partner_code UNIQUE (code)
+);
+
+-- md_uom — Units of Measure
+CREATE TABLE md_uom (
+    id          UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    tenant_id   UUID NOT NULL,
+    code        VARCHAR(10) NOT NULL,
+    name        VARCHAR(50) NOT NULL,
+    created_at  TIMESTAMP NOT NULL DEFAULT now(),
+    updated_at  TIMESTAMP NOT NULL DEFAULT now(),
+    created_by  UUID,
+    updated_by  UUID,
+    is_active   BOOLEAN NOT NULL DEFAULT true,
+    deleted_at  TIMESTAMP,
+    CONSTRAINT uq_uom_code UNIQUE (code)
+);
+
+-- md_product — Goods and services catalog
+CREATE TABLE md_product (
+    id          UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    tenant_id   UUID NOT NULL,
+    code        VARCHAR(50) NOT NULL,
+    name        VARCHAR(200) NOT NULL,
+    description TEXT,
+    product_type VARCHAR(20) NOT NULL,
+    uom_id      UUID REFERENCES md_uom(id),
+    unit_price  NUMERIC(15,2),
+    created_at  TIMESTAMP NOT NULL DEFAULT now(),
+    updated_at  TIMESTAMP NOT NULL DEFAULT now(),
+    created_by  UUID,
+    updated_by  UUID,
+    is_active   BOOLEAN NOT NULL DEFAULT true,
+    deleted_at  TIMESTAMP,
+    CONSTRAINT uq_product_code UNIQUE (code)
+);
+
+-- md_uom_conversion — Conversion factors between UOMs
+CREATE TABLE md_uom_conversion (
+    id          UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    tenant_id   UUID NOT NULL,
+    from_uom_id UUID NOT NULL REFERENCES md_uom(id),
+    to_uom_id   UUID NOT NULL REFERENCES md_uom(id),
+    product_id  UUID REFERENCES md_product(id),
+    factor      NUMERIC(15,6) NOT NULL,
+    created_at  TIMESTAMP NOT NULL DEFAULT now(),
+    updated_at  TIMESTAMP NOT NULL DEFAULT now(),
+    created_by  UUID,
+    updated_by  UUID,
+    is_active   BOOLEAN NOT NULL DEFAULT true,
+    deleted_at  TIMESTAMP
+);
+
+-- md_warehouse — Physical storage locations
+CREATE TABLE md_warehouse (
+    id          UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    tenant_id   UUID NOT NULL,
+    code        VARCHAR(20) NOT NULL,
+    name        VARCHAR(100) NOT NULL,
+    address     TEXT,
+    created_at  TIMESTAMP NOT NULL DEFAULT now(),
+    updated_at  TIMESTAMP NOT NULL DEFAULT now(),
+    created_by  UUID,
+    updated_by  UUID,
+    is_active   BOOLEAN NOT NULL DEFAULT true,
+    deleted_at  TIMESTAMP,
+    CONSTRAINT uq_warehouse_code UNIQUE (code)
+);
 
 -- ============================================================
--- Part 2 — Create Header Tables
--- Each header table includes the 8 system columns required
--- by the BaseEntity / DynamicCrudService pattern.
+-- Part 2 — Transaction Header Tables
 -- ============================================================
 
--- -------------------------------------------------------------------
 -- tx_order — Purchase and sales order header
--- -------------------------------------------------------------------
 CREATE TABLE tx_order (
     id              UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     tenant_id       UUID NOT NULL,
@@ -65,9 +121,7 @@ CREATE TABLE tx_order (
     deleted_at      TIMESTAMP
 );
 
--- -------------------------------------------------------------------
 -- tx_invoice — Purchase and sales invoice header
--- -------------------------------------------------------------------
 CREATE TABLE tx_invoice (
     id              UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     tenant_id       UUID NOT NULL,
@@ -94,9 +148,7 @@ CREATE TABLE tx_invoice (
     deleted_at      TIMESTAMP
 );
 
--- -------------------------------------------------------------------
 -- tx_payment — Payment records
--- -------------------------------------------------------------------
 CREATE TABLE tx_payment (
     id              UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     tenant_id       UUID NOT NULL,
@@ -118,9 +170,7 @@ CREATE TABLE tx_payment (
     deleted_at      TIMESTAMP
 );
 
--- -------------------------------------------------------------------
--- tx_shipment — Shipment header
--- -------------------------------------------------------------------
+-- tx_shipment — Shipment / Receipt header (single table, movement_type = inbound/outbound)
 CREATE TABLE tx_shipment (
     id              UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     tenant_id       UUID NOT NULL,
@@ -142,9 +192,7 @@ CREATE TABLE tx_shipment (
     deleted_at      TIMESTAMP
 );
 
--- -------------------------------------------------------------------
 -- tx_material_receipt — Material receipt header
--- -------------------------------------------------------------------
 CREATE TABLE tx_material_receipt (
     id              UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     tenant_id       UUID NOT NULL,
@@ -166,14 +214,10 @@ CREATE TABLE tx_material_receipt (
 );
 
 -- ============================================================
--- Part 3 — Create Line Tables
--- Each line table includes system columns for consistency
--- with the DynamicCrudService.
+-- Part 3 — Transaction Line Tables
 -- ============================================================
 
--- -------------------------------------------------------------------
 -- tx_order_line — Order line items
--- -------------------------------------------------------------------
 CREATE TABLE tx_order_line (
     id              UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     tenant_id       UUID NOT NULL,
@@ -194,9 +238,7 @@ CREATE TABLE tx_order_line (
     deleted_at      TIMESTAMP
 );
 
--- -------------------------------------------------------------------
 -- tx_invoice_line — Invoice line items
--- -------------------------------------------------------------------
 CREATE TABLE tx_invoice_line (
     id              UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     tenant_id       UUID NOT NULL,
@@ -218,9 +260,7 @@ CREATE TABLE tx_invoice_line (
     deleted_at      TIMESTAMP
 );
 
--- -------------------------------------------------------------------
 -- tx_shipment_line — Shipment line items
--- -------------------------------------------------------------------
 CREATE TABLE tx_shipment_line (
     id              UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     tenant_id       UUID NOT NULL,
@@ -239,9 +279,7 @@ CREATE TABLE tx_shipment_line (
     deleted_at      TIMESTAMP
 );
 
--- -------------------------------------------------------------------
 -- tx_mr_line — Material receipt line items
--- -------------------------------------------------------------------
 CREATE TABLE tx_mr_line (
     id              UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     tenant_id       UUID NOT NULL,
@@ -263,11 +301,19 @@ CREATE TABLE tx_mr_line (
 );
 
 -- ============================================================
--- Part 4 — Foreign Key Indexes
--- NOTE: No hard PostgreSQL REFERENCES constraints per PRD-003
--- spec (dynamic tables). UUID columns store reference IDs
--- without FK enforcement. Indexes are added for performance.
+-- Part 4 — Indexes (performance on FK and lookup columns)
 -- ============================================================
+
+-- Master data
+CREATE INDEX IF NOT EXISTS idx_md_product_uom           ON md_product(uom_id);
+CREATE INDEX IF NOT EXISTS idx_md_uom_conv_from         ON md_uom_conversion(from_uom_id);
+CREATE INDEX IF NOT EXISTS idx_md_uom_conv_to           ON md_uom_conversion(to_uom_id);
+CREATE INDEX IF NOT EXISTS idx_md_uom_conv_product      ON md_uom_conversion(product_id);
+CREATE INDEX IF NOT EXISTS idx_md_uom_conv_tenant       ON md_uom_conversion(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_md_product_tenant        ON md_product(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_md_bp_tenant             ON md_business_partner(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_md_uom_tenant            ON md_uom(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_md_warehouse_tenant      ON md_warehouse(tenant_id);
 
 -- Order
 CREATE INDEX IF NOT EXISTS idx_tx_order_partner    ON tx_order(partner_id);
@@ -327,9 +373,3 @@ CREATE INDEX IF NOT EXISTS idx_tx_mr_status        ON tx_material_receipt(status
 CREATE INDEX IF NOT EXISTS idx_tx_mrl_receipt      ON tx_mr_line(receipt_id);
 CREATE INDEX IF NOT EXISTS idx_tx_mrl_product      ON tx_mr_line(product_id);
 CREATE INDEX IF NOT EXISTS idx_tx_mrl_tenant       ON tx_mr_line(tenant_id);
-
--- ============================================================
--- Part 5 — (Reserved)
--- Old metadata registration parts removed in BUG-009.
--- Business tables are re-registered in the new schema by V25.
--- ============================================================
