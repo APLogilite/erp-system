@@ -10,6 +10,10 @@ Every AI agent must read this before modifying any task or PRD status.
 
 ```
 DRAFT → REVIEW → APPROVED → IN_DEVELOPMENT → TESTING → READY_FOR_DEPLOYMENT → COMPLETED
+                                                                                ↓
+                                                                           REOPENED
+                                                                                ↓
+                                                                          IN_DEVELOPMENT
 ```
 
 ### Transition Triggers
@@ -22,6 +26,8 @@ DRAFT → REVIEW → APPROVED → IN_DEVELOPMENT → TESTING → READY_FOR_DEPLO
 | IN_DEVELOPMENT | TESTING | ALL tasks under PRD are READY_FOR_TEST (merged to PRD branch) | Software Engineer |
 | TESTING | READY_FOR_DEPLOYMENT | ALL tasks under PRD are TESTED by QA | QA Engineer |
 | READY_FOR_DEPLOYMENT | COMPLETED | PRD branch merged to main (after PM + user confirmation) | Release |
+| COMPLETED | REOPENED | Bug filed against a released PRD (post-release regression) | Product Manager |
+| REOPENED | IN_DEVELOPMENT | New bug fix branch created, work resumes | Software Engineer |
 
 ### Valid statuses
 
@@ -32,6 +38,7 @@ DRAFT → REVIEW → APPROVED → IN_DEVELOPMENT → TESTING → READY_FOR_DEPLO
 - TESTING — QA is validating the implementation
 - READY_FOR_DEPLOYMENT — All tasks tested, awaiting merge
 - COMPLETED — Released and merged to main
+- REOPENED — Post-release bug found, PRD needs additional work
 
 ---
 
@@ -55,6 +62,8 @@ Plus exception states: `BLOCKED | ON_HOLD | CANCELLED`
 | READY_FOR_TEST | TESTING | QA locks task, starts testing on PRD branch | QA Engineer |
 | TESTING | TESTED | QA passes all tests | QA Engineer |
 | TESTED | COMPLETED | Cascade after PRD branch merges to main | Release |
+| COMPLETED | REOPENED | Post-release bug found against this PRD (see PRD REOPENED) | Product Manager |
+| — | READY_FOR_DEV | PM creates a new bug (starting status for bugs) | Product Manager |
 | — | BLOCKED | Work cannot continue | Current Owner |
 | — | ON_HOLD | Temporarily paused | Current Owner |
 | — | CANCELLED | Task will not be implemented | Product Manager |
@@ -140,10 +149,20 @@ When a PRD branch merges to main:
 
 1. PRD document: status → COMPLETED
 2. ALL tasks under this PRD: status → COMPLETED
-3. ALL bugs under this PRD: status → COMPLETED
+3. ALL bugs under this PRD: status → RESOLVED
 4. ALL enhancements under this PRD: status → COMPLETED
 5. Updated PROJECT_BOARD.md
 6. This is performed by Release agent (or SE if Release not assigned)
+
+## Reopening a Completed PRD
+
+When a bug is filed against a COMPLETED PRD:
+
+1. PM creates the bug task with `status: READY_FOR_DEV` and the correct `parent_prd`
+2. PM changes the PRD document: status → REOPENED
+3. PM logs the reason in PRD history
+4. Normal lifecycle resumes: SE picks up the bug (READY_FOR_DEV → IN_DEVELOPMENT → ...)
+5. PRD stays REOPENED until all new bugs are RESOLVED, then returns to COMPLETED
 
 ---
 
@@ -171,5 +190,15 @@ Rules:
 - Never invent new statuses. Only use the statuses defined above.
 - Never skip a status in the lifecycle.
 - A task can only go BLOCKED from its current active status.
-- Once COMPLETED, a task is never modified.
+- A COMPLETED task or bug is never modified. Use REOPENED on the PRD and create new bug tasks.
+- If a status is set incorrectly (e.g., COMPLETED on creation with no work done), it may be corrected by adding a `corrected` entry to history explaining why.
 - Requirement changes after IN_DEVELOPMENT require an Enhancement Task.
+
+## Default Statuses
+
+| Item | Created By | Starting Status |
+|------|-----------|-----------------|
+| PRD | PM | DRAFT |
+| Task | PM | PLANNING |
+| Bug | QA or PM | READY_FOR_DEV |
+| Enhancement | PM | PLANNING |

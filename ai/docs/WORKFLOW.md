@@ -47,6 +47,10 @@ Every agent reads these on startup:
 
 ```
 DRAFT → REVIEW → APPROVED → IN_DEVELOPMENT → TESTING → READY_FOR_DEPLOYMENT → COMPLETED
+                                                                                ↓
+                                                                           REOPENED
+                                                                                ↓
+                                                                          IN_DEVELOPMENT
 ```
 
 ### Task Lifecycle
@@ -134,7 +138,12 @@ Product Manager
   ▼
 Release
   │  1. Merges PRD branch → main
-  │  2. Cascades: PRD + all tasks + bugs → COMPLETED
+  │  2. Cascades: PRD + tasks + enhancements → COMPLETED, bugs → RESOLVED
   ▼
 Done
+  │
+  └── (If post-release bug found) ──→ Product Manager sets PRD → REOPENED
+                                          │
+                                          ▼
+                                     Normal flow resumes from IN_DEVELOPMENT
 ```

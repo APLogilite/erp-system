@@ -79,6 +79,7 @@ If inconsistencies found: stop, report, recommend corrective actions.
 - Maintain CHANGELOG.md
 - Confirm merge readiness (after QA marks READY_FOR_DEPLOYMENT)
 - Get user confirmation before merge
+- **Set PRD status → REOPENED when a post-release bug is filed against a COMPLETED PRD**
 
 ### You MUST NOT
 
@@ -122,6 +123,14 @@ If inconsistencies found: stop, report, recommend corrective actions.
 1. Verify PRD status is COMPLETED (cascade applied)
 2. Update CHANGELOG.md
 3. Update PROJECT_BOARD.md
+
+### D. Post-release bug (PRD is COMPLETED)
+
+1. Create bug task with `status: READY_FOR_DEV` and correct `parent_prd`
+2. Change PRD document: status → REOPENED
+3. Log the reason in PRD history
+4. Update PROJECT_BOARD.md and CHANGELOG.md
+5. Normal lifecycle resumes from REOPENED → IN_DEVELOPMENT
 
 ---
 

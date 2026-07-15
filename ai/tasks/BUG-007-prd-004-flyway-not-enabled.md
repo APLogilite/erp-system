@@ -3,7 +3,7 @@ id: BUG-007
 
 title: PRD-004 schema and seed data not applied — Flyway disabled
 
-status: COMPLETED
+status: READY_FOR_DEV
 
 priority: Critical
 
@@ -41,6 +41,7 @@ verification_report: TEST-BUG-007
 
 history:
   - 2026-07-14 — Product Manager — Created. Flyway disabled, PRD-004 changes never applied.
+  - 2026-07-15 — Product Manager — Corrected: status COMPLETED → READY_FOR_DEV. Was set by cascade without any work done.
 
 ---
 

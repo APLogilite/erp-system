@@ -13,6 +13,7 @@ status: DRAFT
 # TESTING
 # READY_FOR_DEPLOYMENT
 # COMPLETED
+# REOPENED
 
 priority: Medium
 # Critical
