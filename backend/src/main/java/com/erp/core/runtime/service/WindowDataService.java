@@ -241,23 +241,30 @@ public class WindowDataService {
   }
 
   /**
-   * Resolves @tab.field@ placeholders in a filter clause.
-   * @tab is a tab name within the current window, .field is a column on that tab's table.
-   * The window context (windowId) is used to find the tab by name, then the parent
-   * record is queried by parentRecordId to get the field value.
+   * Resolves @tab.field@ placeholders using the full drill context.
+   * drillContext format: "TabName:recordId|TabName:recordId" for all parent levels.
+   * The window context (windowId) is used to find the tab by name, then the
+   * corresponding record ID from the drill context is used to query the field value.
    */
-  private String resolveFilterPlaceholders(String filterClause, UUID windowId, UUID parentRecordId) {
-    if (filterClause == null || windowId == null || parentRecordId == null) return null;
+  private String resolveFilterPlaceholders(String filterClause, UUID windowId, String drillContext) {
+    if (filterClause == null || windowId == null || drillContext == null) return null;
+
+    // Parse drill context into a map: tabName → recordId
+    java.util.Map<String, String> drillMap = new java.util.LinkedHashMap<>();
+    for (String level : drillContext.split("\\|")) {
+      String[] parts = level.split(":", 2);
+      if (parts.length == 2) drillMap.put(parts[0], parts[1]);
+    }
 
     // Match @tabname.fieldname@ patterns
     java.util.regex.Matcher matcher = java.util.regex.Pattern.compile("@([^.]+)\\.([^@]+)@").matcher(filterClause);
     StringBuffer sb = new StringBuffer();
     while (matcher.find()) {
-      String tabName = matcher.group(1);  // e.g., "Tabs"
-      String fieldCode = matcher.group(2); // e.g., "table_id"
+      String tabName = matcher.group(1);
+      String fieldCode = matcher.group(2);
       try {
         // Find the tab by NAME within the current window
-        String findTabSql = "SELECT st.id, st.table_id FROM sys_tab st "
+        String findTabSql = "SELECT st.table_id FROM sys_tab st "
             + "JOIN sys_window sw ON st.window_id = sw.id "
             + "WHERE sw.id = '" + windowId + "'::UUID AND st.name = '" + tabName + "' LIMIT 1";
         List<Map<String, Object>> tabRows = dynamicCrudService.queryForList(findTabSql);
@@ -267,18 +274,22 @@ public class WindowDataService {
           continue;
         }
         Object tabTableId = tabRows.get(0).get("table_id");
-        if (tabTableId == null) {
-          matcher.appendReplacement(sb, "''");
-          continue;
-        }
+        if (tabTableId == null) { matcher.appendReplacement(sb, "''"); continue; }
+
         // Get the physical table name for this tab
         String tableName = getPhysicalTableName(UUID.fromString(tabTableId.toString()));
-        if (tableName == null) {
+        if (tableName == null) { matcher.appendReplacement(sb, "''"); continue; }
+
+        // Get the parent record ID for this tab from the drill context
+        String recordId = drillMap.get(tabName);
+        if (recordId == null) {
+          log.warn("No drill context for tab '{}'", tabName);
           matcher.appendReplacement(sb, "''");
           continue;
         }
+
         // Query the parent record to get the field value
-        String sql = "SELECT \"" + fieldCode + "\" FROM \"" + tableName + "\" WHERE id = '" + parentRecordId + "'::UUID";
+        String sql = "SELECT \"" + fieldCode + "\" FROM \"" + tableName + "\" WHERE id = '" + recordId + "'::UUID";
         List<Map<String, Object>> rows = dynamicCrudService.queryForList(sql);
         if (!rows.isEmpty()) {
           Object val = rows.get(0).get(fieldCode);
@@ -485,10 +496,10 @@ public class WindowDataService {
   public List<Map<String, Object>> lookupRecords(
       String tableName,
       UUID tenantId,
-      UUID parentRecordId,
       UUID tabId,
       UUID windowId,
-      String fieldCode) {
+      String fieldCode,
+      String drillContext) {
 
     // Resolve filter_where_clause — supports both static and @tab.field@ placeholders
     String whereField = null;
@@ -497,9 +508,9 @@ public class WindowDataService {
       String filterClause = getFieldFilterClause(tableName, tabId, fieldCode);
       if (filterClause != null) {
         String resolved;
-        // Check if filter has @tab.field@ placeholders (needs parent record + window context)
-        if (filterClause.contains("@") && parentRecordId != null && windowId != null) {
-          resolved = resolveFilterPlaceholders(filterClause, windowId, parentRecordId);
+        // Check if filter has @tab.field@ placeholders (needs window + drill context)
+        if (filterClause.contains("@") && windowId != null && drillContext != null) {
+          resolved = resolveFilterPlaceholders(filterClause, windowId, drillContext);
         } else {
           resolved = filterClause; // Static filter, no placeholder resolution needed
         }

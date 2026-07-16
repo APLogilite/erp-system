@@ -114,19 +114,15 @@ function RecordDialog({ open, windowName, windowDef, recordId, onClose }: Record
   const isDrilled = drillStack.length > 0;
   const currentDrillLevel = isDrilled ? drillStack[drillStack.length - 1] : null;
 
-  // Lookup context:
-  //   tabId = originTabId from lookupConfig (the tab where each field lives)
-  //   windowId = current window (to resolve @tab.field@ by tab name within the window)
-  //   parentRecordId = parent record UUID (to query the actual value)
+  // Full drill context: tabName:recordId pairs for all parent levels
+  // Used to resolve @tab.field@ placeholders at ANY level of the hierarchy
+  const drillContext = drillStack.map((l) => l.tab.name + ':' + l.recordId).join('|');
   const windowId = windowDef.window.id;
-  const lookupParentId = isDrilled && drillStack.length >= 1
-    ? drillStack[drillStack.length - 1].recordId
-    : null;
 
   lookupResults = useQueries({
     queries: lookupConfigs.map((cfg) => ({
-      queryKey: ['lookup', cfg.table, cfg.fieldCode, cfg.originTabId, windowId, lookupParentId],
-      queryFn: () => fetchLookupRecords(cfg.table, lookupParentId ?? undefined, cfg.originTabId, windowId, cfg.fieldCode),
+      queryKey: ['lookup', cfg.table, cfg.fieldCode, cfg.originTabId, windowId, drillContext],
+      queryFn: () => fetchLookupRecords(cfg.table, cfg.originTabId, windowId, cfg.fieldCode, drillContext || undefined),
       staleTime: 30000,
       gcTime: 60000,
     })),
