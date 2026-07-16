@@ -56,6 +56,7 @@ CREATE OR REPLACE FUNCTION ensure_field(
 DECLARE
   v_tab_id UUID;
   v_column_id UUID;
+  v_column_label TEXT;
   v_table_name TEXT;
   v_tenant_id CONSTANT UUID := '00000000-0000-0000-0000-000000000001';
 BEGIN
@@ -64,13 +65,13 @@ BEGIN
   JOIN sys_window sw ON st.window_id = sw.id
   JOIN sys_table st2 ON st.table_id = st2.id
   WHERE sw.name = p_window_name AND st.seq_no = p_tab_seq_no;
-  SELECT c.id INTO v_column_id
+  SELECT c.id, c.label INTO v_column_id, v_column_label
   FROM sys_column c
   JOIN sys_table t ON c.table_id = t.id
   WHERE t.name = v_table_name AND c.code = p_column_code;
   IF v_tab_id IS NOT NULL AND v_column_id IS NOT NULL THEN
-    INSERT INTO sys_window_field (id, tab_id, column_id, seq_no, is_same_line, num_lines, column_width, is_displayed, is_readonly, is_mandatory, is_active, tenant_id, created_at, updated_at)
-    SELECT gen_random_uuid(), v_tab_id, v_column_id, p_seq_no, p_is_same_line, 1, 12, p_is_displayed, p_is_readonly, p_is_mandatory, true, v_tenant_id, now(), now()
+    INSERT INTO sys_window_field (id, tab_id, column_id, seq_no, is_same_line, num_lines, column_width, is_displayed, is_readonly, is_mandatory, label_override, is_active, tenant_id, created_at, updated_at)
+    SELECT gen_random_uuid(), v_tab_id, v_column_id, p_seq_no, p_is_same_line, 1, 12, p_is_displayed, p_is_readonly, p_is_mandatory, v_column_label, true, v_tenant_id, now(), now()
     WHERE NOT EXISTS (SELECT 1 FROM sys_window_field WHERE tab_id = v_tab_id AND column_id = v_column_id);
   END IF;
 END;
