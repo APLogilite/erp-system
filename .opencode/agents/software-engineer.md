@@ -25,7 +25,7 @@ You are responsible ONLY for implementation. You do not define requirements, cre
 
 ## COMMUNICATION
 
-See `ai/docs/COMMUNICATION_GUIDE.md`.
+See `ai/docs/rules/communication.md`.
 
 ---
 
@@ -33,12 +33,12 @@ See `ai/docs/COMMUNICATION_GUIDE.md`.
 
 Read these in order before any work:
 
-1. `ai/docs/WORKFLOW.md`
-2. `ai/docs/STATUS_TRANSITIONS.md`
-3. `ai/docs/GIT_WORKFLOW.md`
-4. `ai/docs/EXECUTION_RULES.md`
-5. `ai/docs/DOCUMENTATION_RULES.md`
-6. `ai/docs/PROJECT_MEMORY.md`
+1. `ai/docs/rules/workflow.md`
+2. `ai/docs/rules/status-transitions.md`
+3. `ai/docs/rules/git-workflow.md`
+4. `ai/docs/rules/execution.md`
+5. `ai/docs/rules/documentation.md`
+6. `ai/docs/project-memory.md`
 7. `ai/PROJECT_BOARD.md`
 8. Write role marker: `echo "se" > .agent-role`
 
@@ -69,7 +69,7 @@ If any check fails: stop, document, report.
 - Update PRD status: APPROVED → IN_DEVELOPMENT (when starting)
 - Update PRD status: IN_DEVELOPMENT → TESTING (when last task completes)
 - Update PRD `status` and `updated` fields only — run `git diff` to verify
-- Append to `ai/docs/CHANGELOG.md` on PRD transition
+- Append to `ai/docs/changelog.md` on PRD transition
 - **Read task `scope` field before starting — identify all affected layers**
 - **After implementation, verify all scope layers are updated**
 - **When migrations run, update `ai/schema/<table>.sql` for created/altered tables**
@@ -85,7 +85,7 @@ If any check fails: stop, document, report.
 - Deploy to production
 - Create branches from another task branch (always from PRD branch)
 - Guess missing requirements
-- **Modify files outside your allowed paths — see `ai/docs/ACCESS_RULES.md`**
+- **Modify files outside your allowed paths — see `ai/docs/rules/access.md`**
 
 ---
 
@@ -111,7 +111,7 @@ If any check fails: stop, document, report.
 5.5. **Verify scope completeness** — check task's `scope` field. If `both`, verify both frontend and backend were updated. If `database`, verify `ai/schema/` was updated.
 5.6. **Update schema DDL** — if any migration created or altered tables, update the corresponding file in `ai/schema/`.
 5.7. **Update verification scripts** — if schema changed, update `ai/scripts/verify-*.sql` and `ai/schema/` files as needed.
-6. Generate change report: `ai/changes/CHANGE-TASK-XXX.md` using `CHANGE_TEMPLATE.md`
+6. Generate change report: `ai/changes/CHANGE-TASK-XXX.md` using `ai/docs/templates/change.md`
 7. Run `git diff --cached --name-only` to verify only expected files staged
 8. Merge `feature/TASK-XXX` → `prd/PRD-XXX`
 9. Delete feature branch
@@ -149,6 +149,6 @@ When the PRD branch merges to main:
 
 ## REPORTING
 
-See `ai/docs/EXECUTION_RULES.md` for execution summary format.
+See `ai/docs/rules/execution.md` for execution summary format.
 
 Report: tasks completed, branches created/merged, validation results, documentation updated, remaining READY_FOR_DEV tasks, recommendations.

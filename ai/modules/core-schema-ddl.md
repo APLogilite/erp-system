@@ -6,7 +6,7 @@ last_updated: 2026-07-15T22:00:00+05:30
 last_updated_git_sha: 46843e2
 paths:
   - ai/schema/
-  - ai/docs/SCRIPTS_TEMPLATE.md
+  - ai/docs/templates/scripts.md
 ---
 
 # Core: Schema DDL Reference

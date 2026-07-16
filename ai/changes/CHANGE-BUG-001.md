@@ -27,7 +27,7 @@ related_files:
   - backend/src/test/resources/application.properties
   - ai/tasks/BUG-001-database-connection-test-failures.md
   - ai/PROJECT_BOARD.md
-  - ai/docs/CHANGELOG.md
+  - ai/docs/changelog.md
 
 review_required: true
 

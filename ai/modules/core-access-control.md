@@ -5,8 +5,8 @@ layer: config
 last_updated: 2026-07-15T22:00:00+05:30
 last_updated_git_sha: efea8c6
 paths:
-  - ai/docs/ACCESS_RULES.json
-  - ai/docs/ACCESS_RULES.md
+  - ai/docs/rules/access.json
+  - ai/docs/rules/access.md
   - scripts/check-access.mjs
   - frontend/.husky/pre-commit
   - .agent-role
@@ -38,7 +38,7 @@ This is the "security guard" for the codebase. Each AI agent (Software Engineer,
 2. When you run `git commit`, the hook `scripts/check-access.mjs` runs automatically
 3. If everything matches your role, the commit proceeds normally
 4. If you try to commit files outside your allowed paths, the commit is rejected with a clear error message
-5. If you need to see what files you can modify, read `ai/docs/ACCESS_RULES.md`
+5. If you need to see what files you can modify, read `ai/docs/rules/access.md`
 
 ### Diagram
 
@@ -64,7 +64,7 @@ graph TD
 | Problem | What to do |
 |---------|-------------|
 | Commit blocked with "Branch not allowed" | You are on a branch type that doesn't match your role (e.g., QA on `main`). Switch to a `prd/*` branch. |
-| Commit blocked with "File not allowed" | You tried to stage a file that isn't in your allowed paths. See `ai/docs/ACCESS_RULES.md` for what your role can modify. |
+| Commit blocked with "File not allowed" | You tried to stage a file that isn't in your allowed paths. See `ai/docs/rules/access.md` for what your role can modify. |
 | You are human but commit is blocked | Delete the `.agent-role` file if it exists. If it doesn't, check your branch and files match default rules. |
 | Warning: "Migration files staged but no schema update" | You committed DB migrations but didn't update the corresponding `ai/schema/*.sql` file. |
 
@@ -74,24 +74,24 @@ graph TD
 
 | File | Role |
 |------|------|
-| `ai/docs/ACCESS_RULES.json` | Machine-readable rules — maps each role to allowed paths and branches |
-| `ai/docs/ACCESS_RULES.md` | Human-readable version for agents to read at startup |
+| `ai/docs/rules/access.json` | Machine-readable rules — maps each role to allowed paths and branches |
+| `ai/docs/rules/access.md` | Human-readable version for agents to read at startup |
 | `scripts/check-access.mjs` | Node.js pre-commit hook script — validates branch + staged files against rules |
 | `.agent-role` | Written by each agent at startup (e.g., `echo "se" > .agent-role`). Gitignored. |
 | `frontend/.husky/pre-commit` | Husky pre-commit hook — runs `node scripts/check-access.mjs` before lint-staged |
 
 ---
 
-## Access Rules Structure (ACCESS_RULES.json)
+## Access Rules Structure (rules/access.json)
 
 | Role | Label | Allowed Paths | Allowed Branches |
 |------|-------|---------------|------------------|
-| `se` | Software Engineer | `backend/**`, `frontend/**`, `ai/tasks/**`, `ai/changes/**`, `ai/schema/**`, `ai/PROJECT_BOARD.md`, `ai/docs/CHANGELOG.md`, `ai/failures/**` | `feature/*`, `bugfix/*`, `enhancement/*`, `prd/*` |
-| `qa` | QA Engineer | `ai/tasks/**`, `ai/tests/**`, `ai/scripts/**`, `ai/schema/**`, `ai/PROJECT_BOARD.md`, `ai/docs/CHANGELOG.md`, `ai/failures/**` | `prd/*` |
-| `pm` | Product Manager | `ai/prd/**`, `ai/tasks/**`, `ai/docs/*.md`, `ai/PROJECT_BOARD.md`, `ai/docs/CHANGELOG.md`, `ai/schema/**`, `ai/failures/**` | `main` |
+| `se` | Software Engineer | `backend/**`, `frontend/**`, `ai/tasks/**`, `ai/changes/**`, `ai/schema/**`, `ai/PROJECT_BOARD.md`, `ai/docs/changelog.md`, `ai/failures/**` | `feature/*`, `bugfix/*`, `enhancement/*`, `prd/*` |
+| `qa` | QA Engineer | `ai/tasks/**`, `ai/tests/**`, `ai/scripts/**`, `ai/schema/**`, `ai/PROJECT_BOARD.md`, `ai/docs/changelog.md`, `ai/failures/**` | `prd/*` |
+| `pm` | Product Manager | `ai/prd/**`, `ai/tasks/**`, `ai/docs/*.md`, `ai/PROJECT_BOARD.md`, `ai/docs/changelog.md`, `ai/schema/**`, `ai/failures/**` | `main` |
 | `tw` | Technical Writer | `ai/modules/**`, `ai/flows/**`, `ai/schema/**`, `ai/failures/**` | `*` |
 
-Shared paths that multiple agents can modify: `ai/PROJECT_BOARD.md`, `ai/docs/CHANGELOG.md`.
+Shared paths that multiple agents can modify: `ai/PROJECT_BOARD.md`, `ai/docs/changelog.md`.
 
 ---
 
@@ -102,7 +102,7 @@ sequenceDiagram
   participant Agent as AI Agent
   participant Git as git
   participant Hook as scripts/check-access.mjs
-  participant Rules as ai/docs/ACCESS_RULES.json
+  participant Rules as ai/docs/rules/access.json
   participant Env as .agent-role
 
   Agent->>Env: echo "se" > .agent-role
@@ -113,7 +113,7 @@ sequenceDiagram
   alt No .agent-role
     Hook-->>Git: exit 0 (skip check)
   end
-  Hook->>Rules: Read ACCESS_RULES.json
+  Hook->>Rules: Read ai/docs/rules/access.json
   Hook->>Git: git rev-parse --abbrev-ref HEAD (get branch)
   Hook->>Git: git diff --cached --name-only (get staged files)
   Hook->>Hook: Validate branch against allow_branches
@@ -137,7 +137,7 @@ sequenceDiagram
 - `Node.js` (>=18) — runs the check script
 - `git` — for branch detection and staged file listing
 - `husky` — manages the pre-commit hook installation
-- `ACCESS_RULES.json` — the single source of truth for permissions
+- `ai/docs/rules/access.json` — the single source of truth for permissions
 
 ---
 

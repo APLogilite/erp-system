@@ -29,7 +29,7 @@ You are responsible ONLY for planning. You never write code, perform testing, or
 
 ## COMMUNICATION
 
-See `ai/docs/COMMUNICATION_GUIDE.md`.
+See `ai/docs/rules/communication.md`.
 
 When gathering requirements:
 - Reference `ai/flows/` and `ai/modules/` to understand the existing system
@@ -43,14 +43,14 @@ When gathering requirements:
 
 Read these in order before any planning work:
 
-1. `ai/docs/WORKFLOW.md`
-2. `ai/docs/PROJECT_MEMORY.md`
-3. `ai/docs/STATUS_TRANSITIONS.md`
-4. `ai/docs/EXECUTION_RULES.md`
-5. `ai/docs/DOCUMENTATION_RULES.md`
-6. `ai/docs/TASK_RULES.md`
+1. `ai/docs/rules/workflow.md`
+2. `ai/docs/project-memory.md`
+3. `ai/docs/rules/status-transitions.md`
+4. `ai/docs/rules/execution.md`
+5. `ai/docs/rules/documentation.md`
+6. `ai/docs/rules/tasks.md`
 7. `ai/PROJECT_BOARD.md`
-8. `ai/docs/CHANGELOG.md` (if exists)
+8. `ai/docs/changelog.md` (if exists)
 9. Write role marker: `echo "pm" > .agent-role`
 
 Then load: existing PRDs in `ai/prd/`, tasks in `ai/tasks/`, flow and module docs.
@@ -84,12 +84,12 @@ If inconsistencies found: stop, report, recommend corrective actions.
 ### You MUST NOT
 
 - Write or modify application source code
-- Read or modify `backend/`, `frontend/`, or `docs/` files (see `ai/docs/ACCESS_RULES.md` for allowed paths)
+- Read or modify `backend/`, `frontend/`, or `docs/` files (see `ai/docs/rules/access.md` for allowed paths)
 - Execute tests
 - Activate tasks to READY_FOR_DEV (Software Engineer handles this)
 - Merge git branches
 - Change implementation details after development has started
-- Modify files outside allowed paths — see `ai/docs/ACCESS_RULES.md`
+- Modify files outside allowed paths — see `ai/docs/rules/access.md`
 
 ---
 
@@ -99,11 +99,11 @@ If inconsistencies found: stop, report, recommend corrective actions.
 
 1. Understand the business request
 2. Determine type: New Feature, Enhancement, Bug Fix, Requirement Change
-3. Create PRD doc from `ai/docs/PRD_TEMPLATE.md`:
+3. Create PRD doc from `ai/docs/templates/prd.md`:
    - Status: DRAFT
 4. Refine with user → status: REVIEW
 5. User approves → status: APPROVED
-6. Generate implementation tasks from `ai/docs/TASK_TEMPLATE.md`:
+6. Generate implementation tasks from `ai/docs/templates/task.md`:
    - Each task: status PLANNING
 7. Refine each task → status PLANNED
 8. Set dependencies between tasks
@@ -149,6 +149,6 @@ If business requirements change after implementation has started:
 
 ## REPORTING
 
-See `ai/docs/EXECUTION_RULES.md` for execution summary format.
+See `ai/docs/rules/execution.md` for execution summary format.
 
 Report: PRDs created/updated, tasks generated/activated, dependencies analyzed, risks identified, next recommended actions.

@@ -10,7 +10,7 @@
         "ai/changes/**",
         "ai/schema/**",
         "ai/PROJECT_BOARD.md",
-        "ai/docs/CHANGELOG.md",
+        "ai/docs/changelog.md",
         "ai/failures/**"
       ],
       "allow_branches": [
@@ -28,7 +28,7 @@
         "ai/scripts/**",
         "ai/schema/**",
         "ai/PROJECT_BOARD.md",
-        "ai/docs/CHANGELOG.md",
+        "ai/docs/changelog.md",
         "ai/failures/**"
       ],
       "allow_branches": [
@@ -42,7 +42,7 @@
         "ai/tasks/**",
         "ai/docs/*.md",
         "ai/PROJECT_BOARD.md",
-        "ai/docs/CHANGELOG.md",
+        "ai/docs/changelog.md",
         "ai/schema/**",
         "ai/failures/**"
       ],
@@ -67,7 +67,7 @@
     "ai/PROJECT_BOARD.md": {
       "agents": ["se", "qa", "pm"]
     },
-    "ai/docs/CHANGELOG.md": {
+    "ai/docs/changelog.md": {
       "agents": ["se", "qa", "pm"]
     }
   }

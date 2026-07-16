@@ -1910,6 +1910,6 @@ Every dynamic table includes these system columns:
 
 - [Architecture Blueprint (Phase 0)](/docs/architecture-blueprint-P0.md)
 - [Workspace Agent Prompt (Phase 0)](/docs/workspace-agent-prompt-P0.md)
-- [PRD Template](/ai/docs/PRD_TEMPLATE.md)
-- [Task Rules](/ai/docs/TASK_RULES.md)
-- [Workflow](/ai/docs/WORKFLOW.md)
+- [PRD Template](/ai/docs/templates/prd.md)
+- [Task Rules](/ai/docs/rules/tasks.md)
+- [Workflow](/ai/docs/rules/workflow.md)

@@ -24,7 +24,7 @@ You are responsible ONLY for quality assurance and verification. You do not impl
 
 ## COMMUNICATION
 
-See `ai/docs/COMMUNICATION_GUIDE.md`.
+See `ai/docs/rules/communication.md`.
 
 ---
 
@@ -32,12 +32,12 @@ See `ai/docs/COMMUNICATION_GUIDE.md`.
 
 Read these in order before any work:
 
-1. `ai/docs/WORKFLOW.md`
-2. `ai/docs/STATUS_TRANSITIONS.md`
-3. `ai/docs/GIT_WORKFLOW.md`
-4. `ai/docs/EXECUTION_RULES.md`
-5. `ai/docs/DOCUMENTATION_RULES.md`
-6. `ai/docs/PROJECT_MEMORY.md`
+1. `ai/docs/rules/workflow.md`
+2. `ai/docs/rules/status-transitions.md`
+3. `ai/docs/rules/git-workflow.md`
+4. `ai/docs/rules/execution.md`
+5. `ai/docs/rules/documentation.md`
+6. `ai/docs/project-memory.md`
 7. `ai/PROJECT_BOARD.md`
 8. Write role marker: `echo "qa" > .agent-role`
 
@@ -67,14 +67,14 @@ If any check fails: stop, document, report.
 - Update PROJECT_BOARD.md for testing progress
 - Update PRD status: TESTING → READY_FOR_DEPLOYMENT (all tasks TESTED)
 - Update PRD `status` and `updated` fields only — run `git diff` to verify
-- Append to `ai/docs/CHANGELOG.md` on PRD transition
+- Append to `ai/docs/changelog.md` on PRD transition
 - Create reusable test scripts in `ai/scripts/`
 - **Read `ai/schema/` for expected table structure when writing verify scripts**
 
 ### You MUST NOT
 
 - Modify PRD business content (only `status`/`updated` fields)
-- Write or modify implementation code (see `ai/docs/ACCESS_RULES.md` for allowed paths)
+- Write or modify implementation code (see `ai/docs/rules/access.md` for allowed paths)
 - Create or modify planning documents (PRDs, tasks)
 - Fix implementation bugs — create bug tasks for SE
 - Merge branches or deploy to production
@@ -100,7 +100,7 @@ If any check fails: stop, document, report.
 
 **If PASS:**
 - Change task doc: `locked: false`, status → TESTED
-- Generate test report: `ai/tests/TEST-TASK-XXX.md` using `TEST_TEMPLATE.md`
+- Generate test report: `ai/tests/TEST-TASK-XXX.md` using `ai/docs/templates/test.md`
 - Update PROJECT_BOARD.md
 
 **If FAIL:**
@@ -131,6 +131,6 @@ If any check fails: stop, document, report.
 
 ## REPORTING
 
-See `ai/docs/EXECUTION_RULES.md` for execution summary format.
+See `ai/docs/rules/execution.md` for execution summary format.
 
 Report: tasks tested, passed/failed/skipped, bugs created, documentation updated, remaining READY_FOR_TEST tasks, release readiness assessment.

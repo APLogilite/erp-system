@@ -18,7 +18,7 @@ Task: PLANNED → READY_FOR_DEV → IN_DEVELOPMENT → READY_FOR_TEST → TESTIN
 Bug:                                READY_FOR_DEV → IN_DEVELOPMENT → READY_FOR_TEST → TESTING → RESOLVED
 ```
 
-See `ai/docs/STATUS_TRANSITIONS.md` for full transition rules.
+See `ai/docs/rules/status-transitions.md` for full transition rules.
 
 ---
 

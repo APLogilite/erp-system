@@ -31,13 +31,13 @@ Every agent reads these on startup:
 
 | Order | File | What it covers |
 |-------|------|----------------|
-| 1 | `WORKFLOW.md` | This file — master overview |
-| 2 | `PROJECT_MEMORY.md` | Project context and conventions |
-| 3 | `STATUS_TRANSITIONS.md` | All statuses, transitions, lock rules, cascade |
-| 4 | `COMMUNICATION_GUIDE.md` | Principles, escalation, blocker reporting |
-| 5 | `EXECUTION_RULES.md` | Startup, continuous execution, stopping, reporting |
-| 6 | `DOCUMENTATION_RULES.md` | File ownership, sync rules, templates |
-| 7 | `GIT_WORKFLOW.md` (SE + QA only) | Branches, lock-before-branch, merge rules |
+| 1 | `ai/docs/rules/workflow.md` | This file — master overview |
+| 2 | `ai/docs/project-memory.md` | Project context and conventions |
+| 3 | `ai/docs/rules/status-transitions.md` | All statuses, transitions, lock rules, cascade |
+| 4 | `ai/docs/rules/communication.md` | Principles, escalation, blocker reporting |
+| 5 | `ai/docs/rules/execution.md` | Startup, continuous execution, stopping, reporting |
+| 6 | `ai/docs/rules/documentation.md` | File ownership, sync rules, templates |
+| 7 | `ai/docs/rules/git-workflow.md` (SE + QA only) | Branches, lock-before-branch, merge rules |
 
 ---
 
@@ -67,7 +67,7 @@ Plus: `BLOCKED | ON_HOLD | CANCELLED`
 READY_FOR_DEV → IN_DEVELOPMENT → READY_FOR_TEST → TESTING → RESOLVED
 ```
 
-→ See `ai/docs/STATUS_TRANSITIONS.md` for full transition rules per status.
+→ See `ai/docs/rules/status-transitions.md` for full transition rules per status.
 
 ---
 
@@ -91,7 +91,7 @@ main
         └── bugfix/BUG-XXX
 ```
 
-→ See `ai/docs/GIT_WORKFLOW.md` for lock-before-branch rules, merge rules, and commit conventions.
+→ See `ai/docs/rules/git-workflow.md` for lock-before-branch rules, merge rules, and commit conventions.
 
 ---
 
@@ -100,13 +100,13 @@ main
 | Directory | Owner |
 |-----------|-------|
 | `ai/prd/`, `ai/tasks/` | Product Manager |
-| `ai/docs/`, `ai/PROJECT_BOARD.md`, `ai/docs/CHANGELOG.md` | Product Manager |
+| `ai/docs/`, `ai/PROJECT_BOARD.md`, `ai/docs/changelog.md` | Product Manager |
 | `backend/`, `frontend/` | Software Engineer |
 | `ai/changes/` | Software Engineer |
 | `ai/tests/`, `ai/scripts/` | QA Engineer |
 | `ai/modules/`, `ai/flows/` | Technical Writer |
 
-→ See `ai/docs/DOCUMENTATION_RULES.md` for full ownership and sync rules.
+→ See `ai/docs/rules/documentation.md` for full ownership and sync rules.
 
 ---
 

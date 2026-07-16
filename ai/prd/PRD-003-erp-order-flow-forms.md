@@ -693,4 +693,4 @@ All existing PRD-001 metadata tables remain unchanged in structure. Only new row
 - [PRD-001 — Dynamic Form Configuration System](../prd/PRD-001-dynamic-form-configuration-system.md)
 - [PRD-002 — Admin Configuration Forms](../prd/PRD-002-admin-configuration-forms.md)
 - [PROJECT_BOARD.md](../PROJECT_BOARD.md)
-- [CHANGELOG.md](../docs/CHANGELOG.md)
+- [CHANGELOG.md](../docs/changelog.md)

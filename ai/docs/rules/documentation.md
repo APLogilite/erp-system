@@ -16,14 +16,14 @@ Every AI agent must read this before creating or modifying any project file.
 | `ai/tasks/ENH-*.md` | Product Manager | Enhancement tasks |
 | `ai/docs/*.md` | Product Manager (workflow) / AI Framework | Workflow docs and templates |
 | `ai/PROJECT_BOARD.md` | Product Manager | Project execution status |
-| `ai/docs/CHANGELOG.md` | Product Manager | Historical record |
+| `ai/docs/changelog.md` | Product Manager | Historical record |
 | `ai/changes/CHANGE-*.md` | Software Engineer | Implementation change reports |
 | `backend/*`, `frontend/*` | Software Engineer | Application source code |
 | `ai/tests/TEST-*.md` | QA Engineer | Test reports |
 | `ai/scripts/*` | QA Engineer | Reusable test scripts |
 | `ai/schema/*` | Software Engineer | Centralized DDL reference |
 | `ai/modules/*` | Technical Writer | Module docs |
-| `ai/docs/ACCESS_RULES.md`, `ai/docs/ACCESS_RULES.json` | AI Framework | Access control rules |
+| `ai/docs/rules/access.md`, `ai/docs/rules/access.json` | AI Framework | Access control rules |
 | `ai/flows/*` | Technical Writer | Flow docs |
 | `ai/failures/FAIL-*.md` | Agent that created it | Failure reports |
 | `.opencode/*` | AI Framework | Agent config (no agent modifies) |
@@ -61,7 +61,7 @@ Update the board on EVERY status change:
 - PRD doc and PROJECT_BOARD.md must always match
 - Never update one without the other
 - If inconsistency is found: stop, correct, continue
-- `ai/docs/ACCESS_RULES.md` is the source of truth for file ownership
+- `ai/docs/rules/access.md` is the source of truth for file ownership
 
 ### Field ownership
 
@@ -81,7 +81,7 @@ QA Engineer owns:
 Every completed task creates a change report.
 
 - Location: `ai/changes/CHANGE-TASK-XXX.md`
-- Template: `ai/docs/CHANGE_TEMPLATE.md`
+- Template: `ai/docs/templates/change.md`
 - Owner: Software Engineer
 - Must exist BEFORE merging task branch to PRD branch
 - Must document: files added/modified/removed, DB changes, API changes, validation results
@@ -93,7 +93,7 @@ Every completed task creates a change report.
 Every tested task creates a test report.
 
 - Location: `ai/tests/TEST-TASK-XXX.md`
-- Template: `ai/docs/TEST_TEMPLATE.md`
+- Template: `ai/docs/templates/test.md`
 - Owner: QA Engineer
 - Must document: test cases, results, bugs found, acceptance criteria status
 

@@ -14,17 +14,17 @@ Every agent follows this pattern on startup:
 
 Read in order:
 
-1. `ai/docs/WORKFLOW.md` — master workflow overview
-2. `ai/docs/PROJECT_MEMORY.md` — project context and conventions
-3. `ai/docs/STATUS_TRANSITIONS.md` — status definitions and transition rules
-4. `ai/docs/COMMUNICATION_GUIDE.md` — communication and principles
-5. `ai/docs/EXECUTION_RULES.md` — this file
-6. `ai/docs/DOCUMENTATION_RULES.md` — file ownership and sync rules
+1. `ai/docs/rules/workflow.md` — master workflow overview
+2. `ai/docs/project-memory.md` — project context and conventions
+3. `ai/docs/rules/status-transitions.md` — status definitions and transition rules
+4. `ai/docs/rules/communication.md` — communication and principles
+5. `ai/docs/rules/execution.md` — this file
+6. `ai/docs/rules/documentation.md` — file ownership and sync rules
 
 ### Step 2 — Load role-specific documentation
 
-- Software Engineer also reads: `ai/docs/GIT_WORKFLOW.md`
-- QA Engineer also reads: `ai/docs/GIT_WORKFLOW.md`
+- Software Engineer also reads: `ai/docs/rules/git-workflow.md`
+- QA Engineer also reads: `ai/docs/rules/git-workflow.md`
 
 ### Step 3 — Load project state
 
@@ -80,7 +80,7 @@ Completing one unit of work is NOT a stopping condition.
 
 After completing a task:
 1. Synchronize the repository: `git fetch --all`
-2. **Re-determine the base branch** — the PRD may have been merged to main since the last task. Run the versioned PRD branch detection logic (see `ai/docs/GIT_WORKFLOW.md`).
+2. **Re-determine the base branch** — the PRD may have been merged to main since the last task. Run the versioned PRD branch detection logic (see `ai/docs/rules/git-workflow.md`).
 3. Return to the determined base branch (original or versioned PRD branch)
 4. Read the latest PROJECT_BOARD.md
 5. Identify the next eligible task
