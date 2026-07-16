@@ -243,19 +243,12 @@ function RecordDialog({ open, windowName, windowDef, recordId, onClose }: Record
     const childRecord = (children as Array<Record<string, unknown>>).find(
       (r) => r.id === childRecordId
     );
-    // Use _display (record's own display column value), then FK display, then fallback
-    const title = childRecord
-      ? ((childRecord._display as string)
-        ?? (childRecord.name as string)
-        ?? (childRecord.code as string)
-        ?? childRecordId)
-      : childRecordId;
     setDrillStack((prev) => [
       ...prev,
       {
         tab: childTab,
         recordId: childRecordId,
-        title,
+        title: childTab.name,
         recordData: childRecord ?? ({} as Record<string, unknown>),
       },
     ]);
@@ -293,40 +286,44 @@ function RecordDialog({ open, windowName, windowDef, recordId, onClose }: Record
   }
 
   const fields = getDisplayedFields(currentLevelTab);
-  const dialogTitle =
-    drillStack.length > 0
-      ? drillStack[drillStack.length - 1].title
-      : (recordId ? 'Edit' : 'New') + ' - ' + windowDef.window.name;
+
+  // Breadcrumb: show navigation path as window name > tab names (not record values)
+  const breadcrumbParts = [
+    windowDef.window.name, // Root: window name
+    ...drillStack.map((l) => l.tab.name), // Each drill level: tab name
+  ];
+  // Title: show the current record's display value
+  const currentTitle = isDrilled && currentDrillLevel
+    ? ((currentDrillLevel.recordData._display as string)
+        ?? (currentDrillLevel.recordData.name as string)
+        ?? (currentDrillLevel.recordData.code as string)
+        ?? windowDef.window.name)
+    : (recordId
+        ? ((effectiveFormRecord?._display as string) ?? windowDef.window.name)
+        : 'New ' + (currentLevelTab?.name ?? 'Record'));
 
   return (
     <Dialog open={open} onClose={onClose} maxWidth="md" fullWidth>
       <DialogTitle sx={{ pb: 1 }}>
-        {/* Breadcrumb */}
+        {/* Breadcrumb navigation path */}
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, mb: 0.5 }}>
-          <Button
-            size="small"
-            onClick={() => {
-              if (drillStack.length > 0) goToLevel(drillStack.length - 1);
-              else onClose();
-            }}
-            sx={{ minWidth: 30, px: 0.5 }}
-          >
-            ←
-          </Button>
-          {drillStack.map((level, i) => (
+          {breadcrumbParts.map((part, i) => (
             <React.Fragment key={i}>
+              {i > 0 && <Typography sx={{ fontSize: 13, color: 'text.secondary' }}>&gt;</Typography>}
               <Button
                 size="small"
-                sx={{ textTransform: 'none', minWidth: 0, px: 0.5, fontSize: 13 }}
-                onClick={() => goToLevel(i)}
+                sx={{ textTransform: 'none', minWidth: 0, px: 0.5, fontSize: 13, color: i < breadcrumbParts.length - 1 ? 'text.secondary' : 'text.primary' }}
+                onClick={() => {
+                  if (i === 0) { goToLevel(0); setDrillStack([]); }
+                  else goToLevel(i - 1);
+                }}
               >
-                {level.title}
+                {part}
               </Button>
-              {i < drillStack.length - 1 && <Typography sx={{ fontSize: 13 }}>&gt;</Typography>}
             </React.Fragment>
           ))}
         </Box>
-        {dialogTitle}
+        {currentTitle}
       </DialogTitle>
 
       <DialogContent sx={{ mt: 1 }}>
