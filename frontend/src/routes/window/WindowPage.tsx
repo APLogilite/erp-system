@@ -656,9 +656,6 @@ function ChildTabGrid({ tab, childRecords, onRowClick }: ChildTabGridProps) {
   return (
     <Box sx={{ mb: 2 }}>
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, px: 1, mb: 0.5 }}>
-        <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
-          {tab.name} ({rows.length})
-        </Typography>
         <Button
           size="small"
           variant={editMode ? 'contained' : 'outlined'}
