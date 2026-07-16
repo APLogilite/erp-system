@@ -84,7 +84,6 @@ function RecordDialog({ open, windowName, windowDef, recordId, onClose }: Record
   // Drill-down state
   const [drillStack, setDrillStack] = useState<DrillLevel[]>([]);
   const [expandedPanels, setExpandedPanels] = useState<Set<string>>(new Set());
-  const [hasToggledPanel, setHasToggledPanel] = useState(false);
 
   // Determine which tab provides the form fields for the current level
   const currentLevelTab: WindowTabDefinition =
@@ -284,9 +283,8 @@ function RecordDialog({ open, windowName, windowDef, recordId, onClose }: Record
     setExpandedPanels(new Set());
   };
 
-  // Toggle accordion panel (stops auto-expanding first panel after user interacts)
+  // Toggle accordion panel
   const togglePanel = (panelId: string) => {
-    setHasToggledPanel(true);
     setExpandedPanels((prev) => {
       const next = new Set(prev);
       if (next.has(panelId)) next.delete(panelId);
@@ -516,10 +514,7 @@ function RecordDialog({ open, windowName, windowDef, recordId, onClose }: Record
                 return (
                   <Grid item xs={12} key={panelId}>
                     <Accordion
-                      expanded={
-                        expandedPanels.has(panelId) ||
-                        (!hasToggledPanel && expandedPanels.size === 0 && currentChildTabs.indexOf(ct) === 0)
-                      }
+                      expanded={expandedPanels.has(panelId)}
                       onChange={() => togglePanel(panelId)}
                     >
                       <AccordionSummary>
@@ -655,13 +650,12 @@ function ChildTabGrid({ tab, childRecords, onRowClick }: ChildTabGridProps) {
 
   return (
     <Box sx={{ mb: 2 }}>
-      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, px: 1, mb: 0.5 }}>
+      <Box sx={{ textAlign: 'right', px: 1, mb: 0.5 }}>
         <Button
           size="small"
           variant={editMode ? 'contained' : 'outlined'}
           onClick={() => setEditMode(!editMode)}
           color={editMode ? 'warning' : 'primary'}
-          sx={{ ml: 'auto' }}
         >
           {editMode ? 'Done Editing' : 'Quick Update'}
         </Button>
