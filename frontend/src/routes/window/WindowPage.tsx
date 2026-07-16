@@ -113,18 +113,22 @@ function RecordDialog({ open, windowName, windowDef, recordId, onClose }: Record
   const isDrilled = drillStack.length > 0;
   const currentDrillLevel = isDrilled ? drillStack[drillStack.length - 1] : null;
 
-  // Determine parent context for filtered lookups (e.g., column_id filtered by parent tab's table)
+  // Lookup context:
+  //   tabId = current tab (to find field-level filter_where_clause)
+  //   parentTabId = parent tab (to resolve @tab.field@ placeholders like @Tabs.table_id@)
+  //   parentRecordId = parent record UUID (to query the actual value)
+  const currentTabId = currentLevelTab?.id ?? null;
+  const parentTabId = isDrilled && drillStack.length >= 1
+    ? drillStack[drillStack.length - 1].tab.id
+    : null;
   const lookupParentId = isDrilled && drillStack.length >= 1
     ? drillStack[drillStack.length - 1].recordId
-    : null;
-  const lookupTabId = isDrilled && drillStack.length >= 1
-    ? drillStack[drillStack.length - 1].tab.id
     : null;
 
   lookupResults = useQueries({
     queries: lookupConfigs.map((cfg) => ({
-      queryKey: ['lookup', cfg.table, cfg.fieldCode, lookupParentId, lookupTabId],
-      queryFn: () => fetchLookupRecords(cfg.table, lookupParentId ?? undefined, lookupTabId ?? undefined, cfg.fieldCode),
+      queryKey: ['lookup', cfg.table, cfg.fieldCode, currentTabId, parentTabId, lookupParentId],
+      queryFn: () => fetchLookupRecords(cfg.table, lookupParentId ?? undefined, currentTabId ?? undefined, parentTabId ?? undefined, cfg.fieldCode),
       staleTime: 30000,
       gcTime: 60000,
     })),

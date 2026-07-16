@@ -247,7 +247,7 @@ SELECT create_window('Menu Configuration', 'sys_menu', 'Manage menu tree entries
 SELECT ensure_field('Menu Configuration', 10, 'window_id', 5, false, true, false, false);
 SELECT ensure_field('Menu Configuration', 10, 'name', 10, false, true, false, true);
 SELECT ensure_field('Menu Configuration', 10, 'type', 20, false, true, false, true);
-SELECT ensure_field('Menu Configuration', 10, 'parent_id', 30, false, true, false, false);
+SELECT ensure_field('Menu Configuration', 10, 'parent_id', 30, false, true, false, false, 'type = ''group''');
 SELECT ensure_field('Menu Configuration', 10, 'seq_no', 40, false, true, false, true);
 SELECT ensure_field('Menu Configuration', 10, 'icon', 50, false, true, false, false);
 SELECT ensure_field('Menu Configuration', 10, 'is_active', 60, false, true, false, false);

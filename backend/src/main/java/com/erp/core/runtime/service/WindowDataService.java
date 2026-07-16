@@ -480,6 +480,7 @@ public class WindowDataService {
       UUID tenantId,
       UUID parentRecordId,
       UUID tabId,
+      UUID parentTabId,
       String fieldCode) {
 
     // Resolve filter_where_clause from sys_window_field (field level, not column level)
@@ -488,9 +489,9 @@ public class WindowDataService {
     if (parentRecordId != null && tabId != null && fieldCode != null) {
       String filterClause = getFieldFilterClause(tableName, tabId, fieldCode);
       if (filterClause != null) {
-        // Resolve @tab.<field>@ placeholders by querying the parent tab record
-        // e.g. @Tabs.table_id@ → query sys_tab for parentRecordId, get table_id
-        String resolved = resolveFilterPlaceholders(filterClause, tabId, parentRecordId);
+        // Resolve @tab.<field>@ placeholders using the parent tab context
+        // tabId = current tab (to find the filter), parentTabId = parent tab (to resolve placeholders)
+        String resolved = resolveFilterPlaceholders(filterClause, parentTabId != null ? parentTabId : tabId, parentRecordId);
         if (resolved != null) {
           int eqIdx = resolved.indexOf('=');
           if (eqIdx > 0) {
