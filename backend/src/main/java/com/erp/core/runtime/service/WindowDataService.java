@@ -412,35 +412,59 @@ public class WindowDataService {
       String windowName,
       Map<String, Object> data,
       UUID tenantId,
-      UUID userId) {
+      UUID userId,
+      UUID tabId,
+      UUID parentRecordId) {
 
     WindowDefinitionResponse def = windowAssemblyService.assembleDefinition(windowName);
     if (def == null) {
       throw new IllegalArgumentException("Window not found: " + windowName);
     }
 
-    TabDefinitionResponse mainTab = findMainTab(def);
-    if (mainTab == null) {
-      throw new IllegalArgumentException("Window has no main tab: " + windowName);
+    // Determine which tab's table to create in (main tab by default, child tab if tabId provided)
+    TabDefinitionResponse targetTab;
+    if (tabId != null) {
+      targetTab = findTabById(def, tabId);
+      if (targetTab == null) {
+        Optional<SysTab> sysTabOpt = sysTabService.findById(tabId);
+        if (sysTabOpt.isPresent() && sysTabOpt.get().getWindowId().equals(def.getWindow().getId())) {
+          targetTab = windowAssemblyService.assembleTab(sysTabOpt.get());
+        } else {
+          throw new IllegalArgumentException("Tab not found in window: " + tabId);
+        }
+      }
+    } else {
+      targetTab = findMainTab(def);
+      if (targetTab == null) {
+        throw new IllegalArgumentException("Window has no main tab: " + windowName);
+      }
     }
 
-    String tableName = getTableName(mainTab);
+    String tableName = getTableName(targetTab);
     if (tableName == null) {
-      throw new IllegalArgumentException("Main tab has no associated table: " + windowName);
+      throw new IllegalArgumentException("Tab has no associated table: " + targetTab.getName());
     }
 
     // Auto-set where clause field value (e.g. order_type = 'sales' for Sales Orders)
-    Map<String, String> tabConditions = buildTabConditions(mainTab, null);
+    Map<String, String> tabConditions = buildTabConditions(targetTab, null);
     for (Map.Entry<String, String> entry : tabConditions.entrySet()) {
       if (!data.containsKey(entry.getKey())) {
         data.put(entry.getKey(), entry.getValue());
       }
     }
 
+    // Auto-set parent FK when creating a child record from drill-down context
+    if (tabId != null && parentRecordId != null) {
+      String parentColumn = targetTab.getParentColumn();
+      if (parentColumn != null && !parentColumn.isBlank() && !data.containsKey(parentColumn)) {
+        data.put(parentColumn, parentRecordId);
+      }
+    }
+
     // Validate required fields are present before inserting
-    if (mainTab.getFields() != null) {
+    if (targetTab.getFields() != null) {
       List<String> missingFields = new ArrayList<>();
-      for (FieldDefinitionResponse field : mainTab.getFields()) {
+      for (FieldDefinitionResponse field : targetTab.getFields()) {
         String colCode = field.getColumn() != null ? field.getColumn().getCode() : null;
         if (colCode == null) continue;
 

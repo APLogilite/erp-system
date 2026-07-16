@@ -134,8 +134,8 @@ SELECT ensure_column('sys_table', 'description', 'Description', 'text', false, n
 SELECT ensure_column('sys_table', 'is_active', 'Is Active', 'boolean', false, null, 7);
 
 -- sys_column columns
-SELECT ensure_column('sys_column', 'code', 'Code', 'string', true, 100, 1, NULL, true);
-SELECT ensure_column('sys_column', 'label', 'Label', 'string', true, 100, 2);
+SELECT ensure_column('sys_column', 'code', 'Code', 'string', true, 100, 1);
+SELECT ensure_column('sys_column', 'label', 'Label', 'string', true, 100, 2, NULL, true);
 SELECT ensure_column('sys_column', 'type', 'Type', 'string', true, 50, 3);
 SELECT ensure_column('sys_column', 'required', 'Required', 'boolean', false, null, 4);
 SELECT ensure_column('sys_column', 'max_length', 'Max Length', 'integer', false, null, 5);
@@ -149,6 +149,7 @@ SELECT ensure_column('sys_window', 'description', 'Description', 'text', false, 
 SELECT ensure_column('sys_window', 'is_active', 'Is Active', 'boolean', false, null, 3);
 
 -- sys_tab columns
+SELECT ensure_column('sys_tab', 'table_id', 'Table', 'many2one', true, null, 0, 'sys_table');
 SELECT ensure_column('sys_tab', 'name', 'Name', 'string', true, 100, 1, NULL, true);
 SELECT ensure_column('sys_tab', 'seq_no', 'Seq No', 'integer', true, null, 2);
 SELECT ensure_column('sys_tab', 'is_single_row', 'Is Single Row', 'boolean', false, null, 3);
@@ -215,6 +216,7 @@ SELECT add_child_tab('Window Definitions', 'Fields', 'sys_window_field', 15, 'ta
 SELECT ensure_field('Window Definitions', 10, 'name', 10, false, true, false, true);
 SELECT ensure_field('Window Definitions', 10, 'description', 20, false, true, false, false);
 SELECT ensure_field('Window Definitions', 10, 'is_active', 30, false, true, false, false);
+SELECT ensure_field('Window Definitions', 20, 'table_id', 5, false, true, false, true);
 SELECT ensure_field('Window Definitions', 20, 'name', 10, false, true, false, true);
 SELECT ensure_field('Window Definitions', 20, 'seq_no', 20, false, true, false, true);
 SELECT ensure_field('Window Definitions', 20, 'where_clause', 30, false, true, false, false);

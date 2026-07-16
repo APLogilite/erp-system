@@ -179,7 +179,14 @@ function RecordDialog({ open, windowName, windowDef, recordId, onClose }: Record
 
   // Mutations
   const createMutation = useMutation({
-    mutationFn: (data: Record<string, unknown>) => createWindowRecord(windowName, data),
+    mutationFn: (data: Record<string, unknown>) => {
+      // When drilled down, pass tab ID and parent record ID to auto-set parent FK
+      const tabId = isDrilled ? currentLevelTab.id : undefined;
+      const parentRecordId = isDrilled && drillStack.length >= 2
+        ? drillStack[drillStack.length - 2].recordId
+        : undefined;
+      return createWindowRecord(windowName, data, tabId, parentRecordId);
+    },
     onSuccess: () => {
       invalidateWindowCache();
       onClose();

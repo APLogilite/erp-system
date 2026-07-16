@@ -233,15 +233,23 @@ export async function fetchWindowRecord(
 
 /**
  * Creates a new record in a window.
- * POST /api/v1/runtime/windows/{windowName}/records
+ * Optionally specify tabId + parentRecordId to auto-set the parent FK
+ * for child records created from drill-down context.
+ * POST /api/v1/runtime/windows/{windowName}/records?tabId=...&parentRecordId=...
  */
 export async function createWindowRecord(
   windowName: string,
-  data: Record<string, unknown>
+  data: Record<string, unknown>,
+  tabId?: string,
+  parentRecordId?: string
 ): Promise<Record<string, unknown>> {
+  const params: Record<string, string> = {};
+  if (tabId) params.tabId = tabId;
+  if (parentRecordId) params.parentRecordId = parentRecordId;
   const response = await apiClient.post<ApiResponse<Record<string, unknown>>>(
     `/runtime/windows/${encodeURIComponent(windowName)}/records`,
-    data
+    data,
+    { params }
   );
   return unwrap(response);
 }

@@ -158,12 +158,15 @@ public class WindowDataController {
   }
 
   /**
-   * Create a record in the window's main tab.
+   * Create a record. If tabId is provided, creates in the child tab's table
+   * and auto-sets the parent FK from parentRecordId.
    */
   @PostMapping("/{windowName}/records")
   public ResponseEntity<ApiResponse<Map<String, Object>>> createRecord(
       @PathVariable String windowName,
-      @RequestBody Map<String, Object> data) {
+      @RequestBody Map<String, Object> data,
+      @RequestParam(name = "tabId", required = false) UUID tabId,
+      @RequestParam(name = "parentRecordId", required = false) UUID parentRecordId) {
 
     RuntimeContext ctx = requireContext();
     if (ctx == null || ctx.getTenantId() == null) {
@@ -174,7 +177,7 @@ public class WindowDataController {
 
     try {
       Map<String, Object> record = windowDataService.createRecord(
-          windowName, data, ctx.getTenantId(), ctx.getUserId());
+          windowName, data, ctx.getTenantId(), ctx.getUserId(), tabId, parentRecordId);
       return ResponseEntity.ok(ApiResponse.success(record, "Record created."));
     } catch (IllegalArgumentException e) {
       return ResponseEntity.status(HttpStatus.BAD_REQUEST)
