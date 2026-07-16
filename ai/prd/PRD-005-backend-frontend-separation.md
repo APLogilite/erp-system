@@ -3,7 +3,7 @@ id: PRD-005
 
 title: Backend-Frontend Separation — Move Data Logic to Backend
 
-version: 1.0.0
+version: 1.1.0
 
 status: DRAFT
 # DRAFT
@@ -307,6 +307,7 @@ When PRD-004 (Window Hierarchy & Menu System) was built, the frontend `WindowPag
 - Ctrl+K search endpoint (FR-007)
 - Section guarantee for form definitions (FR-008)
 - Frontend cleanup: remove all data transformation code
+- **Remove dead backend modules**: `modules/auth/` (6 files) and `core/security/` (12 files)
 
 ## Excluded
 
@@ -314,6 +315,7 @@ When PRD-004 (Window Hierarchy & Menu System) was built, the frontend `WindowPag
 - Real-time sync (WebSockets) — future
 - Form designer UI changes — backend already feeds the designer
 - Old PRD-001 form system migration — covered by PRD-004
+- Module reorganization (routes/ vs modules/ alignment) — future PRD
 
 ---
 
@@ -457,6 +459,22 @@ None. All changes are in DTOs, service logic, and frontend code.
 - Files: Form definition assembly service, `DynamicFormRenderer.tsx`
 - Effort: 1 hour
 
+## TASK-009: Remove Dead `modules/auth/` Package
+
+- Owner: Software Engineer
+- Scope: backend
+- Description: `modules/auth/controller/AuthController.java`, `service/AuthService.java`, `repository/AuthRepository.java`, `entity/AuthEntity.java`, `dto/AuthDto.java` — zero external references. The real auth system lives in `platform/identity/`. Safe to delete entirely.
+- Files: DELETE `backend/src/main/java/com/erp/modules/auth/`
+- Effort: 30 minutes
+
+## TASK-010: Remove Dead `core/security/` Package
+
+- Owner: Software Engineer
+- Scope: backend
+- Description: `PermissionController`, `PermissionService`, `PermissionServiceImpl`, `PermissionRegistry`, `PermissionValidator`, `PermissionMapper`, `PermissionLevel` enum, 3 DTOs, `PermissionDeniedException` — 12 files, zero external references. The real permission system lives in `platform/identity/authorization/`. Frontend calls `/identity/permissions` and `/auth/permissions`, NOT `/security/check`.
+- Files: DELETE `backend/src/main/java/com/erp/core/security/`
+- Effort: 30 minutes
+
 ---
 
 # Acceptance Criteria
@@ -470,6 +488,10 @@ None. All changes are in DTOs, service logic, and frontend code.
 - Backend search endpoint for Ctrl+K exists
 - All existing frontend functionality works identically (regression pass)
 - 600+ lines of frontend code removed
+- `modules/auth/` directory deleted (6 files)
+- `core/security/` directory deleted (12 files)
+- Backend compiles and all 36 existing tests pass after deletion
+- `mvn clean compile` succeeds with no unresolved imports
 
 ---
 
@@ -478,3 +500,4 @@ None. All changes are in DTOs, service logic, and frontend code.
 | Version | Reason |
 |---------|--------|
 | 1.0.0 | Initial Draft |
+| 1.1.0 | Added dead code removal: `modules/auth/` and `core/security/` packages |
