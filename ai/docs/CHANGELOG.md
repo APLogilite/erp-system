@@ -3,10 +3,31 @@ document: CHANGELOG
 version: 1.0.0
 status: ACTIVE
 owner: Product Manager
-last_updated: 2026-07-15
+last_updated: 2026-07-16
 ---
 
 # Changelog
+
+## 2026-07-16 (PRD-004 Advanced to TESTING)
+
+### Summary
+PRD-004 advanced to TESTING after completion of BUG-010 and BUG-011 fixes, consolidation of 14 migrations into 6 clean V1-V6 scripts, and multiple feature enhancements.
+
+### Changes since REOPENED
+- **BUG-010** (FIXED): POST create record 500 error — added required field validation + DataAccessException handler
+- **BUG-011** (FIXED): Child tab record data not loading — added resolveDisplayNames at all drill levels + grandchild fetching
+- **Migrations consolidated**: 14 old scripts → 6 clean V1-V6 by module
+- **Display column**: `is_display_column` flag on `sys_column` for metadata-driven FK display values
+- **Field labels**: Pre-resolved in backend (`labelOverride ?? column.label`), frontend uses `field.label`
+- **Filter where clause**: Per-field `filter_where_clause` on `sys_window_field` with `@tab.field@` placeholder resolution
+- **Lookup filters**: Column-level + field-level filter support, resolved server-side via full drill context
+- **Breadcrumb**: Shows navigation path tab names with display values
+- **Refresh button**: Added to header bar for one-click cache clear
+
+### PRD Status Changed
+- **PRD-004** — Window Hierarchy & Menu System v1.0.0: **IN_DEVELOPMENT → TESTING**
+
+---
 
 ## 2026-07-15 (BUG-011 — Child Tab Record Data Not Loading)
 

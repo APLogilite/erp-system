@@ -4,7 +4,7 @@ Last Updated: 2026-07-15
 
 Updated By: Software Engineer
 
-(PRD-004 REOPENED — BUG-010 and BUG-011 fixed, awaiting QA)
+(PRD-004 TESTING — BUG-010 and BUG-011 fixes awaiting QA verification)
 
 ---
 
@@ -29,7 +29,7 @@ See `ai/docs/STATUS_TRANSITIONS.md` for full transition rules.
 | PRD-001 | Dynamic Form Configuration System | 1.6.0 | **COMPLETED** | High |
 | PRD-002 | Admin Configuration Forms | 1.1.0 | **COMPLETED** | High |
 | PRD-003 | ERP Order Flow — Transaction Forms | 1.0.0 | **COMPLETED** | High |
-| PRD-004 | Window Hierarchy & Menu System | 1.0.0 | **REOPENED** (BUG-010, BUG-011) | High |
+| PRD-004 | Window Hierarchy & Menu System | 1.0.0 | **TESTING** (BUG-010, BUG-011) | High |
 
 ---
 
@@ -171,4 +171,4 @@ See `ai/docs/STATUS_TRANSITIONS.md` for full transition rules.
 | Completed (PRD-003) | 5 tasks (TASK-028/029/030/031/032) — merged to main |
 | Completed (PRD-004) | 10 tasks (TASK-036..045) — merged to main |
 | Total Tasks | 47 completed + 8 bugs |
-| PRD-004 Status | REOPENED (v1.0.0) — BUG-010: POST/Save 500, BUG-011: Child tab form visible but no record data |
+| PRD-004 Status | TESTING (v1.0.0) — Consolidated V1-V6 migrations, BUG-010/BUG-011 fixes |
