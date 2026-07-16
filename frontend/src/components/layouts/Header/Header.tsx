@@ -1,13 +1,15 @@
-import { Menu as MenuIcon } from '@mui/icons-material';
+import { Menu as MenuIcon, Refresh as RefreshIcon } from '@mui/icons-material';
 import {
   AppBar,
   Toolbar,
   IconButton,
   Typography,
   Box,
+  Tooltip,
   useTheme,
   useMediaQuery,
 } from '@mui/material';
+import { useQueryClient } from '@tanstack/react-query';
 
 import { UserMenu } from './UserMenu';
 
@@ -22,6 +24,7 @@ type HeaderProps = {
 export function Header({ onMobileMenuToggle, title = 'ERP System' }: HeaderProps) {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const queryClient = useQueryClient();
 
   return (
     <AppBar
@@ -49,6 +52,19 @@ export function Header({ onMobileMenuToggle, title = 'ERP System' }: HeaderProps
           {title}
         </Typography>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+          <Tooltip title="Refresh all data (menu, definitions, records)">
+            <IconButton
+              color="inherit"
+              onClick={() => {
+                queryClient.invalidateQueries({ queryKey: ['runtime', 'menu'] });
+                queryClient.invalidateQueries({ queryKey: ['window-definition'] });
+                queryClient.invalidateQueries({ queryKey: ['window-records'] });
+                queryClient.invalidateQueries({ queryKey: ['window-record'] });
+              }}
+            >
+              <RefreshIcon />
+            </IconButton>
+          </Tooltip>
           <FormSearchBar />
           <ContextSwitcher />
           <UserMenu />
