@@ -270,7 +270,7 @@ def load_all_data():
             "priority": t.get("priority", ""),
             "parent_prd": t.get("parent_prd", ""),
         })
-        if t.get("status") == "COMPLETED":
+        if t.get("status") in ("COMPLETED", "RESOLVED"):
             agents[owner]["completed"] += 1
         if t.get("status") in ("IN_DEVELOPMENT", "TESTING"):
             agents[owner]["in_progress"] += 1
@@ -280,7 +280,7 @@ def load_all_data():
     for pid, p in cache.get("prds", {}).items():
         prd_tasks = [t for t in tasks.values() if t.get("parent_prd") == pid]
         total = len(prd_tasks)
-        completed = sum(1 for t in prd_tasks if t.get("status") == "COMPLETED")
+        completed = sum(1 for t in prd_tasks if t.get("status") in ("COMPLETED", "RESOLVED"))
         cancelled = sum(1 for t in prd_tasks if t.get("status") == "CANCELLED")
         active = total - cancelled
         p["_task_count"] = total
@@ -298,7 +298,7 @@ def load_all_data():
     timeline = defaultdict(lambda: {"completed": [], "bugs_fixed": 0})
     for t in tasks.values():
         completed_date = t.get("completed") or t.get("updated")
-        if completed_date is not None and t.get("status") == "COMPLETED":
+        if completed_date is not None and t.get("status") in ("COMPLETED", "RESOLVED"):
             timeline[str(completed_date)]["completed"].append(t.get("id", ""))
     try:
         cache["timeline"] = {k: dict(v) for k, v in sorted(timeline.items())}

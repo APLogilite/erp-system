@@ -633,7 +633,7 @@ const App = {
     const all = tasks.length;
     const activeTasks = tasks.filter(t => t.status !== "CANCELLED");
     const allActive = activeTasks.length;
-    const completed = activeTasks.filter(t => t.status === "COMPLETED").length;
+    const completed = activeTasks.filter(t => t.status === "COMPLETED" || t.status === "RESOLVED").length;
     const inDev = tasks.filter(t => t.status === "IN_DEVELOPMENT").length;
     const readyTest = tasks.filter(t => t.status === "READY_FOR_TEST").length;
     const bugs = tasks.filter(t => t.id && t.id.startsWith("BUG")).length;
@@ -758,7 +758,8 @@ const App = {
 
     for (const t of tasks) {
       const s = t.status || "";
-      if (cols[s]) cols[s].tasks.push(t);
+      const colKey = s === "RESOLVED" ? "COMPLETED" : s;
+      if (cols[colKey]) cols[colKey].tasks.push(t);
       else other.tasks.push(t);
     }
 
@@ -821,7 +822,7 @@ const App = {
     for (const [name, agent] of entries) {
       const tasks = agent.tasks || [];
       const inProgress = tasks.filter(t => t.status === "IN_DEVELOPMENT" || t.status === "TESTING");
-      const completed = tasks.filter(t => t.status === "COMPLETED");
+      const completed = tasks.filter(t => t.status === "COMPLETED" || t.status === "RESOLVED");
       const readyTest = tasks.filter(t => t.status === "READY_FOR_TEST");
       const agentActive = tasks.filter(t => t.status !== "CANCELLED");
       const visible = tasks.slice(0, AGENT_SHOW);
