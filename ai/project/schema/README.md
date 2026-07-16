@@ -10,8 +10,8 @@ This directory contains the canonical DDL for every table in the ERP system.
 
 ## Current schema version
 
-Last updated: 2026-07-14
-Current migration head: V31
+Last updated: 2026-07-16
+Current migration head: V33
 
 ## Table index
 

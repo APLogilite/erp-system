@@ -42,8 +42,8 @@ All module and flow documents **MUST** follow the official templates. Before wri
 
 | Template | Location | For |
 |----------|----------|-----|
-| Module Template | `ai/agent/templates/module.md` | Every `ai/project/modules/*.md` |
-| Flow Template | `ai/agent/templates/flow.md` | Every `ai/project/flows/*.md` |
+| Module Template | `ai/agent/templates/module.md` | Every document under `ai/project/modules/<domain>/` |
+| Flow Template | `ai/agent/templates/flow.md` | Every document under `ai/project/flows/<domain>/` |
 
 **Consistency rule:** Every document you write must contain all sections from its template. Do not skip sections. If a section is not applicable, write "N/A — [brief reason]" instead of omitting it.
 
@@ -117,7 +117,7 @@ Use these diagram types as appropriate:
 
 ### Example — flow document
 
-    # flow-login.md
+    # auth/login.md
 
     ## Sequence Diagram
 
@@ -207,7 +207,19 @@ Every module document MUST have these sections (see template for full details):
 7. **Related Frontend / Related Backend** — cross-references
 
 ### Naming convention
-`<layer>-<name>.md`  e.g. `controller-auth.md`, `pages-login.md`, `service-identity-tenant.md`
+
+Place each module document in its domain subdirectory. Create the directory if it doesn't exist (`mkdir -p`). Strip the layer prefix — the folder structure conveys the category.
+
+| Domain | Contains | Example |
+|--------|----------|---------|
+| `identity/` | Auth, users, roles, tenants, permissions, login | `auth.md`, `identity-admin.md`, `login.md` |
+| `metadata/` | Form engine metadata tables, window/tab/field definitions | `window.md`, `form-designer.md` |
+| `runtime/` | Runtime rendering, hooks, router, API client, stores, components | `form-renderer.md`, `router.md` |
+| `infrastructure/` | Shared backend infrastructure, DDL, contexts | `common.md`, `schema-ddl.md` |
+| `services/` | Business service modules (order, product) | `order.md`, `product.md` |
+| `pages/` | Standalone page modules | `dashboard.md` |
+
+Before writing, run: `mkdir -p ai/project/modules/<domain>/`
 
 ### Simple Instructions section (mandatory)
 
@@ -221,32 +233,34 @@ This section goes near the top of every module doc, right after Purpose. It answ
 
 ### Minimum module inventory to generate
 
-**Backend (scan and document every module found):**
-- `security-jwt-auth` — JWT generation, validation, authentication filter chain
-- `controller-auth` — login/logout/token-refresh REST endpoints
-- `service-identity-tenant` — multi-tenant CRUD hierarchy
-- `service-identity-org` — organization / company / branch / department management
-- `service-identity-rbac` — role and permission management
-- `service-identity-user` — user CRUD and role assignment
-- `service-product` — product CRUD
-- `service-warehouse` — warehouse CRUD
-- `service-inventory` — stock movement tracking
-- `service-order` — order and order line CRUD
-- Plus one document per additional `@RestController`, `@Service`, `@Repository` discovered during scan
+Create each file under its domain subdirectory (e.g., `identity/auth.md`).
 
-**Frontend (scan and document every module found):**
-- `pages-login` — login page
-- `pages-dashboard` — main dashboard
-- `pages-identity-*` — tenant, org, user, role admin pages
-- `pages-product` — product management
-- `pages-warehouse` — warehouse management
-- `pages-order` — order management
-- `components-*` — shared/reusable UI components (forms, tables, modals, etc.)
-- `hooks-*` — custom React hooks (useForm, useAuth, etc.)
-- `stores-*` — Zustand stores (auth, app, etc.)
-- `services-api` — API client configuration, axios instance, interceptors
-- `core-metadata-*` — metadata engine (registries, renderers, schema, field types)
-- `router` — route definitions and navigation configuration
+- `identity/auth.md` — JWT generation, validation, authentication filter chain, login/logout/token-refresh
+- `identity/identity-admin.md` — tenant, org, company, branch, department, user, role, permission CRUD
+- `identity/security.md` — security framework
+- `identity/auth-frontend.md` — frontend auth stores and hooks
+- `identity/identity-pages.md` — identity management pages
+- `identity/login.md` — login page
+- `identity/access-rules.md` — AI agent access control rules
+- `metadata/window.md` — window/tab/field metadata
+- `metadata/form-designer.md` — form designer configuration
+- `metadata/runtime.md` — runtime metadata resolution
+- `metadata/table-designer.md` — table designer configuration
+- `runtime/form-renderer.md` — dynamic form rendering engine
+- `runtime/runtime-window.md` — runtime window rendering
+- `runtime/runtime-hooks.md` — custom React hooks
+- `runtime/router.md` — route definitions and navigation
+- `runtime/components.md` — shared/reusable UI components
+- `runtime/api-client.md` — API client, axios, interceptors
+- `runtime/stores.md` — Zustand stores
+- `infrastructure/common.md` — common backend patterns
+- `infrastructure/context.md` — context management
+- `infrastructure/schema-ddl.md` — schema DDL reference
+- `infrastructure/business-modules.md` — business module overview
+- `services/order.md` — order and order line CRUD
+- `services/product.md` — product CRUD
+- `pages/dashboard.md` — main dashboard
+- Plus one document per additional `@RestController`, `@Service`, `@Repository` discovered during scan, placed in the appropriate domain
 
 ────────────────────────────────────────
 
@@ -268,7 +282,16 @@ Every flow document MUST have these sections (see template for full details):
 8. **Error Flows** — every failure point documented
 
 ### Naming convention
-`flow-<name>.md`  e.g. `flow-login.md`, `flow-save-product.md`, `flow-open-form.md`
+
+Place each flow document in its domain subdirectory. Create the directory if it doesn't exist (`mkdir -p`). Strip the `flow-` prefix — the folder structure conveys the category.
+
+| Domain | Contains | Example |
+|--------|----------|---------|
+| `auth/` | Authentication, authorization, role-based access | `login.md`, `role-access.md` |
+| `data/` | Data CRUD operations | `save-record.md`, `delete-record.md`, `search-filter.md` |
+| `navigation/` | Page/window navigation, context switching | `navigation.md`, `open-form.md`, `open-window.md` |
+
+Before writing, run: `mkdir -p ai/project/flows/<domain>/`
 
 ### Minimum diagrams required
 Every flow doc must have at least **two** Mermaid diagrams:
@@ -286,15 +309,19 @@ This section goes at the top of every flow doc, before the technical Sequence Di
 
 ### Minimum flow documents to generate
 
-- `flow-login.md` — Authentication from login form to JWT issuance and dashboard redirect
-- `flow-open-list-view.md` — Opening a list/table view (e.g. Products list with pagination)
-- `flow-open-form.md` — Opening a create/edit form (form definition loading + data loading)
-- `flow-save-record.md` — Saving a new or edited record (validation → API call → response handling)
-- `flow-delete-record.md` — Soft-delete confirmation and execution
-- `flow-search-filter.md` — Search bar / filter interaction → API query → result rendering
-- `flow-navigation.md` — Menu click → route resolution → lazy-loaded component → rendered page
-- `flow-role-access.md` — How roles and permissions gate both UI rendering and API access
-- `flow-tenant-switch.md` — Switching between tenants → data reload → UI update
+Create each file under its domain subdirectory (e.g., `auth/login.md`).
+
+- `auth/login.md` — Authentication from login form to JWT issuance and dashboard redirect
+- `auth/role-access.md` — How roles and permissions gate both UI rendering and API access
+- `data/save-record.md` — Saving a new or edited record (validation → API call → response handling)
+- `data/delete-record.md` — Soft-delete confirmation and execution
+- `data/search-filter.md` — Search bar / filter interaction → API query → result rendering
+- `navigation/navigation.md` — Menu click → route resolution → lazy-loaded component → rendered page
+- `navigation/open-list-view.md` — Opening a list/table view (e.g. Products list with pagination)
+- `navigation/open-form.md` — Opening a create/edit form (form definition loading + data loading)
+- `navigation/open-window.md` — Opening a window page
+- `navigation/context-switch.md` — Context selection and switching
+- `navigation/tenant-switch.md` — Switching between tenants → data reload → UI update
 
 ────────────────────────────────────────
 
@@ -302,7 +329,7 @@ This section goes at the top of every flow doc, before the technical Sequence Di
 
 Before every run:
 
-1. Ensure `ai/project/modules/` and `ai/project/flows/` directories exist. Create them if missing.
+1. Ensure `ai/project/modules/` and `ai/project/flows/` directories exist along with all domain subdirectories (`identity/`, `metadata/`, `runtime/`, `infrastructure/`, `services/`, `pages/`, `auth/`, `data/`, `navigation/`). Create them if missing.
 2. Read `ai/agent/project-memory.md` for project overview and conventions.
 3. Read `AGENTS.md` for repository structure, key conventions, and technology stack.
 
