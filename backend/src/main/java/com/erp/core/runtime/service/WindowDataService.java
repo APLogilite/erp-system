@@ -212,7 +212,7 @@ public class WindowDataService {
     try {
       String sql = "SELECT swf.filter_where_clause FROM sys_window_field swf "
           + "JOIN sys_column sc ON swf.column_id = sc.id "
-          + "WHERE swf.tab_id = '" + tabId + "' AND sc.code = '" + fieldCode + "' "
+          + "WHERE swf.tab_id = '" + tabId + "'::UUID AND sc.code = '" + fieldCode + "' "
           + "AND swf.filter_where_clause IS NOT NULL LIMIT 1";
       List<Map<String, Object>> rows = dynamicCrudService.queryForList(sql);
       if (!rows.isEmpty()) {
@@ -228,6 +228,7 @@ public class WindowDataService {
       String sql = "SELECT filter_where_clause FROM sys_column WHERE "
           + "table_id = (SELECT id FROM sys_table WHERE name = '" + tableName + "') "
           + "AND code = '" + fieldCode + "' AND filter_where_clause IS NOT NULL LIMIT 1";
+      // table_id is UUID compared with subquery result — PostgreSQL handles this correctly
       List<Map<String, Object>> rows = dynamicCrudService.queryForList(sql);
       if (!rows.isEmpty()) {
         Object val = rows.get(0).get("filter_where_clause");
@@ -271,7 +272,7 @@ public class WindowDataService {
           continue;
         }
         // Query the parent record to get the field value
-        String sql = "SELECT \"" + fieldCode + "\" FROM \"" + tableName + "\" WHERE id = '" + parentRecordId + "'";
+        String sql = "SELECT \"" + fieldCode + "\" FROM \"" + tableName + "\" WHERE id = '" + parentRecordId + "'::UUID";
         List<Map<String, Object>> rows = dynamicCrudService.queryForList(sql);
         if (!rows.isEmpty()) {
           Object val = rows.get(0).get(fieldCode);
@@ -294,7 +295,7 @@ public class WindowDataService {
    */
   private String getPhysicalTableName(UUID tableId) {
     try {
-      String sql = "SELECT table_name FROM sys_table WHERE id = '" + tableId + "'";
+      String sql = "SELECT table_name FROM sys_table WHERE id = '" + tableId + "'::UUID";
       List<Map<String, Object>> rows = dynamicCrudService.queryForList(sql);
       if (!rows.isEmpty()) {
         Object val = rows.get(0).get("table_name");
