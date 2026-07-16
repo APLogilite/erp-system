@@ -134,7 +134,7 @@ SELECT ensure_column('sys_table', 'description', 'Description', 'text', false, n
 SELECT ensure_column('sys_table', 'is_active', 'Is Active', 'boolean', false, null, 7);
 
 -- sys_column columns
-SELECT ensure_column('sys_column', 'code', 'Code', 'string', true, 100, 1);
+SELECT ensure_column('sys_column', 'code', 'DB Column Name', 'string', true, 100, 1);
 SELECT ensure_column('sys_column', 'label', 'Label', 'string', true, 100, 2, NULL, true);
 SELECT ensure_column('sys_column', 'type', 'Type', 'string', true, 50, 3);
 SELECT ensure_column('sys_column', 'required', 'Required', 'boolean', false, null, 4);

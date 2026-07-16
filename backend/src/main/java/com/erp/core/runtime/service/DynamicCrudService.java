@@ -265,6 +265,9 @@ public class DynamicCrudService {
       if (SYSTEM_COLUMNS.contains(col)) {
         continue; // Skip system columns that might be in the request
       }
+      if (col.endsWith("_display")) {
+        continue; // Skip computed display-only fields (not real DB columns)
+      }
       userColumns.add(col);
       columns.add(col);
       String paramName = "col_" + col;
@@ -327,6 +330,9 @@ public class DynamicCrudService {
       String col = entry.getKey();
       if (SYSTEM_COLUMNS.contains(col)) {
         continue;
+      }
+      if (col.endsWith("_display")) {
+        continue; // Skip computed display-only fields (not real DB columns)
       }
       if (readOnlyFields != null && readOnlyFields.contains(col)) {
         continue; // Strip read-only fields
