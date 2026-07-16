@@ -20,6 +20,7 @@ public class FieldDefinitionResponse {
   private String readonlyLogic;
   private String defaultValue;
   private String labelOverride;
+  private String label;  // Pre-resolved: labelOverride ?? column.label
   private ColumnInfo column;
 
   public FieldDefinitionResponse() {}
@@ -48,6 +49,8 @@ public class FieldDefinitionResponse {
   public void setDefaultValue(String defaultValue) { this.defaultValue = defaultValue; }
   public String getLabelOverride() { return labelOverride; }
   public void setLabelOverride(String labelOverride) { this.labelOverride = labelOverride; }
+  public String getLabel() { return label; }
+  public void setLabel(String label) { this.label = label; }
   public ColumnInfo getColumn() { return column; }
   public void setColumn(ColumnInfo column) { this.column = column; }
 

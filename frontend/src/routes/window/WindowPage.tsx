@@ -354,7 +354,7 @@ function RecordDialog({ open, windowName, windowDef, recordId, onClose }: Record
           <Box sx={{ pt: 1 }}>
             {fields.map((field) => {
               const value = formData[field.column.code] ?? '';
-              const label = field.labelOverride ?? field.column.label;
+              const label = field.label;
               switch (field.column.type) {
                 case 'boolean':
                   return (
@@ -663,7 +663,7 @@ function ChildTabGrid({ tab, childRecords, onRowClick }: ChildTabGridProps) {
               <TableRow>
                 {fields.map((f) => (
                   <TableCell key={f.column.code} sx={{ fontWeight: 600, fontSize: 12 }}>
-                    {f.labelOverride ?? f.column.label}
+                    {f.label}
                   </TableCell>
                 ))}
                 {editMode && <TableCell sx={{ fontWeight: 600, fontSize: 12 }}>Actions</TableCell>}
@@ -872,7 +872,7 @@ export function WindowPage() {
                 <TableRow>
                   {fields.map((f) => (
                     <TableCell key={f.column.code} sx={{ fontWeight: 600 }}>
-                      {f.labelOverride ?? f.column.label}
+                      {f.label}
                     </TableCell>
                   ))}
                   <TableCell sx={{ fontWeight: 600 }}>Actions</TableCell>

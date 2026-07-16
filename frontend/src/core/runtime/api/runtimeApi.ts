@@ -148,6 +148,7 @@ export interface WindowFieldDefinition {
   readonlyLogic: string | null;
   defaultValue: string | null;
   labelOverride: string | null;
+  label: string; // Pre-resolved: labelOverride ?? column.label
   column: ColumnInfo;
 }
 
