@@ -5,7 +5,7 @@ title: Backend-Frontend Separation — Move Data Logic to Backend
 
 version: 1.3.0
 
-status: DRAFT
+status: APPROVED
 # DRAFT
 # REVIEW
 # APPROVED
@@ -25,7 +25,7 @@ owner: Product Manager
 
 created: 2026-07-15
 
-updated: 2026-07-15
+updated: 2026-07-16
 
 approved_by:
 

@@ -1,10 +1,10 @@
 # Project Board
 
-Last Updated: 2026-07-15
+Last Updated: 2026-07-16
 
-Updated By: Software Engineer
+Updated By: Product Manager
 
-(PRD-004 COMPLETED v1.1.0 — merged to main, BUG-010/BUG-011 RESOLVED)
+(PRD-005 APPROVED v1.3.0 — 14 tasks created for backend-frontend separation, dead code removal, and package standardization)
 
 ---
 
@@ -30,6 +30,7 @@ See `ai/docs/STATUS_TRANSITIONS.md` for full transition rules.
 | PRD-002 | Admin Configuration Forms | 1.1.0 | **COMPLETED** | High |
 | PRD-003 | ERP Order Flow — Transaction Forms | 1.0.0 | **COMPLETED** | High |
 | PRD-004 | Window Hierarchy & Menu System | 1.1.0 | **COMPLETED** | High |
+| PRD-005 | Backend-Frontend Separation & Code Standardization | 1.3.0 | **APPROVED** | High |
 
 ---
 
@@ -112,9 +113,24 @@ See `ai/docs/STATUS_TRANSITIONS.md` for full transition rules.
 
 ---
 
-## Planning (PRD-004)
+## Planning (PRD-005)
 
-*(none — all tasks completed)*
+| Task | Title | Priority | Scope |
+|------|-------|----------|-------|
+| TASK-046 | Add childTabIds to TabDefinitionResponse | High | backend |
+| TASK-047 | Add htmlType and lookupOptions to FieldDefinitionResponse | High | both |
+| TASK-048 | Backend Pre-Filters and Pre-Sorts Fields | Medium | backend |
+| TASK-049 | Backend Type Coercion on Save | Medium | backend |
+| TASK-050 | Guarantee _display on Every Record | High | both |
+| TASK-051 | Backend Returns RuntimeMetadataBundle Directly | High | both |
+| TASK-052 | Backend Search Endpoint for Ctrl+K | Medium | both |
+| TASK-053 | Backend Guarantees Non-Empty Sections | Low | backend |
+| TASK-054 | Remove Dead modules/auth/ Package | High | backend |
+| TASK-055 | Remove Dead core/security/ Package | High | backend |
+| TASK-056 | Move customerService.ts Out of core/api/services/ | Low | frontend |
+| TASK-057 | Audit and Remove Stale Frontend API Endpoints | Low | frontend |
+| TASK-058 | Move Window Schema to core/layout/ | High | backend |
+| TASK-059 | Move Frontend Pages to routes/ | Medium | frontend |
 
 ---
 
@@ -156,7 +172,7 @@ See `ai/docs/STATUS_TRANSITIONS.md` for full transition rules.
 
 | Status | Count |
 |--------|-------|
-| PRDs | 4 (3 COMPLETED, 1 REOPENED: PRD-004) |
+| PRDs | 5 (4 COMPLETED: PRD-001/002/003/004, 1 APPROVED: PRD-005) |
 | Ready For Dev | 0 |
 | Ready For Test | 0 |
 | In Development | 0 |
@@ -167,5 +183,7 @@ See `ai/docs/STATUS_TRANSITIONS.md` for full transition rules.
 | Completed (PRD-002) | 3 tasks + 1 enhancement (TASK-033/034/035 + ENH-002) |
 | Completed (PRD-003) | 5 tasks (TASK-028/029/030/031/032) — merged to main |
 | Completed (PRD-004) | 10 tasks (TASK-036..045) — merged to main |
-| Total Tasks | 47 completed + 10 bugs |
+| Planning (PRD-005) | 14 tasks (TASK-046..059) — backend-frontend separation, cleanup |
+| Total Tasks | 47 completed + 14 planned (PRD-005) |
 | PRD-004 Status | COMPLETED (v1.1.0) — Consolidated migrations, BUG-010/BUG-011 RESOLVED |
+| PRD-005 Status | APPROVED (v1.3.0) — 14 tasks awaiting development |

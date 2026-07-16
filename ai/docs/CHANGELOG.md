@@ -678,3 +678,18 @@ TASK-004, 006, 008, 009, 010, 016, 017, 018, 019, 020, 024, 025 — all 12 previ
 - **21 READY_FOR_TEST** — 18 with change summaries (TASK-011, 012, 013 still missing)
 - **6 IN_DEVELOPMENT** — TASK-021, 022, 023, 026, 027, ENH-001
 - **1 PLANNED** — TASK-014
+
+## 2026-07-16 (PRD-005 APPROVED v1.3.0)
+
+### Summary
+PRD-005 created for backend-frontend separation. 14 tasks covering:
+- Moving data logic from frontend to backend (8 tasks)
+- Removing dead code (modules/auth/, core/security/) (2 tasks)
+- Package standardization (move window schema to core/layout/, move pages to routes/) (2 tasks)
+- Cleanup stale services and endpoints (2 tasks)
+
+### Tasks
+- TASK-046 through TASK-059 created (status: PLANNING)
+
+### Status
+PRD-005: APPROVED — 14 tasks awaiting development
