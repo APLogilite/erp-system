@@ -77,22 +77,11 @@ Every module document MUST have these sections (see template for full details):
 
 ### Naming convention
 
-Place each module document in its domain subdirectory. Create the directory if it doesn't exist (`mkdir -p`). Strip the layer prefix — the folder structure conveys the category.
-
-| Domain | Contains | Example |
-|--------|----------|---------|
-| `identity/` | Auth, users, roles, tenants, permissions, login | `auth.md`, `identity-admin.md`, `login.md` |
-| `metadata/` | Form engine metadata tables, window/tab/field definitions | `window.md`, `form-designer.md` |
-| `runtime/` | Runtime rendering, hooks, router, API client, stores, components | `form-renderer.md`, `router.md` |
-| `infrastructure/` | Shared backend infrastructure, DDL, contexts | `common.md`, `schema-ddl.md` |
-| `services/` | Business service modules (order, product) | `order.md`, `product.md` |
-| `pages/` | Standalone page modules | `dashboard.md` |
-
-Before writing, run: `mkdir -p ai/project/modules/<domain>/`
+Read `ai/project/modules/INDEX.md` to discover existing domains. Create the directory if it doesn't exist (`mkdir -p`). Strip the layer prefix — the folder structure conveys the category.
 
 ### Module inventory
 
-Read `ai/project/modules/INDEX.md` for the current module inventory. Update it when creating, modifying, or deleting any module document. For new modules not yet listed, scan the codebase and add them to the appropriate domain subdirectory.
+Read `ai/project/modules/INDEX.md` for the current module inventory. Update it when creating, modifying, or deleting any module document. For new modules not yet listed, scan the codebase, determine the appropriate domain, create the directory, and update INDEX.md.
 
 ────────────────────────────────────────
 
@@ -113,15 +102,7 @@ Every flow document MUST have these sections (see template for full details):
 
 ### Naming convention
 
-Place each flow document in its domain subdirectory. Create the directory if it doesn't exist (`mkdir -p`). Strip the `flow-` prefix — the folder structure conveys the category.
-
-| Domain | Contains | Example |
-|--------|----------|---------|
-| `auth/` | Authentication, authorization, role-based access | `login.md`, `role-access.md` |
-| `data/` | Data CRUD operations | `save-record.md`, `delete-record.md`, `search-filter.md` |
-| `navigation/` | Page/window navigation, context switching | `navigation.md`, `open-form.md`, `open-window.md` |
-
-Before writing, run: `mkdir -p ai/project/flows/<domain>/`
+Read `ai/project/flows/INDEX.md` to discover existing domains. Create the directory if it doesn't exist (`mkdir -p`). Strip the `flow-` prefix — the folder structure conveys the category.
 
 ### Flow inventory
 
@@ -134,7 +115,7 @@ Read `ai/project/flows/INDEX.md` for the current flow inventory. Update it when 
 Before every run:
 
 1. Read the RULES section files above in order.
-2. Ensure `ai/project/modules/` and `ai/project/flows/` directories exist along with all domain subdirectories (`identity/`, `metadata/`, `runtime/`, `infrastructure/`, `services/`, `pages/`, `auth/`, `data/`, `navigation/`). Create them if missing.
+2. Ensure `ai/project/modules/` and `ai/project/flows/` directories exist. Read INDEX.md in each to discover existing domain subdirectories and create them if missing.
 3. Read `AGENTS.md` for repository structure, key conventions, and technology stack.
 4. Write role marker: `echo "tw" > .agent-role`
 
