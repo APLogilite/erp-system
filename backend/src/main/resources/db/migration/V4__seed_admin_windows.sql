@@ -129,7 +129,7 @@ SELECT ensure_column('sys_table', 'name', 'Name', 'string', true, 100, 1, NULL, 
 SELECT ensure_column('sys_table', 'label', 'Label', 'string', true, 100, 2);
 SELECT ensure_column('sys_table', 'plural_label', 'Plural Label', 'string', false, 100, 3);
 SELECT ensure_column('sys_table', 'table_type', 'Table Type', 'string', true, 20, 4);
-SELECT ensure_column('sys_table', 'table_name', 'Table Name', 'string', true, 100, 5);
+SELECT ensure_column('sys_table', 'table_name', 'DB Table Name', 'string', true, 100, 5);
 SELECT ensure_column('sys_table', 'description', 'Description', 'text', false, null, 6);
 SELECT ensure_column('sys_table', 'is_active', 'Is Active', 'boolean', false, null, 7);
 
