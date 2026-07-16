@@ -3,9 +3,9 @@ id: PRD-004
 
 title: Window Hierarchy & Menu System
 
-version: 1.0.0
+version: 1.1.0
 
-status: TESTING
+status: READY_FOR_DEPLOYMENT
 
 priority: High
 

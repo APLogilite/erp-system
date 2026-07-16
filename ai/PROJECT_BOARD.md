@@ -4,7 +4,7 @@ Last Updated: 2026-07-15
 
 Updated By: Software Engineer
 
-(PRD-004 TESTING — BUG-010 and BUG-011 fixes awaiting QA verification)
+(PRD-004 READY_FOR_DEPLOYMENT — all bugs TESTED, waiting merge to main)
 
 ---
 
@@ -29,7 +29,7 @@ See `ai/docs/STATUS_TRANSITIONS.md` for full transition rules.
 | PRD-001 | Dynamic Form Configuration System | 1.6.0 | **COMPLETED** | High |
 | PRD-002 | Admin Configuration Forms | 1.1.0 | **COMPLETED** | High |
 | PRD-003 | ERP Order Flow — Transaction Forms | 1.0.0 | **COMPLETED** | High |
-| PRD-004 | Window Hierarchy & Menu System | 1.0.0 | **TESTING** (BUG-010, BUG-011) | High |
+| PRD-004 | Window Hierarchy & Menu System | 1.1.0 | **READY_FOR_DEPLOYMENT** | High |
 
 ---
 
@@ -41,10 +41,7 @@ See `ai/docs/STATUS_TRANSITIONS.md` for full transition rules.
 
 ## Ready For Test
 
-| Bug | Severity | Status |
-|-----|----------|--------|
-| BUG-010 | Critical | **READY_FOR_TEST** — Missing required field validation added, DataAccessException handler |
-| BUG-011 | Critical | **READY_FOR_TEST** — where_clause conditions now applied to child tab queries |
+*(none)*
 
 ---
 
@@ -134,8 +131,8 @@ See `ai/docs/STATUS_TRANSITIONS.md` for full transition rules.
 | BUG-007 | TASK-036 | Critical | COMPLETED | QA Engineer | — |
 | BUG-008 | TASK-041 | Medium | COMPLETED | QA Engineer | BUG-007 |
 | BUG-009 | TASK-036 | Critical | COMPLETED | QA Engineer | — |
-| BUG-010 | TASK-039 | Critical | **READY_FOR_TEST** | Software Engineer | — |
-| BUG-011 | TASK-041 | Critical | **READY_FOR_TEST** | Software Engineer | — |
+| BUG-010 | TASK-039 | Critical | **TESTED** | QA Engineer | — |
+| BUG-011 | TASK-041 | Critical | **TESTED** | QA Engineer | — |
 
 ---
 
@@ -170,5 +167,5 @@ See `ai/docs/STATUS_TRANSITIONS.md` for full transition rules.
 | Completed (PRD-002) | 3 tasks + 1 enhancement (TASK-033/034/035 + ENH-002) |
 | Completed (PRD-003) | 5 tasks (TASK-028/029/030/031/032) — merged to main |
 | Completed (PRD-004) | 10 tasks (TASK-036..045) — merged to main |
-| Total Tasks | 47 completed + 8 bugs |
-| PRD-004 Status | TESTING (v1.0.0) — Consolidated V1-V6 migrations, BUG-010/BUG-011 fixes |
+| Total Tasks | 47 completed + 10 bugs (2 TESTED) |
+| PRD-004 Status | READY_FOR_DEPLOYMENT (v1.1.0) — Consolidated migrations, all bugs resolved |

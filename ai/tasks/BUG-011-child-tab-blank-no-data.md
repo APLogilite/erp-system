@@ -3,7 +3,7 @@ id: BUG-011
 
 title: Child tab form renders but record data does not load — empty grid/accordion panels
 
-status: TESTING
+status: TESTED
 
 priority: Critical
 
@@ -15,7 +15,7 @@ assigned_to: QA Engineer
 
 assigned_branch: bugfix/BUG-011
 
-locked: true
+locked: false
 
 assigned_to:
 
@@ -43,12 +43,13 @@ related_test:
 
 fix_summary: Fixed backend to apply where_clause conditions to child tab record queries. getChildRecords() now accepts additional conditions. Both getRecordWithChildren() and getTabRecordWithChildren() now pass buildTabConditions() results.
 
-verification_report:
+verification_report: ai/tests/TEST-BUG-011.md
 
 history:
   - 2026-07-15 — Product Manager — Created. Child tab form renders (fields visible) but record data does not load in the grid/accordion.
   - 2026-07-15 — Software Engineer — Locked, started development.
   - 2026-07-15 — Software Engineer — Fixed. Added additionalConditions parameter to getChildRecords(), applied buildTabConditions() in both child record fetching paths. Merged to prd/PRD-004-v2.
+  - 2026-07-16 — QA Engineer — Verified. 15/15 tests pass. Display name resolution works at all levels. Column filter and drill-down functional.
 
 ---
 

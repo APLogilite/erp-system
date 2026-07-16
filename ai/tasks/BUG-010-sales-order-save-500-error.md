@@ -3,7 +3,7 @@ id: BUG-010
 
 title: Saving Sales Order data returns HTTP 500 — POST /runtime/windows/Sales Orders/records fails
 
-status: TESTING
+status: TESTED
 
 priority: Critical
 
@@ -15,7 +15,7 @@ assigned_to: QA Engineer
 
 assigned_branch: bugfix/BUG-010
 
-locked: true
+locked: false
 
 assigned_to:
 
@@ -43,11 +43,12 @@ related_test:
 
 fix_summary: Added required field validation in WindowDataService.createRecord() + DataAccessException handler in GlobalApiExceptionHandler. Missing required fields now return HTTP 400 with field names instead of HTTP 500.
 
-verification_report:
+verification_report: ai/tests/TEST-BUG-010.md
 
 history:
   - 2026-07-15 — Product Manager — Created. POST to runtime window data API returns 500 when saving Sales Order record.
   - 2026-07-15 — Software Engineer — Fixed. Added required field validation before INSERT (checks isMandatory + column.required). Added DataAccessException handler for graceful error reporting. Merged to prd/PRD-004-v2.
+  - 2026-07-16 — QA Engineer — Verified. 10/10 tests pass. POST create with missing fields returns 400. UUID/date type conversion works. _display fields filtered on save.
 
 ---
 
