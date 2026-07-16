@@ -287,20 +287,20 @@ function RecordDialog({ open, windowName, windowDef, recordId, onClose }: Record
 
   const fields = getDisplayedFields(currentLevelTab);
 
-  // Breadcrumb: show navigation path as window name > tab names (not record values)
+  // Breadcrumb: show each level as "TabName (DisplayValue)"
+  const getDisplayVal = (rec: Record<string, unknown> | undefined): string =>
+    ((rec?._display as string) ?? (rec?.name as string) ?? (rec?.code as string) ?? '');
   const breadcrumbParts = [
-    windowDef.window.name, // Root: window name
-    ...drillStack.map((l) => l.tab.name), // Each drill level: tab name
+    // Root: window name (with parent record display if editing)
+    recordId
+      ? windowDef.window.name + (effectiveFormRecord ? ' (' + getDisplayVal(effectiveFormRecord as Record<string, unknown>) + ')' : '')
+      : windowDef.window.name,
+    // Drill levels: tab name (record display value)
+    ...drillStack.map((l) => l.tab.name + ' (' + getDisplayVal(l.recordData as Record<string, unknown>) + ')'),
   ];
-  // Title: show the current record's display value
-  const currentTitle = isDrilled && currentDrillLevel
-    ? ((currentDrillLevel.recordData._display as string)
-        ?? (currentDrillLevel.recordData.name as string)
-        ?? (currentDrillLevel.recordData.code as string)
-        ?? windowDef.window.name)
-    : (recordId
-        ? ((effectiveFormRecord?._display as string) ?? windowDef.window.name)
-        : 'New ' + (currentLevelTab?.name ?? 'Record'));
+  const currentTitle = isDrilled
+    ? windowDef.window.name
+    : (recordId ? windowDef.window.name : 'New ' + (currentLevelTab?.name ?? 'Record'));
 
   return (
     <Dialog open={open} onClose={onClose} maxWidth="md" fullWidth>
