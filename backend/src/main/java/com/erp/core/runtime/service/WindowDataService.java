@@ -242,31 +242,37 @@ public class WindowDataService {
 
   /**
    * Resolves @tab.field@ placeholders in a filter clause.
-   * @tab is the parent tab name, .field is a column on that tab's table.
-   * The parent tab record is queried by parentRecordId to get the field value.
-   * Returns "field = value" string, or null if resolution fails.
+   * @tab is a tab name within the current window, .field is a column on that tab's table.
+   * The window context (windowId) is used to find the tab by name, then the parent
+   * record is queried by parentRecordId to get the field value.
    */
-  private String resolveFilterPlaceholders(String filterClause, UUID tabId, UUID parentRecordId) {
-    if (filterClause == null || tabId == null || parentRecordId == null) return null;
+  private String resolveFilterPlaceholders(String filterClause, UUID windowId, UUID parentRecordId) {
+    if (filterClause == null || windowId == null || parentRecordId == null) return null;
 
-    // Match @xxx.yyy@ patterns
+    // Match @tabname.fieldname@ patterns
     java.util.regex.Matcher matcher = java.util.regex.Pattern.compile("@([^.]+)\\.([^@]+)@").matcher(filterClause);
     StringBuffer sb = new StringBuffer();
     while (matcher.find()) {
       String tabName = matcher.group(1);  // e.g., "Tabs"
       String fieldCode = matcher.group(2); // e.g., "table_id"
       try {
-        // Find the tab by ID (we have the tabId from the parent context)
-        // The tab's table tells us which table to query
-        Optional<SysTab> tabOpt = sysTabService.findById(tabId);
-        if (tabOpt.isEmpty()) {
-          log.warn("Parent tab {} not found", tabId);
+        // Find the tab by NAME within the current window
+        String findTabSql = "SELECT st.id, st.table_id FROM sys_tab st "
+            + "JOIN sys_window sw ON st.window_id = sw.id "
+            + "WHERE sw.id = '" + windowId + "'::UUID AND st.name = '" + tabName + "' LIMIT 1";
+        List<Map<String, Object>> tabRows = dynamicCrudService.queryForList(findTabSql);
+        if (tabRows.isEmpty()) {
+          log.warn("Tab '{}' not found in window {}", tabName, windowId);
           matcher.appendReplacement(sb, "''");
           continue;
         }
-        SysTab tab = tabOpt.get();
+        Object tabTableId = tabRows.get(0).get("table_id");
+        if (tabTableId == null) {
+          matcher.appendReplacement(sb, "''");
+          continue;
+        }
         // Get the physical table name for this tab
-        String tableName = getPhysicalTableName(tab.getTableId());
+        String tableName = getPhysicalTableName(UUID.fromString(tabTableId.toString()));
         if (tableName == null) {
           matcher.appendReplacement(sb, "''");
           continue;
@@ -481,7 +487,7 @@ public class WindowDataService {
       UUID tenantId,
       UUID parentRecordId,
       UUID tabId,
-      UUID parentTabId,
+      UUID windowId,
       String fieldCode) {
 
     // Resolve filter_where_clause — supports both static and @tab.field@ placeholders
@@ -491,9 +497,9 @@ public class WindowDataService {
       String filterClause = getFieldFilterClause(tableName, tabId, fieldCode);
       if (filterClause != null) {
         String resolved;
-        // Check if filter has @tab.field@ placeholders (needs parent context)
-        if (filterClause.contains("@") && parentRecordId != null) {
-          resolved = resolveFilterPlaceholders(filterClause, parentTabId != null ? parentTabId : tabId, parentRecordId);
+        // Check if filter has @tab.field@ placeholders (needs parent record + window context)
+        if (filterClause.contains("@") && parentRecordId != null && windowId != null) {
+          resolved = resolveFilterPlaceholders(filterClause, windowId, parentRecordId);
         } else {
           resolved = filterClause; // Static filter, no placeholder resolution needed
         }

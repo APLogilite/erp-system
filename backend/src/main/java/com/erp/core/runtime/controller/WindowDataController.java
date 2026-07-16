@@ -223,7 +223,7 @@ public class WindowDataController {
       @PathVariable String tableName,
       @RequestParam(name = "parentRecordId", required = false) UUID parentRecordId,
       @RequestParam(name = "tabId", required = false) UUID tabId,
-      @RequestParam(name = "parentTabId", required = false) UUID parentTabId,
+      @RequestParam(name = "windowId", required = false) UUID windowId,
       @RequestParam(name = "fieldCode", required = false) String fieldCode) {
 
     RuntimeContext ctx = requireContext();
@@ -235,7 +235,7 @@ public class WindowDataController {
 
     try {
       List<Map<String, Object>> records = windowDataService.lookupRecords(
-          tableName, ctx.getTenantId(), parentRecordId, tabId, parentTabId, fieldCode);
+          tableName, ctx.getTenantId(), parentRecordId, tabId, windowId, fieldCode);
       return ResponseEntity.ok(ApiResponse.success(records, "Lookup records retrieved."));
     } catch (IllegalArgumentException e) {
       return ResponseEntity.status(HttpStatus.NOT_FOUND)
