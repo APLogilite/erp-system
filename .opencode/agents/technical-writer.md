@@ -87,78 +87,6 @@ Use these diagram types:
 
 ────────────────────────────────────────
 
-## OUTPUT FORMAT & DIAGRAMS (Legacy — see TEMPLATE FILES above)
-
-Whenever a flow, relationship, or architecture can be explained visually, you **MUST include a Mermaid diagram**. Prefer diagrams over walls of text.
-
-Use these diagram types as appropriate:
-
-| Scenario | Diagram Type |
-|----------|-------------|
-| End-to-end flow steps | `sequenceDiagram` |
-| Request routing (URL → component) | `graph TD` (flowchart) |
-| Component tree / hierarchy | `graph TD` |
-| API layer relationship | `graph LR` |
-| Data flow through layers | `sequenceDiagram` |
-
-Whenever a flow, relationship, or architecture can be explained visually, you **MUST include a Mermaid diagram**. Prefer diagrams over walls of text.
-
-Use these diagram types as appropriate:
-
-| Scenario | Diagram Type |
-|----------|-------------|
-| End-to-end flow steps | `sequenceDiagram` |
-| Request routing (URL → component) | `graph TD` (flowchart) |
-| Component tree / hierarchy | `graph TD` |
-| API layer relationship | `graph LR` |
-| Data flow through layers | `sequenceDiagram` |
-| State transitions | `stateDiagram-v2` |
-| DB table relationships | `erDiagram` |
-
-### Example — flow document
-
-    # auth/login.md
-
-    ## Sequence Diagram
-
-    ```mermaid
-    sequenceDiagram
-      actor User
-      participant LoginPage as LoginPage.tsx
-      participant AuthStore as authStore.ts
-      participant ApiClient as api.ts
-      participant AuthController as AuthController.java
-      participant AuthService as AuthService.java
-      participant UserRepo as UserRepository.java
-      participant DB as PostgreSQL
-
-      User->>LoginPage: Fills credentials + clicks Login
-      LoginPage->>AuthStore: login(username, password, tenantId)
-      AuthStore->>ApiClient: POST /api/v1/auth/login
-      ApiClient->>AuthController: HTTP Request
-      AuthController->>AuthService: authenticate(dto)
-      AuthService->>UserRepo: findByUsernameAndTenantId()
-      UserRepo->>DB: SELECT * FROM users WHERE...
-      DB-->>UserRepo: User row
-      AuthService->>AuthService: PasswordService.matches()
-      AuthService->>AuthService: JwtProvider.generate()
-      AuthService-->>AuthController: LoginResponse(token, user)
-      AuthController-->>ApiClient: 200 ApiResponse<LoginResponse>
-      ApiClient-->>AuthStore: Response
-      AuthStore->>AuthStore: persist token + user
-      AuthStore-->>LoginPage: Success
-      LoginPage->>User: Navigate to dashboard
-    ```
-
-    ## Step-by-Step Breakdown
-
-    ### Step 1: User Action
-    - **Component:** `frontend/src/pages/LoginPage.tsx:42`
-    - User fills username, password, selects tenant, clicks "Login"
-    ...
-
-────────────────────────────────────────
-
 ## INCREMENTAL UPDATE STRATEGY
 
 To avoid re-scanning the entire codebase on every run:
@@ -194,8 +122,6 @@ paths:
 
 One MD per logical module. Concise reference — readable in 30 seconds for developers, and the Simple Instructions section makes it accessible to everyone else.
 
-**IMPORTANT: Use the official template at `ai/agent/templates/module.md` for every module document.** Do not deviate from the template structure. Read it before writing.
-
 Every module document MUST have these sections (see template for full details):
 
 1. **YAML Front Matter** — module name, type, layer, dates, git SHA, tracked paths
@@ -221,54 +147,15 @@ Place each module document in its domain subdirectory. Create the directory if i
 
 Before writing, run: `mkdir -p ai/project/modules/<domain>/`
 
-### Simple Instructions section (mandatory)
+### Module inventory
 
-This section goes near the top of every module doc, right after Purpose. It answers in plain English:
-
-- **What is this?** — one-sentence explanation with zero code jargon
-- **What can you do here?** — list of user-facing actions
-- **How to use it** — numbered step-by-step guide (3-7 steps)
-- **Diagram** — Mermaid graph TD showing the user's journey through this module
-- **Common issues** — table of problems and solutions a user would understand
-
-### Minimum module inventory to generate
-
-Create each file under its domain subdirectory (e.g., `identity/auth.md`).
-
-- `identity/auth.md` — JWT generation, validation, authentication filter chain, login/logout/token-refresh
-- `identity/identity-admin.md` — tenant, org, company, branch, department, user, role, permission CRUD
-- `identity/security.md` — security framework
-- `identity/auth-frontend.md` — frontend auth stores and hooks
-- `identity/identity-pages.md` — identity management pages
-- `identity/login.md` — login page
-- `identity/access-rules.md` — AI agent access control rules
-- `metadata/window.md` — window/tab/field metadata
-- `metadata/form-designer.md` — form designer configuration
-- `metadata/runtime.md` — runtime metadata resolution
-- `metadata/table-designer.md` — table designer configuration
-- `runtime/form-renderer.md` — dynamic form rendering engine
-- `runtime/runtime-window.md` — runtime window rendering
-- `runtime/runtime-hooks.md` — custom React hooks
-- `runtime/router.md` — route definitions and navigation
-- `runtime/components.md` — shared/reusable UI components
-- `runtime/api-client.md` — API client, axios, interceptors
-- `runtime/stores.md` — Zustand stores
-- `infrastructure/common.md` — common backend patterns
-- `infrastructure/context.md` — context management
-- `infrastructure/schema-ddl.md` — schema DDL reference
-- `infrastructure/business-modules.md` — business module overview
-- `services/order.md` — order and order line CRUD
-- `services/product.md` — product CRUD
-- `pages/dashboard.md` — main dashboard
-- Plus one document per additional `@RestController`, `@Service`, `@Repository` discovered during scan, placed in the appropriate domain
+Read `ai/project/modules/INDEX.md` for the current module inventory. Update it when creating, modifying, or deleting any module document. For new modules not yet listed, scan the codebase and add them to the appropriate domain subdirectory.
 
 ────────────────────────────────────────
 
 ## FLOW DOCUMENTS (`ai/project/flows/`)
 
 Flow documents trace a complete end-to-end user interaction from UI click to database and back. Each flow serves two audiences: non-developers get a plain-English walkthrough at the top, developers get the full technical trace below.
-
-**IMPORTANT: Use the official template at `ai/agent/templates/flow.md` for every flow document.** Do not deviate from the template structure. Read it before writing.
 
 Every flow document MUST have these sections (see template for full details):
 
@@ -298,30 +185,9 @@ Every flow doc must have at least **two** Mermaid diagrams:
 - **graph TD** in the Simple Instructions section (user-facing overview)
 - **sequenceDiagram** in the technical section (full layer-by-layer trace)
 
-### Simple Instructions section (mandatory)
+### Flow inventory
 
-This section goes at the top of every flow doc, before the technical Sequence Diagram. It answers in plain English:
-
-- **What happens here?** — one-sentence summary
-- **Step-by-step (what the user sees)** — numbered list, 3-7 steps, no code jargon
-- **Diagram** — Mermaid graph TD showing user-facing happy path + error path
-- **Common issues** — table of symptoms and fixes a user would understand
-
-### Minimum flow documents to generate
-
-Create each file under its domain subdirectory (e.g., `auth/login.md`).
-
-- `auth/login.md` — Authentication from login form to JWT issuance and dashboard redirect
-- `auth/role-access.md` — How roles and permissions gate both UI rendering and API access
-- `data/save-record.md` — Saving a new or edited record (validation → API call → response handling)
-- `data/delete-record.md` — Soft-delete confirmation and execution
-- `data/search-filter.md` — Search bar / filter interaction → API query → result rendering
-- `navigation/navigation.md` — Menu click → route resolution → lazy-loaded component → rendered page
-- `navigation/open-list-view.md` — Opening a list/table view (e.g. Products list with pagination)
-- `navigation/open-form.md` — Opening a create/edit form (form definition loading + data loading)
-- `navigation/open-window.md` — Opening a window page
-- `navigation/context-switch.md` — Context selection and switching
-- `navigation/tenant-switch.md` — Switching between tenants → data reload → UI update
+Read `ai/project/flows/INDEX.md` for the current flow inventory. Update it when creating, modifying, or deleting any flow document.
 
 ────────────────────────────────────────
 
