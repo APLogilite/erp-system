@@ -204,13 +204,12 @@ public class WindowDataService {
   }
 
   /**
-   * Gets the filter_where_clause from the field's own metadata (sys_window_field).
-   * This allows each field instance to have its own filter, e.g.,
-   * column_id in Fields tab under Tabs uses: table_id = @Tabs.table_id@
+   * Gets filter_where_clause for a lookup — checks field level first, then falls back to column level.
+   * Field-level filter overrides column-level default.
    */
   private String getFieldFilterClause(String tableName, UUID tabId, String fieldCode) {
+    // 1. Try field-level filter (sys_window_field) — per-instance override
     try {
-      // Find the field record by tab_id and column code
       String sql = "SELECT swf.filter_where_clause FROM sys_window_field swf "
           + "JOIN sys_column sc ON swf.column_id = sc.id "
           + "WHERE swf.tab_id = '" + tabId + "' AND sc.code = '" + fieldCode + "' "
@@ -221,7 +220,21 @@ public class WindowDataService {
         if (val != null) return val.toString();
       }
     } catch (Exception e) {
-      log.warn("Failed to get field filter clause for {}.{}: {}", tableName, fieldCode, e.getMessage());
+      log.warn("Failed to get field filter for {}.{}: {}", tableName, fieldCode, e.getMessage());
+    }
+
+    // 2. Fallback to column-level filter (sys_column) — default for all fields
+    try {
+      String sql = "SELECT filter_where_clause FROM sys_column WHERE "
+          + "table_id = (SELECT id FROM sys_table WHERE name = '" + tableName + "') "
+          + "AND code = '" + fieldCode + "' AND filter_where_clause IS NOT NULL LIMIT 1";
+      List<Map<String, Object>> rows = dynamicCrudService.queryForList(sql);
+      if (!rows.isEmpty()) {
+        Object val = rows.get(0).get("filter_where_clause");
+        if (val != null) return val.toString();
+      }
+    } catch (Exception e) {
+      log.warn("Failed to get column filter for {}.{}: {}", tableName, fieldCode, e.getMessage());
     }
     return null;
   }
