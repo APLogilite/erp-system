@@ -99,50 +99,31 @@ function RecordDialog({ open, windowName, windowDef, recordId, onClose }: Record
     ),
   ];
 
-  // Build lookup queries, resolving filter_where_clause if defined per field
-  const lookupConfigs = lookupTables.map((tableName) => {
-    // Find fields that reference this table to check for filter_where_clause
-    const refFields = windowDef.tabs.flatMap((t) => t.fields).filter((f) => f.column.relationTable === tableName);
-    let filterField: string | undefined;
-    let filterValue: string | undefined;
-    for (const ff of refFields) {
-      if (ff.column.filterWhereClause) {
-        // Resolve @parentTableId@ from the parent tab context (if drilled, use parent tab's table)
-        let resolved = ff.column.filterWhereClause;
-        if (resolved.includes('@parentTableId@')) {
-          const parentMeta = isDrilled && drillStack.length >= 1
-            ? drillStack[drillStack.length - 1].tab.table.id
-            : mainTab?.table.id;
-          if (parentMeta) resolved = resolved.replace('@parentTableId@', parentMeta);
-        }
-        const eqIdx = resolved.indexOf('=');
-        if (eqIdx > 0) {
-          filterField = resolved.substring(0, eqIdx).trim();
-          filterValue = resolved.substring(eqIdx + 1).trim();
-        }
-        break;
-      }
-    }
-    return { tableName, filterField, filterValue };
-  });
+  const lookupQueries: Record<string, Record<string, unknown>[]> = {};
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  let lookupResults: any[] = [];
 
-  const lookupResults = useQueries({
-    queries: lookupConfigs.map((cfg) => ({
-      queryKey: ['lookup', cfg.tableName, cfg.filterField, cfg.filterValue],
-      queryFn: () => fetchLookupRecords(cfg.tableName, cfg.filterField, cfg.filterValue),
+  // Determine if we're at root level or drilled into a child record
+  const isDrilled = drillStack.length > 0;
+  const currentDrillLevel = isDrilled ? drillStack[drillStack.length - 1] : null;
+
+  // Determine parent record ID for filtered lookups (e.g., column_id filtered by table)
+  const lookupParentId = isDrilled && drillStack.length >= 1
+    ? drillStack[drillStack.length - 1].recordId
+    : null;
+
+  lookupResults = useQueries({
+    queries: lookupTables.map((tableName) => ({
+      queryKey: ['lookup', tableName, lookupParentId],
+      queryFn: () => fetchLookupRecords(tableName, lookupParentId ?? undefined),
       staleTime: 30000,
       gcTime: 60000,
     })),
   });
 
-  const lookupQueries: Record<string, Record<string, unknown>[]> = {};
   lookupTables.forEach((tableName, idx) => {
     lookupQueries[tableName] = lookupResults[idx]?.data ?? [];
   });
-
-  // Determine if we're at root level or drilled into a child record
-  const isDrilled = drillStack.length > 0;
-  const currentDrillLevel = isDrilled ? drillStack[drillStack.length - 1] : null;
 
   // Fetch the current level's record data (with grandchildren if applicable)
   const currentRecordId = isDrilled ? drillStack[drillStack.length - 1].recordId : recordId;

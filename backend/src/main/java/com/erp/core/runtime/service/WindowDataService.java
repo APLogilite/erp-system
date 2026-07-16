@@ -204,6 +204,25 @@ public class WindowDataService {
   }
 
   /**
+   * Resolves the filter_where_clause for a lookup table from sys_column metadata.
+   * Returns null if no filter is defined.
+   */
+  private String resolveLookupFilter(String tableName) {
+    try {
+      String sql = "SELECT filter_where_clause FROM sys_column WHERE table_id = (SELECT id FROM sys_table WHERE name = '"
+          + tableName + "') AND filter_where_clause IS NOT NULL LIMIT 1";
+      List<Map<String, Object>> rows = dynamicCrudService.queryForList(sql);
+      if (!rows.isEmpty()) {
+        Object val = rows.get(0).get("filter_where_clause");
+        if (val != null) return val.toString();
+      }
+    } catch (Exception e) {
+      log.warn("Failed to resolve lookup filter for table '{}': {}", tableName, e.getMessage());
+    }
+    return null;
+  }
+
+  /**
    * Queries sys_column for the display column of a given table.
    */
   private String findDisplayColumnForTable(String tableName) {
@@ -375,15 +394,24 @@ public class WindowDataService {
   public List<Map<String, Object>> lookupRecords(
       String tableName,
       UUID tenantId,
-      String filterField,
-      String filterValue) {
+      UUID parentRecordId) {
 
-    // Apply optional filter (e.g., filter by parent table for column_id dropdowns)
-    String whereField = filterField;
-    String whereValue = filterValue;
-    if (filterField == null || filterField.isBlank()) {
-      whereField = null;
-      whereValue = null;
+    // Resolve filter_where_clause from sys_column metadata
+    String whereField = null;
+    String whereValue = null;
+    if (parentRecordId != null) {
+      String filterClause = resolveLookupFilter(tableName);
+      if (filterClause != null) {
+        // Support @parentRecordId@ placeholder in the filter clause
+        String resolved = filterClause.replace("@parentRecordId@", parentRecordId.toString());
+        resolved = resolved.replace("@parentTableId@", parentRecordId.toString());
+        // Parse "field = value"
+        int eqIdx = resolved.indexOf('=');
+        if (eqIdx > 0) {
+          whereField = resolved.substring(0, eqIdx).trim();
+          whereValue = resolved.substring(eqIdx + 1).trim();
+        }
+      }
     }
 
     Map<String, Object> result = dynamicCrudService.listRecords(
