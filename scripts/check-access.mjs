@@ -53,7 +53,7 @@ let rules;
 try {
   rules = JSON.parse(fs.readFileSync(rulesPath, 'utf-8'));
 } catch {
-  console.error('ERROR: Could not read ai/docs/rules/access.json');
+  console.error('ERROR: Could not read ai/agent/rules/access.json');
   process.exit(1);
 }
 
@@ -102,10 +102,10 @@ if (agentRole === 'se') {
   const hasMigrationFile = stagedFiles.some(f =>
     f.startsWith('backend/src/main/resources/db/migration/')
   );
-  const hasSchemaFile = stagedFiles.some(f => f.startsWith('ai/schema/'));
+  const hasSchemaFile = stagedFiles.some(f => f.startsWith('ai/project/schema/'));
   if (hasMigrationFile && !hasSchemaFile) {
     console.warn(
-      'WARNING: Migration files staged but no corresponding schema file under ai/schema/. Consider updating schema documentation.'
+      'WARNING: Migration files staged but no corresponding schema file under ai/project/schema/. Consider updating schema documentation.'
     );
   }
 }

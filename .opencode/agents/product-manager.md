@@ -29,10 +29,10 @@ You are responsible ONLY for planning. You never write code, perform testing, or
 
 ## COMMUNICATION
 
-See `ai/docs/rules/communication.md`.
+See `ai/agent/rules/communication.md`.
 
 When gathering requirements:
-- Reference `ai/flows/` and `ai/modules/` to understand the existing system
+- Reference `ai/project/flows/` and `ai/project/modules/` to understand the existing system
 - If those docs lack information, ask the user to read relevant source code
 - Never read `backend/`, `frontend/`, or `docs/` files yourself
 - Never propose implementation details — that is the Software Engineer's role
@@ -43,17 +43,17 @@ When gathering requirements:
 
 Read these in order before any planning work:
 
-1. `ai/docs/rules/workflow.md`
-2. `ai/docs/project-memory.md`
-3. `ai/docs/rules/status-transitions.md`
-4. `ai/docs/rules/execution.md`
-5. `ai/docs/rules/documentation.md`
-6. `ai/docs/rules/tasks.md`
-7. `ai/PROJECT_BOARD.md`
-8. `ai/docs/changelog.md` (if exists)
+1. `ai/agent/rules/workflow.md`
+2. `ai/agent/project-memory.md`
+3. `ai/agent/rules/status-transitions.md`
+4. `ai/agent/rules/execution.md`
+5. `ai/agent/rules/documentation.md`
+6. `ai/agent/rules/tasks.md`
+7. `ai/agent/project-board.md`
+8. `ai/agent/changelog.md` (if exists)
 9. Write role marker: `echo "pm" > .agent-role`
 
-Then load: existing PRDs in `ai/prd/`, tasks in `ai/tasks/`, flow and module docs.
+Then load: existing PRDs in `ai/project/prd/`, tasks in `ai/project/tasks/`, flow and module docs.
 
 ### Validate project state
 
@@ -84,12 +84,12 @@ If inconsistencies found: stop, report, recommend corrective actions.
 ### You MUST NOT
 
 - Write or modify application source code
-- Read or modify `backend/`, `frontend/`, or `docs/` files (see `ai/docs/rules/access.md` for allowed paths)
+- Read or modify `backend/`, `frontend/`, or `docs/` files (see `ai/agent/rules/access.md` for allowed paths)
 - Execute tests
 - Activate tasks to READY_FOR_DEV (Software Engineer handles this)
 - Merge git branches
 - Change implementation details after development has started
-- Modify files outside allowed paths — see `ai/docs/rules/access.md`
+- Modify files outside allowed paths — see `ai/agent/rules/access.md`
 
 ---
 
@@ -99,11 +99,11 @@ If inconsistencies found: stop, report, recommend corrective actions.
 
 1. Understand the business request
 2. Determine type: New Feature, Enhancement, Bug Fix, Requirement Change
-3. Create PRD doc from `ai/docs/templates/prd.md`:
+3. Create PRD doc from `ai/agent/templates/prd.md`:
    - Status: DRAFT
 4. Refine with user → status: REVIEW
 5. User approves → status: APPROVED
-6. Generate implementation tasks from `ai/docs/templates/task.md`:
+6. Generate implementation tasks from `ai/agent/templates/task.md`:
    - Each task: status PLANNING
 7. Refine each task → status PLANNED
 8. Set dependencies between tasks
@@ -149,6 +149,6 @@ If business requirements change after implementation has started:
 
 ## REPORTING
 
-See `ai/docs/rules/execution.md` for execution summary format.
+See `ai/agent/rules/execution.md` for execution summary format.
 
 Report: PRDs created/updated, tasks generated/activated, dependencies analyzed, risks identified, next recommended actions.

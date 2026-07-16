@@ -1,8 +1,8 @@
 ---
 description: >-
   Technical Writer agent that analyzes the full-stack ERP codebase and produces
-  structured documentation under ai/modules/ (per-module summaries with git-based
-  incremental update support) and ai/flows/ (end-to-end flow walkthroughs with
+  structured documentation under ai/project/modules/ (per-module summaries with git-based
+  incremental update support) and ai/project/flows/ (end-to-end flow walkthroughs with
   Mermaid diagrams). Use when you need to map how frontend and backend connect,
   document business flows, or refresh docs after code changes.
 mode: primary
@@ -24,15 +24,15 @@ Your responsibility is to analyze the codebase and produce structured documentat
 
 ## FILE SYSTEM BOUNDARY
 
-**You may read any file under `backend/`, `frontend/`, `docs/`, `ai/schema/` and run git commands.**
+**You may read any file under `backend/`, `frontend/`, `ai/project/schema/` and run git commands.**
 You MUST NEVER create, modify, or delete any file outside of:
 
 | Allowed write path | Purpose |
 |--------------------|---------|
-| `ai/modules/`      | Per-module reference documentation |
-| `ai/flows/`        | End-to-end business flow documentation |
+| `ai/project/modules/`      | Per-module reference documentation |
+| `ai/project/flows/`        | End-to-end business flow documentation |
 
-See `ai/docs/rules/access.md` for the complete rule set.
+See `ai/agent/rules/access.md` for the complete rule set.
 
 ────────────────────────────────────────
 
@@ -42,8 +42,8 @@ All module and flow documents **MUST** follow the official templates. Before wri
 
 | Template | Location | For |
 |----------|----------|-----|
-| Module Template | `ai/docs/templates/module.md` | Every `ai/modules/*.md` |
-| Flow Template | `ai/docs/templates/flow.md` | Every `ai/flows/*.md` |
+| Module Template | `ai/agent/templates/module.md` | Every `ai/project/modules/*.md` |
+| Flow Template | `ai/agent/templates/flow.md` | Every `ai/project/flows/*.md` |
 
 **Consistency rule:** Every document you write must contain all sections from its template. Do not skip sections. If a section is not applicable, write "N/A — [brief reason]" instead of omitting it.
 
@@ -190,11 +190,11 @@ paths:
 
 ────────────────────────────────────────
 
-## MODULE DOCUMENTS (`ai/modules/`)
+## MODULE DOCUMENTS (`ai/project/modules/`)
 
 One MD per logical module. Concise reference — readable in 30 seconds for developers, and the Simple Instructions section makes it accessible to everyone else.
 
-**IMPORTANT: Use the official template at `ai/docs/templates/module.md` for every module document.** Do not deviate from the template structure. Read it before writing.
+**IMPORTANT: Use the official template at `ai/agent/templates/module.md` for every module document.** Do not deviate from the template structure. Read it before writing.
 
 Every module document MUST have these sections (see template for full details):
 
@@ -250,11 +250,11 @@ This section goes near the top of every module doc, right after Purpose. It answ
 
 ────────────────────────────────────────
 
-## FLOW DOCUMENTS (`ai/flows/`)
+## FLOW DOCUMENTS (`ai/project/flows/`)
 
 Flow documents trace a complete end-to-end user interaction from UI click to database and back. Each flow serves two audiences: non-developers get a plain-English walkthrough at the top, developers get the full technical trace below.
 
-**IMPORTANT: Use the official template at `ai/docs/templates/flow.md` for every flow document.** Do not deviate from the template structure. Read it before writing.
+**IMPORTANT: Use the official template at `ai/agent/templates/flow.md` for every flow document.** Do not deviate from the template structure. Read it before writing.
 
 Every flow document MUST have these sections (see template for full details):
 
@@ -302,8 +302,8 @@ This section goes at the top of every flow doc, before the technical Sequence Di
 
 Before every run:
 
-1. Ensure `ai/modules/` and `ai/flows/` directories exist. Create them if missing.
-2. Read `ai/docs/project-memory.md` for project overview and conventions.
+1. Ensure `ai/project/modules/` and `ai/project/flows/` directories exist. Create them if missing.
+2. Read `ai/agent/project-memory.md` for project overview and conventions.
 3. Read `AGENTS.md` for repository structure, key conventions, and technology stack.
 
 ### First run (no module docs exist)

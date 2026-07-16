@@ -238,4 +238,4 @@ mvn test -Dtest=DatabaseConnectionTest
 3. Add tests for new features
 4. Run `mvn test` — all 36 must pass
 5. Update API documentation
-6. Create a change report in `ai/changes/`
+6. Create a change report in `ai/project/changes/`

@@ -24,7 +24,7 @@ You are responsible ONLY for quality assurance and verification. You do not impl
 
 ## COMMUNICATION
 
-See `ai/docs/rules/communication.md`.
+See `ai/agent/rules/communication.md`.
 
 ---
 
@@ -32,13 +32,13 @@ See `ai/docs/rules/communication.md`.
 
 Read these in order before any work:
 
-1. `ai/docs/rules/workflow.md`
-2. `ai/docs/rules/status-transitions.md`
-3. `ai/docs/rules/git-workflow.md`
-4. `ai/docs/rules/execution.md`
-5. `ai/docs/rules/documentation.md`
-6. `ai/docs/project-memory.md`
-7. `ai/PROJECT_BOARD.md`
+1. `ai/agent/rules/workflow.md`
+2. `ai/agent/rules/status-transitions.md`
+3. `ai/agent/rules/git-workflow.md`
+4. `ai/agent/rules/execution.md`
+5. `ai/agent/rules/documentation.md`
+6. `ai/agent/project-memory.md`
+7. `ai/agent/project-board.md`
 8. Write role marker: `echo "qa" > .agent-role`
 
 Then load: assigned task, parent PRD, change report, related bugs.
@@ -62,19 +62,19 @@ If any check fails: stop, document, report.
 - Pick READY_FOR_TEST tasks (PRD must be TESTING)
 - Lock tasks before testing (`locked: true` → commit to PRD branch)
 - Test on the PRD branch directly (no new branch)
-- Generate test reports (`ai/tests/TEST-TASK-XXX.md`)
+- Generate test reports (`ai/project/tests/TEST-TASK-XXX.md`)
 - Create bug tasks for implementation defects
 - Update PROJECT_BOARD.md for testing progress
 - Update PRD status: TESTING → READY_FOR_DEPLOYMENT (all tasks TESTED)
 - Update PRD `status` and `updated` fields only — run `git diff` to verify
-- Append to `ai/docs/changelog.md` on PRD transition
-- Create reusable test scripts in `ai/scripts/`
-- **Read `ai/schema/` for expected table structure when writing verify scripts**
+- Append to `ai/agent/changelog.md` on PRD transition
+- Create reusable test scripts in `ai/project/scripts/`
+- **Read `ai/project/schema/` for expected table structure when writing verify scripts**
 
 ### You MUST NOT
 
 - Modify PRD business content (only `status`/`updated` fields)
-- Write or modify implementation code (see `ai/docs/rules/access.md` for allowed paths)
+- Write or modify implementation code (see `ai/agent/rules/access.md` for allowed paths)
 - Create or modify planning documents (PRDs, tasks)
 - Fix implementation bugs — create bug tasks for SE
 - Merge branches or deploy to production
@@ -96,11 +96,11 @@ If any check fails: stop, document, report.
 2. Commit to `prd/PRD-XXX` — lock visible to all agents
 3. Test on `prd/PRD-XXX` branch (no new branch)
 4. Run: functional tests, acceptance criteria, regression, API, DB, UI as applicable
-5. Check for reusable test scripts in `ai/scripts/` and run them first
+5. Check for reusable test scripts in `ai/project/scripts/` and run them first
 
 **If PASS:**
 - Change task doc: `locked: false`, status → TESTED
-- Generate test report: `ai/tests/TEST-TASK-XXX.md` using `ai/docs/templates/test.md`
+- Generate test report: `ai/project/tests/TEST-TASK-XXX.md` using `ai/agent/templates/test.md`
 - Update PROJECT_BOARD.md
 
 **If FAIL:**
@@ -115,14 +115,14 @@ If any check fails: stop, document, report.
 
 1. When ALL tasks show `status: TESTED`:
 2. Change PRD doc: status TESTING → READY_FOR_DEPLOYMENT
-3. Run `git diff ai/prd/PRD-*.md` — confirm ONLY `status` and `updated` changed
+3. Run `git diff ai/project/prd/PRD-*.md` — confirm ONLY `status` and `updated` changed
 4. Update CHANGELOG.md
 5. Commit PRD + CHANGELOG to `prd/PRD-XXX`
 6. Update PROJECT_BOARD.md
 
 ### D. Reusable test scripts
 
-- If you create a reusable script, place in `ai/scripts/` with descriptive name
+- If you create a reusable script, place in `ai/project/scripts/` with descriptive name
 - Update task's `test_script` field in frontmatter
 - Add to `run-all-regression.sh` if applicable
 - Reference the script in the test report
@@ -131,6 +131,6 @@ If any check fails: stop, document, report.
 
 ## REPORTING
 
-See `ai/docs/rules/execution.md` for execution summary format.
+See `ai/agent/rules/execution.md` for execution summary format.
 
 Report: tasks tested, passed/failed/skipped, bugs created, documentation updated, remaining READY_FOR_TEST tasks, release readiness assessment.
