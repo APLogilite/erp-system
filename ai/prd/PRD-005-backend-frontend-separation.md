@@ -3,7 +3,7 @@ id: PRD-005
 
 title: Backend-Frontend Separation — Move Data Logic to Backend
 
-version: 1.1.0
+version: 1.2.0
 
 status: DRAFT
 # DRAFT
@@ -315,7 +315,8 @@ When PRD-004 (Window Hierarchy & Menu System) was built, the frontend `WindowPag
 - Real-time sync (WebSockets) — future
 - Form designer UI changes — backend already feeds the designer
 - Old PRD-001 form system migration — covered by PRD-004
-- Module reorganization (routes/ vs modules/ alignment) — future PRD
+- Module reorganization (routes/ vs modules/ alignment — separate PRD)
+- Old form designer migration (`core/metadata/` PRD-001 entities) — covered by PRD-004 window system
 
 ---
 
@@ -475,6 +476,22 @@ None. All changes are in DTOs, service logic, and frontend code.
 - Files: DELETE `backend/src/main/java/com/erp/core/security/`
 - Effort: 30 minutes
 
+## TASK-011: Move `customerService.ts` Out of `core/api/services/`
+
+- Owner: Software Engineer
+- Scope: frontend
+- Description: `frontend/src/core/api/services/customerService.ts` is CRM-specific. Move it to a CRM module or delete if unused. The `ENDPOINTS.customers` config in `core/api/endpoints.ts` should also be moved.
+- Files: `customerService.ts`, `endpoints.ts`
+- Effort: 30 minutes
+
+## TASK-012: Audit and Remove Stale Frontend API Endpoints
+
+- Owner: Software Engineer
+- Scope: frontend
+- Description: `endpoints.ts` contains `customers` and `users` endpoint definitions. Verify which are still actively called from page components. Remove unused endpoint configs to prevent confusion.
+- Files: `endpoints.ts`
+- Effort: 30 minutes
+
 ---
 
 # Acceptance Criteria
@@ -501,3 +518,4 @@ None. All changes are in DTOs, service logic, and frontend code.
 |---------|--------|
 | 1.0.0 | Initial Draft |
 | 1.1.0 | Added dead code removal: `modules/auth/` and `core/security/` packages |
+| 1.2.0 | Added standardization: move customerService, audit stale endpoints |
