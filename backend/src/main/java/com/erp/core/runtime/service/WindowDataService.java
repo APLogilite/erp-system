@@ -402,14 +402,36 @@ public class WindowDataService {
     if (parentRecordId != null) {
       String filterClause = resolveLookupFilter(tableName);
       if (filterClause != null) {
-        // Support @parentRecordId@ placeholder in the filter clause
+        // Replace @parentRecordId@ placeholder with the actual UUID
         String resolved = filterClause.replace("@parentRecordId@", parentRecordId.toString());
-        resolved = resolved.replace("@parentTableId@", parentRecordId.toString());
-        // Parse "field = value"
-        int eqIdx = resolved.indexOf('=');
-        if (eqIdx > 0) {
-          whereField = resolved.substring(0, eqIdx).trim();
-          whereValue = resolved.substring(eqIdx + 1).trim();
+        // Check if the filter contains a subquery (SELECT) — if so, execute it first
+        if (resolved.contains("(SELECT") || resolved.contains("(")) {
+          // Execute the right side of = as a query to get the filter value
+          String[] parts = resolved.split("=", 2);
+          if (parts.length == 2) {
+            whereField = parts[0].trim();
+            String subQuery = parts[1].trim();
+            // Remove outer parentheses for subqueries
+            if (subQuery.startsWith("(") && subQuery.endsWith(")")) {
+              subQuery = subQuery.substring(1, subQuery.length() - 1);
+            }
+            try {
+              List<Map<String, Object>> subResult = dynamicCrudService.queryForList(subQuery);
+              if (!subResult.isEmpty()) {
+                Object val = subResult.get(0).values().iterator().next();
+                whereValue = val != null ? val.toString() : null;
+              }
+            } catch (Exception e) {
+              log.warn("Failed to resolve lookup filter subquery '{}': {}", subQuery, e.getMessage());
+            }
+          }
+        } else {
+          // Simple "field = value" pattern
+          int eqIdx = resolved.indexOf('=');
+          if (eqIdx > 0) {
+            whereField = resolved.substring(0, eqIdx).trim();
+            whereValue = resolved.substring(eqIdx + 1).trim().replaceAll("'", "");
+          }
         }
       }
     }

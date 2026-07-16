@@ -161,7 +161,7 @@ SELECT ensure_column('sys_tab', 'parent_column', 'Parent Column', 'string', fals
 SELECT ensure_column('sys_tab', 'is_active', 'Is Active', 'boolean', false, null, 6);
 
 -- sys_window_field columns
-SELECT ensure_column('sys_window_field', 'column_id', 'Column', 'many2one', true, null, 0, 'sys_column', false, 'table_id = @parentTableId@');
+SELECT ensure_column('sys_window_field', 'column_id', 'Column', 'many2one', true, null, 0, 'sys_column', false, 'table_id = (SELECT t.table_id FROM sys_tab t WHERE t.id = @parentRecordId@)');
 SELECT ensure_column('sys_window_field', 'label_override', 'Label', 'string', false, 200, 1, NULL, true);
 SELECT ensure_column('sys_window_field', 'seq_no', 'Seq No', 'integer', true, null, 2);
 -- label_override already registered above as display column
