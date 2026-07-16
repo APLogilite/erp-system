@@ -51,7 +51,8 @@ $$ LANGUAGE plpgsql;
 CREATE OR REPLACE FUNCTION ensure_field(
   p_window_name TEXT, p_tab_seq_no INTEGER, p_column_code TEXT,
   p_seq_no INTEGER, p_is_same_line BOOLEAN, p_is_displayed BOOLEAN,
-  p_is_readonly BOOLEAN, p_is_mandatory BOOLEAN
+  p_is_readonly BOOLEAN, p_is_mandatory BOOLEAN,
+  p_filter_where TEXT DEFAULT NULL
 ) RETURNS void AS $$
 DECLARE
   v_tab_id UUID;
@@ -70,8 +71,8 @@ BEGIN
   JOIN sys_table t ON c.table_id = t.id
   WHERE t.name = v_table_name AND c.code = p_column_code;
   IF v_tab_id IS NOT NULL AND v_column_id IS NOT NULL THEN
-    INSERT INTO sys_window_field (id, tab_id, column_id, seq_no, is_same_line, num_lines, column_width, is_displayed, is_readonly, is_mandatory, label_override, is_active, tenant_id, created_at, updated_at)
-    SELECT gen_random_uuid(), v_tab_id, v_column_id, p_seq_no, p_is_same_line, 1, 12, p_is_displayed, p_is_readonly, p_is_mandatory, v_column_label, true, v_tenant_id, now(), now()
+    INSERT INTO sys_window_field (id, tab_id, column_id, seq_no, is_same_line, num_lines, column_width, is_displayed, is_readonly, is_mandatory, label_override, filter_where_clause, is_active, tenant_id, created_at, updated_at)
+    SELECT gen_random_uuid(), v_tab_id, v_column_id, p_seq_no, p_is_same_line, 1, 12, p_is_displayed, p_is_readonly, p_is_mandatory, v_column_label, p_filter_where, true, v_tenant_id, now(), now()
     WHERE NOT EXISTS (SELECT 1 FROM sys_window_field WHERE tab_id = v_tab_id AND column_id = v_column_id);
   END IF;
 END;
@@ -161,7 +162,7 @@ SELECT ensure_column('sys_tab', 'parent_column', 'Parent Column', 'string', fals
 SELECT ensure_column('sys_tab', 'is_active', 'Is Active', 'boolean', false, null, 6);
 
 -- sys_window_field columns
-SELECT ensure_column('sys_window_field', 'column_id', 'Column', 'many2one', true, null, 0, 'sys_column', false, 'table_id = @Tabs.table_id@');
+SELECT ensure_column('sys_window_field', 'column_id', 'Column', 'many2one', true, null, 0, 'sys_column');
 SELECT ensure_column('sys_window_field', 'label_override', 'Label', 'string', false, 200, 1, NULL, true);
 SELECT ensure_column('sys_window_field', 'seq_no', 'Seq No', 'integer', true, null, 2);
 -- label_override already registered above as display column
@@ -175,6 +176,7 @@ SELECT ensure_column('sys_window_field', 'display_logic', 'Display Logic', 'text
 SELECT ensure_column('sys_window_field', 'readonly_logic', 'Readonly Logic', 'text', false, null, 11);
 SELECT ensure_column('sys_window_field', 'default_value', 'Default Value', 'text', false, null, 12);
 SELECT ensure_column('sys_window_field', 'is_active', 'Is Active', 'boolean', false, null, 13);
+SELECT ensure_column('sys_window_field', 'filter_where_clause', 'Filter Where', 'text', false, null, 14);
 
 -- sys_window_access columns
 SELECT ensure_column('sys_window_access', 'is_active', 'Is Active', 'boolean', false, null, 1);
@@ -230,9 +232,10 @@ SELECT ensure_field('Window Definitions', 20, 'where_clause', 30, false, true, f
 SELECT ensure_field('Window Definitions', 20, 'parent_column', 40, false, true, false, false);
 SELECT ensure_field('Window Definitions', 20, 'is_single_row', 50, true, true, false, false);
 SELECT ensure_field('Window Definitions', 20, 'is_active', 60, false, true, false, false);
-SELECT ensure_field('Window Definitions', 15, 'column_id', 5, false, true, false, true);
+SELECT ensure_field('Window Definitions', 15, 'column_id', 5, false, true, false, true, 'table_id = @Tabs.table_id@');
 SELECT ensure_field('Window Definitions', 15, 'label_override', 10, false, true, false, false);
 SELECT ensure_field('Window Definitions', 15, 'seq_no', 20, false, true, false, true);
+SELECT ensure_field('Window Definitions', 15, 'filter_where_clause', 25, false, true, false, false);
 SELECT ensure_field('Window Definitions', 15, 'is_displayed', 30, true, true, false, false);
 SELECT ensure_field('Window Definitions', 15, 'is_readonly', 40, true, true, false, false);
 SELECT ensure_field('Window Definitions', 15, 'is_mandatory', 50, true, true, false, false);

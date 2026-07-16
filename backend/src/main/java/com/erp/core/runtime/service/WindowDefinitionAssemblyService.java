@@ -134,6 +134,7 @@ public class WindowDefinitionAssemblyService {
     fieldResponse.setReadonlyLogic(field.getReadonlyLogic());
     fieldResponse.setDefaultValue(field.getDefaultValue());
     fieldResponse.setLabelOverride(field.getLabelOverride());
+    fieldResponse.setFilterWhereClause(field.getFilterWhereClause());
 
     // Pre-resolve the display label: labelOverride ?? column.label
     // labelOverride takes priority; if null, fall back to column's default label

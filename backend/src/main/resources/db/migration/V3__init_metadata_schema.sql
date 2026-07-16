@@ -113,6 +113,7 @@ CREATE TABLE sys_window_field (
     readonly_logic TEXT,
     default_value TEXT,
     label_override VARCHAR(200),
+    filter_where_clause TEXT,
     is_active BOOLEAN DEFAULT true,
     tenant_id UUID,
     created_at TIMESTAMP NOT NULL,

@@ -53,6 +53,9 @@ public class SysWindowField extends BaseEntity {
   @Column(name = "label_override", length = 200)
   private String labelOverride;
 
+  @Column(name = "filter_where_clause", columnDefinition = "TEXT")
+  private String filterWhereClause;
+
   // --- Getters and Setters ---
 
   public UUID getTabId() { return tabId; }
@@ -93,4 +96,7 @@ public class SysWindowField extends BaseEntity {
 
   public String getLabelOverride() { return labelOverride; }
   public void setLabelOverride(String labelOverride) { this.labelOverride = labelOverride; }
+
+  public String getFilterWhereClause() { return filterWhereClause; }
+  public void setFilterWhereClause(String filterWhereClause) { this.filterWhereClause = filterWhereClause; }
 }

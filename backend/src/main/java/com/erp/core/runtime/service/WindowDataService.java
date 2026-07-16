@@ -204,19 +204,24 @@ public class WindowDataService {
   }
 
   /**
-   * Resolves the filter_where_clause for a lookup table from sys_column metadata.
+   * Gets the filter_where_clause from the field's own metadata (sys_window_field).
+   * This allows each field instance to have its own filter, e.g.,
+   * column_id in Fields tab under Tabs uses: table_id = @Tabs.table_id@
    */
-  private String getFilterClause(String tableName) {
+  private String getFieldFilterClause(String tableName, UUID tabId, String fieldCode) {
     try {
-      String sql = "SELECT filter_where_clause FROM sys_column WHERE table_id = (SELECT id FROM sys_table WHERE name = '"
-          + tableName + "') AND filter_where_clause IS NOT NULL LIMIT 1";
+      // Find the field record by tab_id and column code
+      String sql = "SELECT swf.filter_where_clause FROM sys_window_field swf "
+          + "JOIN sys_column sc ON swf.column_id = sc.id "
+          + "WHERE swf.tab_id = '" + tabId + "' AND sc.code = '" + fieldCode + "' "
+          + "AND swf.filter_where_clause IS NOT NULL LIMIT 1";
       List<Map<String, Object>> rows = dynamicCrudService.queryForList(sql);
       if (!rows.isEmpty()) {
         Object val = rows.get(0).get("filter_where_clause");
         if (val != null) return val.toString();
       }
     } catch (Exception e) {
-      log.warn("Failed to get filter clause for table '{}': {}", tableName, e.getMessage());
+      log.warn("Failed to get field filter clause for {}.{}: {}", tableName, fieldCode, e.getMessage());
     }
     return null;
   }
@@ -461,13 +466,14 @@ public class WindowDataService {
       String tableName,
       UUID tenantId,
       UUID parentRecordId,
-      UUID tabId) {
+      UUID tabId,
+      String fieldCode) {
 
-    // Resolve filter_where_clause from sys_column metadata
+    // Resolve filter_where_clause from sys_window_field (field level, not column level)
     String whereField = null;
     String whereValue = null;
-    if (parentRecordId != null) {
-      String filterClause = getFilterClause(tableName);
+    if (parentRecordId != null && tabId != null && fieldCode != null) {
+      String filterClause = getFieldFilterClause(tableName, tabId, fieldCode);
       if (filterClause != null) {
         // Resolve @tab.<field>@ placeholders by querying the parent tab record
         // e.g. @Tabs.table_id@ → query sys_tab for parentRecordId, get table_id

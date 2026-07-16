@@ -90,14 +90,20 @@ function RecordDialog({ open, windowName, windowDef, recordId, onClose }: Record
   const currentLevelTab: WindowTabDefinition =
     drillStack.length > 0 ? drillStack[drillStack.length - 1].tab : mainTab!;
 
-  // Collect unique relation table names for lookup dropdowns
-  const lookupTables = [
-    ...new Set(
-      (windowDef.tabs.flatMap((t) => t.fields) ?? [])
-        .filter((f) => f.column.relationTable)
-        .map((f) => f.column.relationTable!)
-    ),
-  ];
+  // Collect lookup configs: (tableName, fieldCode) per field (NOT deduplicated — each field may have own filter)
+  const lookupConfigs: { table: string; fieldCode: string }[] = [];
+  const seenLookups = new Set<string>();
+  for (const tab of windowDef.tabs) {
+    for (const f of tab.fields ?? []) {
+      if (f.column.relationTable) {
+        const key = f.column.relationTable + '|' + f.column.code;
+        if (!seenLookups.has(key)) {
+          seenLookups.add(key);
+          lookupConfigs.push({ table: f.column.relationTable, fieldCode: f.column.code });
+        }
+      }
+    }
+  }
 
   const lookupQueries: Record<string, Record<string, unknown>[]> = {};
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -116,16 +122,16 @@ function RecordDialog({ open, windowName, windowDef, recordId, onClose }: Record
     : null;
 
   lookupResults = useQueries({
-    queries: lookupTables.map((tableName) => ({
-      queryKey: ['lookup', tableName, lookupParentId, lookupTabId],
-      queryFn: () => fetchLookupRecords(tableName, lookupParentId ?? undefined, lookupTabId ?? undefined),
+    queries: lookupConfigs.map((cfg) => ({
+      queryKey: ['lookup', cfg.table, cfg.fieldCode, lookupParentId, lookupTabId],
+      queryFn: () => fetchLookupRecords(cfg.table, lookupParentId ?? undefined, lookupTabId ?? undefined, cfg.fieldCode),
       staleTime: 30000,
       gcTime: 60000,
     })),
   });
 
-  lookupTables.forEach((tableName, idx) => {
-    lookupQueries[tableName] = lookupResults[idx]?.data ?? [];
+  lookupConfigs.forEach((cfg, idx) => {
+    lookupQueries[cfg.table] = lookupResults[idx]?.data ?? [];
   });
 
   // Fetch the current level's record data (with grandchildren if applicable)

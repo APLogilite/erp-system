@@ -313,17 +313,19 @@ export async function fetchTabRecord(
 /**
  * Fetches records from a table for use in dropdown/autocomplete.
  * Each record includes a _display field with the human-readable label.
- * Optionally pass parentRecordId + tabId to apply server-side filter_where_clause.
- * GET /api/v1/runtime/windows/lookup/{tableName}?parentRecordId=...&tabId=...
+ * Optionally pass parent record context for server-side filter_where_clause resolution.
+ * GET /api/v1/runtime/windows/lookup/{tableName}?parentRecordId=...&tabId=...&fieldCode=...
  */
 export async function fetchLookupRecords(
   tableName: string,
   parentRecordId?: string,
-  tabId?: string
+  tabId?: string,
+  fieldCode?: string
 ): Promise<Record<string, unknown>[]> {
   const params: Record<string, string> = {};
   if (parentRecordId) params.parentRecordId = parentRecordId;
   if (tabId) params.tabId = tabId;
+  if (fieldCode) params.fieldCode = fieldCode;
   const response = await apiClient.get<ApiResponse<Record<string, unknown>[]>>(
     `/runtime/windows/lookup/${encodeURIComponent(tableName)}`,
     { params }
