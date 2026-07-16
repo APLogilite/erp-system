@@ -8,7 +8,7 @@ last_updated: 2026-07-16
 
 # Changelog
 
-## 2026-07-16 (PRD-004 Advanced to READY_FOR_DEPLOYMENT)
+## 2026-07-16 (PRD-004 Merged to Main — COMPLETED)
 
 ### Summary
 QA verification complete. Both BUG-010 and BUG-011 TESTED. PRD-004 advanced to READY_FOR_DEPLOYMENT (v1.1.0).
@@ -20,7 +20,7 @@ QA verification complete. Both BUG-010 and BUG-011 TESTED. PRD-004 advanced to R
 | BUG-011 | 15 | 15 | 0 | 0 |
 
 ### PRD Status Changed
-- **PRD-004** — Window Hierarchy & Menu System v1.0.0 → v1.1.0: **TESTING → READY_FOR_DEPLOYMENT**
+- **PRD-004** — Window Hierarchy & Menu System v1.0.0 → v1.1.0: **READY_FOR_DEPLOYMENT → COMPLETED** (merged to main)
 
 ---
 

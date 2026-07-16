@@ -4,7 +4,7 @@ Last Updated: 2026-07-15
 
 Updated By: Software Engineer
 
-(PRD-004 READY_FOR_DEPLOYMENT — all bugs TESTED, waiting merge to main)
+(PRD-004 COMPLETED v1.1.0 — merged to main, BUG-010/BUG-011 RESOLVED)
 
 ---
 
@@ -29,7 +29,7 @@ See `ai/docs/STATUS_TRANSITIONS.md` for full transition rules.
 | PRD-001 | Dynamic Form Configuration System | 1.6.0 | **COMPLETED** | High |
 | PRD-002 | Admin Configuration Forms | 1.1.0 | **COMPLETED** | High |
 | PRD-003 | ERP Order Flow — Transaction Forms | 1.0.0 | **COMPLETED** | High |
-| PRD-004 | Window Hierarchy & Menu System | 1.1.0 | **READY_FOR_DEPLOYMENT** | High |
+| PRD-004 | Window Hierarchy & Menu System | 1.1.0 | **COMPLETED** | High |
 
 ---
 
@@ -131,8 +131,8 @@ See `ai/docs/STATUS_TRANSITIONS.md` for full transition rules.
 | BUG-007 | TASK-036 | Critical | COMPLETED | QA Engineer | — |
 | BUG-008 | TASK-041 | Medium | COMPLETED | QA Engineer | BUG-007 |
 | BUG-009 | TASK-036 | Critical | COMPLETED | QA Engineer | — |
-| BUG-010 | TASK-039 | Critical | **TESTED** | QA Engineer | — |
-| BUG-011 | TASK-041 | Critical | **TESTED** | QA Engineer | — |
+| BUG-010 | TASK-039 | Critical | **RESOLVED** | QA Engineer | — |
+| BUG-011 | TASK-041 | Critical | **RESOLVED** | QA Engineer | — |
 
 ---
 
@@ -162,10 +162,10 @@ See `ai/docs/STATUS_TRANSITIONS.md` for full transition rules.
 | In Development | 0 |
 | In Testing | 0 |
 | Planning | 0 |
-| Bugs | 11 (8 COMPLETED, 1 CANCELLED, 2 READY_FOR_TEST) |
+| Bugs | 11 (8 COMPLETED, 1 CANCELLED, 2 RESOLVED) |
 | Completed (PRD-001) | 27 tasks + 2 enhancements (ENH-001, ENH-003) |
 | Completed (PRD-002) | 3 tasks + 1 enhancement (TASK-033/034/035 + ENH-002) |
 | Completed (PRD-003) | 5 tasks (TASK-028/029/030/031/032) — merged to main |
 | Completed (PRD-004) | 10 tasks (TASK-036..045) — merged to main |
-| Total Tasks | 47 completed + 10 bugs (2 TESTED) |
-| PRD-004 Status | READY_FOR_DEPLOYMENT (v1.1.0) — Consolidated migrations, all bugs resolved |
+| Total Tasks | 47 completed + 10 bugs |
+| PRD-004 Status | COMPLETED (v1.1.0) — Consolidated migrations, BUG-010/BUG-011 RESOLVED |

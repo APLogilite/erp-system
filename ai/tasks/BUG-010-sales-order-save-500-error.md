@@ -3,7 +3,7 @@ id: BUG-010
 
 title: Saving Sales Order data returns HTTP 500 — POST /runtime/windows/Sales Orders/records fails
 
-status: TESTED
+status: RESOLVED
 
 priority: Critical
 
