@@ -135,7 +135,13 @@ public class WindowDefinitionAssemblyService {
     fieldResponse.setDefaultValue(field.getDefaultValue());
     fieldResponse.setLabelOverride(field.getLabelOverride());
 
-    // Resolve column info (needed before we can pre-resolve the label)
+    // Pre-resolve the display label: labelOverride ?? column.label
+    // labelOverride takes priority; if null, fall back to column's default label
+    if (field.getLabelOverride() != null && !field.getLabelOverride().isBlank()) {
+      fieldResponse.setLabel(field.getLabelOverride());
+    }
+
+    // Resolve column info (needed for column.label fallback)
     Optional<SysColumn> columnOpt = columnService.findById(field.getColumnId());
     columnOpt.ifPresent(column -> {
       ColumnInfo columnInfo = new ColumnInfo();
@@ -149,15 +155,11 @@ public class WindowDefinitionAssemblyService {
       columnInfo.setRelationTable(column.getRelationTable());
       columnInfo.setEnumOptions(column.getEnumOptions());
       fieldResponse.setColumn(columnInfo);
-      // Pre-resolve the display label: labelOverride ?? column.label
-      // Frontend uses this directly — no labelOverride vs column.label logic needed
+      // Fallback to column's default label only if no labelOverride was set
       if (fieldResponse.getLabel() == null) {
         fieldResponse.setLabel(column.getLabel());
       }
     });
-    if (fieldResponse.getLabel() == null && field.getLabelOverride() != null) {
-      fieldResponse.setLabel(field.getLabelOverride());
-    }
 
     return fieldResponse;
   }
