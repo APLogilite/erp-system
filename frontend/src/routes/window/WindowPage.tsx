@@ -107,15 +107,18 @@ function RecordDialog({ open, windowName, windowDef, recordId, onClose }: Record
   const isDrilled = drillStack.length > 0;
   const currentDrillLevel = isDrilled ? drillStack[drillStack.length - 1] : null;
 
-  // Determine parent record ID for filtered lookups (e.g., column_id filtered by table)
+  // Determine parent context for filtered lookups (e.g., column_id filtered by parent tab's table)
   const lookupParentId = isDrilled && drillStack.length >= 1
     ? drillStack[drillStack.length - 1].recordId
+    : null;
+  const lookupTabId = isDrilled && drillStack.length >= 1
+    ? drillStack[drillStack.length - 1].tab.id
     : null;
 
   lookupResults = useQueries({
     queries: lookupTables.map((tableName) => ({
-      queryKey: ['lookup', tableName, lookupParentId],
-      queryFn: () => fetchLookupRecords(tableName, lookupParentId ?? undefined),
+      queryKey: ['lookup', tableName, lookupParentId, lookupTabId],
+      queryFn: () => fetchLookupRecords(tableName, lookupParentId ?? undefined, lookupTabId ?? undefined),
       staleTime: 30000,
       gcTime: 60000,
     })),

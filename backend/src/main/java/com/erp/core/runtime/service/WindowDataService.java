@@ -205,9 +205,8 @@ public class WindowDataService {
 
   /**
    * Resolves the filter_where_clause for a lookup table from sys_column metadata.
-   * Returns null if no filter is defined.
    */
-  private String resolveLookupFilter(String tableName) {
+  private String getFilterClause(String tableName) {
     try {
       String sql = "SELECT filter_where_clause FROM sys_column WHERE table_id = (SELECT id FROM sys_table WHERE name = '"
           + tableName + "') AND filter_where_clause IS NOT NULL LIMIT 1";
@@ -217,7 +216,74 @@ public class WindowDataService {
         if (val != null) return val.toString();
       }
     } catch (Exception e) {
-      log.warn("Failed to resolve lookup filter for table '{}': {}", tableName, e.getMessage());
+      log.warn("Failed to get filter clause for table '{}': {}", tableName, e.getMessage());
+    }
+    return null;
+  }
+
+  /**
+   * Resolves @tab.field@ placeholders in a filter clause.
+   * @tab is the parent tab name, .field is a column on that tab's table.
+   * The parent tab record is queried by parentRecordId to get the field value.
+   * Returns "field = value" string, or null if resolution fails.
+   */
+  private String resolveFilterPlaceholders(String filterClause, UUID tabId, UUID parentRecordId) {
+    if (filterClause == null || tabId == null || parentRecordId == null) return null;
+
+    // Match @xxx.yyy@ patterns
+    java.util.regex.Matcher matcher = java.util.regex.Pattern.compile("@([^.]+)\\.([^@]+)@").matcher(filterClause);
+    StringBuffer sb = new StringBuffer();
+    while (matcher.find()) {
+      String tabName = matcher.group(1);  // e.g., "Tabs"
+      String fieldCode = matcher.group(2); // e.g., "table_id"
+      try {
+        // Find the tab by ID (we have the tabId from the parent context)
+        // The tab's table tells us which table to query
+        Optional<SysTab> tabOpt = sysTabService.findById(tabId);
+        if (tabOpt.isEmpty()) {
+          log.warn("Parent tab {} not found", tabId);
+          matcher.appendReplacement(sb, "''");
+          continue;
+        }
+        SysTab tab = tabOpt.get();
+        // Get the physical table name for this tab
+        String tableName = getPhysicalTableName(tab.getTableId());
+        if (tableName == null) {
+          matcher.appendReplacement(sb, "''");
+          continue;
+        }
+        // Query the parent record to get the field value
+        String sql = "SELECT \"" + fieldCode + "\" FROM \"" + tableName + "\" WHERE id = '" + parentRecordId + "'";
+        List<Map<String, Object>> rows = dynamicCrudService.queryForList(sql);
+        if (!rows.isEmpty()) {
+          Object val = rows.get(0).get(fieldCode);
+          String replacement = val != null ? "'" + val.toString() + "'" : "''";
+          matcher.appendReplacement(sb, java.util.regex.Matcher.quoteReplacement(replacement));
+        } else {
+          matcher.appendReplacement(sb, "''");
+        }
+      } catch (Exception e) {
+        log.warn("Failed to resolve placeholder @{}.{}@: {}", tabName, fieldCode, e.getMessage());
+        matcher.appendReplacement(sb, "''");
+      }
+    }
+    matcher.appendTail(sb);
+    return sb.toString();
+  }
+
+  /**
+   * Gets the physical table name for a given table UUID from sys_table.
+   */
+  private String getPhysicalTableName(UUID tableId) {
+    try {
+      String sql = "SELECT table_name FROM sys_table WHERE id = '" + tableId + "'";
+      List<Map<String, Object>> rows = dynamicCrudService.queryForList(sql);
+      if (!rows.isEmpty()) {
+        Object val = rows.get(0).get("table_name");
+        if (val != null) return val.toString();
+      }
+    } catch (Exception e) {
+      log.warn("Failed to get physical table name for id '{}': {}", tableId, e.getMessage());
     }
     return null;
   }
@@ -394,39 +460,19 @@ public class WindowDataService {
   public List<Map<String, Object>> lookupRecords(
       String tableName,
       UUID tenantId,
-      UUID parentRecordId) {
+      UUID parentRecordId,
+      UUID tabId) {
 
     // Resolve filter_where_clause from sys_column metadata
     String whereField = null;
     String whereValue = null;
     if (parentRecordId != null) {
-      String filterClause = resolveLookupFilter(tableName);
+      String filterClause = getFilterClause(tableName);
       if (filterClause != null) {
-        // Replace @parentRecordId@ placeholder with the actual UUID
-        String resolved = filterClause.replace("@parentRecordId@", parentRecordId.toString());
-        // Check if the filter contains a subquery (SELECT) — if so, execute it first
-        if (resolved.contains("(SELECT") || resolved.contains("(")) {
-          // Execute the right side of = as a query to get the filter value
-          String[] parts = resolved.split("=", 2);
-          if (parts.length == 2) {
-            whereField = parts[0].trim();
-            String subQuery = parts[1].trim();
-            // Remove outer parentheses for subqueries
-            if (subQuery.startsWith("(") && subQuery.endsWith(")")) {
-              subQuery = subQuery.substring(1, subQuery.length() - 1);
-            }
-            try {
-              List<Map<String, Object>> subResult = dynamicCrudService.queryForList(subQuery);
-              if (!subResult.isEmpty()) {
-                Object val = subResult.get(0).values().iterator().next();
-                whereValue = val != null ? val.toString() : null;
-              }
-            } catch (Exception e) {
-              log.warn("Failed to resolve lookup filter subquery '{}': {}", subQuery, e.getMessage());
-            }
-          }
-        } else {
-          // Simple "field = value" pattern
+        // Resolve @tab.<field>@ placeholders by querying the parent tab record
+        // e.g. @Tabs.table_id@ → query sys_tab for parentRecordId, get table_id
+        String resolved = resolveFilterPlaceholders(filterClause, tabId, parentRecordId);
+        if (resolved != null) {
           int eqIdx = resolved.indexOf('=');
           if (eqIdx > 0) {
             whereField = resolved.substring(0, eqIdx).trim();
