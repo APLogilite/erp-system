@@ -3,19 +3,19 @@ id: BUG-011
 
 title: Child tab form renders but record data does not load — empty grid/accordion panels
 
-status: READY_FOR_TEST
+status: TESTING
 
 priority: Critical
 
 severity: Critical
 
-owner: Software Engineer
+owner: QA Engineer
 
-assigned_to: Software Engineer
+assigned_to: QA Engineer
 
 assigned_branch: bugfix/BUG-011
 
-locked: false
+locked: true
 
 assigned_to:
 
