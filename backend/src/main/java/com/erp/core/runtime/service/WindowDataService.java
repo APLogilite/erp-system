@@ -484,15 +484,19 @@ public class WindowDataService {
       UUID parentTabId,
       String fieldCode) {
 
-    // Resolve filter_where_clause from sys_window_field (field level, not column level)
+    // Resolve filter_where_clause — supports both static and @tab.field@ placeholders
     String whereField = null;
     String whereValue = null;
-    if (parentRecordId != null && tabId != null && fieldCode != null) {
+    if (tabId != null && fieldCode != null) {
       String filterClause = getFieldFilterClause(tableName, tabId, fieldCode);
       if (filterClause != null) {
-        // Resolve @tab.<field>@ placeholders using the parent tab context
-        // tabId = current tab (to find the filter), parentTabId = parent tab (to resolve placeholders)
-        String resolved = resolveFilterPlaceholders(filterClause, parentTabId != null ? parentTabId : tabId, parentRecordId);
+        String resolved;
+        // Check if filter has @tab.field@ placeholders (needs parent context)
+        if (filterClause.contains("@") && parentRecordId != null) {
+          resolved = resolveFilterPlaceholders(filterClause, parentTabId != null ? parentTabId : tabId, parentRecordId);
+        } else {
+          resolved = filterClause; // Static filter, no placeholder resolution needed
+        }
         if (resolved != null) {
           int eqIdx = resolved.indexOf('=');
           if (eqIdx > 0) {
