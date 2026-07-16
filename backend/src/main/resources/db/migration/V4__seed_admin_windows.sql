@@ -116,11 +116,12 @@ WHERE NOT EXISTS (SELECT 1 FROM sys_table WHERE name = 'sys_menu');
 CREATE OR REPLACE FUNCTION ensure_column(
   p_table_name TEXT, p_code TEXT, p_label TEXT,
   p_type TEXT, p_required BOOLEAN, p_max_length INTEGER, p_position INTEGER,
-  p_relation_table TEXT DEFAULT NULL, p_is_display BOOLEAN DEFAULT false
+  p_relation_table TEXT DEFAULT NULL, p_is_display BOOLEAN DEFAULT false,
+  p_filter_where TEXT DEFAULT NULL
 ) RETURNS void AS $$
 BEGIN
-  INSERT INTO sys_column (id, table_id, code, label, type, required, max_length, position, relation_table, is_display_column, is_active, tenant_id, created_at, updated_at)
-  SELECT gen_random_uuid(), (SELECT id FROM sys_table WHERE name = p_table_name), p_code, p_label, p_type, p_required, p_max_length, p_position, p_relation_table, p_is_display, true, '00000000-0000-0000-0000-000000000001', now(), now()
+  INSERT INTO sys_column (id, table_id, code, label, type, required, max_length, position, relation_table, is_display_column, filter_where_clause, is_active, tenant_id, created_at, updated_at)
+  SELECT gen_random_uuid(), (SELECT id FROM sys_table WHERE name = p_table_name), p_code, p_label, p_type, p_required, p_max_length, p_position, p_relation_table, p_is_display, p_filter_where, true, '00000000-0000-0000-0000-000000000001', now(), now()
   WHERE NOT EXISTS (SELECT 1 FROM sys_column WHERE table_id = (SELECT id FROM sys_table WHERE name = p_table_name) AND code = p_code);
 END;
 $$ LANGUAGE plpgsql;
@@ -135,6 +136,7 @@ SELECT ensure_column('sys_table', 'description', 'Description', 'text', false, n
 SELECT ensure_column('sys_table', 'is_active', 'Is Active', 'boolean', false, null, 7);
 
 -- sys_column columns
+SELECT ensure_column('sys_column', 'table_id', 'Table', 'many2one', true, null, 0, 'sys_table');
 SELECT ensure_column('sys_column', 'code', 'DB Column Name', 'string', true, 100, 1);
 SELECT ensure_column('sys_column', 'label', 'Label', 'string', true, 100, 2, NULL, true);
 SELECT ensure_column('sys_column', 'type', 'Type', 'string', true, 50, 3);
@@ -159,7 +161,7 @@ SELECT ensure_column('sys_tab', 'parent_column', 'Parent Column', 'string', fals
 SELECT ensure_column('sys_tab', 'is_active', 'Is Active', 'boolean', false, null, 6);
 
 -- sys_window_field columns
-SELECT ensure_column('sys_window_field', 'column_id', 'Column', 'many2one', true, null, 0, 'sys_column');
+SELECT ensure_column('sys_window_field', 'column_id', 'Column', 'many2one', true, null, 0, 'sys_column', false, 'table_id = @parentTableId@');
 SELECT ensure_column('sys_window_field', 'label_override', 'Label', 'string', false, 200, 1, NULL, true);
 SELECT ensure_column('sys_window_field', 'seq_no', 'Seq No', 'integer', true, null, 2);
 -- label_override already registered above as display column
@@ -178,13 +180,15 @@ SELECT ensure_column('sys_window_field', 'is_active', 'Is Active', 'boolean', fa
 SELECT ensure_column('sys_window_access', 'is_active', 'Is Active', 'boolean', false, null, 1);
 
 -- sys_menu columns
+SELECT ensure_column('sys_menu', 'window_id', 'Window', 'many2one', false, null, 0, 'sys_window');
 SELECT ensure_column('sys_menu', 'name', 'Name', 'string', true, 100, 1, NULL, true);
 SELECT ensure_column('sys_menu', 'type', 'Type', 'string', true, 20, 2);
-SELECT ensure_column('sys_menu', 'seq_no', 'Seq No', 'integer', true, null, 3);
-SELECT ensure_column('sys_menu', 'icon', 'Icon', 'string', false, 100, 4);
-SELECT ensure_column('sys_menu', 'is_active', 'Is Active', 'boolean', false, null, 5);
+SELECT ensure_column('sys_menu', 'parent_id', 'Parent', 'many2one', false, null, 3, 'sys_menu');
+SELECT ensure_column('sys_menu', 'seq_no', 'Seq No', 'integer', true, null, 4);
+SELECT ensure_column('sys_menu', 'icon', 'Icon', 'string', false, 100, 5);
+SELECT ensure_column('sys_menu', 'is_active', 'Is Active', 'boolean', false, null, 6);
 
-DROP FUNCTION IF EXISTS ensure_column(TEXT, TEXT, TEXT, TEXT, BOOLEAN, INTEGER, INTEGER, TEXT, BOOLEAN);
+DROP FUNCTION IF EXISTS ensure_column(TEXT, TEXT, TEXT, TEXT, BOOLEAN, INTEGER, INTEGER, TEXT, BOOLEAN, TEXT);
 
 -- ============================================================
 -- Part 3 — Admin Windows
@@ -200,13 +204,15 @@ SELECT ensure_field('Table Definitions', 10, 'table_type', 40, false, true, true
 SELECT ensure_field('Table Definitions', 10, 'table_name', 50, true, true, false, false);
 SELECT ensure_field('Table Definitions', 10, 'description', 60, false, true, false, false);
 SELECT ensure_field('Table Definitions', 10, 'is_active', 70, false, true, false, false);
+SELECT ensure_field('Table Definitions', 20, 'table_id', 5, false, true, false, true);
 SELECT ensure_field('Table Definitions', 20, 'code', 10, false, true, false, true);
 SELECT ensure_field('Table Definitions', 20, 'label', 20, true, true, false, true);
 SELECT ensure_field('Table Definitions', 20, 'type', 30, false, true, false, true);
 SELECT ensure_field('Table Definitions', 20, 'required', 40, true, true, false, false);
 SELECT ensure_field('Table Definitions', 20, 'max_length', 50, true, true, false, false);
-SELECT ensure_field('Table Definitions', 20, 'position', 60, false, true, false, false);
-SELECT ensure_field('Table Definitions', 20, 'is_active', 70, false, true, false, false);
+SELECT ensure_field('Table Definitions', 20, 'relation_table', 60, false, true, false, false);
+SELECT ensure_field('Table Definitions', 20, 'position', 70, false, true, false, false);
+SELECT ensure_field('Table Definitions', 20, 'is_active', 80, false, true, false, false);
 
 -- Window 2: Window Definitions (sys_window) with Tabs → Fields → Access hierarchy
 SELECT create_window('Window Definitions', 'sys_window', 'Manage windows, tabs, fields and access', 'Windows', 10);
@@ -235,8 +241,10 @@ SELECT ensure_field('Window Definitions', 30, 'is_active', 10, false, true, fals
 
 -- Window 3: Menu Configuration
 SELECT create_window('Menu Configuration', 'sys_menu', 'Manage menu tree entries', 'Menu', 10);
+SELECT ensure_field('Menu Configuration', 10, 'window_id', 5, false, true, false, false);
 SELECT ensure_field('Menu Configuration', 10, 'name', 10, false, true, false, true);
 SELECT ensure_field('Menu Configuration', 10, 'type', 20, false, true, false, true);
-SELECT ensure_field('Menu Configuration', 10, 'seq_no', 30, false, true, false, true);
-SELECT ensure_field('Menu Configuration', 10, 'icon', 40, false, true, false, false);
-SELECT ensure_field('Menu Configuration', 10, 'is_active', 50, false, true, false, false);
+SELECT ensure_field('Menu Configuration', 10, 'parent_id', 30, false, true, false, false);
+SELECT ensure_field('Menu Configuration', 10, 'seq_no', 40, false, true, false, true);
+SELECT ensure_field('Menu Configuration', 10, 'icon', 50, false, true, false, false);
+SELECT ensure_field('Menu Configuration', 10, 'is_active', 60, false, true, false, false);

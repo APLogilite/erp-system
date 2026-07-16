@@ -42,6 +42,7 @@ CREATE TABLE sys_column (
     enum_options JSONB,
     position INTEGER,
     is_display_column BOOLEAN DEFAULT false,
+    filter_where_clause TEXT,
     is_active BOOLEAN DEFAULT true,
     tenant_id UUID,
     created_at TIMESTAMP NOT NULL,

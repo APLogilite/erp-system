@@ -84,6 +84,7 @@ function RecordDialog({ open, windowName, windowDef, recordId, onClose }: Record
   // Drill-down state
   const [drillStack, setDrillStack] = useState<DrillLevel[]>([]);
   const [expandedPanels, setExpandedPanels] = useState<Set<string>>(new Set());
+  const [hasToggledPanel, setHasToggledPanel] = useState(false);
 
   // Determine which tab provides the form fields for the current level
   const currentLevelTab: WindowTabDefinition =
@@ -98,10 +99,37 @@ function RecordDialog({ open, windowName, windowDef, recordId, onClose }: Record
     ),
   ];
 
+  // Build lookup queries, resolving filter_where_clause if defined per field
+  const lookupConfigs = lookupTables.map((tableName) => {
+    // Find fields that reference this table to check for filter_where_clause
+    const refFields = windowDef.tabs.flatMap((t) => t.fields).filter((f) => f.column.relationTable === tableName);
+    let filterField: string | undefined;
+    let filterValue: string | undefined;
+    for (const ff of refFields) {
+      if (ff.column.filterWhereClause) {
+        // Resolve @parentTableId@ from the parent tab context (if drilled, use parent tab's table)
+        let resolved = ff.column.filterWhereClause;
+        if (resolved.includes('@parentTableId@')) {
+          const parentMeta = isDrilled && drillStack.length >= 1
+            ? drillStack[drillStack.length - 1].tab.table.id
+            : mainTab?.table.id;
+          if (parentMeta) resolved = resolved.replace('@parentTableId@', parentMeta);
+        }
+        const eqIdx = resolved.indexOf('=');
+        if (eqIdx > 0) {
+          filterField = resolved.substring(0, eqIdx).trim();
+          filterValue = resolved.substring(eqIdx + 1).trim();
+        }
+        break;
+      }
+    }
+    return { tableName, filterField, filterValue };
+  });
+
   const lookupResults = useQueries({
-    queries: lookupTables.map((tableName) => ({
-      queryKey: ['lookup', tableName],
-      queryFn: () => fetchLookupRecords(tableName),
+    queries: lookupConfigs.map((cfg) => ({
+      queryKey: ['lookup', cfg.tableName, cfg.filterField, cfg.filterValue],
+      queryFn: () => fetchLookupRecords(cfg.tableName, cfg.filterField, cfg.filterValue),
       staleTime: 30000,
       gcTime: 60000,
     })),
@@ -268,8 +296,9 @@ function RecordDialog({ open, windowName, windowDef, recordId, onClose }: Record
     setExpandedPanels(new Set());
   };
 
-  // Toggle accordion panel
+  // Toggle accordion panel (stops auto-expanding first panel after user interacts)
   const togglePanel = (panelId: string) => {
+    setHasToggledPanel(true);
     setExpandedPanels((prev) => {
       const next = new Set(prev);
       if (next.has(panelId)) next.delete(panelId);
@@ -501,7 +530,7 @@ function RecordDialog({ open, windowName, windowDef, recordId, onClose }: Record
                     <Accordion
                       expanded={
                         expandedPanels.has(panelId) ||
-                        (expandedPanels.size === 0 && currentChildTabs.indexOf(ct) === 0)
+                        (!hasToggledPanel && expandedPanels.size === 0 && currentChildTabs.indexOf(ct) === 0)
                       }
                       onChange={() => togglePanel(panelId)}
                     >
@@ -781,18 +810,9 @@ export function WindowPage() {
     );
   }
 
-  // Build tab hierarchy: top-level tabs (no parentColumn) + their children
+  // Determine current top-level tab
   const topTabs = windowDef.tabs.filter((t) => !t.parentColumn).sort((a, b) => a.seqNo - b.seqNo);
   const currentTab = topTabs[activeTab] ?? topTabs[0];
-  const childTabs = currentTab
-    ? windowDef.tabs
-        .filter(
-          (t) =>
-            t.parentColumn === currentTab.name.toLowerCase().replace(/\s/g, '_') ||
-            t.parentColumn === currentTab.name
-        )
-        .sort((a, b) => a.seqNo - b.seqNo)
-    : [];
 
   const fields = currentTab ? getDisplayedFields(currentTab) : [];
   const records = (recordsData as { items?: Record<string, unknown>[] })?.items ?? [];
@@ -922,20 +942,6 @@ export function WindowPage() {
             rowsPerPageOptions={[pageSize]}
           />
         </>
-      )}
-
-      {/* Child tab indicators */}
-      {childTabs.length > 0 && (
-        <Box sx={{ mt: 3, px: 1 }}>
-          <Typography variant="subtitle2" color="text.secondary" sx={{ mb: 1 }}>
-            Related records:
-          </Typography>
-          {childTabs.map((ct) => (
-            <Typography key={ct.id} variant="body2" sx={{ ml: 2, mb: 0.5 }}>
-              • {ct.name}
-            </Typography>
-          ))}
-        </Box>
       )}
 
       <RecordDialog

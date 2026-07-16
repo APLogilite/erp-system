@@ -67,6 +67,7 @@ public class FieldDefinitionResponse {
     private Integer scale;
     private String relationTable;
     private String enumOptions;
+    private String filterWhereClause;
 
     public ColumnInfo() {}
 
@@ -88,5 +89,7 @@ public class FieldDefinitionResponse {
     public void setRelationTable(String relationTable) { this.relationTable = relationTable; }
     public String getEnumOptions() { return enumOptions; }
     public void setEnumOptions(String enumOptions) { this.enumOptions = enumOptions; }
+    public String getFilterWhereClause() { return filterWhereClause; }
+    public void setFilterWhereClause(String filterWhereClause) { this.filterWhereClause = filterWhereClause; }
   }
 }

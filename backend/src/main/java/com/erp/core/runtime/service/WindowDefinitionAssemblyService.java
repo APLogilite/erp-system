@@ -154,6 +154,7 @@ public class WindowDefinitionAssemblyService {
       columnInfo.setScale(column.getScale());
       columnInfo.setRelationTable(column.getRelationTable());
       columnInfo.setEnumOptions(column.getEnumOptions());
+      columnInfo.setFilterWhereClause(column.getFilterWhereClause());
       fieldResponse.setColumn(columnInfo);
       // Fallback to column's default label only if no labelOverride was set
       if (fieldResponse.getLabel() == null) {

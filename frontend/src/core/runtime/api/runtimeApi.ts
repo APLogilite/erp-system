@@ -132,6 +132,7 @@ export interface ColumnInfo {
   scale?: number;
   relationTable?: string;
   enumOptions?: string;
+  filterWhereClause?: string;
 }
 
 /** A field definition within a window tab. */
@@ -313,11 +314,20 @@ export async function fetchTabRecord(
 /**
  * Fetches records from a table for use in dropdown/autocomplete.
  * Each record includes a _display field with the human-readable label.
- * GET /api/v1/runtime/windows/lookup/{tableName}
+ * Optionally filter by a field/value (e.g., filter column dropdown by parent table).
+ * GET /api/v1/runtime/windows/lookup/{tableName}?filterField=...&filterValue=...
  */
-export async function fetchLookupRecords(tableName: string): Promise<Record<string, unknown>[]> {
+export async function fetchLookupRecords(
+  tableName: string,
+  filterField?: string,
+  filterValue?: string
+): Promise<Record<string, unknown>[]> {
+  const params: Record<string, string> = {};
+  if (filterField) params.filterField = filterField;
+  if (filterValue) params.filterValue = filterValue;
   const response = await apiClient.get<ApiResponse<Record<string, unknown>[]>>(
-    `/runtime/windows/lookup/${encodeURIComponent(tableName)}`
+    `/runtime/windows/lookup/${encodeURIComponent(tableName)}`,
+    { params }
   );
   return unwrap(response);
 }

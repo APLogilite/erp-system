@@ -374,10 +374,20 @@ public class WindowDataService {
   @Transactional(readOnly = true)
   public List<Map<String, Object>> lookupRecords(
       String tableName,
-      UUID tenantId) {
+      UUID tenantId,
+      String filterField,
+      String filterValue) {
+
+    // Apply optional filter (e.g., filter by parent table for column_id dropdowns)
+    String whereField = filterField;
+    String whereValue = filterValue;
+    if (filterField == null || filterField.isBlank()) {
+      whereField = null;
+      whereValue = null;
+    }
 
     Map<String, Object> result = dynamicCrudService.listRecords(
-        tableName, null, null, tenantId, 0, 500, null, null, null);
+        tableName, whereField, whereValue, tenantId, 0, 500, null, null, null);
 
     @SuppressWarnings("unchecked")
     List<Map<String, Object>> items = (List<Map<String, Object>>) result.get("items");

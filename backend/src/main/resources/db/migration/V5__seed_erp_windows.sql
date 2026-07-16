@@ -154,7 +154,7 @@ SELECT ensure_column('tx_shipment_line', 'product_id', 'Product', 'many2one', tr
 SELECT ensure_column('tx_shipment_line', 'description', 'Description', 'text', false, null, 3);
 SELECT ensure_column('tx_shipment_line', 'quantity', 'Quantity', 'decimal', false, null, 4);
 
-DROP FUNCTION IF EXISTS ensure_column(TEXT, TEXT, TEXT, TEXT, BOOLEAN, INTEGER, INTEGER, TEXT, BOOLEAN);
+DROP FUNCTION IF EXISTS ensure_column(TEXT, TEXT, TEXT, TEXT, BOOLEAN, INTEGER, INTEGER, TEXT, BOOLEAN, TEXT);
 
 -- ============================================================
 -- Part 3 — Master Data Windows

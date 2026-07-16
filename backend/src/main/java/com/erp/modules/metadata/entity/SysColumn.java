@@ -50,6 +50,9 @@ public class SysColumn extends BaseEntity {
   @Column
   private Integer position;
 
+  @Column(name = "filter_where_clause", columnDefinition = "TEXT")
+  private String filterWhereClause;
+
   // --- Getters and Setters ---
 
   public UUID getTableId() { return tableId; }
@@ -87,4 +90,7 @@ public class SysColumn extends BaseEntity {
 
   public Integer getPosition() { return position; }
   public void setPosition(Integer position) { this.position = position; }
+
+  public String getFilterWhereClause() { return filterWhereClause; }
+  public void setFilterWhereClause(String filterWhereClause) { this.filterWhereClause = filterWhereClause; }
 }
