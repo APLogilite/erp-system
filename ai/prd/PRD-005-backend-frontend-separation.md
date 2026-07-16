@@ -3,7 +3,7 @@ id: PRD-005
 
 title: Backend-Frontend Separation — Move Data Logic to Backend
 
-version: 1.2.0
+version: 1.3.0
 
 status: DRAFT
 # DRAFT
@@ -308,6 +308,7 @@ When PRD-004 (Window Hierarchy & Menu System) was built, the frontend `WindowPag
 - Section guarantee for form definitions (FR-008)
 - Frontend cleanup: remove all data transformation code
 - **Remove dead backend modules**: `modules/auth/` (6 files) and `core/security/` (12 files)
+- **Standardize package structure**: move window schema to `core/layout/`, move frontend pages to `routes/`, move/delete stale services
 
 ## Excluded
 
@@ -315,8 +316,7 @@ When PRD-004 (Window Hierarchy & Menu System) was built, the frontend `WindowPag
 - Real-time sync (WebSockets) — future
 - Form designer UI changes — backend already feeds the designer
 - Old PRD-001 form system migration — covered by PRD-004
-- Module reorganization (routes/ vs modules/ alignment — separate PRD)
-- Old form designer migration (`core/metadata/` PRD-001 entities) — covered by PRD-004 window system
+- Old form designer migration (`core/metadata/` PRD-001 entities) — stays until admin form/table designer UIs are rebuilt on new window schema
 
 ---
 
@@ -492,6 +492,54 @@ None. All changes are in DTOs, service logic, and frontend code.
 - Files: `endpoints.ts`
 - Effort: 30 minutes
 
+## TASK-013: Move Window Schema from `modules/metadata/` to `core/layout/`
+
+- Owner: Software Engineer
+- Scope: backend
+- Description: The `Sys*` entities (SysTable, SysColumn, SysWindow, SysTab, SysWindowField, SysWindowAccess, SysMenu) define the **core layout configuration** — what windows/tabs/fields/menus exist. They currently live under `modules/metadata/` but every consumer is in `core/runtime/`. Move them into `core/layout/` alongside their consumers.
+
+  **Move these 21 files:**
+  - `modules/metadata/entity/` (7 files) → `core/layout/entity/`
+  - `modules/metadata/repository/` (7 files) → `core/layout/repository/`
+  - `modules/metadata/service/` (7 files) → `core/layout/service/`
+
+  **Update imports in 5 consumer files:**
+  - `core/runtime/service/WindowDefinitionAssemblyService.java`
+  - `core/runtime/service/WindowDataService.java`
+  - `core/runtime/controller/WindowDefinitionController.java`
+  - `core/runtime/controller/MenuController.java`
+  - `core/runtime/controller/RuntimeFormController.java`
+
+  **Result:** `core/layout/` = the blueprint (what exists), `core/runtime/` = the engine (how it works), `core/metadata/` = old form designer (stays until deprecated).
+
+- Files: 21 moved + 5 import updates
+- Effort: 1 hour
+
+## TASK-014: Move Frontend Pages from `modules/` to `routes/`
+
+- Owner: Software Engineer
+- Scope: frontend
+- Description: Page components are split arbitrarily between `routes/` and `modules/`. Move all pages under `routes/` to follow the established convention.
+
+  **Move identity pages (15 files):**
+  - `modules/identity/context/ContextSelectPage.tsx` → `routes/identity/context/ContextSelectPage.tsx`
+  - `modules/identity/preferences/PreferencesPage.tsx` → `routes/identity/preferences/PreferencesPage.tsx`
+  - `modules/identity/profile/ProfilePage.tsx` → `routes/identity/profile/ProfilePage.tsx`
+  - `modules/identity/sessions/SessionsPage.tsx` → `routes/identity/sessions/SessionsPage.tsx`
+  - `modules/identity/admin/` (AdminDashboardPage, + 10 admin sub-pages) → `routes/identity/admin/`
+
+  **Move admin designer pages (5 files):**
+  - `modules/admin/forms/FormDesignerPage.tsx`, `FormListPage.tsx` → `routes/admin/forms/`
+  - `modules/admin/tables/CreateTablePage.tsx`, `TableDetailPage.tsx`, `TableListPage.tsx` → `routes/admin/tables/`
+
+  **Update imports:**
+  - `AppRoutes.tsx` — change all 15 import paths from `../modules/...` to `./identity/...` and `./admin/...`
+
+  **Result:** All pages under `routes/` — consistent convention.
+
+- Files: ~20 moved + 1 updated
+- Effort: 2 hours
+
 ---
 
 # Acceptance Criteria
@@ -507,6 +555,10 @@ None. All changes are in DTOs, service logic, and frontend code.
 - 600+ lines of frontend code removed
 - `modules/auth/` directory deleted (6 files)
 - `core/security/` directory deleted (12 files)
+- `modules/metadata/` moved to `core/layout/` (21 files relocated, 5 consumer imports updated)
+- All frontend pages under `routes/` (15 pages moved from `modules/`, zero remain in `modules/`)
+- `customerService.ts` moved out of core or deleted
+- Stale endpoint configs removed from `endpoints.ts`
 - Backend compiles and all 36 existing tests pass after deletion
 - `mvn clean compile` succeeds with no unresolved imports
 
@@ -519,3 +571,4 @@ None. All changes are in DTOs, service logic, and frontend code.
 | 1.0.0 | Initial Draft |
 | 1.1.0 | Added dead code removal: `modules/auth/` and `core/security/` packages |
 | 1.2.0 | Added standardization: move customerService, audit stale endpoints |
+| 1.3.0 | Added TASK-013 (move window schema to core/layout/) and TASK-014 (move frontend pages to routes/) |
