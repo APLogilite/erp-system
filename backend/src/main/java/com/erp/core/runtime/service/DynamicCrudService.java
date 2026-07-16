@@ -103,7 +103,13 @@ public class DynamicCrudService {
         && whereValue != null && !whereValue.isBlank()) {
       validateColumnName(tableName, whereClause);
       conditions.add(tableRef + "." + escapeIdentifier(whereClause) + " = :whereValue");
-      params.addValue("whereValue", whereValue);
+      // Convert UUID strings to UUID objects — PostgreSQL rejects varchar for uuid columns
+      if (whereValue.length() == 36 && whereValue.charAt(8) == '-' && whereValue.charAt(13) == '-') {
+        try { params.addValue("whereValue", UUID.fromString(whereValue)); }
+        catch (IllegalArgumentException e) { params.addValue("whereValue", whereValue); }
+      } else {
+        params.addValue("whereValue", whereValue);
+      }
     }
 
     // Role-based row filters
