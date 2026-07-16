@@ -609,6 +609,8 @@ public class WindowDataService {
     if (record == null) {
       return null;
     }
+    // Resolve display names for the tab record itself
+    resolveDisplayNames(java.util.Collections.singletonList(record), tab);
 
     // Fetch child records for each child tab (failures don't block others)
     Map<String, Object> childRecords = new LinkedHashMap<>();
@@ -630,6 +632,8 @@ public class WindowDataService {
         try {
           List<Map<String, Object>> children =
               dynamicCrudService.getChildRecords(childTableName, relationColumn, recordId, tenantId, conditions);
+          // Resolve display names for grandchildren too
+          resolveDisplayNames(children, childTab);
           childRecords.put(childTab.getName(), children);
           log.debug("Loaded {} child records for tab '{}' from table '{}'", children.size(), childTab.getName(), childTableName);
         } catch (Exception e) {
