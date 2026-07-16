@@ -517,13 +517,13 @@ function RecordDialog({ open, windowName, windowDef, recordId, onClose }: Record
                       expanded={expandedPanels.has(panelId)}
                       onChange={() => togglePanel(panelId)}
                     >
-                      <AccordionSummary>
+                      <AccordionSummary sx={{ py: 0.5, minHeight: 0 }}>
                         <Typography variant="subtitle2" sx={{ fontWeight: 600, fontSize: 13 }}>
                           {expandedPanels.has(panelId) ? '▼' : '▶'} {ct.name} ({childRecords.length}
                           )
                         </Typography>
                       </AccordionSummary>
-                      <AccordionDetails sx={{ p: 1 }}>
+                      <AccordionDetails sx={{ px: 1, py: 0.5 }}>
                         <ChildTabGrid
                           tab={ct}
                           childRecords={childRecords}
@@ -650,7 +650,7 @@ function ChildTabGrid({ tab, childRecords, onRowClick }: ChildTabGridProps) {
 
   return (
     <Box sx={{ mb: 2 }}>
-      <Box sx={{ textAlign: 'right', px: 1, mb: 0.5 }}>
+      <Box sx={{ textAlign: 'right', px: 1, py: 0.25 }}>
         <Button
           size="small"
           variant={editMode ? 'contained' : 'outlined'}
