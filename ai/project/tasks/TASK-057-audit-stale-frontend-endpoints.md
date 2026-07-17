@@ -7,7 +7,7 @@ type: Refactor
 
 scope: frontend
 
-status: IN_DEVELOPMENT
+status: READY_FOR_TEST
 
 priority: Low
 
@@ -15,9 +15,9 @@ owner: developer
 
 assigned_to:
 
-assigned_branch:
+assigned_branch: feature/TASK-057
 
-locked: true
+locked: false
 
 created: 2026-07-16
 
@@ -25,7 +25,7 @@ updated: 2026-07-17
 
 started: 2026-07-17
 
-completed:
+completed: 2026-07-17
 
 estimated_hours: 1
 
@@ -63,7 +63,7 @@ test_required: true
 
 automation_required: false
 
-change_summary:
+change_summary: ai/project/changes/CHANGE-TASK-057.md
 
 test_report:
 
@@ -73,6 +73,7 @@ history:
   - created
   - 2026-07-17: activated to READY_FOR_DEV (SE)
   - 2026-07-17: locked and started IN_DEVELOPMENT (SE)
+  - 2026-07-17: merged to PRD branch, READY_FOR_TEST (SE)
 
 ---
 
