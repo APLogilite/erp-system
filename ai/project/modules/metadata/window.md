@@ -2,8 +2,8 @@
 module: window
 type: backend
 layer: entity + repository + service + controller
-last_updated: 2026-07-16T18:32:56+05:30
-last_updated_git_sha: 2958af1b0ecd41cb6d20403374d34e41c0917a0e
+last_updated: 2026-07-17T00:00:00+05:30
+last_updated_git_sha: 19daf230d090cda6fed91577c3b50848c2e4da64
 paths:
   - backend/src/main/java/com/erp/modules/metadata/
   - backend/src/main/java/com/erp/core/runtime/controller/WindowDefinitionController.java
