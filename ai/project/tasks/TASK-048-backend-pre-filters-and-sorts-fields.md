@@ -7,7 +7,7 @@ type: Feature
 
 scope: backend
 
-status: READY_FOR_DEV
+status: IN_DEVELOPMENT
 
 priority: Medium
 
@@ -17,13 +17,13 @@ assigned_to:
 
 assigned_branch:
 
-locked: false
+locked: true
 
 created: 2026-07-16
 
 updated: 2026-07-17
 
-started:
+started: 2026-07-17
 
 completed:
 
@@ -71,6 +71,7 @@ test_script:
 history:
   - created
   - 2026-07-17: activated to READY_FOR_DEV (SE)
+  - 2026-07-17: locked and started IN_DEVELOPMENT (SE)
 
 ---
 
