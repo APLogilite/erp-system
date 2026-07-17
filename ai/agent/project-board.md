@@ -4,7 +4,7 @@ Last Updated: 2026-07-17
 
 Updated By: Software Engineer
 
-(PRD-005 IN_DEVELOPMENT v1.3.0 — 9 tasks READY_FOR_TEST, 5 tasks READY_FOR_DEV)
+(PRD-005 IN_DEVELOPMENT v1.3.0 — 11 tasks READY_FOR_TEST, 3 tasks READY_FOR_DEV)
 
 ---
 
@@ -64,6 +64,8 @@ See `ai/agent/rules/status-transitions.md` for full transition rules.
 | TASK-048 | Backend Pre-Filters and Pre-Sorts Fields | Medium | backend | feature/TASK-048 |
 | TASK-049 | Backend Type Coercion on Save | Medium | backend | feature/TASK-049 |
 | TASK-050 | Guarantee _display on Every Record | High | both | feature/TASK-050 |
+| TASK-056 | Move customerService.ts Out of core/api/services/ | Low | frontend | feature/TASK-056 |
+| TASK-057 | Audit and Remove Stale Frontend API Endpoints | Low | frontend | feature/TASK-057 |
 | TASK-053 | Backend Guarantees Non-Empty Sections | Low | backend | feature/TASK-053 |
 | TASK-058 | Move Window Schema to core/layout/ | High | backend | feature/TASK-058 |
 
@@ -177,8 +179,8 @@ See `ai/agent/rules/status-transitions.md` for full transition rules.
 | Status | Count |
 |--------|-------|
 | PRDs | 5 (4 COMPLETED: PRD-001/002/003/004, 1 IN_DEVELOPMENT: PRD-005) |
-| Ready For Dev | 5 (PRD-005: TASK-051/052/056/057/059) |
-| Ready For Test | 9 (PRD-005: TASK-046/047/048/049/050/053/054/055/058) |
+| Ready For Dev | 3 (PRD-005: TASK-051/052/059) |
+| Ready For Test | 11 (PRD-005: TASK-046/047/048/049/050/053/054/055/056/057/058) |
 | In Development | 0 |
 | In Testing | 0 |
 | Planning | 0 |
@@ -187,6 +189,6 @@ See `ai/agent/rules/status-transitions.md` for full transition rules.
 | Completed (PRD-002) | 3 tasks + 1 enhancement (TASK-033/034/035 + ENH-002) |
 | Completed (PRD-003) | 5 tasks (TASK-028/029/030/031/032) — merged to main |
 | Completed (PRD-004) | 10 tasks (TASK-036..045) — merged to main |
-| Total Tasks | 47 completed + 5 ready + 9 testing (PRD-005) |
+| Total Tasks | 47 completed + 3 ready + 11 testing (PRD-005) |
 | PRD-004 Status | COMPLETED (v1.1.0) — Consolidated migrations, BUG-010/BUG-011 RESOLVED |
-| PRD-005 Status | IN_DEVELOPMENT (v1.3.0) — 5 tasks ready, 9 in test |
+| PRD-005 Status | IN_DEVELOPMENT (v1.3.0) — 3 tasks ready, 11 in test |
