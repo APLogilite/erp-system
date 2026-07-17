@@ -7,7 +7,7 @@ type: Feature
 
 scope: both
 
-status: READY_FOR_TEST
+status: TESTED
 
 priority: High
 

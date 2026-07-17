@@ -7,7 +7,7 @@ type: Feature
 
 scope: backend
 
-status: TESTING
+status: TESTED
 
 priority: High
 
@@ -17,7 +17,7 @@ assigned_to:
 
 assigned_branch: feature/TASK-046
 
-locked: true
+locked: false
 
 created: 2026-07-16
 
@@ -65,7 +65,7 @@ automation_required: false
 
 change_summary: ai/project/changes/CHANGE-TASK-046.md
 
-test_report:
+test_report: ai/project/tests/TEST-TASK-046.md
 
 test_script:
 

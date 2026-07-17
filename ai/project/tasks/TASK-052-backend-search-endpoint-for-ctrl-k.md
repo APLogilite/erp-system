@@ -7,7 +7,7 @@ type: Feature
 
 scope: both
 
-status: READY_FOR_TEST
+status: TESTED
 
 priority: Medium
 
@@ -63,7 +63,7 @@ automation_required: false
 
 change_summary: ai/project/changes/CHANGE-TASK-052.md
 
-test_report:
+test_report: ai/project/tests/TEST-TASK-052.md
 
 test_script:
 

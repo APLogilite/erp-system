@@ -4,7 +4,7 @@ Last Updated: 2026-07-17
 
 Updated By: Software Engineer
 
-(PRD-005 TESTING v1.3.1 — All 14 tasks READY_FOR_TEST, ready for QA)
+(PRD-005 READY_FOR_DEPLOYMENT v1.3.1 — All 14 tasks TESTED, QA complete)
 
 ---
 
@@ -36,7 +36,7 @@ See `ai/agent/rules/status-transitions.md` for full transition rules.
 | PRD-002 | Admin Configuration Forms | 1.1.0 | **COMPLETED** | High |
 | PRD-003 | ERP Order Flow — Transaction Forms | 1.0.0 | **COMPLETED** | High |
 | PRD-004 | Window Hierarchy & Menu System | 1.1.0 | **COMPLETED** | High |
-| PRD-005 | Backend-Frontend Separation & Code Standardization | 1.3.1 | **TESTING** | High |
+| PRD-005 | Backend-Frontend Separation & Code Standardization | 1.3.1 | **READY_FOR_DEPLOYMENT** | High |
 
 ---
 
@@ -61,22 +61,7 @@ See `ai/agent/rules/status-transitions.md` for full transition rules.
 
 ## Ready For Test
 
-| Task | Title | Priority | Scope | Branch |
-|------|-------|----------|-------|--------|
-| TASK-046 | Add childTabIds to TabDefinitionResponse | High | backend | feature/TASK-046 |
-| TASK-047 | Add htmlType and lookupOptions to FieldDefinitionResponse | High | both | feature/TASK-047 |
-| TASK-054 | Remove Dead modules/auth/ Package | High | backend | feature/TASK-054 |
-| TASK-055 | Remove Dead core/security/ Package | High | backend | feature/TASK-055 |
-| TASK-048 | Backend Pre-Filters and Pre-Sorts Fields | Medium | backend | feature/TASK-048 |
-| TASK-049 | Backend Type Coercion on Save | Medium | backend | feature/TASK-049 |
-| TASK-050 | Guarantee _display on Every Record | High | both | feature/TASK-050 |
-| TASK-056 | Move customerService.ts Out of core/api/services/ | Low | frontend | feature/TASK-056 |
-| TASK-057 | Audit and Remove Stale Frontend API Endpoints | Low | frontend | feature/TASK-057 |
-| TASK-059 | Move Frontend Pages to routes/ | Medium | frontend | feature/TASK-059 |
-| TASK-051 | Backend Returns RuntimeMetadataBundle Directly | High | both | feature/TASK-051 |
-| TASK-052 | Backend Search Endpoint for Ctrl+K | Medium | both | feature/TASK-052 |
-| TASK-053 | Backend Guarantees Non-Empty Sections | Low | backend | feature/TASK-053 |
-| TASK-058 | Move Window Schema to core/layout/ | High | backend | feature/TASK-058 |
+*(none)*
 
 ---
 
@@ -187,9 +172,9 @@ See `ai/agent/rules/status-transitions.md` for full transition rules.
 
 | Status | Count |
 |--------|-------|
-| PRDs | 5 (4 COMPLETED: PRD-001/002/003/004, 1 IN_DEVELOPMENT: PRD-005) |
+| PRDs | 5 (4 COMPLETED: PRD-001/002/003/004, 1 READY_FOR_DEPLOYMENT: PRD-005) |
 | Ready For Dev | 0 |
-| Ready For Test | 14 (PRD-005: TASK-046/047/048/049/050/051/052/053/054/055/056/057/058/059) |
+| Ready For Test | 0 |
 | In Development | 0 |
 | In Testing | 0 |
 | Planning | 0 |
@@ -198,6 +183,6 @@ See `ai/agent/rules/status-transitions.md` for full transition rules.
 | Completed (PRD-002) | 3 tasks + 1 enhancement (TASK-033/034/035 + ENH-002) |
 | Completed (PRD-003) | 5 tasks (TASK-028/029/030/031/032) — merged to main |
 | Completed (PRD-004) | 10 tasks (TASK-036..045) — merged to main |
-| Total Tasks | 47 completed + 14 testing (PRD-005) |
+| Total Tasks | 61 completed (47 prior + 14 PRD-005) |
 | PRD-004 Status | COMPLETED (v1.1.0) — Consolidated migrations, BUG-010/BUG-011 RESOLVED |
-| PRD-005 Status | TESTING (v1.3.1) — 14 tasks ready for QA |
+| PRD-005 Status | READY_FOR_DEPLOYMENT (v1.3.1) — QA complete, all 14 tasks TESTED |

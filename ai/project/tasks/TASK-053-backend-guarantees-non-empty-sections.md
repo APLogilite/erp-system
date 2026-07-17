@@ -7,7 +7,7 @@ type: Feature
 
 scope: backend
 
-status: READY_FOR_TEST
+status: TESTED
 
 priority: Low
 
@@ -63,7 +63,7 @@ automation_required: false
 
 change_summary: ai/project/changes/CHANGE-TASK-053.md
 
-test_report:
+test_report: ai/project/tests/TEST-TASK-053.md
 
 test_script:
 

@@ -7,7 +7,7 @@ type: Refactor
 
 scope: frontend
 
-status: READY_FOR_TEST
+status: TESTED
 
 priority: Low
 
@@ -65,7 +65,7 @@ automation_required: false
 
 change_summary: ai/project/changes/CHANGE-TASK-057.md
 
-test_report:
+test_report: ai/project/tests/TEST-TASK-057.md
 
 test_script:
 
