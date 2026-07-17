@@ -185,17 +185,10 @@ function RecordDialog({ open, windowName, windowDef, recordId, onClose }: Record
   });
 
   const handleSave = useCallback(() => {
-    const parsed = { ...formData };
-    for (const field of currentLevelTab?.fields ?? []) {
-      const val = parsed[field.column.code];
-      if (val === '' || val === undefined || val === null) continue;
-      if (field.column.type === 'integer') parsed[field.column.code] = parseInt(val as string, 10);
-      else if (field.column.type === 'decimal' || field.column.type === 'numeric')
-        parsed[field.column.code] = parseFloat(val as string);
-    }
-    if (currentRecordId) updateMutation.mutate(parsed);
-    else createMutation.mutate(parsed);
-  }, [currentRecordId, formData, currentLevelTab, createMutation, updateMutation]);
+    // Send raw form data as-is — backend coerces types server-side
+    if (currentRecordId) updateMutation.mutate(formData);
+    else createMutation.mutate(formData);
+  }, [currentRecordId, formData, createMutation, updateMutation]);
 
   const handleFieldChange = useCallback((fieldCode: string, value: unknown) => {
     setFormData((prev) => ({ ...prev, [fieldCode]: value }));

@@ -5,6 +5,7 @@ import com.erp.core.runtime.dto.window.TabDefinitionResponse;
 import com.erp.core.runtime.dto.window.WindowDefinitionResponse;
 import com.erp.modules.metadata.entity.SysTab;
 import com.erp.modules.metadata.service.SysTabService;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -609,6 +610,9 @@ public class WindowDataService {
       }
     }
 
+    // Coerce string values to proper types based on column metadata
+    coerceFieldTypes(data, targetTab);
+
     // Validate required fields are present before inserting
     if (targetTab.getFields() != null) {
       List<String> missingFields = new ArrayList<>();
@@ -686,6 +690,9 @@ public class WindowDataService {
     if (tableName == null) {
       throw new IllegalArgumentException("Tab has no associated table: " + targetTab.getName());
     }
+
+    // Coerce string values to proper types based on column metadata
+    coerceFieldTypes(data, targetTab);
 
     return dynamicCrudService.updateRecord(tableName, recordId, data, tenantId, userId, null);
   }
@@ -819,5 +826,41 @@ public class WindowDataService {
     result.put("record", record);
     result.put("childRecords", childRecords);
     return result;
+  }
+
+  /**
+   * Coerces string values in the data map to the correct Java types based on
+   * the column type metadata from the tab's field definitions.
+   * This allows the frontend to send raw string values from form inputs without
+   * client-side parseInt/parseFloat coercion.
+   */
+  private void coerceFieldTypes(Map<String, Object> data, TabDefinitionResponse tab) {
+    if (tab.getFields() == null) return;
+    for (FieldDefinitionResponse field : tab.getFields()) {
+      if (field.getColumn() == null) continue;
+      String code = field.getColumn().getCode();
+      if (!data.containsKey(code)) continue;
+      Object val = data.get(code);
+      if (val == null || val instanceof Number || val instanceof Boolean) continue;
+      String type = field.getColumn().getType();
+      if (type == null) continue;
+      try {
+        if (val instanceof String str) {
+          if (str.isBlank()) {
+            data.put(code, null);
+            continue;
+          }
+          switch (type) {
+            case "integer" -> data.put(code, Integer.parseInt(str.trim()));
+            case "decimal", "numeric" -> data.put(code, new BigDecimal(str.trim()));
+            case "boolean" -> data.put(code, "true".equalsIgnoreCase(str.trim()) || "1".equals(str.trim()) || "yes".equalsIgnoreCase(str.trim()));
+            case "date" -> data.put(code, java.time.LocalDate.parse(str.trim()));
+            case "datetime" -> data.put(code, java.time.LocalDateTime.parse(str.trim().replace(" ", "T")));
+          }
+        }
+      } catch (Exception e) {
+        log.warn("Failed to coerce field '{}' value '{}' to type '{}': {}", code, val, type, e.getMessage());
+      }
+    }
   }
 }
