@@ -4,7 +4,7 @@ Last Updated: 2026-07-17
 
 Updated By: Software Engineer
 
-(PRD-005 IN_DEVELOPMENT v1.3.0 — 4 tasks READY_FOR_TEST (TASK-046/047/054/055), 10 tasks READY_FOR_DEV)
+(PRD-005 IN_DEVELOPMENT v1.3.0 — 5 tasks READY_FOR_TEST (TASK-046/047/048/054/055), 9 tasks READY_FOR_DEV)
 
 ---
 
@@ -39,7 +39,7 @@ See `ai/agent/rules/status-transitions.md` for full transition rules.
 | Task | Title | Priority | Scope |
 |------|-------|----------|-------|
 
-| TASK-048 | Backend Pre-Filters and Pre-Sorts Fields | Medium | backend |
+
 | TASK-049 | Backend Type Coercion on Save | Medium | backend |
 | TASK-050 | Guarantee _display on Every Record | High | both |
 | TASK-051 | Backend Returns RuntimeMetadataBundle Directly | High | both |
@@ -61,6 +61,7 @@ See `ai/agent/rules/status-transitions.md` for full transition rules.
 | TASK-047 | Add htmlType and lookupOptions to FieldDefinitionResponse | High | both | feature/TASK-047 |
 | TASK-054 | Remove Dead modules/auth/ Package | High | backend | feature/TASK-054 |
 | TASK-055 | Remove Dead core/security/ Package | High | backend | feature/TASK-055 |
+| TASK-048 | Backend Pre-Filters and Pre-Sorts Fields | Medium | backend | feature/TASK-048 |
 
 ---
 
@@ -172,8 +173,8 @@ See `ai/agent/rules/status-transitions.md` for full transition rules.
 | Status | Count |
 |--------|-------|
 | PRDs | 5 (4 COMPLETED: PRD-001/002/003/004, 1 IN_DEVELOPMENT: PRD-005) |
-| Ready For Dev | 10 (PRD-005: TASK-048/049/050/051/052/053/056/057/058/059) |
-| Ready For Test | 4 (PRD-005: TASK-046/047/054/055) |
+| Ready For Dev | 9 (PRD-005: TASK-049/050/051/052/053/056/057/058/059) |
+| Ready For Test | 5 (PRD-005: TASK-046/047/048/054/055) |
 | In Development | 0 |
 | In Testing | 0 |
 | Planning | 0 |
@@ -182,6 +183,6 @@ See `ai/agent/rules/status-transitions.md` for full transition rules.
 | Completed (PRD-002) | 3 tasks + 1 enhancement (TASK-033/034/035 + ENH-002) |
 | Completed (PRD-003) | 5 tasks (TASK-028/029/030/031/032) — merged to main |
 | Completed (PRD-004) | 10 tasks (TASK-036..045) — merged to main |
-| Total Tasks | 47 completed + 10 ready + 4 testing (PRD-005) |
+| Total Tasks | 47 completed + 9 ready + 5 testing (PRD-005) |
 | PRD-004 Status | COMPLETED (v1.1.0) — Consolidated migrations, BUG-010/BUG-011 RESOLVED |
-| PRD-005 Status | IN_DEVELOPMENT (v1.3.0) — 10 tasks ready, 4 in test (TASK-046/047/054/055) |
+| PRD-005 Status | IN_DEVELOPMENT (v1.3.0) — 9 tasks ready, 5 in test (TASK-046/047/048/054/055) |
