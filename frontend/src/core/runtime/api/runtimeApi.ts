@@ -36,6 +36,18 @@ export async function fetchFormDefinition(formCode: string): Promise<FormDefinit
   return unwrap(response);
 }
 
+/**
+ * Fetches the RuntimeMetadataBundle directly from the backend.
+ * This replaces the client-side formToBundleMapper transformation.
+ * GET /api/v1/runtime/forms/{formCode}/bundle
+ */
+export async function fetchFormBundle(formCode: string): Promise<Record<string, unknown>> {
+  const response = await apiClient.get<ApiResponse<Record<string, unknown>>>(
+    `/runtime/forms/${encodeURIComponent(formCode)}/bundle`
+  );
+  return unwrap(response);
+}
+
 // ---- Records ----
 
 /**

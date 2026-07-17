@@ -195,6 +195,29 @@ public class RuntimeFormController {
         .body(ApiResponse.success(bundle, "Form definition retrieved."));
   }
 
+  /**
+   * Returns the form definition as a RuntimeMetadataBundle, ready for the frontend
+   * DynamicFormRenderer without additional client-side transformation.
+   * GET /api/v1/runtime/forms/{formCode}/bundle
+   */
+  @GetMapping("/{formCode}/bundle")
+  public ResponseEntity<ApiResponse<Map<String, Object>>> getFormBundle(
+      @PathVariable String formCode) {
+
+    RuntimeContext ctx = requireContext();
+    UUID tenantId = ctx != null ? ctx.getTenantId() : null;
+    List<String> roleCodes = ctx != null ? ctx.getRoles() : List.of();
+
+    Map<String, Object> bundle = assemblyService.assembleBundle(formCode, tenantId, roleCodes);
+
+    if (bundle == null) {
+      return ResponseEntity.notFound().build();
+    }
+
+    return ResponseEntity.ok()
+        .body(ApiResponse.success(bundle, "Form bundle retrieved."));
+  }
+
   // ----
   // Records
   // ----

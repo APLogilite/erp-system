@@ -30,6 +30,7 @@ import com.erp.platform.identity.entity.Role;
 import com.erp.platform.identity.repository.RoleRepository;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -367,5 +368,154 @@ public class FormDefinitionAssemblyService {
     if (sectionIds.isEmpty()) return Collections.emptyMap();
     return formSectionFieldRepository.findBySectionIdIn(sectionIds).stream()
         .collect(Collectors.groupingBy(FormSectionFieldEntity::getSectionId));
+  }
+
+  /**
+   * Assembles a RuntimeMetadataBundle directly, eliminating the need for the frontend
+   * formToBundleMapper.ts transformation layer.
+   */
+  public Map<String, Object> assembleBundle(String formCode, UUID tenantId, List<String> roleCodes) {
+    FormDefinitionBundleResponse def = assembleDefinition(formCode, tenantId, roleCodes);
+    if (def == null) return null;
+
+    Map<String, Object> bundle = new LinkedHashMap<>();
+
+    // Build model
+    List<Map<String, Object>> modelFields = new ArrayList<>();
+    if (def.getFields() != null) {
+      for (FieldDefinitionResponse field : def.getFields()) {
+        Map<String, Object> mf = new LinkedHashMap<>();
+        mf.put("id", field.getFieldId().toString());
+        mf.put("code", field.getColumnCode());
+        mf.put("name", field.getLabel());
+        mf.put("description", "");
+        mf.put("version", 1);
+        mf.put("active", true);
+        mf.put("type", mapApiTypeToSchemaType(field.getType()));
+        mf.put("required", field.getRequired());
+        mf.put("readonly", field.getReadOnly());
+        mf.put("hidden", !field.getVisible());
+        mf.put("defaultValue", field.getDefaultValue());
+        mf.put("order", field.getPosition());
+        modelFields.add(mf);
+      }
+    }
+
+    Map<String, Object> model = new LinkedHashMap<>();
+    model.put("id", "model_" + def.getModelName());
+    model.put("code", def.getModelName());
+    model.put("name", def.getModelLabel() != null ? def.getModelLabel() : def.getFormLabel());
+    model.put("description", def.getFormLabel());
+    model.put("version", 1);
+    model.put("active", true);
+    model.put("tableName", def.getTableName());
+    model.put("auditable", true);
+    model.put("workflowEnabled", false);
+    model.put("tenantAware", true);
+    model.put("fields", modelFields);
+    bundle.put("model", model);
+
+    // Build view with layout sections
+    List<Map<String, Object>> childSections = new ArrayList<>();
+    if (def.getSections() != null) {
+      for (LayoutDefinitionResponse section : def.getSections()) {
+        Map<String, Object> sectionConfig = new LinkedHashMap<>();
+        sectionConfig.put("id", section.getSectionId() != null ? section.getSectionId().toString() : null);
+        sectionConfig.put("code", section.getCode());
+        sectionConfig.put("label", section.getLabel());
+        sectionConfig.put("columns", section.getColumns());
+        sectionConfig.put("collapsible", section.getCollapsible());
+        sectionConfig.put("position", section.getPosition());
+
+        List<Map<String, Object>> children = new ArrayList<>();
+        if (section.getFieldIds() != null) {
+          for (UUID fid : section.getFieldIds()) {
+            Map<String, Object> group = new LinkedHashMap<>();
+            group.put("type", "GROUP");
+            Map<String, Object> config = new LinkedHashMap<>();
+            config.put("fieldId", fid.toString());
+            group.put("config", config);
+            children.add(group);
+          }
+        }
+
+        Map<String, Object> sec = new LinkedHashMap<>();
+        sec.put("type", "SECTION");
+        sec.put("config", sectionConfig);
+        sec.put("children", children);
+        childSections.add(sec);
+      }
+    }
+
+    // Fallback section if no sections defined
+    if (childSections.isEmpty() && def.getFields() != null) {
+      Map<String, Object> defaultConfig = new LinkedHashMap<>();
+      defaultConfig.put("id", null);
+      defaultConfig.put("code", "default");
+      defaultConfig.put("label", def.getFormLabel());
+      defaultConfig.put("columns", 1);
+      defaultConfig.put("collapsible", false);
+      defaultConfig.put("position", 0);
+
+      List<Map<String, Object>> defaultChildren = def.getFields().stream().map(f -> {
+        Map<String, Object> g = new LinkedHashMap<>();
+        g.put("type", "GROUP");
+        Map<String, Object> c = new LinkedHashMap<>();
+        c.put("fieldId", f.getFieldId().toString());
+        g.put("config", c);
+        return g;
+      }).toList();
+
+      Map<String, Object> defaultSection = new LinkedHashMap<>();
+      defaultSection.put("type", "SECTION");
+      defaultSection.put("config", defaultConfig);
+      defaultSection.put("children", defaultChildren);
+      childSections.add(defaultSection);
+    }
+
+    Map<String, Object> layout = new LinkedHashMap<>();
+    layout.put("type", "PAGE");
+    layout.put("children", childSections);
+
+    Map<String, Object> formView = new LinkedHashMap<>();
+    formView.put("id", "view_" + def.getFormCode() + "_form");
+    formView.put("code", def.getFormCode() + "_form");
+    formView.put("name", def.getFormLabel() + " Form");
+    formView.put("modelCode", def.getModelName());
+    formView.put("viewType", "FORM");
+    formView.put("title", def.getFormLabel());
+    formView.put("description", "");
+    formView.put("version", 1);
+    formView.put("active", true);
+    formView.put("layout", layout);
+
+    List<Map<String, Object>> views = new ArrayList<>();
+    views.add(formView);
+    bundle.put("views", views);
+    bundle.put("actions", Collections.emptyList());
+    bundle.put("permissions", Collections.emptyList());
+    bundle.put("workflow", null);
+
+    return bundle;
+  }
+
+  /**
+   * Maps an API field type string to the schema field type used in RuntimeMetadataBundle.
+   */
+  private String mapApiTypeToSchemaType(String apiType) {
+    if (apiType == null) return "TEXT";
+    return switch (apiType) {
+      case "string" -> "TEXT";
+      case "text" -> "TEXTAREA";
+      case "number" -> "NUMBER";
+      case "integer" -> "NUMBER";
+      case "decimal" -> "DECIMAL";
+      case "boolean" -> "BOOLEAN";
+      case "date" -> "DATE";
+      case "datetime" -> "DATETIME";
+      case "enum" -> "SELECT";
+      case "many2one" -> "MANY_TO_ONE";
+      default -> "TEXT";
+    };
   }
 }

@@ -3,8 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useSearchParams } from 'react-router-dom';
 
 import { PageContainer } from '@/components/layouts/PageContainer';
-import { fetchFormDefinition } from '@/core/runtime/api/runtimeApi';
-import { formDefinitionToBundle } from '@/core/runtime/api/formToBundleMapper';
+import { fetchFormBundle } from '@/core/runtime/api/runtimeApi';
 import { RuntimeRenderer } from '@/runtime/renderer/RuntimeRenderer';
 
 export function RuntimePage() {
@@ -12,12 +11,12 @@ export function RuntimePage() {
   const formCode = searchParams.get('form');
 
   const {
-    data: formDefinition,
+    data: bundle,
     isLoading,
     error,
   } = useQuery({
-    queryKey: ['runtime-form-definition', formCode],
-    queryFn: () => fetchFormDefinition(formCode!),
+    queryKey: ['runtime-form-bundle', formCode],
+    queryFn: () => fetchFormBundle(formCode!),
     enabled: !!formCode,
   });
 
@@ -41,7 +40,7 @@ export function RuntimePage() {
     );
   }
 
-  if (error || !formDefinition) {
+  if (error || !bundle) {
     return (
       <PageContainer title="Error" subtitle={`Could not load "${formCode}"`}>
         <Typography color="error">
@@ -51,15 +50,13 @@ export function RuntimePage() {
     );
   }
 
-  const bundle = formDefinitionToBundle(formDefinition);
   const viewCode = `${formCode}_form`;
 
   return (
     <PageContainer
-      title={formDefinition.formLabel ?? formCode}
-      subtitle={formDefinition.modelLabel ?? formDefinition.modelName}
+      title={(bundle.model as Record<string, unknown>)?.name as string ?? formCode}
     >
-      <RuntimeRenderer metadataBundle={bundle} viewCode={viewCode} />
+      <RuntimeRenderer metadataBundle={bundle as never} viewCode={viewCode} />
     </PageContainer>
   );
 }
