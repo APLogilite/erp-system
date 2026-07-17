@@ -68,10 +68,8 @@ export function DynamicListView({ formDefinition }: Props) {
     setPage(0);
   };
 
-  const visibleFields = formDefinition.fields
-    .filter((f) => f.visible)
-    .sort((a, b) => a.position - b.position)
-    .slice(0, 8);
+  // Backend returns pre-filtered (visible) and pre-sorted fields — render as-is
+  const visibleFields = formDefinition.fields;
 
   const records = data?.records ?? [];
   const total = data?.total ?? 0;

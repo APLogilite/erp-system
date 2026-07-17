@@ -130,11 +130,15 @@ public class WindowDefinitionAssemblyService {
       tabResponse.setTable(tableInfo);
     });
 
-    // Load fields for this tab, ordered by seq_no
+    // Load fields for this tab, ordered by seq_no, excluding non-displayed fields
     List<SysWindowField> fields = fieldService.findByTabIdOrderBySeqNoAsc(tab.getId());
     List<FieldDefinitionResponse> fieldResponses = new ArrayList<>();
 
+    // Exclude fields where isDisplayed is explicitly false (backend pre-filters)
     for (SysWindowField field : fields) {
+      if (Boolean.FALSE.equals(field.getIsDisplayed())) {
+        continue;
+      }
       fieldResponses.add(assembleField(field));
     }
 

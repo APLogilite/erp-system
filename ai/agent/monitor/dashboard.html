@@ -727,7 +727,7 @@ const App = {
         <div class="prd-tasks">
           <table class="task-table">
             <tr><th>ID</th><th>Title</th><th>Status</th><th>Priority</th><th>Owner</th></tr>
-            ${prdTasks.map(t => `<tr>
+            ${prdTasks.map(t => `<tr data-task-id="${esc(t.id)}" style="cursor:pointer">
               <td><strong>${esc(t.id)}</strong></td>
               <td>${esc(t.title)}</td>
               <td>${badge(t.status)}</td>
@@ -986,6 +986,11 @@ document.addEventListener("DOMContentLoaded", () => {
         const taskId = idEl.textContent.trim().split(/\s+/)[0];
         showTaskDetail(taskId);
       }
+      return;
+    }
+    const taskRow = e.target.closest("tr[data-task-id]");
+    if (taskRow) {
+      showTaskDetail(taskRow.dataset.taskId);
       return;
     }
     const agentTask = e.target.closest(".agent-task");

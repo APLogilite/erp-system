@@ -46,12 +46,6 @@ import {
   type WindowFieldDefinition,
 } from '@/core/runtime/api/runtimeApi';
 
-// ---- Helper: get displayed fields from the main tab ----
-
-function getDisplayedFields(tab: WindowTabDefinition): WindowFieldDefinition[] {
-  return tab.fields.filter((f) => f.isDisplayed !== false).sort((a, b) => a.seqNo - b.seqNo);
-}
-
 // ---- Drill Level (breadcrumb entry) ----
 interface DrillLevel {
   tab: WindowTabDefinition;
@@ -265,7 +259,7 @@ function RecordDialog({ open, windowName, windowDef, recordId, onClose }: Record
     );
   }
 
-  const fields = getDisplayedFields(currentLevelTab);
+  const fields = currentLevelTab?.fields ?? [];
 
   // Breadcrumb: show each level as "TabName (DisplayValue)"
   const getDisplayVal = (rec: Record<string, unknown> | undefined): string =>
@@ -769,7 +763,7 @@ export function WindowPage() {
   const topTabs = windowDef.tabs.filter((t) => !t.parentColumn).sort((a, b) => a.seqNo - b.seqNo);
   const currentTab = topTabs[activeTab] ?? topTabs[0];
 
-  const fields = currentTab ? getDisplayedFields(currentTab) : [];
+  const fields = currentTab?.fields ?? [];
   const records = (recordsData as { items?: Record<string, unknown>[] })?.items ?? [];
   const totalRecords = (recordsData as { total?: number })?.total ?? 0;
 
