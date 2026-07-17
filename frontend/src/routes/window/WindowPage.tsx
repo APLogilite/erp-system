@@ -28,7 +28,7 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQueries, useQuery, useQueryClient } from '@tanstack/react-query';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
@@ -119,33 +119,29 @@ function RecordDialog({ open, windowName, windowDef, recordId, onClose }: Record
   const dynamicLookupFields = (currentLevelTab?.fields ?? []).filter(
     (f) => f.column.relationTable && (!f.column.lookupOptions || f.column.lookupOptions.length === 0)
   );
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const dynamicQueries: any[] = [];
-  for (const f of dynamicLookupFields) {
-    dynamicQueries.push(
-      useQuery({
-        queryKey: ['dynamic-lookup', f.column.relationTable, f.column.code, currentLevelTab.id, windowId, drillContext],
-        queryFn: () =>
-          fetchLookupRecords(
-            f.column.relationTable!,
-            currentLevelTab.id,
-            windowId,
-            f.column.code,
-            drillContext || undefined
-          ),
-        staleTime: 30000,
-        enabled: !!f.column.relationTable,
-      })
-    );
-  }
-  for (let i = 0; i < dynamicLookupFields.length; i++) {
-    const f = dynamicLookupFields[i];
-    if (dynamicQueries[i]?.data) {
-      lookupResults[f.column.relationTable!] = (dynamicQueries[i].data as Record<string, unknown>[]).map(
+  const dynamicQueryResults = useQueries({
+    queries: dynamicLookupFields.map((f) => ({
+      queryKey: ['dynamic-lookup', f.column.relationTable, f.column.code, currentLevelTab.id, windowId, drillContext],
+      queryFn: () =>
+        fetchLookupRecords(
+          f.column.relationTable!,
+          currentLevelTab.id,
+          windowId,
+          f.column.code,
+          drillContext || undefined
+        ),
+      staleTime: 30000,
+      enabled: !!f.column.relationTable && !!currentLevelTab.id,
+    })),
+  });
+  dynamicLookupFields.forEach((f, idx) => {
+    const data = dynamicQueryResults[idx]?.data;
+    if (data) {
+      lookupResults[f.column.relationTable!] = (data as Record<string, unknown>[]).map(
         (r) => ({ id: String(r.id), label: String(r._display ?? r.label ?? r.id) })
       );
     }
-  }
+  });
 
   // Extract child records for the current level (grandchildren when drilled)
   const childRecordsMap = recordData
