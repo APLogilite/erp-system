@@ -4,7 +4,7 @@ Last Updated: 2026-07-17
 
 Updated By: Software Engineer
 
-(PRD-005 IN_DEVELOPMENT v1.3.0 — 13 tasks activated to READY_FOR_DEV, 1 task (TASK-049) remains in PLANNING awaiting TASK-047)
+(PRD-005 IN_DEVELOPMENT v1.3.0 — TASK-046 completed and READY_FOR_TEST, 12 tasks READY_FOR_DEV, TASK-049 awaits TASK-047)
 
 ---
 
@@ -38,7 +38,6 @@ See `ai/agent/rules/status-transitions.md` for full transition rules.
 
 | Task | Title | Priority | Scope |
 |------|-------|----------|-------|
-| TASK-046 | Add childTabIds to TabDefinitionResponse | High | backend |
 | TASK-047 | Add htmlType and lookupOptions to FieldDefinitionResponse | High | both |
 | TASK-048 | Backend Pre-Filters and Pre-Sorts Fields | Medium | backend |
 | TASK-050 | Guarantee _display on Every Record | High | both |
@@ -56,7 +55,9 @@ See `ai/agent/rules/status-transitions.md` for full transition rules.
 
 ## Ready For Test
 
-*(none)*
+| Task | Title | Priority | Scope | Branch |
+|------|-------|----------|-------|--------|
+| TASK-046 | Add childTabIds to TabDefinitionResponse | High | backend | feature/TASK-046 |
 
 ---
 
@@ -174,8 +175,8 @@ See `ai/agent/rules/status-transitions.md` for full transition rules.
 | Status | Count |
 |--------|-------|
 | PRDs | 5 (4 COMPLETED: PRD-001/002/003/004, 1 IN_DEVELOPMENT: PRD-005) |
-| Ready For Dev | 13 (PRD-005: TASK-046/047/048/050/051/052/053/054/055/056/057/058/059) |
-| Ready For Test | 0 |
+| Ready For Dev | 12 (PRD-005: TASK-047/048/050/051/052/053/054/055/056/057/058/059) |
+| Ready For Test | 1 (PRD-005: TASK-046) |
 | In Development | 0 |
 | In Testing | 0 |
 | Planning | 1 (PRD-005: TASK-049 depends on TASK-047) |
