@@ -7,7 +7,7 @@ type: Feature
 
 scope: backend
 
-status: IN_DEVELOPMENT
+status: READY_FOR_TEST
 
 priority: Medium
 
@@ -15,9 +15,9 @@ owner: developer
 
 assigned_to:
 
-assigned_branch:
+assigned_branch: feature/TASK-049
 
-locked: true
+locked: false
 
 created: 2026-07-16
 
@@ -25,7 +25,7 @@ updated: 2026-07-17
 
 started: 2026-07-17
 
-completed:
+completed: 2026-07-17
 
 estimated_hours: 2
 
@@ -63,7 +63,7 @@ test_required: true
 
 automation_required: false
 
-change_summary:
+change_summary: ai/project/changes/CHANGE-TASK-049.md
 
 test_report:
 
@@ -73,6 +73,7 @@ history:
   - created
   - 2026-07-17: activated to READY_FOR_DEV (SE, dep TASK-047 satisfied)
   - 2026-07-17: locked and started IN_DEVELOPMENT (SE)
+  - 2026-07-17: merged to PRD branch, READY_FOR_TEST (SE)
 
 ---
 
