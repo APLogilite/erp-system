@@ -62,22 +62,8 @@ export const DynamicFormRenderer: React.FC<DynamicFormRendererProps> = ({
       fieldMap.set(f.fieldId, f);
     }
 
-    // If no sections defined, create one default section with all fields
-    const rawSections = formDefinition.sections?.length
-      ? formDefinition.sections
-      : [
-          {
-            sectionId: '__default__',
-            code: 'default',
-            label: formDefinition.formLabel,
-            collapsible: false,
-            columns: 1,
-            position: 0,
-            fieldIds: formDefinition.fields.map((f) => f.fieldId),
-          },
-        ];
-
-    return rawSections.map((sec) => ({
+    // Backend guarantees at least one section — use as-is
+    return (formDefinition.sections ?? []).map((sec) => ({
       ...sec,
       fields: sec.fieldIds.map((fid) => fieldMap.get(fid)).filter((f): f is FieldDefinition => !!f),
     }));
