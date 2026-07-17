@@ -7,7 +7,7 @@ type: Feature
 
 scope: both
 
-status: PLANNING
+status: READY_FOR_DEV
 
 priority: High
 
@@ -21,7 +21,7 @@ locked: false
 
 created: 2026-07-16
 
-updated: 2026-07-16
+updated: 2026-07-17
 
 started:
 
@@ -69,6 +69,7 @@ test_script:
 
 history:
   - created
+  - 2026-07-17: activated to READY_FOR_DEV (SE)
 
 ---
 

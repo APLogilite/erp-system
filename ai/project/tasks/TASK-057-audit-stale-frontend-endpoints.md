@@ -7,7 +7,7 @@ type: Refactor
 
 scope: frontend
 
-status: PLANNING
+status: READY_FOR_DEV
 
 priority: Low
 
@@ -21,7 +21,7 @@ locked: false
 
 created: 2026-07-16
 
-updated: 2026-07-16
+updated: 2026-07-17
 
 started:
 
@@ -71,6 +71,7 @@ test_script:
 
 history:
   - created
+  - 2026-07-17: activated to READY_FOR_DEV (SE)
 
 ---
 
