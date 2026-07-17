@@ -679,6 +679,19 @@ TASK-004, 006, 008, 009, 010, 016, 017, 018, 019, 020, 024, 025 — all 12 previ
 - **6 IN_DEVELOPMENT** — TASK-021, 022, 023, 026, 027, ENH-001
 - **1 PLANNED** — TASK-014
 
+## 2026-07-17 (PRD-005 Merged to Main — COMPLETED)
+
+### Summary
+PRD-005 (Backend-Frontend Separation & Code Standardization v1.3.1) merged to `main`. All 14 tasks, all 14 change reports, all 10 test reports, and BUG-012 fix included. All 5 PRDs are now COMPLETED.
+
+### PRD Completed
+- **PRD-005** — Backend-Frontend Separation & Code Standardization v1.3.1 → **COMPLETED** (merged to main)
+
+### Project State
+- **5 PRDs ALL COMPLETED** — PRD-001, PRD-002, PRD-003, PRD-004, PRD-005
+- **61 tasks COMPLETED** — 47 prior + 14 PRD-005
+- **12 bug tasks** — 8 COMPLETED, 1 CANCELLED, 3 RESOLVED
+
 ## 2026-07-17 (PRD-005 QA Complete — READY_FOR_DEPLOYMENT)
 
 ### Summary

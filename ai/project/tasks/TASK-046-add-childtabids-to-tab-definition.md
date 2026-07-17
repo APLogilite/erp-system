@@ -7,7 +7,7 @@ type: Feature
 
 scope: backend
 
-status: TESTED
+status: COMPLETED
 
 priority: High
 

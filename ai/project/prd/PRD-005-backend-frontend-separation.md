@@ -5,7 +5,7 @@ title: Backend-Frontend Separation — Move Data Logic to Backend
 
 version: 1.3.0
 
-status: READY_FOR_DEPLOYMENT
+status: COMPLETED
 # DRAFT
 # REVIEW
 # APPROVED

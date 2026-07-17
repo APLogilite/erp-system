@@ -7,7 +7,7 @@ type: Feature
 
 scope: both
 
-status: TESTED
+status: COMPLETED
 
 priority: High
 

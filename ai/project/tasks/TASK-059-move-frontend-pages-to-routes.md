@@ -7,7 +7,7 @@ type: Refactor
 
 scope: frontend
 
-status: TESTED
+status: COMPLETED
 
 priority: Medium
 
