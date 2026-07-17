@@ -51,12 +51,4 @@ export const ENDPOINTS = {
       history: (tableId: string) => `/metadata/tables/${tableId}/history`,
     },
   },
-  customers: {
-    base: '/customers',
-    detail: (id: string | number) => `/customers/${id}`,
-  },
-  users: {
-    base: '/users',
-    detail: (id: string | number) => `/users/${id}`,
-  },
 } as const;
