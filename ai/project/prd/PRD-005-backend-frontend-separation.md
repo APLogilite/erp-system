@@ -5,7 +5,7 @@ title: Backend-Frontend Separation — Move Data Logic to Backend
 
 version: 1.3.0
 
-status: IN_DEVELOPMENT
+status: TESTING
 # DRAFT
 # REVIEW
 # APPROVED
@@ -572,3 +572,4 @@ None. All changes are in DTOs, service logic, and frontend code.
 | 1.1.0 | Added dead code removal: `modules/auth/` and `core/security/` packages |
 | 1.2.0 | Added standardization: move customerService, audit stale endpoints |
 | 1.3.0 | Added TASK-013 (move window schema to core/layout/) and TASK-014 (move frontend pages to routes/) |
+| 1.3.1 | All 14 tasks implemented, advancing to TESTING |
