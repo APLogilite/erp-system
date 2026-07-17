@@ -7,7 +7,7 @@ type: Feature
 
 scope: both
 
-status: TESTED
+status: READY_FOR_TEST
 
 priority: High
 
@@ -48,6 +48,7 @@ parent_task:
 related_tasks:
   - TASK-046
   - TASK-048
+  - BUG-012
 
 depends_on: []
 
@@ -75,6 +76,7 @@ history:
   - 2026-07-17: activated to READY_FOR_DEV (SE)
   - 2026-07-17: locked and started IN_DEVELOPMENT (SE)
   - 2026-07-17: merged to PRD branch, READY_FOR_TEST (SE)
+  - 2026-07-17: QA found BUG-012 (lookup filter regression), returning to READY_FOR_TEST (QA)
 
 ---
 
