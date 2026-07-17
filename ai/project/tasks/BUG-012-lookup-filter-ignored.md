@@ -7,15 +7,15 @@ type: Bug
 
 scope: backend
 
-status: IN_DEVELOPMENT
+status: READY_FOR_TEST
 
 priority: Critical
 
 owner: Software Engineer
 
-assigned_to:
+assigned_to: Software Engineer
 
-locked: true
+locked: false
 
 created: 2026-07-17
 
@@ -37,6 +37,7 @@ labels:
 history:
   - 2026-07-17: Bug created (QA Engineer)
   - 2026-07-17: locked and started IN_DEVELOPMENT (SE)
+  - 2026-07-17: fix merged to PRD branch, READY_FOR_TEST (SE)
 
 ---
 
