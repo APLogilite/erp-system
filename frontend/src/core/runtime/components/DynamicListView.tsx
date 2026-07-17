@@ -145,7 +145,7 @@ export function DynamicListView({ formDefinition }: Props) {
                       }
                     >
                       {visibleFields.map((f) => (
-                        <TableCell key={f.fieldId}>{formatCellValue(rec[f.columnCode])}</TableCell>
+                        <TableCell key={f.fieldId}>{String(rec[f.columnCode] ?? '')}</TableCell>
                       ))}
                     </TableRow>
                   ))}
@@ -183,9 +183,4 @@ export function DynamicListView({ formDefinition }: Props) {
   );
 }
 
-function formatCellValue(value: unknown): string {
-  if (value === null || value === undefined) return '';
-  if (typeof value === 'boolean') return value ? 'Yes' : 'No';
-  if (typeof value === 'object') return JSON.stringify(value);
-  return String(value);
-}
+

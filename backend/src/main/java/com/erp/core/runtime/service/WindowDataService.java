@@ -158,7 +158,11 @@ public class WindowDataService {
       }
     }
 
-    if (fkByTable.isEmpty()) return;
+    if (fkByTable.isEmpty()) {
+      // Even without FK fields, guarantee _display on every record
+      guaranteeDisplayOnRecords(records, tab);
+      return;
+    }
 
     // Find display column for each relation table from sys_column metadata
     java.util.Map<String, String> displayColForTable = new java.util.LinkedHashMap<>();
@@ -201,6 +205,39 @@ public class WindowDataService {
       } catch (Exception e) {
         log.warn("Failed to resolve display names from table '{}': {}", relTable, e.getMessage());
       }
+    }
+
+    // Guarantee _display on every record, even if no display column is configured
+    guaranteeDisplayOnRecords(records, tab);
+  }
+
+  /**
+   * Ensures every record has a {@code _display} key.
+   * Fallback chain: display column value → first non-id column with a value → record UUID.
+   */
+  private void guaranteeDisplayOnRecords(List<Map<String, Object>> records, TabDefinitionResponse tab) {
+    for (Map<String, Object> rec : records) {
+      if (rec.containsKey("_display") && rec.get("_display") != null) continue;
+
+      String display = null;
+      // Try first non-id field with a non-null value
+      if (tab.getFields() != null) {
+        for (FieldDefinitionResponse field : tab.getFields()) {
+          if (field.getColumn() != null && !"id".equals(field.getColumn().getCode())) {
+            Object val = rec.get(field.getColumn().getCode());
+            if (val != null && !val.toString().isBlank()) {
+              display = val.toString();
+              break;
+            }
+          }
+        }
+      }
+      // Last resort: use record UUID
+      if (display == null) {
+        Object idVal = rec.get("id");
+        display = idVal != null ? idVal.toString() : "";
+      }
+      rec.put("_display", display);
     }
   }
 

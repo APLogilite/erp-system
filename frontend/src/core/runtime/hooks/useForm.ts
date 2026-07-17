@@ -213,26 +213,4 @@ export function useForm(formCode: string, options: UseFormOptions = {}): UseForm
   return result;
 }
 
-/**
- * Returns a human-readable label for a record based on the form definition.
- * Uses the first non-id field's non-null value, falling back to the record ID.
- */
-export function getRecordLabel(
-  record: Record<string, unknown> | undefined,
-  formDefinition?: { fields?: { columnCode: string }[] }
-): string {
-  if (!record || !formDefinition?.fields?.length) {
-    return record?.id != null ? String(record.id) : 'Unknown';
-  }
 
-  for (const field of formDefinition.fields) {
-    if (field.columnCode !== 'id') {
-      const value = record[field.columnCode];
-      if (value !== undefined && value !== null) {
-        return String(value);
-      }
-    }
-  }
-
-  return record.id != null ? String(record.id) : 'Unknown';
-}

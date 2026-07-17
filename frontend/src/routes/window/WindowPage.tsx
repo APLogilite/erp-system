@@ -254,9 +254,9 @@ function RecordDialog({ open, windowName, windowDef, recordId, onClose }: Record
 
   const fields = currentLevelTab?.fields ?? [];
 
-  // Breadcrumb: show each level as "TabName (DisplayValue)"
+  // Backend guarantees _display on every record — use directly
   const getDisplayVal = (rec: Record<string, unknown> | undefined): string =>
-    (rec?._display as string) ?? (rec?.name as string) ?? (rec?.code as string) ?? '';
+    (rec?._display as string) ?? '';
   const breadcrumbParts = [
     // Root: window name (with parent record display if editing)
     recordId

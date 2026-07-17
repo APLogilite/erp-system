@@ -563,8 +563,14 @@ const App = {
         tab.classList.add("active");
         const id = tab.dataset.tab;
         document.getElementById("tab-" + id).classList.add("active");
+        localStorage.setItem("monitor-tab", id);
       });
     });
+    const saved = localStorage.getItem("monitor-tab");
+    if (saved) {
+      const tab = document.querySelector(`.tab[data-tab="${saved}"]`);
+      if (tab) tab.click();
+    }
   },
 
   connectSSE() {
