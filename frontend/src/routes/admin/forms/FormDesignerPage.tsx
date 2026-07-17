@@ -17,14 +17,14 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { ErrorState } from '@/components/ui/ErrorState';
 import { useAuthStore } from '@/core/auth/authStore';
 
-import { FieldsTab } from './components/FieldsTab';
-import { GlobalFormTenantAccessTable } from './components/GlobalFormTenantAccessTable';
-import { LayoutTab } from './components/LayoutTab';
-import { RulesTab } from './components/RulesTab';
-import { SubFormsTab } from './components/SubFormsTab';
-import { ValidationTab } from './components/ValidationTab';
-import { useForm } from './hooks/useFormDesigner';
-import { useFormFields } from './hooks/useFormFields';
+import { FieldsTab } from '@/modules/admin/forms/components/FieldsTab';
+import { GlobalFormTenantAccessTable } from '@/modules/admin/forms/components/GlobalFormTenantAccessTable';
+import { LayoutTab } from '@/modules/admin/forms/components/LayoutTab';
+import { RulesTab } from '@/modules/admin/forms/components/RulesTab';
+import { SubFormsTab } from '@/modules/admin/forms/components/SubFormsTab';
+import { ValidationTab } from '@/modules/admin/forms/components/ValidationTab';
+import { useForm } from '@/modules/admin/forms/hooks/useFormDesigner';
+import { useFormFields } from '@/modules/admin/forms/hooks/useFormFields';
 
 export function FormDesignerPage() {
   const { formId } = useParams<{ formId: string }>();

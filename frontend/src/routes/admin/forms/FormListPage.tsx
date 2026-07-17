@@ -21,8 +21,12 @@ import { EmptyState } from '@/components/ui/EmptyState';
 import { ErrorState } from '@/components/ui/ErrorState';
 import { notifyActions } from '@/core/store/notifications/notificationStore';
 
-import { CreateFormDialog } from './components/CreateFormDialog';
-import { useCloneForm, useDeleteForm, useFormList } from './hooks/useFormDesigner';
+import { CreateFormDialog } from '@/modules/admin/forms/components/CreateFormDialog';
+import {
+  useCloneForm,
+  useDeleteForm,
+  useFormList,
+} from '@/modules/admin/forms/hooks/useFormDesigner';
 
 export function FormListPage() {
   const navigate = useNavigate();

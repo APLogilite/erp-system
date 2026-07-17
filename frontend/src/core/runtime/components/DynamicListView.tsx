@@ -182,5 +182,3 @@ export function DynamicListView({ formDefinition }: Props) {
     </Box>
   );
 }
-
-

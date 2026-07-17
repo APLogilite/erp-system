@@ -3,10 +3,10 @@ import { Box, Button, Card, CardContent, Divider, Typography } from '@mui/materi
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { ColumnFormDialog } from './components/ColumnFormDialog';
-import { useCreateTable } from './hooks/useTables';
-import type { CreateColumnPayload, CreateTablePayload } from './types';
-import { SNAKE_CASE_REGEX } from './types';
+import { ColumnFormDialog } from '@/modules/admin/tables/components/ColumnFormDialog';
+import { useCreateTable } from '@/modules/admin/tables/hooks/useTables';
+import type { CreateColumnPayload, CreateTablePayload } from '@/modules/admin/tables/types';
+import { SNAKE_CASE_REGEX } from '@/modules/admin/tables/types';
 
 import { notifyActions } from '@/core/store/notifications/notificationStore';
 

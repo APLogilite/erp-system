@@ -18,7 +18,7 @@ import {
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { useDeleteTable, useTableList } from './hooks/useTables';
+import { useDeleteTable, useTableList } from '@/modules/admin/tables/hooks/useTables';
 
 import { EmptyState } from '@/components/ui/EmptyState';
 import { ErrorState } from '@/components/ui/ErrorState';

@@ -14,17 +14,21 @@ import {
 import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
-import { ColumnFormDialog } from './components/ColumnFormDialog';
-import { ColumnList } from './components/ColumnList';
-import { SchemaHistoryTimeline } from './components/SchemaHistoryTimeline';
+import { ColumnFormDialog } from '@/modules/admin/tables/components/ColumnFormDialog';
+import { ColumnList } from '@/modules/admin/tables/components/ColumnList';
+import { SchemaHistoryTimeline } from '@/modules/admin/tables/components/SchemaHistoryTimeline';
 import {
   useAddColumn,
   useDeleteColumn,
   useReorderColumns,
   useUpdateColumn,
-} from './hooks/useColumns';
-import { useTable, useTableHistory } from './hooks/useTables';
-import type { CreateColumnPayload, TableColumn, UpdateColumnPayload } from './types';
+} from '@/modules/admin/tables/hooks/useColumns';
+import { useTable, useTableHistory } from '@/modules/admin/tables/hooks/useTables';
+import type {
+  CreateColumnPayload,
+  TableColumn,
+  UpdateColumnPayload,
+} from '@/modules/admin/tables/types';
 
 import { ErrorState } from '@/components/ui/ErrorState';
 import { notifyActions } from '@/core/store/notifications/notificationStore';

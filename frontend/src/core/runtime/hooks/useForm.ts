@@ -212,5 +212,3 @@ export function useForm(formCode: string, options: UseFormOptions = {}): UseForm
 
   return result;
 }
-
-
