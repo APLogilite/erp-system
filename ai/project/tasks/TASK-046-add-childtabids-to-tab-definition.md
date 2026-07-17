@@ -7,7 +7,7 @@ type: Feature
 
 scope: backend
 
-status: READY_FOR_TEST
+status: TESTING
 
 priority: High
 
@@ -17,7 +17,7 @@ assigned_to:
 
 assigned_branch: feature/TASK-046
 
-locked: false
+locked: true
 
 created: 2026-07-16
 
