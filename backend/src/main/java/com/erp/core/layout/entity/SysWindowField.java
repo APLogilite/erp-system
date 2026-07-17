@@ -1,4 +1,4 @@
-package com.erp.modules.metadata.entity;
+package com.erp.core.layout.entity;
 
 import com.erp.common.base.BaseEntity;
 import jakarta.persistence.Column;

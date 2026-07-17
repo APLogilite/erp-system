@@ -1,6 +1,6 @@
-package com.erp.modules.metadata.repository;
+package com.erp.core.layout.repository;
 
-import com.erp.modules.metadata.entity.SysTable;
+import com.erp.core.layout.entity.SysTable;
 import java.util.Optional;
 import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -1,9 +1,9 @@
-package com.erp.modules.metadata.service;
+package com.erp.core.layout.service;
 
 import com.erp.common.base.BaseService;
-import com.erp.modules.metadata.entity.SysMenu;
-import com.erp.modules.metadata.entity.SysWindow;
-import com.erp.modules.metadata.repository.SysMenuRepository;
+import com.erp.core.layout.entity.SysMenu;
+import com.erp.core.layout.entity.SysWindow;
+import com.erp.core.layout.repository.SysMenuRepository;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;

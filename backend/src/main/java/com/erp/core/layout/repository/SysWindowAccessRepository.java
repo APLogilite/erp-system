@@ -1,6 +1,6 @@
-package com.erp.modules.metadata.repository;
+package com.erp.core.layout.repository;
 
-import com.erp.modules.metadata.entity.SysWindowAccess;
+import com.erp.core.layout.entity.SysWindowAccess;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;

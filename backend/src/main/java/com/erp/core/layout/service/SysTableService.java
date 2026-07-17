@@ -1,8 +1,8 @@
-package com.erp.modules.metadata.service;
+package com.erp.core.layout.service;
 
 import com.erp.common.base.BaseService;
-import com.erp.modules.metadata.entity.SysTable;
-import com.erp.modules.metadata.repository.SysTableRepository;
+import com.erp.core.layout.entity.SysTable;
+import com.erp.core.layout.repository.SysTableRepository;
 import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;

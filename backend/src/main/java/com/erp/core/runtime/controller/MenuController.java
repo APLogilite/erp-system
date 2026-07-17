@@ -2,8 +2,8 @@ package com.erp.core.runtime.controller;
 
 import com.erp.common.api.ApiResponse;
 import com.erp.config.ApiVersionConfig;
-import com.erp.modules.metadata.service.SysMenuService;
-import com.erp.modules.metadata.service.SysMenuService.MenuTreeNode;
+import com.erp.core.layout.service.SysMenuService;
+import com.erp.core.layout.service.SysMenuService.MenuTreeNode;
 import com.erp.platform.identity.dto.RuntimeContext;
 import com.erp.platform.identity.dto.RuntimeContextHolder;
 import java.util.Collections;

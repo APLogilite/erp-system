@@ -1,8 +1,8 @@
-package com.erp.modules.metadata.service;
+package com.erp.core.layout.service;
 
 import com.erp.common.base.BaseService;
-import com.erp.modules.metadata.entity.SysWindowField;
-import com.erp.modules.metadata.repository.SysWindowFieldRepository;
+import com.erp.core.layout.entity.SysWindowField;
+import com.erp.core.layout.repository.SysWindowFieldRepository;
 import java.util.List;
 import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;
