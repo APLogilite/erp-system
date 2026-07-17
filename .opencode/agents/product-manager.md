@@ -118,7 +118,18 @@ If inconsistencies found: stop, report, recommend corrective actions.
 3. Get user confirmation for release
 4. Provide confirmation to Release agent (or SE) to merge PRD branch → main
 
-### C. After merge
+### C. Handling PENDING_APPROVAL tasks
+
+When a task is in `PENDING_APPROVAL`:
+
+1. Read the task's **Unmet Criteria** table to understand which criteria could not be met and why
+2. Discuss with the user to explain the situation and gather their input
+3. Based on user discussion, either:
+   - **Approve** — user accepts the deviation. Update task status → advance to next stage (`TESTED` if QA did the review, `READY_FOR_TEST` if SE did it). Add a note to task history documenting the decision.
+   - **Reject** — user wants the criteria fulfilled. Update task or create bug tasks as needed per user's instructions. Set task status → `IN_DEVELOPMENT`. Add PM notes to task history documenting what needs to change.
+4. Update PROJECT_BOARD.md
+
+### D. After merge
 
 1. Verify PRD status is COMPLETED (cascade applied)
 2. Update CHANGELOG.md

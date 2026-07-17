@@ -97,16 +97,26 @@ If any check fails: stop, document, report.
 3. Test on `prd/PRD-XXX` branch (no new branch)
 4. Run: functional tests, acceptance criteria, regression, API, DB, UI as applicable
 5. Check for reusable test scripts in `ai/project/scripts/` and run them first
+6. **Validate acceptance criteria** — review all `[QA]` and `[SE][QA]` criteria. For each:
+   - If met → mark checkbox as `[x]` in the task body
+   - If not met and it's a valid bug → create a bug task (task stays in TESTING)
+   - If bugs are already fixed but criteria still cannot be met → document in **Unmet Criteria** table, set task status → `PENDING_APPROVAL`
 
-**If PASS:**
+**If PASS (all criteria met):**
 - Change task doc: `locked: false`, status → TESTED
 - Generate test report: `ai/project/tests/TEST-TASK-XXX.md` using `ai/agent/templates/test.md`
 - Update PROJECT_BOARD.md
 
-**If FAIL:**
+**If FAIL (bugs found):**
 - Create bug task (status: READY_FOR_DEV) with: parent PRD, parent task, severity, steps to reproduce, expected vs actual behavior, evidence
-- Change task doc: status → READY_FOR_TEST (remains blocked by bug)
+- Task stays at TESTING — do not change status
 - Generate test report documenting failures
+- Update PROJECT_BOARD.md
+
+**If criteria cannot be met (after bug fixes):**
+- Document in the task's **Unmet Criteria** table with reason
+- Set task status → `PENDING_APPROVAL`
+- Generate test report documenting the situation
 - Update PROJECT_BOARD.md
 
 6. Commit all changes to `prd/PRD-XXX`

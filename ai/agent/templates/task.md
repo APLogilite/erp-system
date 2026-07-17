@@ -18,6 +18,7 @@ status: PLANNING
 # TESTING
 # TESTED
 # COMPLETED
+# PENDING_APPROVAL
 # BLOCKED
 # ON_HOLD
 # CANCELLED
@@ -109,11 +110,27 @@ Include enough detail so another AI agent can complete the task without asking a
 
 # Acceptance Criteria
 
-- [ ]
+Prefix each criterion with the agent responsible:
+- `[SE]` — validated by Software Engineer during development
+- `[QA]` — validated by QA Engineer during testing
+- `[SE][QA]` — validated by both
 
-- [ ]
+- [ ] `[SE]`
 
-- [ ]
+- [ ] `[QA]`
+
+- [ ] `[SE][QA]`
+
+---
+
+# Unmet Criteria
+
+If any acceptance criteria cannot be met, document here with explanation. This section is reviewed by PM who discusses with the user to decide next steps.
+
+| Criteria | Reason | Resolution |
+|----------|--------|------------|
+| | | |
+| | | |
 
 ---
 

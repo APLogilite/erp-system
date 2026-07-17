@@ -172,17 +172,36 @@ Bug fixes never overwrite original task history.
 
 Every task MUST contain measurable acceptance criteria.
 
+### Tag Convention
+
+Each acceptance criterion MUST be prefixed with a tag indicating which agent validates it:
+
+| Tag | Validated By | When |
+|-----|-------------|------|
+| `[SE]` | Software Engineer | During development, before READY_FOR_TEST |
+| `[QA]` | QA Engineer | During testing, before TESTED |
+| `[SE][QA]` | Both | SE validates during dev, QA validates during testing |
+
+PM assigns tags when creating the task.
+
+### Unmet Criteria
+
+If SE or QA cannot meet a criterion:
+1. Document it in the task's **Unmet Criteria** table with the reason
+2. Set task status → `PENDING_APPROVAL`
+3. PM discusses with user to decide: approve deviation or reject back to dev
+
+A task at `PENDING_APPROVAL` blocks its dependents — no dependent task will be activated until resolved.
+
 Bad
 
 "Should work."
 
 Good
 
-User can login with email and password.
-
-JWT expires after 15 minutes.
-
-Refresh token is supported.
+- [ ] `[SE]` User can login with email and password
+- [ ] `[QA]` Error message shows on invalid credentials
+- [ ] `[SE][QA]` JWT expires after 15 minutes
 
 ---
 

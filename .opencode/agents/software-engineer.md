@@ -111,6 +111,9 @@ If any check fails: stop, document, report.
 5.5. **Verify scope completeness** — check task's `scope` field. If `both`, verify both frontend and backend were updated. If `database`, verify `ai/project/schema/` was updated.
 5.6. **Update schema DDL** — if any migration created or altered tables, update the corresponding file in `ai/project/schema/`.
 5.7. **Update verification scripts** — if schema changed, update `ai/project/scripts/verify-*.sql` and `ai/project/schema/` files as needed.
+5.8. **Validate acceptance criteria** — review all `[SE]` and `[SE][QA]` criteria in the task. For each:
+     - If met → mark checkbox as `[x]` in the task body
+     - If not met → document in the **Unmet Criteria** table with reason, set task status → `PENDING_APPROVAL`, and skip to step 12 (do not mark READY_FOR_TEST)
 6. Generate change report: `ai/project/changes/CHANGE-TASK-XXX.md` using `ai/agent/templates/change.md`
 7. Run `git diff --cached --name-only` to verify only expected files staged
 8. Merge `feature/TASK-XXX` → `prd/PRD-XXX`

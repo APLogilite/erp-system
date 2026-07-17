@@ -46,6 +46,12 @@ DRAFT → REVIEW → APPROVED → IN_DEVELOPMENT → TESTING → READY_FOR_DEPLO
 
 ```
 PLANNING → PLANNED → READY_FOR_DEV → IN_DEVELOPMENT → READY_FOR_TEST → TESTING → TESTED → COMPLETED
+                    ↓                         ↓                  ↓
+              PENDING_APPROVAL          PENDING_APPROVAL   PENDING_APPROVAL
+                    │
+                    ↓
+              IN_DEVELOPMENT  (PM rejects)
+              TESTED          (PM approves)
 ```
 
 Plus exception states: `BLOCKED | ON_HOLD | CANCELLED`
@@ -59,10 +65,14 @@ Plus exception states: `BLOCKED | ON_HOLD | CANCELLED`
 | PLANNED | READY_FOR_DEV | All dependencies are satisfied (after a task merge) | Software Engineer |
 | READY_FOR_DEV | IN_DEVELOPMENT | SE locks task and creates branch | Software Engineer |
 | IN_DEVELOPMENT | READY_FOR_TEST | Implementation complete, merged to PRD branch | Software Engineer |
+| IN_DEVELOPMENT | PENDING_APPROVAL | SE documents unmet criteria with explanation | Software Engineer |
 | READY_FOR_TEST | TESTING | QA locks task, starts testing on PRD branch | QA Engineer |
 | TESTING | TESTED | QA passes all tests | QA Engineer |
+| TESTING | PENDING_APPROVAL | QA confirms criteria still fail after bug fixes | QA Engineer |
 | TESTED | COMPLETED | Cascade after PRD branch merges to main | Release |
 | COMPLETED | REOPENED | Post-release bug found against this PRD (see PRD REOPENED) | Product Manager |
+| PENDING_APPROVAL | TESTED | PM approves after user discussion | Product Manager |
+| PENDING_APPROVAL | IN_DEVELOPMENT | PM rejects after user discussion, updates task | Product Manager |
 | — | READY_FOR_DEV | PM creates a new bug (starting status for bugs) | Product Manager |
 | — | BLOCKED | Work cannot continue | Current Owner |
 | — | ON_HOLD | Temporarily paused | Current Owner |
@@ -78,6 +88,7 @@ Plus exception states: `BLOCKED | ON_HOLD | CANCELLED`
 - TESTING — QA is actively testing
 - TESTED — QA verified, passes
 - COMPLETED — Released via PRD merge
+- PENDING_APPROVAL — Waiting for PM/user decision on unmet criteria
 - BLOCKED — Current Owner, work stopped
 - ON_HOLD — Current Owner, paused
 - CANCELLED — Product Manager, removed
