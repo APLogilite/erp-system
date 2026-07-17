@@ -187,7 +187,13 @@ public class WindowDefinitionAssemblyService {
       columnInfo.setEnumOptions(column.getEnumOptions());
       columnInfo.setFilterWhereClause(column.getFilterWhereClause());
       // Populate lookupOptions for fields with a relationTable
-      if (column.getRelationTable() != null && !column.getRelationTable().isBlank()) {
+      // Skip eager loading if there's a filter_where_clause (field-level or column-level)
+      // — the frontend will fall back to the dynamic fetchLookupRecords API for filtered lookups
+      String fieldFilter = field.getFilterWhereClause();
+      String columnFilter = column.getFilterWhereClause();
+      boolean hasFilter = (fieldFilter != null && !fieldFilter.isBlank())
+          || (columnFilter != null && !columnFilter.isBlank());
+      if (column.getRelationTable() != null && !column.getRelationTable().isBlank() && !hasFilter) {
         columnInfo.setLookupOptions(fetchLookupOptions(column.getRelationTable()));
       }
       fieldResponse.setColumn(columnInfo);
@@ -232,7 +238,7 @@ public class WindowDefinitionAssemblyService {
       }
 
       String sql = "SELECT id, \"" + displayCol + "\" AS label FROM \"" + relationTable
-          + "\" WHERE is_active = true ORDER BY \"" + displayCol + "\" LIMIT 100";
+          + "\" ORDER BY \"" + displayCol + "\" LIMIT 100";
       return dynamicCrudService.queryForList(sql);
     } catch (Exception e) {
       log.warn("Failed to load lookup options for table '{}': {}", relationTable, e.getMessage());

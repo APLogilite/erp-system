@@ -38,6 +38,7 @@ import {
   fetchWindowRecords,
   fetchWindowRecord,
   fetchTabRecord,
+  fetchLookupRecords,
   createWindowRecord,
   updateWindowRecord,
   deleteWindowRecord,
@@ -86,6 +87,10 @@ function RecordDialog({ open, windowName, windowDef, recordId, onClose }: Record
   const isDrilled = drillStack.length > 0;
   const currentDrillLevel = isDrilled ? drillStack[drillStack.length - 1] : null;
 
+  // Full drill context: tabName:recordId pairs for all parent levels
+  const drillContext = drillStack.map((l) => l.tab.name + ':' + l.recordId).join('|');
+  const windowId = windowDef.window.id;
+
   // Fetch the current level's record data (with grandchildren if applicable)
   const currentRecordId = isDrilled ? drillStack[drillStack.length - 1].recordId : recordId;
 
@@ -107,6 +112,40 @@ function RecordDialog({ open, windowName, windowDef, recordId, onClose }: Record
     },
     enabled: !!currentRecordId,
   });
+
+  // Dynamic lookups: for fields with relationTable but no eager-loaded lookupOptions
+  // (i.e., fields with filter_where_clause), fetch via the dynamic API
+  const lookupResults: Record<string, { id: string; label: string }[]> = {};
+  const dynamicLookupFields = (currentLevelTab?.fields ?? []).filter(
+    (f) => f.column.relationTable && (!f.column.lookupOptions || f.column.lookupOptions.length === 0)
+  );
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const dynamicQueries: any[] = [];
+  for (const f of dynamicLookupFields) {
+    dynamicQueries.push(
+      useQuery({
+        queryKey: ['dynamic-lookup', f.column.relationTable, f.column.code, currentLevelTab.id, windowId, drillContext],
+        queryFn: () =>
+          fetchLookupRecords(
+            f.column.relationTable!,
+            currentLevelTab.id,
+            windowId,
+            f.column.code,
+            drillContext || undefined
+          ),
+        staleTime: 30000,
+        enabled: !!f.column.relationTable,
+      })
+    );
+  }
+  for (let i = 0; i < dynamicLookupFields.length; i++) {
+    const f = dynamicLookupFields[i];
+    if (dynamicQueries[i]?.data) {
+      lookupResults[f.column.relationTable!] = (dynamicQueries[i].data as Record<string, unknown>[]).map(
+        (r) => ({ id: String(r.id), label: String(r._display ?? r.label ?? r.id) })
+      );
+    }
+  }
 
   // Extract child records for the current level (grandchildren when drilled)
   const childRecordsMap = recordData
@@ -390,7 +429,8 @@ function RecordDialog({ open, windowName, windowDef, recordId, onClose }: Record
                 case 'many2one':
                 case 'many2many':
                 case 'one2many': {
-                  const lo = field.column.lookupOptions ?? [];
+                  // Use eager-loaded lookupOptions if available, otherwise fall back to dynamic fetch
+                  const lo = field.column.lookupOptions ?? lookupResults[field.column.relationTable!] ?? [];
                   return (
                     <FormControl key={field.column.code} fullWidth margin="dense" sx={{ mb: 1 }}>
                       <InputLabel>{label}</InputLabel>
