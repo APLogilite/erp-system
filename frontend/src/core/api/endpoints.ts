@@ -32,11 +32,6 @@ export const ENDPOINTS = {
     session: (id: string) => `/identity/sessions/${id}`,
     audit: '/identity/audit',
   },
-  authz: {
-    permissions: '/auth/permissions',
-    checkPermission: '/auth/check-permission',
-    invalidate: '/auth/permissions/invalidate',
-  },
   metadata: {
     all: '/metadata',
     models: '/metadata/models',
