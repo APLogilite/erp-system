@@ -97,7 +97,12 @@ If any check fails: stop, document, report.
 3. Test on `prd/PRD-XXX` branch (no new branch)
 4. Run: functional tests, acceptance criteria, regression, API, DB, UI as applicable
 5. Check for reusable test scripts in `ai/project/scripts/` and run them first
-6. **Validate acceptance criteria** — review all `[QA]` and `[SE][QA]` criteria. For each:
+6. **Write manual test scenarios** — for any UI, navigation, or user-facing acceptance criteria, create manual test scenarios in the test report with step-by-step instructions using the **Manual Test Scenarios** template section.
+7. **Ask user to execute** — present each manual scenario to the user and ask them to run it and report the result back.
+8. **Process user feedback:**
+   - User confirms PASS → update scenario status to PASSED
+   - User reports FAIL → create a bug task, task stays in TESTING
+9. **Validate acceptance criteria** — review all `[QA]` and `[SE][QA]` criteria. For each:
    - If met → mark checkbox as `[x]` in the task body
    - If not met and it's a valid bug → create a bug task (task stays in TESTING)
    - If bugs are already fixed but criteria still cannot be met → document in **Unmet Criteria** table, set task status → `PENDING_APPROVAL`

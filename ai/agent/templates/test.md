@@ -41,6 +41,23 @@ List each test case with expected vs actual results. Use tables for clarity.
 
 ---
 
+## Manual Test Scenarios
+
+Scenarios requiring human execution via browser. QA writes the steps, user executes them and reports back results.
+
+### MS-001: <Scenario Name>
+| Field | Value |
+|-------|-------|
+| Preconditions | <what must be set up before testing> |
+| Steps | 1. <step 1> |
+| | 2. <step 2> |
+| | 3. <step 3> |
+| Expected Result | <what should happen> |
+| Actual Result | <filled by user after execution> |
+| Status | **PASSED** / **FAILED** |
+
+---
+
 ## Regression Results
 
 | Test Suite | Result |
