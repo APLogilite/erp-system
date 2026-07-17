@@ -7,7 +7,7 @@ type: Bug
 
 scope: backend
 
-status: READY_FOR_TEST
+status: RESOLVED
 
 priority: Critical
 
@@ -38,6 +38,7 @@ history:
   - 2026-07-17: Bug created (QA Engineer)
   - 2026-07-17: locked and started IN_DEVELOPMENT (SE)
   - 2026-07-17: fix merged to PRD branch, READY_FOR_TEST (SE)
+  - 2026-07-17: fix verified, BUG-012 RESOLVED (QA)
 
 ---
 

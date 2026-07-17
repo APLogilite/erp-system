@@ -27,7 +27,7 @@ created: 2026-07-15
 
 updated: 2026-07-17
 
-qa_summary: All 14 tasks TESTED successfully. 0 bugs created.
+qa_summary: All 14 tasks TESTED. BUG-012 (lookup filter) found, fixed, and RESOLVED.
 
 approved_by:
 

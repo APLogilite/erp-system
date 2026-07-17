@@ -7,7 +7,7 @@ type: Feature
 
 scope: both
 
-status: READY_FOR_TEST
+status: TESTED
 
 priority: High
 
@@ -77,6 +77,7 @@ history:
   - 2026-07-17: locked and started IN_DEVELOPMENT (SE)
   - 2026-07-17: merged to PRD branch, READY_FOR_TEST (SE)
   - 2026-07-17: QA found BUG-012 (lookup filter regression), returning to READY_FOR_TEST (QA)
+  - 2026-07-17: BUG-012 resolved, TASK-047 TESTED (QA)
 
 ---
 
