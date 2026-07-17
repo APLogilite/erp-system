@@ -126,12 +126,14 @@ export interface ColumnInfo {
   code: string;
   label: string;
   type: string;
+  htmlType?: string;
   required: boolean;
   maxLength?: number;
   precision?: number;
   scale?: number;
   relationTable?: string;
   enumOptions?: string;
+  lookupOptions?: Array<{ id: string; label: string }>;
 }
 
 /** A field definition within a window tab. */

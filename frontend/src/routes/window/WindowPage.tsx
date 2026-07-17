@@ -28,7 +28,7 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import { useMutation, useQueries, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
@@ -38,7 +38,6 @@ import {
   fetchWindowRecords,
   fetchWindowRecord,
   fetchTabRecord,
-  fetchLookupRecords,
   createWindowRecord,
   updateWindowRecord,
   deleteWindowRecord,
@@ -89,58 +88,9 @@ function RecordDialog({ open, windowName, windowDef, recordId, onClose }: Record
   const currentLevelTab: WindowTabDefinition =
     drillStack.length > 0 ? drillStack[drillStack.length - 1].tab : mainTab!;
 
-  // Collect lookup configs: (tableName, fieldCode, originTabId) per field
-  // originTabId = the tab where this field lives (for finding field-level filter_where_clause)
-  const lookupConfigs: { table: string; fieldCode: string; originTabId: string }[] = [];
-  const seenLookups = new Set<string>();
-  for (const tab of windowDef.tabs) {
-    for (const f of tab.fields ?? []) {
-      if (f.column.relationTable) {
-        const key = f.column.relationTable + '|' + f.column.code + '|' + tab.id;
-        if (!seenLookups.has(key)) {
-          seenLookups.add(key);
-          lookupConfigs.push({
-            table: f.column.relationTable,
-            fieldCode: f.column.code,
-            originTabId: tab.id,
-          });
-        }
-      }
-    }
-  }
-
-  const lookupQueries: Record<string, Record<string, unknown>[]> = {};
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  let lookupResults: any[] = [];
-
   // Determine if we're at root level or drilled into a child record
   const isDrilled = drillStack.length > 0;
   const currentDrillLevel = isDrilled ? drillStack[drillStack.length - 1] : null;
-
-  // Full drill context: tabName:recordId pairs for all parent levels
-  // Used to resolve @tab.field@ placeholders at ANY level of the hierarchy
-  const drillContext = drillStack.map((l) => l.tab.name + ':' + l.recordId).join('|');
-  const windowId = windowDef.window.id;
-
-  lookupResults = useQueries({
-    queries: lookupConfigs.map((cfg) => ({
-      queryKey: ['lookup', cfg.table, cfg.fieldCode, cfg.originTabId, windowId, drillContext],
-      queryFn: () =>
-        fetchLookupRecords(
-          cfg.table,
-          cfg.originTabId,
-          windowId,
-          cfg.fieldCode,
-          drillContext || undefined
-        ),
-      staleTime: 30000,
-      gcTime: 60000,
-    })),
-  });
-
-  lookupConfigs.forEach((cfg, idx) => {
-    lookupQueries[cfg.table] = lookupResults[idx]?.data ?? [];
-  });
 
   // Fetch the current level's record data (with grandchildren if applicable)
   const currentRecordId = isDrilled ? drillStack[drillStack.length - 1].recordId : recordId;
@@ -453,7 +403,7 @@ function RecordDialog({ open, windowName, windowDef, recordId, onClose }: Record
                 case 'many2one':
                 case 'many2many':
                 case 'one2many': {
-                  const lo = lookupQueries[field.column.relationTable!] ?? [];
+                  const lo = field.column.lookupOptions ?? [];
                   return (
                     <FormControl key={field.column.code} fullWidth margin="dense" sx={{ mb: 1 }}>
                       <InputLabel>{label}</InputLabel>
@@ -461,15 +411,15 @@ function RecordDialog({ open, windowName, windowDef, recordId, onClose }: Record
                         value={value as string}
                         label={label}
                         onChange={(e) => handleFieldChange(field.column.code, e.target.value)}
-                        disabled={field.isReadonly || isSaving || !field.column.relationTable}
+                        disabled={field.isReadonly || isSaving}
                         required={field.isMandatory}
                       >
                         <MenuItem value="">
                           <em>None</em>
                         </MenuItem>
                         {lo.map((o) => (
-                          <MenuItem key={o.id as string} value={o.id as string}>
-                            {(o._display as string) ?? (o.id as string)}
+                          <MenuItem key={o.id} value={o.id}>
+                            {o.label}
                           </MenuItem>
                         ))}
                       </Select>

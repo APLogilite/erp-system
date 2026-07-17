@@ -29,10 +29,16 @@ export interface FormFieldRendererProps {
 }
 
 /**
- * Maps backend column types to HTML input types.
+ * Resolves the HTML input type for a field.
+ * Uses htmlType from the backend if available, otherwise falls back to
+ * the legacy type mapping for backward compatibility.
  */
-function mapInputType(fieldType: string): string {
-  switch (fieldType) {
+function resolveInputType(field: FieldDefinition): string {
+  if ((field as { htmlType?: string }).htmlType) {
+    return (field as { htmlType?: string }).htmlType!;
+  }
+  // Legacy fallback mapping
+  switch (field.type) {
     case 'integer':
     case 'decimal':
       return 'number';
@@ -70,7 +76,7 @@ export const FormFieldRenderer: React.FC<FormFieldRendererProps> = ({
     [field.columnCode, isView, onChange]
   );
 
-  const inputType = mapInputType(field.type);
+  const inputType = resolveInputType(field);
   const label = field.label;
   const placeholder = field.placeholder;
   const isRequired = field.required && !isView;

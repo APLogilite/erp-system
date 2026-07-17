@@ -19,6 +19,7 @@ import com.erp.modules.metadata.service.SysWindowService;
 import com.erp.modules.metadata.service.SysTabService;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -42,18 +43,21 @@ public class WindowDefinitionAssemblyService {
   private final SysWindowFieldService fieldService;
   private final SysColumnService columnService;
   private final SysTableService tableService;
+  private final DynamicCrudService dynamicCrudService;
 
   public WindowDefinitionAssemblyService(
       SysWindowService windowService,
       SysTabService tabService,
       SysWindowFieldService fieldService,
       SysColumnService columnService,
-      SysTableService tableService) {
+      SysTableService tableService,
+      DynamicCrudService dynamicCrudService) {
     this.windowService = windowService;
     this.tabService = tabService;
     this.fieldService = fieldService;
     this.columnService = columnService;
     this.tableService = tableService;
+    this.dynamicCrudService = dynamicCrudService;
   }
 
   /**
@@ -170,6 +174,7 @@ public class WindowDefinitionAssemblyService {
       columnInfo.setCode(column.getCode());
       columnInfo.setLabel(column.getLabel());
       columnInfo.setType(column.getType());
+      columnInfo.setHtmlType(mapToHtmlType(column.getType()));
       columnInfo.setRequired(column.getRequired());
       columnInfo.setMaxLength(column.getMaxLength());
       columnInfo.setPrecision(column.getPrecision());
@@ -177,6 +182,10 @@ public class WindowDefinitionAssemblyService {
       columnInfo.setRelationTable(column.getRelationTable());
       columnInfo.setEnumOptions(column.getEnumOptions());
       columnInfo.setFilterWhereClause(column.getFilterWhereClause());
+      // Populate lookupOptions for fields with a relationTable
+      if (column.getRelationTable() != null && !column.getRelationTable().isBlank()) {
+        columnInfo.setLookupOptions(fetchLookupOptions(column.getRelationTable()));
+      }
       fieldResponse.setColumn(columnInfo);
       // Fallback to column's default label only if no labelOverride was set
       if (fieldResponse.getLabel() == null) {
@@ -185,5 +194,62 @@ public class WindowDefinitionAssemblyService {
     });
 
     return fieldResponse;
+  }
+
+  /**
+   * Maps a backend column type to an HTML input type for frontend rendering.
+   */
+  private String mapToHtmlType(String columnType) {
+    if (columnType == null) return "text";
+    return switch (columnType) {
+      case "integer", "numeric" -> "number";
+      case "decimal" -> "number";
+      case "date" -> "date";
+      case "datetime" -> "datetime-local";
+      case "boolean" -> "checkbox";
+      case "enum" -> "select";
+      case "many2one" -> "select";
+      case "text" -> "textarea";
+      default -> "text";
+    };
+  }
+
+  /**
+   * Fetches lookup options (id, label pairs) for a given relation table.
+   * Queries the display column from sys_column metadata and returns up to 100 results.
+   */
+  private List<Map<String, Object>> fetchLookupOptions(String relationTable) {
+    try {
+      // Find the display column for this relation table
+      String displayCol = findDisplayColumnForTable(relationTable);
+      if (displayCol == null) {
+        log.debug("No display column found for lookup table '{}'", relationTable);
+        return List.of();
+      }
+
+      String sql = "SELECT id, \"" + displayCol + "\" AS label FROM \"" + relationTable
+          + "\" WHERE is_active = true ORDER BY \"" + displayCol + "\" LIMIT 100";
+      return dynamicCrudService.queryForList(sql);
+    } catch (Exception e) {
+      log.warn("Failed to load lookup options for table '{}': {}", relationTable, e.getMessage());
+      return List.of();
+    }
+  }
+
+  /**
+   * Queries sys_column for the display column of a given table.
+   */
+  private String findDisplayColumnForTable(String tableName) {
+    try {
+      String sql = "SELECT code FROM sys_column WHERE table_id = (SELECT id FROM sys_table WHERE name = '"
+          + tableName + "') AND is_display_column = true LIMIT 1";
+      List<Map<String, Object>> cols = dynamicCrudService.queryForList(sql);
+      if (!cols.isEmpty() && cols.get(0).get("code") != null) {
+        return cols.get(0).get("code").toString();
+      }
+    } catch (Exception e) {
+      log.warn("Failed to find display column for table '{}': {}", tableName, e.getMessage());
+    }
+    return null;
   }
 }

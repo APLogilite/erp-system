@@ -1,5 +1,7 @@
 package com.erp.core.runtime.dto.window;
 
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -64,12 +66,14 @@ public class FieldDefinitionResponse {
     private String code;
     private String label;
     private String type;
+    private String htmlType;
     private Boolean required;
     private Integer maxLength;
     private Integer precision;
     private Integer scale;
     private String relationTable;
     private String enumOptions;
+    private List<Map<String, Object>> lookupOptions;
     private String filterWhereClause;
 
     public ColumnInfo() {}
@@ -80,6 +84,8 @@ public class FieldDefinitionResponse {
     public void setLabel(String label) { this.label = label; }
     public String getType() { return type; }
     public void setType(String type) { this.type = type; }
+    public String getHtmlType() { return htmlType; }
+    public void setHtmlType(String htmlType) { this.htmlType = htmlType; }
     public Boolean getRequired() { return required; }
     public void setRequired(Boolean required) { this.required = required; }
     public Integer getMaxLength() { return maxLength; }
@@ -92,6 +98,8 @@ public class FieldDefinitionResponse {
     public void setRelationTable(String relationTable) { this.relationTable = relationTable; }
     public String getEnumOptions() { return enumOptions; }
     public void setEnumOptions(String enumOptions) { this.enumOptions = enumOptions; }
+    public List<Map<String, Object>> getLookupOptions() { return lookupOptions; }
+    public void setLookupOptions(List<Map<String, Object>> lookupOptions) { this.lookupOptions = lookupOptions; }
     public String getFilterWhereClause() { return filterWhereClause; }
     public void setFilterWhereClause(String filterWhereClause) { this.filterWhereClause = filterWhereClause; }
   }
