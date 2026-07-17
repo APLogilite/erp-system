@@ -167,6 +167,7 @@ export interface WindowTabDefinition {
   isSingleRow: boolean;
   whereClause: string | null;
   parentColumn: string | null;
+  childTabIds: string[];
   table: TabTableInfo;
   fields: WindowFieldDefinition[];
 }

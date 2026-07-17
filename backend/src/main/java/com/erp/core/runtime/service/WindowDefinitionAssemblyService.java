@@ -18,7 +18,9 @@ import com.erp.modules.metadata.service.SysWindowFieldService;
 import com.erp.modules.metadata.service.SysWindowService;
 import com.erp.modules.metadata.service.SysTabService;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import org.slf4j.Logger;
@@ -78,6 +80,25 @@ public class WindowDefinitionAssemblyService {
 
     for (SysTab tab : tabs) {
       tabResponses.add(assembleTab(tab));
+    }
+
+    // Compute childTabIds for each tab by matching parentColumn naming conventions
+    // A tab is a child of another tab when its parentColumn references the parent's table
+    // e.g., parentColumn="window_id" → stub="window" → matches table "sys_window"
+    for (TabDefinitionResponse tr : tabResponses) {
+      List<UUID> childIds = new ArrayList<>();
+      String tableName = tr.getTable() != null ? tr.getTable().getName() : null;
+      if (tableName != null) {
+        for (TabDefinitionResponse other : tabResponses) {
+          if (other.getParentColumn() != null && other.getParentColumn().endsWith("_id")) {
+            String colStub = other.getParentColumn().substring(0, other.getParentColumn().length() - 3);
+            if (tableName.endsWith("_" + colStub)) {
+              childIds.add(other.getId());
+            }
+          }
+        }
+      }
+      tr.setChildTabIds(childIds);
     }
 
     return new WindowDefinitionResponse(windowInfo, tabResponses);

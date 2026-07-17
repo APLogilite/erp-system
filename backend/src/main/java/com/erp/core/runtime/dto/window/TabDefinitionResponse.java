@@ -1,5 +1,6 @@
 package com.erp.core.runtime.dto.window;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -15,6 +16,7 @@ public class TabDefinitionResponse {
   private Boolean isSingleRow;
   private String whereClause;
   private String parentColumn;
+  private List<UUID> childTabIds = new ArrayList<>();
   private TableInfo table;
   private List<FieldDefinitionResponse> fields;
 
@@ -32,6 +34,8 @@ public class TabDefinitionResponse {
   public void setWhereClause(String whereClause) { this.whereClause = whereClause; }
   public String getParentColumn() { return parentColumn; }
   public void setParentColumn(String parentColumn) { this.parentColumn = parentColumn; }
+  public List<UUID> getChildTabIds() { return childTabIds; }
+  public void setChildTabIds(List<UUID> childTabIds) { this.childTabIds = childTabIds; }
   public TableInfo getTable() { return table; }
   public void setTable(TableInfo table) { this.table = table; }
   public List<FieldDefinitionResponse> getFields() { return fields; }

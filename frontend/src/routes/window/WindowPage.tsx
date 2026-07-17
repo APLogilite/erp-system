@@ -99,7 +99,11 @@ function RecordDialog({ open, windowName, windowDef, recordId, onClose }: Record
         const key = f.column.relationTable + '|' + f.column.code + '|' + tab.id;
         if (!seenLookups.has(key)) {
           seenLookups.add(key);
-          lookupConfigs.push({ table: f.column.relationTable, fieldCode: f.column.code, originTabId: tab.id });
+          lookupConfigs.push({
+            table: f.column.relationTable,
+            fieldCode: f.column.code,
+            originTabId: tab.id,
+          });
         }
       }
     }
@@ -121,7 +125,14 @@ function RecordDialog({ open, windowName, windowDef, recordId, onClose }: Record
   lookupResults = useQueries({
     queries: lookupConfigs.map((cfg) => ({
       queryKey: ['lookup', cfg.table, cfg.fieldCode, cfg.originTabId, windowId, drillContext],
-      queryFn: () => fetchLookupRecords(cfg.table, cfg.originTabId, windowId, cfg.fieldCode, drillContext || undefined),
+      queryFn: () =>
+        fetchLookupRecords(
+          cfg.table,
+          cfg.originTabId,
+          windowId,
+          cfg.fieldCode,
+          drillContext || undefined
+        ),
       staleTime: 30000,
       gcTime: 60000,
     })),
@@ -134,13 +145,17 @@ function RecordDialog({ open, windowName, windowDef, recordId, onClose }: Record
   // Fetch the current level's record data (with grandchildren if applicable)
   const currentRecordId = isDrilled ? drillStack[drillStack.length - 1].recordId : recordId;
 
-  const { data: recordData, isLoading: isLoadingRecord, error: recordError } = useQuery({
+  const {
+    data: recordData,
+    isLoading: isLoadingRecord,
+    error: recordError,
+  } = useQuery({
     queryKey: ['window-record', windowName, drillStack.length, currentLevelTab.id, currentRecordId],
     queryFn: () => {
       if (isDrilled) {
         // Drilled: always use fetchTabRecord which targets the correct tab's table,
         // even if there are no grandchildren (empty childTabIds is fine)
-        const childTabIds = findChildTabs(windowDef.tabs, currentLevelTab).map((t) => t.id);
+        const childTabIds = currentLevelTab.childTabIds ?? [];
         return fetchTabRecord(windowName, currentLevelTab.id, currentRecordId!, childTabIds);
       }
       // Root level: fetch record with children from main tab
@@ -151,14 +166,16 @@ function RecordDialog({ open, windowName, windowDef, recordId, onClose }: Record
 
   // Extract child records for the current level (grandchildren when drilled)
   const childRecordsMap = recordData
-    ? ((recordData as { childRecords?: Record<string, Record<string, unknown>[]> }).childRecords ?? {})
+    ? ((recordData as { childRecords?: Record<string, Record<string, unknown>[]> }).childRecords ??
+      {})
     : {};
 
   // For the form data: use drill stack data when drilled (preserves user edits on refetch)
   // At root level: use the record from the API response
-  const effectiveFormRecord = isDrilled && currentDrillLevel
-    ? currentDrillLevel.recordData
-    : recordData
+  const effectiveFormRecord =
+    isDrilled && currentDrillLevel
+      ? currentDrillLevel.recordData
+      : recordData
         ? ((recordData as { record?: Record<string, unknown> }).record ?? recordData)
         : undefined;
 
@@ -197,9 +214,10 @@ function RecordDialog({ open, windowName, windowDef, recordId, onClose }: Record
     mutationFn: (data: Record<string, unknown>) => {
       // When drilled down, pass tab ID and parent record ID to auto-set parent FK
       const tabId = isDrilled ? currentLevelTab.id : undefined;
-      const parentRecordId = isDrilled && drillStack.length >= 2
-        ? drillStack[drillStack.length - 2].recordId
-        : undefined;
+      const parentRecordId =
+        isDrilled && drillStack.length >= 2
+          ? drillStack[drillStack.length - 2].recordId
+          : undefined;
       return createWindowRecord(windowName, data, tabId, parentRecordId);
     },
     onSuccess: () => {
@@ -241,22 +259,12 @@ function RecordDialog({ open, windowName, windowDef, recordId, onClose }: Record
 
   const isSaving = createMutation.isPending || updateMutation.isPending;
 
-  // Find child tabs of a given tab (for accordion panels)
-  function findChildTabs(
-    allTabs: WindowTabDefinition[],
-    parentTab: WindowTabDefinition
-  ): WindowTabDefinition[] {
-    const parentTable = parentTab.table.name; // e.g., 'sys_window'
-    return allTabs.filter((t) => {
-      if (!t.parentColumn || !t.parentColumn.endsWith('_id')) return false;
-      const colStub = t.parentColumn.slice(0, -3); // 'window_id' → 'window'
-      // Match: parentColumn references parent's table name
-      // 'window_id' → colStub='window' → parentTable ends with '_window'
-      return parentTable.endsWith('_' + colStub);
-    });
-  }
-
-  const currentChildTabs = currentLevelTab ? findChildTabs(windowDef.tabs, currentLevelTab) : [];
+  // Child tabs are now computed server-side and returned as childTabIds
+  const currentChildTabs: WindowTabDefinition[] = currentLevelTab
+    ? (currentLevelTab.childTabIds ?? [])
+        .map((id) => windowDef.tabs.find((t) => t.id === id))
+        .filter((t): t is WindowTabDefinition => t !== undefined)
+    : [];
 
   // Drill down: user clicked a row in a child grid
   const handleDrillDown = (childTab: WindowTabDefinition, childRecordId: string) => {
@@ -311,18 +319,25 @@ function RecordDialog({ open, windowName, windowDef, recordId, onClose }: Record
 
   // Breadcrumb: show each level as "TabName (DisplayValue)"
   const getDisplayVal = (rec: Record<string, unknown> | undefined): string =>
-    ((rec?._display as string) ?? (rec?.name as string) ?? (rec?.code as string) ?? '');
+    (rec?._display as string) ?? (rec?.name as string) ?? (rec?.code as string) ?? '';
   const breadcrumbParts = [
     // Root: window name (with parent record display if editing)
     recordId
-      ? windowDef.window.name + (effectiveFormRecord ? ' (' + getDisplayVal(effectiveFormRecord as Record<string, unknown>) + ')' : '')
+      ? windowDef.window.name +
+        (effectiveFormRecord
+          ? ' (' + getDisplayVal(effectiveFormRecord as Record<string, unknown>) + ')'
+          : '')
       : windowDef.window.name,
     // Drill levels: tab name (record display value)
-    ...drillStack.map((l) => l.tab.name + ' (' + getDisplayVal(l.recordData as Record<string, unknown>) + ')'),
+    ...drillStack.map(
+      (l) => l.tab.name + ' (' + getDisplayVal(l.recordData as Record<string, unknown>) + ')'
+    ),
   ];
   const currentTitle = isDrilled
     ? windowDef.window.name
-    : (recordId ? windowDef.window.name : 'New ' + (currentLevelTab?.name ?? 'Record'));
+    : recordId
+      ? windowDef.window.name
+      : 'New ' + (currentLevelTab?.name ?? 'Record');
 
   return (
     <Dialog open={open} onClose={onClose} maxWidth="md" fullWidth>
@@ -331,13 +346,23 @@ function RecordDialog({ open, windowName, windowDef, recordId, onClose }: Record
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, mb: 0.5 }}>
           {breadcrumbParts.map((part, i) => (
             <React.Fragment key={i}>
-              {i > 0 && <Typography sx={{ fontSize: 13, color: 'text.secondary' }}>&gt;</Typography>}
+              {i > 0 && (
+                <Typography sx={{ fontSize: 13, color: 'text.secondary' }}>&gt;</Typography>
+              )}
               <Button
                 size="small"
-                sx={{ textTransform: 'none', minWidth: 0, px: 0.5, fontSize: 13, color: i < breadcrumbParts.length - 1 ? 'text.secondary' : 'text.primary' }}
+                sx={{
+                  textTransform: 'none',
+                  minWidth: 0,
+                  px: 0.5,
+                  fontSize: 13,
+                  color: i < breadcrumbParts.length - 1 ? 'text.secondary' : 'text.primary',
+                }}
                 onClick={() => {
-                  if (i === 0) { goToLevel(0); setDrillStack([]); }
-                  else goToLevel(i - 1);
+                  if (i === 0) {
+                    goToLevel(0);
+                    setDrillStack([]);
+                  } else goToLevel(i - 1);
                 }}
               >
                 {part}
@@ -698,7 +723,8 @@ function ChildTabGrid({ tab, childRecords, onRowClick }: ChildTabGridProps) {
                           onChange={(val) => updateCell(rowIdx, f.column.code, val)}
                         />
                       ) : (
-                        (rec[f.column.code + '_display'] as string) ?? String(rec[f.column.code] ?? '')
+                        ((rec[f.column.code + '_display'] as string) ??
+                        String(rec[f.column.code] ?? ''))
                       )}
                     </TableCell>
                   ))}
