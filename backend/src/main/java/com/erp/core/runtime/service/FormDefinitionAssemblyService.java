@@ -232,6 +232,19 @@ public class FormDefinitionAssemblyService {
           .toList());
       layoutDefs.add(ld);
     }
+
+    // Guarantee at least one section — auto-generate default if none configured
+    if (layoutDefs.isEmpty() && !fieldIds.isEmpty()) {
+      LayoutDefinitionResponse defaultSection = new LayoutDefinitionResponse();
+      defaultSection.setSectionId(null);
+      defaultSection.setCode("default");
+      defaultSection.setLabel(bundle.getFormLabel());
+      defaultSection.setCollapsible(false);
+      defaultSection.setColumns(1);
+      defaultSection.setPosition(0);
+      defaultSection.setFieldIds(fieldIds);
+      layoutDefs.add(defaultSection);
+    }
     bundle.setSections(layoutDefs);
 
     // 6. Sub-forms with one-level-deep child definition info

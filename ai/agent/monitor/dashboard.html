@@ -932,7 +932,8 @@ function showTaskDetail(taskId) {
       if (history.length) {
         bodyHtml += '<div class="modal-section"><h4>History</h4><div class="modal-history">';
         for (const entry of history) {
-          bodyHtml += `<div class="modal-history-item">${esc(entry)}</div>`;
+          const text = typeof entry === "string" ? entry : JSON.stringify(entry);
+          bodyHtml += `<div class="modal-history-item">${esc(text)}</div>`;
         }
         bodyHtml += '</div></div>';
       }
