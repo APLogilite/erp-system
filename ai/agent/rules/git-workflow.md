@@ -4,6 +4,8 @@ This document defines every git operation, branch strategy, and lock-before-bran
 
 Every AI agent must read this before creating or merging branches.
 
+> **Push policy:** AI agents commit changes locally only. The user handles pushing to remote (`git push`).
+
 ---
 
 ## Branch Hierarchy
@@ -36,9 +38,9 @@ Status changes (locks) must be committed to the **parent branch** BEFORE creatin
 1. Change PRD doc: status APPROVED → IN_DEVELOPMENT
 2. git add ai/project/prd/PRD-*.md
 3. git commit -m "docs(PRD-XXX): advance to IN_DEVELOPMENT"
-4. git push origin main
+4. # (committed locally — user pushes to remote)
 5. git checkout -b prd/PRD-XXX
-6. git push -u origin prd/PRD-XXX
+6. # (committed locally — user pushes to remote)
 ```
 
 ### Starting a task
@@ -47,7 +49,7 @@ Status changes (locks) must be committed to the **parent branch** BEFORE creatin
 1. Change task doc: locked: true, status → IN_DEVELOPMENT
 2. git add ai/project/tasks/TASK-XXX.md
 3. git commit -m "chore: lock TASK-XXX, start development"
-4. git push origin prd/PRD-XXX
+4. # (committed locally — user pushes to remote)
 5. git checkout -b feature/TASK-XXX
 6. (implement, build, lint, test)
 7. Generate change report (ai/project/changes/CHANGE-TASK-XXX.md)
@@ -59,7 +61,7 @@ Status changes (locks) must be committed to the **parent branch** BEFORE creatin
 13. Change task doc: locked: false, status → READY_FOR_TEST
 14. git add ai/project/tasks/TASK-XXX.md
 15. git commit -m "chore: TASK-XXX → READY_FOR_TEST"
-16. git push origin prd/PRD-XXX
+16. # (committed locally — user pushes to remote)
 ```
 
 ### QA starting a test
@@ -70,13 +72,13 @@ Status changes (locks) must be committed to the **parent branch** BEFORE creatin
 3. Change task doc: locked: true, status → TESTING
 4. git add ai/project/tasks/TASK-XXX.md
 5. git commit -m "chore: TASK-XXX → TESTING"
-6. git push origin prd/PRD-XXX
+6. # (committed locally — user pushes to remote)
 7. (test on prd/PRD-XXX, no sub-branch)
 8. If PASS: change task doc: locked: false, status → TESTED
 9. If FAIL: create bug task, set task back to READY_FOR_TEST
 10. git add ai/project/tasks/TASK-XXX.md ai/project/tests/TEST-TASK-XXX.md
 11. git commit -m "test(PRD-XXX): TASK-XXX testing complete"
-12. git push origin prd/PRD-XXX
+12. # (committed locally — user pushes to remote)
 ```
 
 ---
@@ -153,7 +155,7 @@ When `prd/PRD-XXX` was already merged to main, subsequent work must create a ver
    - Create the versioned branch:
      ```
      git checkout -b prd/PRD-XXX-v<N>
-     git push -u origin prd/PRD-XXX-v<N>
+     # (committed locally — user pushes to remote)
      ```
    - This becomes the new Parent PRD branch.
 
@@ -189,8 +191,8 @@ When the PRD testing session ends (no READY_FOR_TEST tasks remain OR stopping co
 2. Commit ALL QA artifacts in a SINGLE commit directly to the test branch:
    ```
    git add ai/project/tests/ ai/project/tasks/BUG-*.md ai/agent/project-board.md
-   git commit -m "test(PRD-XXX): QA session results"
-   git push origin <test-branch>
+    git commit -m "test(PRD-XXX): QA session results"
+    # (committed locally — user pushes to remote)
    ```
 3. If all PRD tasks are now TESTED:
    - Change PRD doc: status TESTING → READY_FOR_DEPLOYMENT
@@ -235,7 +237,7 @@ Never attempt to bypass git failures.
 - Always fetch the latest remote state before any git operation
 - Always pull the parent branch before creating a new branch
 - Never assume the local branch is current
-- After merge, push the parent branch immediately
+- After merge, commit all changes locally. The user pushes to remote.
 
 ---
 
