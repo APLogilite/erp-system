@@ -679,6 +679,36 @@ TASK-004, 006, 008, 009, 010, 016, 017, 018, 019, 020, 024, 025 — all 12 previ
 - **6 IN_DEVELOPMENT** — TASK-021, 022, 023, 026, 027, ENH-001
 - **1 PLANNED** — TASK-014
 
+## 2026-07-17 (PRD-005 Advanced to TESTING — All 14 Tasks Implemented)
+
+### Summary
+Software Engineer completed all 14 PRD-005 tasks for backend-frontend separation, dead code removal, and package standardization. PRD-005 advanced from IN_DEVELOPMENT to TESTING. All 36 backend tests pass, frontend typecheck passes.
+
+### Tasks Implemented (14)
+| Task | Title | Scope | Priority |
+|------|-------|-------|----------|
+| TASK-046 | Add childTabIds to TabDefinitionResponse | backend | High |
+| TASK-047 | Add htmlType and lookupOptions to FieldDefinitionResponse | both | High |
+| TASK-048 | Backend Pre-Filters and Pre-Sorts Fields | backend | Medium |
+| TASK-049 | Backend Type Coercion on Save | backend | Medium |
+| TASK-050 | Guarantee _display on Every Record | both | High |
+| TASK-051 | Backend Returns RuntimeMetadataBundle Directly | both | High |
+| TASK-052 | Backend Search Endpoint for Ctrl+K | both | Medium |
+| TASK-053 | Backend Guarantees Non-Empty Sections | backend | Low |
+| TASK-054 | Remove Dead modules/auth/ Package | backend | High |
+| TASK-055 | Remove Dead core/security/ Package | backend | High |
+| TASK-056 | Move customerService.ts Out of core/api/services/ | frontend | Low |
+| TASK-057 | Audit and Remove Stale Frontend API Endpoints | frontend | Low |
+| TASK-058 | Move Window Schema to core/layout/ | backend | High |
+| TASK-059 | Move Frontend Pages to routes/ | frontend | Medium |
+
+### Branch
+- `prd/PRD-005-backend-frontend-separation` — 14 feature branches merged
+- All 36 backend tests pass, frontend typecheck passes
+
+### PRD Status Changed
+- **PRD-005** — Backend-Frontend Separation & Code Standardization v1.3.0 → v1.3.1: **IN_DEVELOPMENT → TESTING**
+
 ## 2026-07-16 (PRD-005 APPROVED v1.3.0)
 
 ### Summary
