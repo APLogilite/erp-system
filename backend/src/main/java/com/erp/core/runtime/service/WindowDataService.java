@@ -735,6 +735,36 @@ public class WindowDataService {
   }
 
   /**
+   * Searches windows by name, description, or table name/label.
+   * Returns up to 20 matching results with menu path context.
+   */
+  @Transactional(readOnly = true)
+  public List<Map<String, Object>> searchWindows(String query, UUID tenantId) {
+    String escapedQuery = query.replace("'", "''");
+    String likeQuery = "%" + escapedQuery.toLowerCase() + "%";
+    String sql =
+        "SELECT w.id AS window_id, w.name AS window_name, "
+        + "COALESCE(w.description, w.name) AS window_label, "
+        + "t.name AS table_name, t.label AS table_label, "
+        + "m.name AS menu_path "
+        + "FROM sys_window w "
+        + "JOIN sys_table t ON w.table_id = t.id "
+        + "LEFT JOIN sys_menu m ON m.window_id = w.id "
+        + "WHERE (LOWER(w.name) LIKE '" + likeQuery + "' "
+        + "OR LOWER(COALESCE(w.description, '')) LIKE '" + likeQuery + "' "
+        + "OR LOWER(t.name) LIKE '" + likeQuery + "' "
+        + "OR LOWER(t.label) LIKE '" + likeQuery + "') "
+        + "ORDER BY w.name "
+        + "LIMIT 20";
+    try {
+      return dynamicCrudService.queryForList(sql);
+    } catch (Exception e) {
+      log.warn("Failed to search windows with query '{}': {}", query, e.getMessage());
+      return List.of();
+    }
+  }
+
+  /**
    * Soft-delete a record from the window's main tab table.
    */
   @Transactional

@@ -244,6 +244,29 @@ public class WindowDataController {
   }
 
   /**
+   * Search windows by query string (for Ctrl+K search).
+   * GET /api/v1/runtime/windows/search?q=product
+   */
+  @GetMapping("/search")
+  public ResponseEntity<ApiResponse<List<Map<String, Object>>>> searchWindows(
+      @RequestParam(name = "q") String query) {
+
+    RuntimeContext ctx = requireContext();
+    if (ctx == null || ctx.getTenantId() == null) {
+      return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+          .body(new ApiResponse<>(false, null, "Authentication required.", "UNAUTHORIZED", Collections.emptyList()));
+    }
+
+    try {
+      List<Map<String, Object>> results = windowDataService.searchWindows(query, ctx.getTenantId());
+      return ResponseEntity.ok(ApiResponse.success(results, "Search results retrieved."));
+    } catch (IllegalArgumentException e) {
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+          .body(new ApiResponse<>(false, null, e.getMessage(), "BAD_REQUEST", Collections.emptyList()));
+    }
+  }
+
+  /**
    * Soft-delete a record.
    */
   @DeleteMapping("/{windowName}/records/{id}")

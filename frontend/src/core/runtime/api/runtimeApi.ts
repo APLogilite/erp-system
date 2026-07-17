@@ -340,6 +340,29 @@ export async function fetchLookupRecords(
   return unwrap(response);
 }
 
+// ---- Search API ----
+
+export interface WindowSearchResult {
+  windowId: string;
+  windowName: string;
+  windowLabel: string;
+  tableName: string;
+  tableLabel: string;
+  menuPath: string | null;
+}
+
+/**
+ * Searches windows by name/description/table for Ctrl+K search.
+ * GET /api/v1/runtime/windows/search?q={query}
+ */
+export async function searchWindows(query: string): Promise<WindowSearchResult[]> {
+  const response = await apiClient.get<ApiResponse<WindowSearchResult[]>>(
+    `/runtime/windows/search`,
+    { params: { q: query } }
+  );
+  return unwrap(response);
+}
+
 // ---- Menu API (PRD-004) ----
 
 /** A single menu tree node returned from the menu API. */

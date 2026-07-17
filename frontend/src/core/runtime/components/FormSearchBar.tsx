@@ -14,11 +14,11 @@ import {
   Tooltip,
   Typography,
 } from '@mui/material';
+import { useQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { useAccessibleForms } from '../hooks/useAccessibleForms';
-import type { AccessibleForm } from '../hooks/useAccessibleForms';
+import { searchWindows, type WindowSearchResult } from '../api/runtimeApi';
 
 type FormSearchBarProps = {
   /**
@@ -31,7 +31,15 @@ type FormSearchBarProps = {
 export function FormSearchBar({ ButtonProps }: FormSearchBarProps) {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState('');
-  const { data: windows, isLoading } = useAccessibleForms();
+
+  // Backend search — only search when dialog is open and query has at least 2 chars
+  const { data: results, isLoading } = useQuery({
+    queryKey: ['window-search', query],
+    queryFn: () => searchWindows(query),
+    enabled: open && query.length >= 2,
+    staleTime: 30000,
+  });
+
   const navigate = useNavigate();
 
   // Ctrl+K / Cmd+K to open
@@ -46,15 +54,7 @@ export function FormSearchBar({ ButtonProps }: FormSearchBarProps) {
     return () => window.removeEventListener('keydown', handler);
   }, []);
 
-  const filtered = (windows ?? []).filter(
-    (w: AccessibleForm) =>
-      !query ||
-      w.windowLabel.toLowerCase().includes(query.toLowerCase()) ||
-      w.windowName.toLowerCase().includes(query.toLowerCase()) ||
-      (w.tableLabel ?? w.tableName).toLowerCase().includes(query.toLowerCase())
-  );
-
-  const handleSelect = (w: AccessibleForm) => {
+  const handleSelect = (w: WindowSearchResult) => {
     setOpen(false);
     setQuery('');
     navigate(`/app/window/${encodeURIComponent(w.windowName)}`);
@@ -90,24 +90,22 @@ export function FormSearchBar({ ButtonProps }: FormSearchBarProps) {
         </DialogTitle>
         <DialogContent sx={{ pt: 1 }}>
           {isLoading && <CircularProgress sx={{ display: 'block', mx: 'auto', my: 2 }} />}
-          {!isLoading && filtered.length === 0 && query && (
+          {!isLoading && results && results.length === 0 && query.length >= 2 && (
             <Typography color="text.secondary" sx={{ py: 2, textAlign: 'center' }}>
               No windows matching &quot;{query}&quot;.
             </Typography>
           )}
-          {!isLoading && filtered.length === 0 && !query && (
+          {!isLoading && (!results || results.length === 0) && query.length < 2 && (
             <Typography color="text.secondary" sx={{ py: 2, textAlign: 'center' }}>
-              {windows === undefined || windows.length === 0
-                ? 'No accessible windows. Contact your system administrator.'
-                : 'No windows found.'}
+              Type at least 2 characters to search windows.
             </Typography>
           )}
           <List dense>
-            {filtered.slice(0, 15).map((w) => (
+            {(results ?? []).slice(0, 20).map((w) => (
               <ListItemButton key={w.windowName} onClick={() => handleSelect(w)}>
                 <ListItemText
                   primary={w.windowLabel}
-                  secondary={`${w.tableLabel ?? w.tableName} — ${w.windowName}`}
+                  secondary={`${w.tableLabel ?? w.tableName}${w.menuPath ? ' — ' + w.menuPath : ''}`}
                 />
               </ListItemButton>
             ))}
