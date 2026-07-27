@@ -206,7 +206,7 @@ SELECT ensure_field('Sales Orders', 10, 'grand_total',   80, false, true, true, 
 SELECT ensure_field('Sales Orders', 10, 'status',        90, false, true, false, false);
 SELECT ensure_field('Sales Orders', 10, 'notes',         100, false, true, false, false);
 -- Lines child tab
-SELECT add_child_tab('Sales Orders', 'Lines', 'tx_order_line', 20, 'order_id');
+SELECT add_child_tab('Sales Orders', 'Lines', 'tx_order_line', 20, (SELECT id FROM sys_column WHERE table_id = (SELECT id FROM sys_table WHERE name = 'tx_order_line') AND code = 'order_id'));
 SELECT ensure_field('Sales Orders', 20, 'line_number', 10, false, true, false, true);
 SELECT ensure_field('Sales Orders', 20, 'product_id',  20, false, true, false, true);
 SELECT ensure_field('Sales Orders', 20, 'description', 30, false, true, false, false);
@@ -229,7 +229,7 @@ SELECT ensure_field('Purchase Orders', 10, 'grand_total',    80, false, true, tr
 SELECT ensure_field('Purchase Orders', 10, 'status',         90, false, true, false, false);
 SELECT ensure_field('Purchase Orders', 10, 'notes',          100, false, true, false, false);
 -- Lines child tab
-SELECT add_child_tab('Purchase Orders', 'Lines', 'tx_order_line', 20, 'order_id');
+SELECT add_child_tab('Purchase Orders', 'Lines', 'tx_order_line', 20, (SELECT id FROM sys_column WHERE table_id = (SELECT id FROM sys_table WHERE name = 'tx_order_line') AND code = 'order_id'));
 SELECT ensure_field('Purchase Orders', 20, 'line_number', 10, false, true, false, true);
 SELECT ensure_field('Purchase Orders', 20, 'product_id',  20, false, true, false, true);
 SELECT ensure_field('Purchase Orders', 20, 'description', 30, false, true, false, false);
@@ -248,7 +248,7 @@ SELECT ensure_field('Sales Invoices', 10, 'partner_id',     40, false, true, fal
 SELECT ensure_field('Sales Invoices', 10, 'grand_total',    50, false, true, true,  false);
 SELECT ensure_field('Sales Invoices', 10, 'status',         60, false, true, false, false);
 -- Lines child tab
-SELECT add_child_tab('Sales Invoices', 'Lines', 'tx_invoice_line', 20, 'invoice_id');
+SELECT add_child_tab('Sales Invoices', 'Lines', 'tx_invoice_line', 20, (SELECT id FROM sys_column WHERE table_id = (SELECT id FROM sys_table WHERE name = 'tx_invoice_line') AND code = 'invoice_id'));
 SELECT ensure_field('Sales Invoices', 20, 'line_number', 10, false, true, false, true);
 SELECT ensure_field('Sales Invoices', 20, 'product_id',  20, false, true, false, true);
 SELECT ensure_field('Sales Invoices', 20, 'description', 30, false, true, false, false);
@@ -266,7 +266,7 @@ SELECT ensure_field('Purchase Invoices', 10, 'partner_id',     40, false, true, 
 SELECT ensure_field('Purchase Invoices', 10, 'grand_total',    50, false, true, true,  false);
 SELECT ensure_field('Purchase Invoices', 10, 'status',         60, false, true, false, false);
 -- Lines child tab
-SELECT add_child_tab('Purchase Invoices', 'Lines', 'tx_invoice_line', 20, 'invoice_id');
+SELECT add_child_tab('Purchase Invoices', 'Lines', 'tx_invoice_line', 20, (SELECT id FROM sys_column WHERE table_id = (SELECT id FROM sys_table WHERE name = 'tx_invoice_line') AND code = 'invoice_id'));
 SELECT ensure_field('Purchase Invoices', 20, 'line_number', 10, false, true, false, true);
 SELECT ensure_field('Purchase Invoices', 20, 'product_id',  20, false, true, false, true);
 SELECT ensure_field('Purchase Invoices', 20, 'description', 30, false, true, false, false);
@@ -296,7 +296,7 @@ SELECT ensure_field('Shipments', 10, 'warehouse_id',    50, false, true, false, 
 SELECT ensure_field('Shipments', 10, 'order_id',        60, false, true, false, false);
 SELECT ensure_field('Shipments', 10, 'status',          70, false, true, false, false);
 -- Lines child tab
-SELECT add_child_tab('Shipments', 'Lines', 'tx_shipment_line', 20, 'shipment_id');
+SELECT add_child_tab('Shipments', 'Lines', 'tx_shipment_line', 20, (SELECT id FROM sys_column WHERE table_id = (SELECT id FROM sys_table WHERE name = 'tx_shipment_line') AND code = 'shipment_id'));
 SELECT ensure_field('Shipments', 20, 'line_number', 10, false, true, false, true);
 SELECT ensure_field('Shipments', 20, 'product_id',  20, false, true, false, true);
 SELECT ensure_field('Shipments', 20, 'description', 30, false, true, false, false);

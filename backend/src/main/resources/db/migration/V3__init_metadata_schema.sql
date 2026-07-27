@@ -85,7 +85,7 @@ CREATE TABLE sys_tab (
     seq_no INTEGER NOT NULL,
     is_single_row BOOLEAN DEFAULT false,
     where_clause TEXT,
-    parent_column VARCHAR(100),
+    parent_link_column_id UUID REFERENCES sys_column(id),
     is_active BOOLEAN DEFAULT true,
     tenant_id UUID,
     created_at TIMESTAMP NOT NULL,

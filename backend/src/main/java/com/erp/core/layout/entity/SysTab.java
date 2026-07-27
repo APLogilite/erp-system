@@ -3,6 +3,9 @@ package com.erp.core.layout.entity;
 import com.erp.common.base.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.util.UUID;
 
@@ -32,8 +35,12 @@ public class SysTab extends BaseEntity {
   @Column(name = "where_clause", columnDefinition = "TEXT")
   private String whereClause;
 
-  @Column(name = "parent_column", length = 100)
-  private String parentColumn;
+  @Column(name = "parent_link_column_id")
+  private UUID parentLinkColumn_ID;
+
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "parent_link_column_id", insertable = false, updatable = false)
+  private SysColumn parentLinkColumn;
 
   // --- Getters and Setters ---
 
@@ -55,6 +62,9 @@ public class SysTab extends BaseEntity {
   public String getWhereClause() { return whereClause; }
   public void setWhereClause(String whereClause) { this.whereClause = whereClause; }
 
-  public String getParentColumn() { return parentColumn; }
-  public void setParentColumn(String parentColumn) { this.parentColumn = parentColumn; }
+  public UUID getParentLinkColumn_ID() { return parentLinkColumn_ID; }
+  public void setParentLinkColumn_ID(UUID parentLinkColumn_ID) { this.parentLinkColumn_ID = parentLinkColumn_ID; }
+
+  public SysColumn getParentLinkColumn() { return parentLinkColumn; }
+  public void setParentLinkColumn(SysColumn parentLinkColumn) { this.parentLinkColumn = parentLinkColumn; }
 }

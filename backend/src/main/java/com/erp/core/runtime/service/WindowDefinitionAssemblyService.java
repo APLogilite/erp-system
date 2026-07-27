@@ -44,6 +44,7 @@ public class WindowDefinitionAssemblyService {
   private final SysColumnService columnService;
   private final SysTableService tableService;
   private final DynamicCrudService dynamicCrudService;
+  private final com.erp.core.layout.repository.SysColumnRepository sysColumnRepository;
 
   public WindowDefinitionAssemblyService(
       SysWindowService windowService,
@@ -51,13 +52,15 @@ public class WindowDefinitionAssemblyService {
       SysWindowFieldService fieldService,
       SysColumnService columnService,
       SysTableService tableService,
-      DynamicCrudService dynamicCrudService) {
+      DynamicCrudService dynamicCrudService,
+      com.erp.core.layout.repository.SysColumnRepository sysColumnRepository) {
     this.windowService = windowService;
     this.tabService = tabService;
     this.fieldService = fieldService;
     this.columnService = columnService;
     this.tableService = tableService;
     this.dynamicCrudService = dynamicCrudService;
+    this.sysColumnRepository = sysColumnRepository;
   }
 
   /**
@@ -86,20 +89,23 @@ public class WindowDefinitionAssemblyService {
       tabResponses.add(assembleTab(tab));
     }
 
-    // Compute childTabIds for each tab by matching parentColumn naming conventions
-    // A tab is a child of another tab when its parentColumn references the parent's table
-    // e.g., parentColumn="window_id" → stub="window" → matches table "sys_window"
+    // Compute childTabIds using reference-based resolution via sys_column.relation_table.
+    // For each tab with parentLinkColumn_ID set, load the sys_column to get relation_table,
+    // then find the parent tab whose table.name matches that relation_table.
     for (TabDefinitionResponse tr : tabResponses) {
       List<UUID> childIds = new ArrayList<>();
-      String tableName = tr.getTable() != null ? tr.getTable().getName() : null;
-      if (tableName != null) {
-        for (TabDefinitionResponse other : tabResponses) {
-          if (other.getParentColumn() != null && other.getParentColumn().endsWith("_id")) {
-            String colStub = other.getParentColumn().substring(0, other.getParentColumn().length() - 3);
-            if (tableName.endsWith("_" + colStub)) {
-              childIds.add(other.getId());
-            }
-          }
+      for (TabDefinitionResponse candidate : tabResponses) {
+        if (candidate.getParentLinkColumn_ID() == null) continue;
+        // Load the sys_column by UUID to get its relation_table
+        java.util.Optional<SysColumn> colOpt = sysColumnRepository.findById(candidate.getParentLinkColumn_ID());
+        if (colOpt.isEmpty()) continue;
+        SysColumn col = colOpt.get();
+        String relationTable = col.getRelationTable();
+        if (relationTable == null || relationTable.isBlank()) continue;
+        // Check if this candidate's relation_table matches the current tab's table name
+        String currentTableName = tr.getTable() != null ? tr.getTable().getName() : null;
+        if (relationTable.equals(currentTableName)) {
+          childIds.add(candidate.getId());
         }
       }
       tr.setChildTabIds(childIds);
@@ -118,7 +124,7 @@ public class WindowDefinitionAssemblyService {
     tabResponse.setSeqNo(tab.getSeqNo());
     tabResponse.setIsSingleRow(tab.getIsSingleRow());
     tabResponse.setWhereClause(tab.getWhereClause());
-    tabResponse.setParentColumn(tab.getParentColumn());
+    tabResponse.setParentLinkColumn_ID(tab.getParentLinkColumn_ID());
 
     // Resolve table info
     Optional<SysTable> tableOpt = tableService.findById(tab.getTableId());

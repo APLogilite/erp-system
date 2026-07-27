@@ -26,10 +26,10 @@ import org.springframework.transaction.annotation.Transactional;
  *
  * <p>Key behaviors:
  * <ul>
- *   <li>Record list uses the window's main tab (first tab where parent_column IS NULL)</li>
+ *   <li>Record list uses the window's main tab (first tab where parentLinkColumn_ID IS NULL)</li>
  *   <li>Single record includes main record + child records for each child tab</li>
  *   <li>Tab where_clause is applied to queries automatically</li>
- *   <li>Child tabs use parent_column FK to filter by parent record ID</li>
+ *   <li>Child tabs use parentLinkColumn_ID (resolved via sys_column.relation_table) to filter by parent record ID</li>
  *   <li>Tenant isolation is enforced via the underlying DynamicCrudService</li>
  * </ul>
  */
@@ -42,39 +42,42 @@ public class WindowDataService {
   private final DynamicCrudService dynamicCrudService;
 
   private final SysTabService sysTabService;
+  private final com.erp.core.layout.repository.SysColumnRepository sysColumnRepository;
 
   public WindowDataService(
       WindowDefinitionAssemblyService windowAssemblyService,
       DynamicCrudService dynamicCrudService,
-      SysTabService sysTabService) {
+      SysTabService sysTabService,
+      com.erp.core.layout.repository.SysColumnRepository sysColumnRepository) {
     this.windowAssemblyService = windowAssemblyService;
     this.dynamicCrudService = dynamicCrudService;
     this.sysTabService = sysTabService;
+    this.sysColumnRepository = sysColumnRepository;
   }
 
   /**
    * Returns the main (first) tab from a window definition.
-   * The main tab is the one with {@code parent_column IS NULL}.
+   * The main tab is the one with {@code parentLinkColumn_ID IS NULL}.
    */
   private TabDefinitionResponse findMainTab(WindowDefinitionResponse def) {
     if (def.getTabs() == null) {
       return null;
     }
     return def.getTabs().stream()
-        .filter(t -> t.getParentColumn() == null || t.getParentColumn().isBlank())
+        .filter(t -> t.getParentLinkColumn_ID() == null)
         .findFirst()
         .orElse(null);
   }
 
   /**
-   * Returns child tabs (tabs with a parent_column set).
+   * Returns child tabs (tabs with a parentLinkColumn_ID set).
    */
   private List<TabDefinitionResponse> findChildTabs(WindowDefinitionResponse def) {
     if (def.getTabs() == null) {
       return List.of();
     }
     return def.getTabs().stream()
-        .filter(t -> t.getParentColumn() != null && !t.getParentColumn().isBlank())
+        .filter(t -> t.getParentLinkColumn_ID() != null)
         .toList();
   }
 
@@ -89,7 +92,25 @@ public class WindowDataService {
   }
 
   /**
-   * Builds a where-clause condition map from a tab's where_clause and parent_column.
+   * Resolves a tab's parent column name from its parentLinkColumn_ID UUID.
+   * Looks up the sys_column by UUID and returns its code (column name).
+   * Returns null if no reference is set or the lookup fails.
+   */
+  private String resolveParentColumnName(TabDefinitionResponse tab) {
+    if (tab.getParentLinkColumn_ID() == null) return null;
+    try {
+      var colOpt = sysColumnRepository.findById(tab.getParentLinkColumn_ID());
+      if (colOpt.isPresent()) {
+        return colOpt.get().getCode();
+      }
+    } catch (Exception e) {
+      log.warn("Failed to resolve parent column name for tab '{}': {}", tab.getName(), e.getMessage());
+    }
+    return null;
+  }
+
+  /**
+   * Builds a where-clause condition map from a tab's where_clause and parent_link_column.
    * The {@code @id@} variable is resolved to the parent record ID for child tabs.
    */
   private Map<String, String> buildTabConditions(TabDefinitionResponse tab, UUID parentRecordId) {
@@ -108,9 +129,10 @@ public class WindowDataService {
         conditions.put(field, value);
       }
     }
-    // For child tabs, add the parent_column FK filter
-    if (tab.getParentColumn() != null && !tab.getParentColumn().isBlank() && parentRecordId != null) {
-      conditions.put(tab.getParentColumn(), parentRecordId.toString());
+    // For child tabs, add the parent_column FK filter using resolved column name
+    String parentColName = resolveParentColumnName(tab);
+    if (parentColName != null && parentRecordId != null) {
+      conditions.put(parentColName, parentRecordId.toString());
     }
     return conditions;
   }
@@ -495,11 +517,11 @@ public class WindowDataService {
         continue;
       }
 
-      // Build conditions including parent_column FK filter + where_clause
+      // Build conditions including parent_link_column FK filter + where_clause
       Map<String, String> conditions = buildTabConditions(childTab, recordId);
 
-      // Remove the parent_column FK from conditions (it's passed separately to getChildRecords)
-      String relationColumn = childTab.getParentColumn();
+      // Resolve parent column name from UUID for getChildRecords call
+      String relationColumn = resolveParentColumnName(childTab);
       conditions.remove(relationColumn);
 
       if (relationColumn != null && !relationColumn.isBlank()) {
@@ -516,7 +538,7 @@ public class WindowDataService {
           childRecords.put(childTab.getName(), java.util.Collections.emptyList());
         }
       } else {
-        log.warn("Child tab '{}' has no parentColumn, skipping", childTab.getName());
+        log.warn("Child tab '{}' has no parentLinkColumn_ID, skipping", childTab.getName());
       }
     }
 
@@ -641,9 +663,9 @@ public class WindowDataService {
 
     // Auto-set parent FK when creating a child record from drill-down context
     if (tabId != null && parentRecordId != null) {
-      String parentColumn = targetTab.getParentColumn();
-      if (parentColumn != null && !parentColumn.isBlank() && !data.containsKey(parentColumn)) {
-        data.put(parentColumn, parentRecordId);
+      String parentColName = resolveParentColumnName(targetTab);
+      if (parentColName != null && !data.containsKey(parentColName)) {
+        data.put(parentColName, parentRecordId);
       }
     }
 
@@ -868,7 +890,7 @@ public class WindowDataService {
         String childTableName = getTableName(childTab);
         if (childTableName == null) continue;
 
-        String relationColumn = childTab.getParentColumn();
+        String relationColumn = resolveParentColumnName(childTab);
         if (relationColumn == null || relationColumn.isBlank()) continue;
 
         // Build conditions including where_clause

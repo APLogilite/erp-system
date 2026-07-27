@@ -30,18 +30,19 @@ $$ LANGUAGE plpgsql;
 
 CREATE OR REPLACE FUNCTION add_child_tab(
   p_window_name TEXT, p_tab_name TEXT, p_table_name TEXT,
-  p_seq INTEGER, p_parent_column TEXT, p_where_clause TEXT DEFAULT NULL
+  p_seq INTEGER, p_parent_link_column_id UUID, p_where_clause TEXT DEFAULT NULL
 ) RETURNS UUID AS $$
 DECLARE
   v_window_id UUID;
   v_table_id UUID;
   v_tab_id UUID;
+  v_column_id UUID;
   v_tenant_id CONSTANT UUID := '00000000-0000-0000-0000-000000000001';
 BEGIN
   SELECT id INTO v_window_id FROM sys_window WHERE name = p_window_name;
   SELECT id INTO v_table_id FROM sys_table WHERE name = p_table_name;
-  INSERT INTO sys_tab (id, window_id, name, table_id, seq_no, is_single_row, where_clause, parent_column, is_active, tenant_id, created_at, updated_at)
-  SELECT gen_random_uuid(), v_window_id, p_tab_name, v_table_id, p_seq, false, p_where_clause, p_parent_column, true, v_tenant_id, now(), now()
+  INSERT INTO sys_tab (id, window_id, name, table_id, seq_no, is_single_row, where_clause, parent_link_column_id, is_active, tenant_id, created_at, updated_at)
+  SELECT gen_random_uuid(), v_window_id, p_tab_name, v_table_id, p_seq, false, p_where_clause, p_parent_link_column_id, true, v_tenant_id, now(), now()
   WHERE NOT EXISTS (SELECT 1 FROM sys_tab WHERE window_id = v_window_id AND seq_no = p_seq)
   RETURNING id INTO v_tab_id;
   RETURN v_tab_id;
@@ -158,7 +159,7 @@ SELECT ensure_column('sys_tab', 'name', 'Name', 'string', true, 100, 1, NULL, tr
 SELECT ensure_column('sys_tab', 'seq_no', 'Seq No', 'integer', true, null, 2);
 SELECT ensure_column('sys_tab', 'is_single_row', 'Is Single Row', 'boolean', false, null, 3);
 SELECT ensure_column('sys_tab', 'where_clause', 'Where Clause', 'text', false, null, 4);
-SELECT ensure_column('sys_tab', 'parent_column', 'Parent Column', 'string', false, 100, 5);
+SELECT ensure_column('sys_tab', 'parent_link_column_id', 'Parent Link Column', 'many2one', false, null, 5, 'sys_column');
 SELECT ensure_column('sys_tab', 'is_active', 'Is Active', 'boolean', false, null, 6);
 
 -- sys_window_field columns
@@ -198,7 +199,7 @@ DROP FUNCTION IF EXISTS ensure_column(TEXT, TEXT, TEXT, TEXT, BOOLEAN, INTEGER, 
 
 -- Window 1: Table Definitions (sys_table) with Columns child tab
 SELECT create_window('Table Definitions', 'sys_table', 'Manage table and column definitions', 'Tables', 10);
-SELECT add_child_tab('Table Definitions', 'Columns', 'sys_column', 20, 'table_id');
+SELECT add_child_tab('Table Definitions', 'Columns', 'sys_column', 20, (SELECT id FROM sys_column WHERE table_id = (SELECT id FROM sys_table WHERE name = 'sys_column') AND code = 'table_id'));
 SELECT ensure_field('Table Definitions', 10, 'name', 10, false, true, false, false);
 SELECT ensure_field('Table Definitions', 10, 'label', 20, true, true, false, false);
 SELECT ensure_field('Table Definitions', 10, 'plural_label', 30, true, true, false, false);
@@ -218,10 +219,10 @@ SELECT ensure_field('Table Definitions', 20, 'is_active', 80, false, true, false
 
 -- Window 2: Window Definitions (sys_window) with Tabs → Fields → Access hierarchy
 SELECT create_window('Window Definitions', 'sys_window', 'Manage windows, tabs, fields and access', 'Windows', 10);
-SELECT add_child_tab('Window Definitions', 'Tabs', 'sys_tab', 20, 'window_id');
-SELECT add_child_tab('Window Definitions', 'Access', 'sys_window_access', 30, 'window_id');
+SELECT add_child_tab('Window Definitions', 'Tabs', 'sys_tab', 20, (SELECT id FROM sys_column WHERE table_id = (SELECT id FROM sys_table WHERE name = 'sys_tab') AND code = 'window_id'));
+SELECT add_child_tab('Window Definitions', 'Access', 'sys_window_access', 30, (SELECT id FROM sys_column WHERE table_id = (SELECT id FROM sys_table WHERE name = 'sys_window_access') AND code = 'window_id'));
 -- Fields is a grandchild of Tabs (child of Tabs tab)
-SELECT add_child_tab('Window Definitions', 'Fields', 'sys_window_field', 15, 'tab_id');
+SELECT add_child_tab('Window Definitions', 'Fields', 'sys_window_field', 15, (SELECT id FROM sys_column WHERE table_id = (SELECT id FROM sys_table WHERE name = 'sys_window_field') AND code = 'tab_id'));
 SELECT ensure_field('Window Definitions', 10, 'name', 10, false, true, false, true);
 SELECT ensure_field('Window Definitions', 10, 'description', 20, false, true, false, false);
 SELECT ensure_field('Window Definitions', 10, 'is_active', 30, false, true, false, false);
@@ -229,7 +230,7 @@ SELECT ensure_field('Window Definitions', 20, 'table_id', 5, false, true, false,
 SELECT ensure_field('Window Definitions', 20, 'name', 10, false, true, false, true);
 SELECT ensure_field('Window Definitions', 20, 'seq_no', 20, false, true, false, true);
 SELECT ensure_field('Window Definitions', 20, 'where_clause', 30, false, true, false, false);
-SELECT ensure_field('Window Definitions', 20, 'parent_column', 40, false, true, false, false);
+SELECT ensure_field('Window Definitions', 20, 'parent_link_column_id', 40, false, true, false, false);
 SELECT ensure_field('Window Definitions', 20, 'is_single_row', 50, true, true, false, false);
 SELECT ensure_field('Window Definitions', 20, 'is_active', 60, false, true, false, false);
 SELECT ensure_field('Window Definitions', 15, 'column_id', 5, false, true, false, true, 'table_id = @Tabs.table_id@');
