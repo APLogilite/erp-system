@@ -3,7 +3,7 @@ id: BUG-013
 
 title: Child tab (Lines) does not appear — rename parentColumn to parentLinkColumn_ID with UUID FK reference to sys_column
 
-status: READY_FOR_TEST
+status: TESTING
 
 priority: Critical
 
@@ -15,7 +15,7 @@ assigned_to:
 
 assigned_branch:
 
-locked: false
+locked: true
 
 created: 2026-07-21
 
@@ -43,6 +43,7 @@ history:
   - 2026-07-21 — Product Manager — Created. Post-release regression from PRD-005 TASK-046. User reports child tab (Lines) does not appear at all when opening a Sales Order record.
   - 2026-07-21 — Software Engineer — Locked, started implementation.
   - 2026-07-21 — Software Engineer — Implemented: renamed parentColumn to parentLinkColumn_ID, UUID FK reference, updated all services, seed data, and frontend. Merged to prd/PRD-005-v2.
+  - 2026-07-21 — QA Engineer — Locked, started testing.
 
 ---
 
