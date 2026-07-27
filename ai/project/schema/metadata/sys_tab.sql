@@ -1,6 +1,6 @@
 -- Table: sys_tab
 -- Created: V3 (consolidated metadata schema)
--- Modified: V6 (renamed parent_column → parent_link_column_id, type VARCHAR→UUID)
+-- Modified: V7 (renamed parent_column → parent_link_column_id, type VARCHAR→UUID)
 CREATE TABLE sys_tab (
     id UUID PRIMARY KEY,
     window_id UUID NOT NULL REFERENCES sys_window(id),
