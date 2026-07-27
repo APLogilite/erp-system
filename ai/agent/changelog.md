@@ -3,10 +3,34 @@ document: CHANGELOG
 version: 1.0.0
 status: ACTIVE
 owner: Product Manager
-last_updated: 2026-07-16
+last_updated: 2026-07-21
 ---
 
 # Changelog
+
+## 2026-07-21 (BUG-013 — Post-Release Regression, PRD-005 REOPENED)
+
+### Summary
+User reported that child tabs (e.g., "Lines") do not appear when opening record detail views (Sales Orders, Purchase Orders, etc.). The backend `childTabIds` computation in `WindowDefinitionAssemblyService.assembleDefinition()` uses fragile naming convention matching (`table.endsWith('_' + strippedParentColumn)`) that fails for plural table names like `tx_orders`.
+
+### Root Cause
+PRD-005 TASK-046 replaced frontend `findChildTabs()` with server-side `childTabIds` but implemented naming convention matching instead of reference-based resolution. `tx_orders` does not end with `_order` (it ends with `_orders`), so `childTabIds` is computed as empty.
+
+### Fix Approach
+- **Schema change:** Rename `sys_tab.parentColumn` → `sys_tab.parentLinkColumn_ID`, change type `VARCHAR` → `UUID` with FK to `sys_column.id`
+- **Seed data:** Update all child tabs to use `sys_column` UUIDs instead of column name strings
+- **Code:** Replace naming convention matching with UUID-based lookup: load `sys_column` by UUID, read `relation_table`, find parent tab, populate `childTabIds`
+- **Queries:** Resolve column name from `sys_column` UUID for WHERE clause record filtering
+
+### Bug Created
+| Bug | Severity | Status | Parent PRD | Parent Task |
+|-----|----------|--------|------------|-------------|
+| BUG-013 | Critical | READY_FOR_DEV | PRD-005 | TASK-046 |
+
+### PRD Status Changed
+- **PRD-005** — Backend-Frontend Separation v1.3.1: **COMPLETED → REOPENED**
+
+---
 
 ## 2026-07-16 (PRD-004 Merged to Main — COMPLETED)
 

@@ -1,10 +1,10 @@
 # Project Board
 
-Last Updated: 2026-07-17
+Last Updated: 2026-07-21
 
-Updated By: Software Engineer
+Updated By: Product Manager
 
-(PRD-005 COMPLETED v1.3.1 — Merged to main. All 14 tasks COMPLETED, BUG-012 RESOLVED)
+(PRD-005 REOPENED v1.3.1 — BUG-013: Child tab not appearing. Backend childTabIds matching fails for plural table names.)
 
 ---
 
@@ -36,7 +36,7 @@ See `ai/agent/rules/status-transitions.md` for full transition rules.
 | PRD-002 | Admin Configuration Forms | 1.1.0 | **COMPLETED** | High |
 | PRD-003 | ERP Order Flow — Transaction Forms | 1.0.0 | **COMPLETED** | High |
 | PRD-004 | Window Hierarchy & Menu System | 1.1.0 | **COMPLETED** | High |
-| PRD-005 | Backend-Frontend Separation & Code Standardization | 1.3.1 | **COMPLETED** | High |
+| PRD-005 | Backend-Frontend Separation & Code Standardization | 1.3.1 | **REOPENED** | High |
 
 ---
 
@@ -164,6 +164,7 @@ See `ai/agent/rules/status-transitions.md` for full transition rules.
 | BUG-010 | TASK-039 | Critical | **RESOLVED** | QA Engineer | — |
 | BUG-011 | TASK-041 | Critical | **RESOLVED** | QA Engineer | — |
 | BUG-012 | TASK-047 | Critical | **RESOLVED** | QA Engineer | — |
+| BUG-013 | TASK-046 | Critical | **READY_FOR_DEV** | Product Manager | — |
 
 ---
 
@@ -187,17 +188,17 @@ See `ai/agent/rules/status-transitions.md` for full transition rules.
 
 | Status | Count |
 |--------|-------|
-| PRDs | 5 (ALL COMPLETED: PRD-001/002/003/004/005) |
-| Ready For Dev | 0 |
+| PRDs | 5 (4 COMPLETED, 1 REOPENED: PRD-005) |
+| Ready For Dev | 1 (BUG-013) |
 | Ready For Test | 0 |
 | In Development | 0 |
 | In Testing | 0 |
 | Planning | 0 |
-| Bugs | 12 (8 COMPLETED, 1 CANCELLED, 3 RESOLVED) |
+| Bugs | 13 (8 COMPLETED, 1 CANCELLED, 3 RESOLVED, 1 READY_FOR_DEV) |
 | Completed (PRD-001) | 27 tasks + 2 enhancements (ENH-001, ENH-003) |
 | Completed (PRD-002) | 3 tasks + 1 enhancement (TASK-033/034/035 + ENH-002) |
 | Completed (PRD-003) | 5 tasks (TASK-028/029/030/031/032) — merged to main |
 | Completed (PRD-004) | 10 tasks (TASK-036..045) — merged to main |
-| Total Tasks | 61 completed (47 prior + 14 PRD-005) |
-| PRD-004 Status | COMPLETED (v1.1.0) — Consolidated migrations, BUG-010/BUG-011 RESOLVED |
-| PRD-005 Status | COMPLETED (v1.3.1) — Merged to main |
+| Completed (PRD-005) | 14 tasks (TASK-046..059) — BUG-013 opened, PRD-005 REOPENED |
+| Total Tasks | 61 completed + 1 active bug |
+| PRD-005 Status | REOPENED (v1.3.1) — BUG-013: childTabIds reference-based resolution |

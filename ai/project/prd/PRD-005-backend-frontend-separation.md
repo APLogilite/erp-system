@@ -3,31 +3,19 @@ id: PRD-005
 
 title: Backend-Frontend Separation — Move Data Logic to Backend
 
-version: 1.3.0
+version: 1.3.1
 
-status: COMPLETED
-# DRAFT
-# REVIEW
-# APPROVED
-# IN_DEVELOPMENT
-# TESTING
-# READY_FOR_DEPLOYMENT
-# COMPLETED
-# REOPENED
+status: REOPENED
 
 priority: High
-# Critical
-# High
-# Medium
-# Low
 
 owner: Product Manager
 
 created: 2026-07-15
 
-updated: 2026-07-17
+updated: 2026-07-21
 
-qa_summary: All 14 tasks TESTED. BUG-012 (lookup filter) found, fixed, and RESOLVED.
+qa_summary: All 14 tasks TESTED. BUG-012 (lookup filter) found, fixed, and RESOLVED. BUG-013 opened for child tab not appearing regression (TASK-046 childTabIds matching fails for plural table names).
 
 approved_by:
 
@@ -45,12 +33,14 @@ related_prds:
 
 related_tasks: []
 
-related_bugs: []
+related_bugs:
+  - BUG-013
 
 dependencies: []
 
 change_log:
   - 1.0.0 — Initial Draft
+  - 1.3.1 — 2026-07-21: REOPENED for BUG-013 — child tab not appearing. Backend childTabIds matching fails for plural table names (tx_orders, tx_order_lines).
 
 ---
 
