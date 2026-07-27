@@ -164,7 +164,7 @@ See `ai/agent/rules/status-transitions.md` for full transition rules.
 | BUG-010 | TASK-039 | Critical | **RESOLVED** | QA Engineer | — |
 | BUG-011 | TASK-041 | Critical | **RESOLVED** | QA Engineer | — |
 | BUG-012 | TASK-047 | Critical | **RESOLVED** | QA Engineer | — |
-| BUG-013 | TASK-046 | Critical | **READY_FOR_DEV** | Product Manager | — |
+| BUG-013 | TASK-046 | Critical | **READY_FOR_TEST** | Software Engineer | — |
 
 ---
 
@@ -189,12 +189,12 @@ See `ai/agent/rules/status-transitions.md` for full transition rules.
 | Status | Count |
 |--------|-------|
 | PRDs | 5 (4 COMPLETED, 1 REOPENED: PRD-005) |
-| Ready For Dev | 1 (BUG-013) |
-| Ready For Test | 0 |
+| Ready For Dev | 0 |
+| Ready For Test | 1 (BUG-013) |
 | In Development | 0 |
 | In Testing | 0 |
 | Planning | 0 |
-| Bugs | 13 (8 COMPLETED, 1 CANCELLED, 3 RESOLVED, 1 READY_FOR_DEV) |
+| Bugs | 13 (8 COMPLETED, 1 CANCELLED, 3 RESOLVED, 1 READY_FOR_TEST) |
 | Completed (PRD-001) | 27 tasks + 2 enhancements (ENH-001, ENH-003) |
 | Completed (PRD-002) | 3 tasks + 1 enhancement (TASK-033/034/035 + ENH-002) |
 | Completed (PRD-003) | 5 tasks (TASK-028/029/030/031/032) — merged to main |
