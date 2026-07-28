@@ -15,7 +15,7 @@ public class TabDefinitionResponse {
   private Integer seqNo;
   private Boolean isSingleRow;
   private String whereClause;
-  private UUID parentLinkColumn_ID;
+  private UUID parentLinkColumnId;
   private List<UUID> childTabIds = new ArrayList<>();
   private TableInfo table;
   private List<FieldDefinitionResponse> fields;
@@ -32,8 +32,8 @@ public class TabDefinitionResponse {
   public void setIsSingleRow(Boolean isSingleRow) { this.isSingleRow = isSingleRow; }
   public String getWhereClause() { return whereClause; }
   public void setWhereClause(String whereClause) { this.whereClause = whereClause; }
-  public UUID getParentLinkColumn_ID() { return parentLinkColumn_ID; }
-  public void setParentLinkColumn_ID(UUID parentLinkColumn_ID) { this.parentLinkColumn_ID = parentLinkColumn_ID; }
+  public UUID getParentLinkColumnId() { return parentLinkColumnId; }
+  public void setParentLinkColumnId(UUID parentLinkColumnId) { this.parentLinkColumnId = parentLinkColumnId; }
   public List<UUID> getChildTabIds() { return childTabIds; }
   public void setChildTabIds(List<UUID> childTabIds) { this.childTabIds = childTabIds; }
   public TableInfo getTable() { return table; }

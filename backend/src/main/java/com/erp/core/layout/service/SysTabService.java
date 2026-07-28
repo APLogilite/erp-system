@@ -27,10 +27,10 @@ public class SysTabService extends BaseService<SysTab> {
   }
 
   public List<SysTab> findMainTabsByWindowId(UUID windowId) {
-    return repository.findByWindowIdAndParentLinkColumn_IDIsNullOrderBySeqNoAsc(windowId);
+    return repository.findByWindowIdAndParentLinkColumnIdIsNullOrderBySeqNoAsc(windowId);
   }
 
   public List<SysTab> findChildTabsByWindowId(UUID windowId) {
-    return repository.findByWindowIdAndParentLinkColumn_IDIsNotNullOrderBySeqNoAsc(windowId);
+    return repository.findByWindowIdAndParentLinkColumnIdIsNotNullOrderBySeqNoAsc(windowId);
   }
 }

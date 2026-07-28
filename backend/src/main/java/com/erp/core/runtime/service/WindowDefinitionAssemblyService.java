@@ -95,9 +95,9 @@ public class WindowDefinitionAssemblyService {
     for (TabDefinitionResponse tr : tabResponses) {
       List<UUID> childIds = new ArrayList<>();
       for (TabDefinitionResponse candidate : tabResponses) {
-        if (candidate.getParentLinkColumn_ID() == null) continue;
+        if (candidate.getParentLinkColumnId() == null) continue;
         // Load the sys_column by UUID to get its relation_table
-        java.util.Optional<SysColumn> colOpt = sysColumnRepository.findById(candidate.getParentLinkColumn_ID());
+        java.util.Optional<SysColumn> colOpt = sysColumnRepository.findById(candidate.getParentLinkColumnId());
         if (colOpt.isEmpty()) continue;
         SysColumn col = colOpt.get();
         String relationTable = col.getRelationTable();
@@ -124,7 +124,7 @@ public class WindowDefinitionAssemblyService {
     tabResponse.setSeqNo(tab.getSeqNo());
     tabResponse.setIsSingleRow(tab.getIsSingleRow());
     tabResponse.setWhereClause(tab.getWhereClause());
-    tabResponse.setParentLinkColumn_ID(tab.getParentLinkColumn_ID());
+    tabResponse.setParentLinkColumnId(tab.getParentLinkColumnId());
 
     // Resolve table info
     Optional<SysTable> tableOpt = tableService.findById(tab.getTableId());

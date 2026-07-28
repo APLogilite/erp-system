@@ -180,7 +180,7 @@ export interface WindowTabDefinition {
   seqNo: number;
   isSingleRow: boolean;
   whereClause: string | null;
-  parentLinkColumn_ID: string | null;
+  parentLinkColumnId: string | null;
   childTabIds: string[];
   table: TabTableInfo;
   fields: WindowFieldDefinition[];

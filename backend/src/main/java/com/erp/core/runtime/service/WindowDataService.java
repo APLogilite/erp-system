@@ -64,7 +64,7 @@ public class WindowDataService {
       return null;
     }
     return def.getTabs().stream()
-        .filter(t -> t.getParentLinkColumn_ID() == null)
+        .filter(t -> t.getParentLinkColumnId() == null)
         .findFirst()
         .orElse(null);
   }
@@ -77,7 +77,7 @@ public class WindowDataService {
       return List.of();
     }
     return def.getTabs().stream()
-        .filter(t -> t.getParentLinkColumn_ID() != null)
+        .filter(t -> t.getParentLinkColumnId() != null)
         .toList();
   }
 
@@ -97,9 +97,9 @@ public class WindowDataService {
    * Returns null if no reference is set or the lookup fails.
    */
   private String resolveParentColumnName(TabDefinitionResponse tab) {
-    if (tab.getParentLinkColumn_ID() == null) return null;
+    if (tab.getParentLinkColumnId() == null) return null;
     try {
-      var colOpt = sysColumnRepository.findById(tab.getParentLinkColumn_ID());
+      var colOpt = sysColumnRepository.findById(tab.getParentLinkColumnId());
       if (colOpt.isPresent()) {
         return colOpt.get().getCode();
       }

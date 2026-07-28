@@ -71,7 +71,7 @@ interface RecordDialogProps {
 
 function RecordDialog({ open, windowName, windowDef, recordId, onClose }: RecordDialogProps) {
   const queryClient = useQueryClient();
-  const mainTab = windowDef.tabs.find((t) => !t.parentLinkColumn_ID);
+  const mainTab = windowDef.tabs.find((t) => !t.parentLinkColumnId);
   const [formData, setFormData] = useState<Record<string, unknown>>({});
   const [saveError, setSaveError] = useState<string | null>(null);
 
@@ -789,7 +789,7 @@ export function WindowPage() {
   }
 
   // Determine current top-level tab
-  const topTabs = windowDef.tabs.filter((t) => !t.parentLinkColumn_ID).sort((a, b) => a.seqNo - b.seqNo);
+  const topTabs = windowDef.tabs.filter((t) => !t.parentLinkColumnId).sort((a, b) => a.seqNo - b.seqNo);
   const currentTab = topTabs[activeTab] ?? topTabs[0];
 
   const fields = currentTab?.fields ?? [];
