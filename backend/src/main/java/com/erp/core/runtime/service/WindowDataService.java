@@ -26,10 +26,10 @@ import org.springframework.transaction.annotation.Transactional;
  *
  * <p>Key behaviors:
  * <ul>
- *   <li>Record list uses the window's main tab (first tab where parentLinkColumn_ID IS NULL)</li>
+ *   <li>Record list uses the window's main tab (first tab where parentLinkColumnId IS NULL)</li>
  *   <li>Single record includes main record + child records for each child tab</li>
  *   <li>Tab where_clause is applied to queries automatically</li>
- *   <li>Child tabs use parentLinkColumn_ID (resolved via sys_column.relation_table) to filter by parent record ID</li>
+ *   <li>Child tabs use parentLinkColumnId (resolved via sys_column.relation_table) to filter by parent record ID</li>
  *   <li>Tenant isolation is enforced via the underlying DynamicCrudService</li>
  * </ul>
  */
@@ -57,7 +57,7 @@ public class WindowDataService {
 
   /**
    * Returns the main (first) tab from a window definition.
-   * The main tab is the one with {@code parentLinkColumn_ID IS NULL}.
+   * The main tab is the one with {@code parentLinkColumnId IS NULL}.
    */
   private TabDefinitionResponse findMainTab(WindowDefinitionResponse def) {
     if (def.getTabs() == null) {
@@ -70,7 +70,7 @@ public class WindowDataService {
   }
 
   /**
-   * Returns child tabs (tabs with a parentLinkColumn_ID set).
+   * Returns child tabs (tabs with a parentLinkColumnId set).
    */
   private List<TabDefinitionResponse> findChildTabs(WindowDefinitionResponse def) {
     if (def.getTabs() == null) {
@@ -92,7 +92,7 @@ public class WindowDataService {
   }
 
   /**
-   * Resolves a tab's parent column name from its parentLinkColumn_ID UUID.
+   * Resolves a tab's parent column name from its parentLinkColumnId UUID.
    * Looks up the sys_column by UUID and returns its code (column name).
    * Returns null if no reference is set or the lookup fails.
    */
@@ -538,7 +538,7 @@ public class WindowDataService {
           childRecords.put(childTab.getName(), java.util.Collections.emptyList());
         }
       } else {
-        log.warn("Child tab '{}' has no parentLinkColumn_ID, skipping", childTab.getName());
+        log.warn("Child tab '{}' has no parentLinkColumnId, skipping", childTab.getName());
       }
     }
 

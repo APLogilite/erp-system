@@ -90,7 +90,7 @@ public class WindowDefinitionAssemblyService {
     }
 
     // Compute childTabIds using reference-based resolution via sys_column.relation_table.
-    // For each tab with parentLinkColumn_ID set, load the sys_column to get relation_table,
+    // For each tab with parentLinkColumnId set, load the sys_column to get relation_table,
     // then find the parent tab whose table.name matches that relation_table.
     for (TabDefinitionResponse tr : tabResponses) {
       List<UUID> childIds = new ArrayList<>();
