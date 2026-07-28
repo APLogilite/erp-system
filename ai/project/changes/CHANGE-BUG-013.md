@@ -206,3 +206,50 @@ Consider whether a migration helper function should be created for converting be
 **Edge cases:**
 - Windows with no child tabs (Business Partners, Products, Payments) — should work unchanged
 - Grandchild tabs (Window Definitions → Tabs → Fields) — verify cascade works
+
+---
+
+# Addendum — 2026-07-28 Rework (SE, found during final server verification)
+
+## What was still broken
+
+On a **fresh database** (`start-all.sh --setup`), every child tab except Table Definitions → Columns still had `parent_link_column_id = NULL`, so `childTabIds` was empty at runtime and child tabs did not render.
+
+**Root cause:** the V4/V5 seeds never registered the parent-FK columns in `sys_column` metadata (they are not form fields, so they were omitted). V5's `add_child_tab()` UUID subqueries and V7's backfill UPDATEs both join `sys_column` on those codes, so they matched **zero rows** and silently left NULLs. The missing metadata rows were:
+
+| Table | Column | relation_table |
+|-------|--------|----------------|
+| `tx_order_line` | `order_id` | `tx_order` |
+| `tx_invoice_line` | `invoice_id` | `tx_invoice` |
+| `tx_shipment_line` | `shipment_id` | `tx_shipment` |
+| `sys_tab` | `window_id` | `sys_window` |
+| `sys_window_access` | `window_id` | `sys_window` |
+| `sys_window_field` | `tab_id` | `sys_tab` |
+
+## Fix
+
+- **New migration `V8__seed_fk_columns_backfill_parent_link.sql`** (idempotent):
+  - Part 1 inserts the 6 missing FK columns into `sys_column` (metadata only — form fields come from `sys_window_field`, so nothing new appears on forms).
+  - Part 2 re-runs the `sys_tab.parent_link_column_id` backfill UPDATEs (same mappings as V7) — now they match.
+  - V5 was not edited (already released on main); V8 corrects the data after V5–V7 run.
+- **`backend/db-reset.sh` infra fix**: `pkill -f "erp-system"` matched the script's own absolute path (`/mnt/EXT_LL1/erp-system/backend/db-reset.sh`) and killed the script itself mid-run. Pattern narrowed to `pkill -f "java.*erp-system"`.
+
+## Files added/modified (this pass)
+
+| File | Summary |
+|------|---------|
+| `backend/.../db/migration/V8__seed_fk_columns_backfill_parent_link.sql` | **New** — seed FK sys_column rows + backfill parent links |
+| `backend/db-reset.sh` | Fixed self-killing pkill pattern |
+
+## Verification evidence (fresh DB, 2026-07-28)
+
+- Flyway: all 8 migrations applied (`Successfully applied 8 migrations ... now at version v8`)
+- Backend: `Started ErpApplication in 9.437 seconds`, zero `ERROR`/exception lines, `mvn test` → **36/36 pass, BUILD SUCCESS**
+- Frontend: `VITE ready`, zero log errors, `tsc --noEmit` clean
+- DB: all 9 child tabs across 7 windows have `parent_link_column_id` set with correct `relation_table`
+- API `GET /runtime/windows/{name}/definition` — `childTabIds` populated for: Sales Orders, Purchase Orders, Sales Invoices, Purchase Invoices, Shipments (→ Lines); Table Definitions (→ Columns); Window Definitions (Windows → Tabs+Access, Tabs → Fields)
+- API `GET /runtime/windows/Sales Orders/records/{id}` — `childRecords.Lines` returned 2 rows correctly filtered by `order_id = <parent id>`
+
+## Follow-ups for QA
+
+- `ai/project/scripts/verify-prd-002-data.sql` (line 26), `verify-prd-003-data.sql` (lines 67, 100) still SELECT the dropped `sys_tab.parent_column` and will error on the current schema; `verify-prd-004-schema.sql` line 57 mentions it in an echo comment. These are QA-owned scripts — needs QA update (`parent_column` → `parent_link_column_id`).
