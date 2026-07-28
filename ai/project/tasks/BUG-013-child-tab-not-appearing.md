@@ -3,23 +3,23 @@ id: BUG-013
 
 title: Child tab (Lines) does not appear — rename parentColumn to parentLinkColumn_ID with UUID FK reference to sys_column
 
-status: READY_FOR_TEST
+status: IN_DEVELOPMENT
 
 priority: Critical
 
 severity: Critical
 
-owner: QA Engineer
+owner: Software Engineer
 
 assigned_to:
 
-assigned_branch:
+assigned_branch: prd/PRD-005-v2
 
 locked: true
 
 created: 2026-07-21
 
-updated: 2026-07-21
+updated: 2026-07-28
 
 started: 2026-07-21
 
@@ -45,6 +45,7 @@ history:
   - 2026-07-21 — Software Engineer — Implemented: renamed parentColumn to parentLinkColumn_ID, UUID FK reference, updated all services, seed data, and frontend. Merged to prd/PRD-005-v2.
   - 2026-07-21 — QA Engineer — Locked, started testing.
   - 2026-07-21 — QA Engineer — Code review + automated tests pass (36/36), server starts cleanly. Manual UI verification pending user confirmation.
+  - 2026-07-28 — Software Engineer — Final server verification (fresh DB via `start-all.sh --setup`) found the fix incomplete: V4/V5 seeds never registered the parent-FK columns (`tx_order_line.order_id`, `tx_invoice_line.invoice_id`, `tx_shipment_line.shipment_id`, `sys_tab.window_id`, `sys_window_access.window_id`, `sys_window_field.tab_id`) in `sys_column`, so V7 backfill matched zero rows and `parent_link_column_id` stayed NULL for all child tabs except Table Definitions → Columns. `childTabIds` was empty at runtime. Rework started (READY_FOR_TEST → IN_DEVELOPMENT); also fixes stale lock from previous transition.
 
 ---
 
