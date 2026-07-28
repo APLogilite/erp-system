@@ -3,7 +3,7 @@ id: BUG-013
 
 title: Child tab (Lines) does not appear — rename parentColumn to parentLinkColumn_ID with UUID FK reference to sys_column
 
-status: TESTING
+status: READY_FOR_TEST
 
 priority: Critical
 
@@ -44,6 +44,7 @@ history:
   - 2026-07-21 — Software Engineer — Locked, started implementation.
   - 2026-07-21 — Software Engineer — Implemented: renamed parentColumn to parentLinkColumn_ID, UUID FK reference, updated all services, seed data, and frontend. Merged to prd/PRD-005-v2.
   - 2026-07-21 — QA Engineer — Locked, started testing.
+  - 2026-07-21 — QA Engineer — Code review + automated tests pass (36/36), server starts cleanly. Manual UI verification pending user confirmation.
 
 ---
 
