@@ -3,19 +3,19 @@ id: BUG-013
 
 title: Child tab (Lines) does not appear — rename parentColumn to parentLinkColumn_ID with UUID FK reference to sys_column
 
-status: IN_DEVELOPMENT
+status: READY_FOR_TEST
 
 priority: Critical
 
 severity: Critical
 
-owner: Software Engineer
+owner: QA Engineer
 
 assigned_to:
 
 assigned_branch: prd/PRD-005-v2
 
-locked: true
+locked: false
 
 created: 2026-07-21
 
@@ -46,6 +46,7 @@ history:
   - 2026-07-21 — QA Engineer — Locked, started testing.
   - 2026-07-21 — QA Engineer — Code review + automated tests pass (36/36), server starts cleanly. Manual UI verification pending user confirmation.
   - 2026-07-28 — Software Engineer — Final server verification (fresh DB via `start-all.sh --setup`) found the fix incomplete: V4/V5 seeds never registered the parent-FK columns (`tx_order_line.order_id`, `tx_invoice_line.invoice_id`, `tx_shipment_line.shipment_id`, `sys_tab.window_id`, `sys_window_access.window_id`, `sys_window_field.tab_id`) in `sys_column`, so V7 backfill matched zero rows and `parent_link_column_id` stayed NULL for all child tabs except Table Definitions → Columns. `childTabIds` was empty at runtime. Rework started (READY_FOR_TEST → IN_DEVELOPMENT); also fixes stale lock from previous transition.
+  - 2026-07-28 — Software Engineer — Rework complete: new migration V8 seeds the 6 missing FK columns in `sys_column` and backfills `parent_link_column_id`; also fixed `db-reset.sh` self-killing pkill pattern. Verified on fresh DB: 8 migrations applied, all child tabs linked, `childTabIds` populated for all 7 windows, child records fetch returns correctly filtered rows, 36/36 tests pass, `tsc --noEmit` clean, both servers start error-free. All [SE] acceptance criteria checked. → READY_FOR_TEST (unlocked, QA for manual UI verification). See CHANGE-BUG-013 addendum.
 
 ---
 
@@ -234,25 +235,25 @@ String columnName = col.columnName;  // e.g., "order_id"
 # Acceptance Criteria
 
 ## Schema & Seed (`[SE]`)
-- [ ] `sys_tab.parentColumn` renamed to `sys_tab.parentLinkColumn_ID`, type changed to UUID with FK to `sys_column.id`
-- [ ] New Flyway migration created for the schema change (or existing V27 updated if not yet deployed on this env)
-- [ ] All seed data updated: child tabs set `parentLinkColumn_ID` to the correct `sys_column` UUID instead of column name strings
-- [ ] Admin windows (V26) checked for any `parentColumn` usage and updated
+- [x] `sys_tab.parentColumn` renamed to `sys_tab.parentLinkColumn_ID`, type changed to UUID with FK to `sys_column.id`
+- [x] New Flyway migration created for the schema change (V7 rename + V8 seed/backfill)
+- [x] All seed data updated: child tabs set `parentLinkColumn_ID` to the correct `sys_column` UUID instead of column name strings — completed via V8 on 2026-07-28 (V5/V7 seed gap: FK columns were missing from `sys_column`; verified all 9 child tabs linked)
+- [x] Admin windows (V26) checked for any `parentColumn` usage and updated — Window Definitions → Tabs/Access/Fields linked via V8
 
 ## JPA & DTO (`[SE]`)
-- [ ] `Tab` entity: field renamed, type changed, `@ManyToOne` to `SysColumn` added
-- [ ] `TabDefinitionResponse`: field renamed to `parentLinkColumn_ID` (UUID)
-- [ ] Frontend `WindowTabDefinition`: field renamed in `runtimeApi.ts`
+- [x] `Tab` entity: field renamed, type changed to `UUID` (note: final design uses a plain UUID column `parentLinkColumnId` with explicit `SysColumnRepository.findById()` resolution — the `@ManyToOne` mapping from the original plan was tried and removed as conflicting, commit 273594b)
+- [x] `TabDefinitionResponse`: field renamed to `parentLinkColumn_ID` (UUID)
+- [x] Frontend `WindowTabDefinition`: field renamed in `runtimeApi.ts`
 
 ## childTabIds Computation (`[SE]`)
-- [ ] Naming convention matching (`strip '_id'` + `endsWith`) completely removed from `WindowDefinitionAssemblyService.assembleDefinition()`
-- [ ] New logic: for each tab `T`, load `sys_column` by `T.parentLinkColumn_ID`, get `relation_table`, find parent tab by `table.name`, add `T.id` to `parentTab.childTabIds`
-- [ ] `childTabIds` is correctly populated for ALL windows — no empty lists where child tabs exist
-- [ ] Works regardless of any table naming convention
+- [x] Naming convention matching (`strip '_id'` + `endsWith`) completely removed from `WindowDefinitionAssemblyService.assembleDefinition()`
+- [x] New logic: for each tab `T`, load `sys_column` by `T.parentLinkColumn_ID`, get `relation_table`, find parent tab by `table.name`, add `T.id` to `parentTab.childTabIds`
+- [x] `childTabIds` is correctly populated for ALL windows — verified via API on fresh DB 2026-07-28: Sales/Purchase Orders, Sales/Purchase Invoices, Shipments → Lines; Table Definitions → Columns; Window Definitions → Tabs/Access/Fields
+- [x] Works regardless of any table naming convention — verified: `tx_order_line` resolves to parent `tx_order` purely via `relation_table` reference
 
 ## Child Record Queries (`[SE]`)
-- [ ] Wherever `parentColumn` was used to build WHERE clauses (e.g., `WindowDataService`), update to resolve column name from `sys_column` via UUID
-- [ ] Child record filtering still works correctly: `WHERE {columnName} = '<parent_id>'`
+- [x] Wherever `parentColumn` was used to build WHERE clauses (e.g., `WindowDataService`), update to resolve column name from `sys_column` via UUID
+- [x] Child record filtering still works correctly: `WHERE {columnName} = '<parent_id>'` — verified: `GET /runtime/windows/Sales Orders/records/{id}` returns `childRecords.Lines` (2 rows) filtered by `order_id`
 
 ## Verification — All Windows with Child Tabs (`[QA]`)
 - [ ] Opening **Sales Orders** record: child tabs "Lines" and "Shipments" are visible and show data
@@ -267,9 +268,9 @@ String columnName = col.columnName;  // e.g., "order_id"
 - [ ] Admin windows (Table Definitions → Columns, Window Definitions → Tabs → Fields) — hierarchical child tabs still work
 
 ## Build & Tests (`[SE]`)
-- [ ] Backend `mvn clean compile` succeeds
-- [ ] Frontend `tsc --noEmit` succeeds
-- [ ] All 36 backend tests pass
+- [x] Backend `mvn clean compile` succeeds
+- [x] Frontend `tsc --noEmit` succeeds
+- [x] All 36 backend tests pass — re-verified 2026-07-28, BUILD SUCCESS
 
 ---
 
