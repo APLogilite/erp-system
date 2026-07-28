@@ -41,9 +41,12 @@ echo "WARNING: This will DROP the database and ALL data will be lost!"
 echo ""
 
 # Step 0: Kill any stale Java processes holding connections
+# NOTE: pattern must match the Java app process only — a bare "erp-system"
+# pattern matches this script's own path (/.../erp-system/backend/db-reset.sh)
+# and kills the script itself mid-run.
 echo "[0/6] Killing stale application processes..."
 pkill -f "mvn spring-boot:run" 2>/dev/null || true
-pkill -f "erp-system" 2>/dev/null || true
+pkill -f "java.*erp-system" 2>/dev/null || true
 sleep 2
 
 # Step 1: Terminate all connections to the target database
