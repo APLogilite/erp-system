@@ -92,6 +92,58 @@ Continue until a stopping condition is reached.
 
 ---
 
+## Server Verification (Software Engineer)
+
+Before advancing a PRD from IN_DEVELOPMENT to TESTING, the SE MUST verify both servers start correctly.
+
+### Verification Script
+
+Use `bash start-all.sh` (from repo root) to start both servers:
+
+- Backend logs → `/tmp/erp-backend.log`
+- Frontend logs → `/tmp/erp-frontend.log`
+
+The script waits for the backend to respond on `http://localhost:8081` before starting the frontend.
+
+### Log Inspection
+
+After the script reports both servers running, inspect the logs:
+
+1. **Backend** — Check `/tmp/erp-backend.log` for:
+   - `BUILD SUCCESS` or `Started ErpApplication` (Spring Boot ready)
+   - No `ERROR` or `Exception` stack traces
+   - No `APPLICATION FAILED TO START`
+   - No port-binding errors (`Address already in use`)
+   - No Flyway migration failures
+
+2. **Frontend** — Check `/tmp/erp-frontend.log` for:
+   - `VITE ready` or `Local:` with the dev server URL
+   - No build/compile errors
+   - No module-not-found errors
+
+### Error Handling
+
+If any errors are found:
+
+1. Stop the servers (`pkill -f "spring-boot:run" && pkill -f "vite"`)
+2. Diagnose and fix the issue
+3. Re-run `bash start-all.sh`
+4. Re-check logs
+5. Repeat until both servers start cleanly
+
+### Cleanup
+
+After verification, stop the servers with:
+```bash
+pkill -f "spring-boot:run" 2>/dev/null; pkill -f "vite" 2>/dev/null
+```
+
+### When to Use --setup
+
+If the PRD includes database schema changes or new seed data, use `bash start-all.sh --setup` instead to reset the database before verification.
+
+---
+
 ## Stopping Conditions
 
 Stop execution when ANY of the following is true:

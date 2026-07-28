@@ -12,5 +12,14 @@ fuser -k 8081/tcp 2>/dev/null || true
 # This kills stale Maven processes whose PostgreSQL connections
 # weren't released when the JVM was killed.
 
-echo "Starting Dynamic ERP Spring Boot Backend..."
-mvn spring-boot:run
+LOG_MODE=false
+if [ "$1" = "--log" ]; then
+  LOG_MODE=true
+  echo "Starting Dynamic ERP Spring Boot Backend (logging to /tmp/erp-backend.log)..."
+  nohup mvn spring-boot:run > /tmp/erp-backend.log 2>&1 &
+  echo "Backend PID: $!"
+  echo "Tail logs: tail -f /tmp/erp-backend.log"
+else
+  echo "Starting Dynamic ERP Spring Boot Backend..."
+  mvn spring-boot:run
+fi

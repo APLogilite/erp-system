@@ -23,7 +23,7 @@ DRAFT → REVIEW → APPROVED → IN_DEVELOPMENT → TESTING → READY_FOR_DEPLO
 | DRAFT | REVIEW | Planning complete, waiting for user approval | Product Manager |
 | REVIEW | APPROVED | User explicitly approves the PRD | Product Manager |
 | APPROVED | IN_DEVELOPMENT | SE creates PRD branch and starts first task | Software Engineer |
-| IN_DEVELOPMENT | TESTING | ALL tasks under PRD are READY_FOR_TEST (merged to PRD branch) | Software Engineer |
+| IN_DEVELOPMENT | TESTING | ALL tasks under PRD are READY_FOR_TEST (merged to PRD branch); server startup verified (both backend + frontend start without errors) | Software Engineer |
 | TESTING | READY_FOR_DEPLOYMENT | ALL tasks under PRD are TESTED by QA | QA Engineer |
 | READY_FOR_DEPLOYMENT | COMPLETED | PRD branch merged to main (after PM + user confirmation) | Release |
 | COMPLETED | REOPENED | Bug filed against a released PRD (post-release regression) | Product Manager |

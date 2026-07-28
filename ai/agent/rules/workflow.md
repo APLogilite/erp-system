@@ -125,7 +125,8 @@ Software Engineer
   │  2. Locks task → feature branch → implements
   │  3. Merges to PRD branch → READY_FOR_TEST
   │  4. Activates next PLANNED tasks
-  │  5. When all done: PRD→TESTING
+  │  5. When all tasks READY_FOR_TEST: run server verification (start-all.sh, check logs)
+  │  6. PRD→TESTING
   ▼
 QA Engineer
   │  1. Tests each task on PRD branch

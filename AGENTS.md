@@ -40,6 +40,19 @@ pnpm preview          # vite preview (production build)
 
 **Pre-commit:** Husky runs `lint-staged → typecheck`. `lint-staged` runs `eslint --fix` + `prettier --write` on staged `*.{ts,tsx}` and Prettier on `*.{json,md,css,scss}`.
 
+### Server Verification
+
+```bash
+bash start-all.sh                # start both servers (logs to /tmp/erp-{backend,frontend}.log)
+bash start-all.sh --setup        # reset DB first, then start
+tail -f /tmp/erp-backend.log     # watch backend logs
+tail -f /tmp/erp-frontend.log    # watch frontend logs
+pkill -f "spring-boot:run"      # stop backend
+pkill -f "vite"                 # stop frontend
+```
+
+Before advancing a PRD from IN_DEVELOPMENT to TESTING, the SE must run `bash start-all.sh`, verify no errors in `/tmp/erp-backend.log` (look for `Started ErpApplication`, no `Exception`/`ERROR`) and `/tmp/erp-frontend.log` (look for `VITE ready`, no compile errors), then stop the servers.
+
 ## Key conventions
 
 - **Frontend path alias:** `@/` → `src/` (configured in vite.config.ts and tsconfig.json)
