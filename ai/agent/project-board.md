@@ -1,10 +1,10 @@
 # Project Board
 
-Last Updated: 2026-07-28
+Last Updated: 2026-07-29
 
-Updated By: Software Engineer
+Updated By: QA Engineer
 
-(PRD-005 REOPENED v1.3.1 — BUG-013: Child tab not appearing. SE rework complete (V8: seed FK sys_column rows + backfill). Awaiting QA manual UI verification.)
+(PRD-005 REOPENED v1.3.1 — BUG-013 RESOLVED 2026-07-29 (V8 fix verified end-to-end, all manual scenarios pass). ENH-004 raised: definition cache auto-invalidation after DB reseeds.)
 
 ---
 
@@ -61,9 +61,7 @@ See `ai/agent/rules/status-transitions.md` for full transition rules.
 
 ## Ready For Test
 
-| Bug | Parent Task | Severity | Owner | Notes |
-|-----|-------------|----------|-------|-------|
-| BUG-013 | TASK-046 | Critical | QA Engineer | V8 verified on fresh DB — childTabIds populated for all windows; manual UI verification pending |
+*(none)*
 
 ---
 
@@ -166,7 +164,7 @@ See `ai/agent/rules/status-transitions.md` for full transition rules.
 | BUG-010 | TASK-039 | Critical | **RESOLVED** | QA Engineer | — |
 | BUG-011 | TASK-041 | Critical | **RESOLVED** | QA Engineer | — |
 | BUG-012 | TASK-047 | Critical | **RESOLVED** | QA Engineer | — |
-| BUG-013 | TASK-046 | Critical | **READY_FOR_TEST** | QA Engineer | — |
+| BUG-013 | TASK-046 | Critical | **RESOLVED** | QA Engineer | — |
 
 ---
 
@@ -177,6 +175,7 @@ See `ai/agent/rules/status-transitions.md` for full transition rules.
 | ENH-001 | PRD-001 | TASK-007 | Form Designer API tenant authorization | COMPLETED |
 | ENH-002 | PRD-002 | TASK-034, TASK-035 | Add tenant_id to all admin forms (REQ-ISSUE-001) | COMPLETED |
 | ENH-003 | PRD-001 | TASK-026 | RuntimePage not integrated with API — uses hardcoded sample bundles instead of dynamic form rendering | COMPLETED |
+| ENH-004 | PRD-005 | BUG-013 (QA) | Window definition cache auto-invalidation after DB reseeds (stale ghost-UUID errors) | PLANNING |
 
 ---
 
@@ -192,11 +191,11 @@ See `ai/agent/rules/status-transitions.md` for full transition rules.
 |--------|-------|
 | PRDs | 5 (4 COMPLETED, 1 REOPENED: PRD-005) |
 | Ready For Dev | 0 |
-| Ready For Test | 1 (BUG-013) |
+| Ready For Test | 0 |
 | In Testing | 0 |
 | In Development | 0 |
 | Planning | 0 |
-| Bugs | 13 (8 COMPLETED, 1 CANCELLED, 3 RESOLVED, 1 READY_FOR_TEST) |
+| Bugs | 13 (8 COMPLETED, 1 CANCELLED, 4 RESOLVED) |
 | Completed (PRD-001) | 27 tasks + 2 enhancements (ENH-001, ENH-003) |
 | Completed (PRD-002) | 3 tasks + 1 enhancement (TASK-033/034/035 + ENH-002) |
 | Completed (PRD-003) | 5 tasks (TASK-028/029/030/031/032) — merged to main |

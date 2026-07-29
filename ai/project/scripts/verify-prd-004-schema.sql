@@ -1,5 +1,16 @@
 -- ============================================================
 -- PRD-004 Schema Verification (Reusable Regression Script)
+--
+-- *** SUPERSEDED 2026-07-28 — DO NOT USE FOR REGRESSION ***
+-- Stale expectations: (1) the "old metadata tables should NOT
+-- exist" check contradicts the documented PRD-005 decision to
+-- KEEP the PRD-001 legacy tables until the old designer UIs are
+-- rebuilt (Hibernate recreates them from legacy entities);
+-- (2) expected window/table counts predate the V4–V8 schema
+-- generation (13 windows, 18 registered tables, not 17/12).
+-- Kept for historical reference. Current version:
+--   ai/project/scripts/verify-prd-004-schema-v2.sql
+-- ============================================================
 -- Usage: psql -U erp_user -h localhost -d erp_db -f ai/scripts/verify-prd-004-schema.sql
 -- ============================================================
 
@@ -54,7 +65,7 @@ SELECT column_name, data_type, is_nullable
 FROM information_schema.columns
 WHERE table_schema = 'public' AND table_name = 'sys_tab'
 ORDER BY ordinal_position;
-\echo 'Expected: id, window_id, name, table_id, seq_no, is_single_row, where_clause, parent_column ...'
+\echo 'Expected: id, window_id, name, table_id, seq_no, is_single_row, where_clause, parent_link_column_id ...'
 
 \echo ''
 \echo '=== PRD-004: sys_window_field Columns ==='

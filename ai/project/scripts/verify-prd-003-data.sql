@@ -1,5 +1,14 @@
 -- ============================================================
 -- PRD-003 Data Verification (Reusable Regression Script)
+--
+-- *** SUPERSEDED 2026-07-28 — DO NOT USE FOR REGRESSION ***
+-- This script filters sys_table by table_type 'master_data' /
+-- 'transaction', but the current seed registers all tables with
+-- table_type 'static', so Parts A/B/C/D and the summary return
+-- 0 rows. Field-count expectations also predate current seeds.
+-- Kept for historical reference. Current version:
+--   ai/project/scripts/verify-prd-003-data-v2.sql
+-- ============================================================
 -- Verifies V19-V20 (physical tables) + V25-V27 (registrations) applied correctly
 -- Usage: psql -U erp_user -h localhost -d erp_db -f ai/scripts/verify-prd-003-data.sql
 -- ============================================================
@@ -64,7 +73,7 @@ ORDER BY w.name;
 \echo ''
 \echo '--- C2: Master Data Window Tabs ---'
 SELECT w.name AS window_name, tab.name AS tab_name,
-       st.label AS table_label, tab.seq_no, tab.parent_column
+       st.label AS table_label, tab.seq_no, tab.parent_link_column_id
 FROM sys_tab tab
 JOIN sys_window w ON tab.window_id = w.id
 JOIN sys_table st ON tab.table_id = st.id
@@ -97,7 +106,7 @@ ORDER BY w.name;
 \echo ''
 \echo '--- D2: Transaction Window Tabs ---'
 SELECT w.name AS window_name, tab.name AS tab_name,
-       st.label AS table_label, tab.seq_no, tab.parent_column
+       st.label AS table_label, tab.seq_no, tab.parent_link_column_id
 FROM sys_tab tab
 JOIN sys_window w ON tab.window_id = w.id
 JOIN sys_table st ON tab.table_id = st.id

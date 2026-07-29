@@ -1,5 +1,15 @@
 -- ============================================================
 -- PRD-002 Data Verification (Reusable Regression Script)
+--
+-- *** SUPERSEDED 2026-07-28 — DO NOT USE FOR REGRESSION ***
+-- This script targets the historical V24–V29 schema generation
+-- (admin windows named 'sys_table'/'sys_window'/'sys_menu',
+-- Flyway versions V24–V29). The current schema uses window names
+-- 'Table Definitions'/'Window Definitions'/'Menu Configuration'
+-- and Flyway V1–V8, so most checks return 0 rows.
+-- Kept for historical reference. Current version:
+--   ai/project/scripts/verify-prd-002-data-v2.sql
+-- ============================================================
 -- Verifies admin form data in the new V24-V29 schema
 -- Usage: psql -U erp_user -h localhost -d erp_db -f ai/scripts/verify-prd-002-data.sql
 -- ============================================================
@@ -23,7 +33,7 @@ ORDER BY w.name;
 \echo '--- B: Window Tabs in sys_tab ---'
 SELECT w.name AS window_name, t.name AS tab_name,
        st.label AS table_label, t.seq_no, t.is_single_row,
-       t.parent_column, t.where_clause
+       t.parent_link_column_id, t.where_clause
 FROM sys_tab t
 JOIN sys_window w ON t.window_id = w.id
 JOIN sys_table st ON t.table_id = st.id
@@ -50,7 +60,7 @@ ORDER BY w.name, t.seq_no;
 
 \echo ''
 \echo '--- D: Window Access in sys_window_access ---'
-SELECT w.name AS window_name, wa.role_id, wa.is_read_only, wa.is_active
+SELECT w.name AS window_name, wa.role_id, wa.is_active
 FROM sys_window_access wa
 JOIN sys_window w ON wa.window_id = w.id
 WHERE w.name IN ('sys_table', 'sys_window', 'sys_menu')

@@ -56,7 +56,8 @@ SELECT t.name AS table_name, t.label, t.table_type, t.table_name AS physical_tab
 FROM sys_table t
 ORDER BY t.table_type, t.name;
 
-\echo 'Expected: 7 static metadata tables + 5 master_data + 7 transaction = 19 tables'
+\echo 'Expected: 7 sys_* metadata + 4 md_* master + 7 tx_* transaction = 18 tables'
+\echo '          (md_uom_conversion exists physically but is not registered — it has no window)'
 
 \echo ''
 \echo '=== PRD-001: Registered Windows (V26-V27) ==='
@@ -65,7 +66,7 @@ FROM sys_window w
 JOIN sys_table t ON w.table_id = t.id
 ORDER BY w.name;
 
-\echo 'Expected: 3 admin windows (sys_table, sys_window, sys_menu) + 10 ERP windows = 13 windows'
+\echo 'Expected: 3 admin windows (Table Definitions, Window Definitions, Menu Configuration) + 10 ERP windows = 13 windows'
 
 \echo ''
 \echo '=== PRD-001: Menu Entries (V28) ==='
