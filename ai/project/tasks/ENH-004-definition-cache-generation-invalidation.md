@@ -3,23 +3,23 @@ id: ENH-004
 
 title: Window definition cache auto-invalidation after backend data-generation change (DB reseed)
 
-status: PLANNED
+status: IN_DEVELOPMENT
 
 priority: High
 
-owner: Product Manager
+owner: Software Engineer
 
-assigned_to:
+assigned_to: Software Engineer
 
-assigned_branch:
+assigned_branch: enhancement/ENH-004
 
-locked: false
+locked: true
 
 created: 2026-07-29
 
 updated: 2026-07-29
 
-started:
+started: 2026-07-29
 
 completed:
 
@@ -34,7 +34,8 @@ fix_summary:
 verification_report:
 
 history:
-  - 2026-07-29 — Product Manager — Created. Root cause evidence in TEST-BUG-013: backend logs showed the client sending tab UUIDs that do not exist in the current DB; fresh curl sessions returned correct data. Requested by user ("can we fix this cache issue?").
+  - 2026-07-29 — Product Manager — Task definition complete → PLANNED.
+  - 2026-07-29 — Software Engineer — No dependencies → READY_FOR_DEV → locked, started implementation (branch enhancement/ENH-004). Root cause evidence in TEST-BUG-013: backend logs showed the client sending tab UUIDs that do not exist in the current DB; fresh curl sessions returned correct data. Requested by user ("can we fix this cache issue?").
 
 ---
 
