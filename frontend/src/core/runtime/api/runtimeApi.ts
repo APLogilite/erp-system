@@ -23,6 +23,21 @@ function unwrap<T>(response: { data: ApiResponse<T> }): T {
   return response.data.data;
 }
 
+// ---- Runtime Meta ----
+
+/**
+ * Fetches the backend data-generation marker.
+ * Changes whenever the DB is reseeded or a new Flyway migration is applied;
+ * stable otherwise. Used to auto-invalidate cached window definitions (ENH-004).
+ * GET /api/v1/runtime/meta/generation
+ */
+export async function fetchDefinitionGeneration(): Promise<string> {
+  const response = await apiClient.get<ApiResponse<{ generation: string }>>(
+    `/runtime/meta/generation`
+  );
+  return unwrap(response).generation;
+}
+
 // ---- Form Definition ----
 
 /**

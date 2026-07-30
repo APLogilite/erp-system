@@ -1,6 +1,8 @@
 import { Box } from '@mui/material';
 import { ReactNode } from 'react';
 
+import { useDefinitionGeneration } from '@/core/runtime/hooks/useDefinitionGeneration';
+
 import { ContentArea } from '../ContentArea';
 import { Header } from '../Header';
 import { Sidebar, SIDEBAR_WIDTH } from '../Sidebar';
@@ -12,6 +14,8 @@ type AppLayoutProps = {
 };
 
 export function AppLayout({ children, mobileOpen = false, onMobileClose }: AppLayoutProps) {
+  useDefinitionGeneration(); // ENH-004: auto-invalidate caches on DB reseed
+
   return (
     <Box sx={{ display: 'flex', minHeight: '100vh' }}>
       <Sidebar mobileOpen={mobileOpen} onMobileClose={onMobileClose} />
