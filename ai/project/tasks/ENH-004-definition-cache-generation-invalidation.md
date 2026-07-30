@@ -3,7 +3,7 @@ id: ENH-004
 
 title: Window definition cache auto-invalidation after backend data-generation change (DB reseed)
 
-status: READY_FOR_TEST
+status: TESTING
 
 priority: High
 
@@ -11,9 +11,9 @@ owner: QA Engineer
 
 assigned_to: QA Engineer
 
-assigned_branch: enhancement/ENH-004
+assigned_branch: prd/PRD-005-v2
 
-locked: false
+locked: true
 
 created: 2026-07-29
 
