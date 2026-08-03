@@ -2,12 +2,12 @@
 id: PRD-008
 title: CRM Pipeline & Sales Team Management
 version: 1.0.0
-status: DRAFT
+status: APPROVED
 priority: Medium
 owner: Product Manager
 created: 2026-07-29
 updated: 2026-07-29
-approved_by:
+approved_by: user
 project: Dynamic ERP Platform
 repository: erp-system
 prd_branch: prd/PRD-008-crm-pipeline-sales-team

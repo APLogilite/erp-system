@@ -2,9 +2,11 @@
 
 Last Updated: 2026-07-29
 
-Updated By: QA Engineer
+Updated By: Product Manager
 
-(PRD-005 REOPENED v1.3.1 — BUG-013 RESOLVED 2026-07-29 (V8 fix verified end-to-end, all manual scenarios pass). ENH-004 raised: definition cache auto-invalidation after DB reseeds.)
+(PRD-005 REOPENED v1.3.1 — BUG-013 RESOLVED (V8 fix verified). ENH-004 raised.)
+
+(Sales & Customer Management module planned: PRD-006/007/008/009 APPROVED. 33 new tasks generated (TASK-060..092). PRD-006 root tasks READY_FOR_DEV.)
 
 ---
 
@@ -24,7 +26,48 @@ See `ai/agent/rules/status-transitions.md` for full transition rules.
 
 ## Ready For Development
 
-*(none)*
+| Task | Title | PRD | Priority | Depends On |
+|------|-------|-----|----------|------------|
+| TASK-060 | Create Document Sequence table and auto-numbering service | PRD-006 | High | — |
+| TASK-061 | Create Price List tables with metadata registration | PRD-006 | High | — |
+| TASK-062 | Create Discount Rule table with metadata registration | PRD-006 | Medium | — |
+| TASK-063 | Create Quotation tables with metadata registration | PRD-006 | High | — |
+
+---
+
+## Planned (awaiting dependencies)
+
+| Task | Title | PRD | Priority | Depends On |
+|------|-------|-----|----------|------------|
+| TASK-064 | Implement Price Resolution backend service | PRD-006 | High | TASK-061 |
+| TASK-065 | Implement Discount Resolution backend service | PRD-006 | Medium | TASK-062 |
+| TASK-066 | Seed Quotation, Price List, Discount, and Sequence forms | PRD-006 | High | TASK-060/061/062/063 |
+| TASK-067 | Implement Quotation calculation API | PRD-006 | High | TASK-063/064/065 |
+| TASK-068 | Implement Quotation to Order conversion | PRD-006 | High | TASK-060, TASK-067 |
+| TASK-069 | Deprecate hardcoded sales/ and order/ modules | PRD-006 | High | TASK-066, TASK-068 |
+| TASK-070 | Create Payment Term table with seed data and metadata | PRD-007 | High | PRD-006 |
+| TASK-071 | Add credit limit and payment term to Business Partner | PRD-007 | High | TASK-070 |
+| TASK-072 | Add payment term to Order and Invoice tables | PRD-007 | High | TASK-070 |
+| TASK-073 | Implement Order status workflow backend service | PRD-007 | High | PRD-006 |
+| TASK-074 | Implement Order auto-calculation backend service | PRD-007 | High | PRD-006 |
+| TASK-075 | Implement Customer Credit Check backend service | PRD-007 | High | TASK-071, TASK-073 |
+| TASK-076 | Implement Customer 360 API and dashboard form | PRD-007 | Medium | TASK-071 |
+| TASK-077 | Update Sales Order form with workflow actions and payment terms | PRD-007 | High | TASK-072/073/074 |
+| TASK-078 | Create Sales Territory table with metadata | PRD-008 | Medium | PRD-006 |
+| TASK-079 | Create Lead table with metadata | PRD-008 | High | TASK-078 |
+| TASK-080 | Create Opportunity table with metadata | PRD-008 | High | TASK-078 |
+| TASK-081 | Create Commission table with metadata | PRD-008 | Medium | — |
+| TASK-082 | Implement Lead scoring and qualification workflow | PRD-008 | High | TASK-079 |
+| TASK-083 | Implement Lead to Opportunity conversion | PRD-008 | High | TASK-079/080/082 |
+| TASK-084 | Implement Opportunity pipeline workflow, quotation conversion, and commission | PRD-008 | High | TASK-080, TASK-081 |
+| TASK-085 | Seed CRM forms (lead, opportunity, territory, commission) | PRD-008 | High | TASK-078/079/080/081 |
+| TASK-086 | Implement CRM Dashboard API and deprecate hardcoded crm/ module | PRD-008 | Medium | TASK-085 |
+| TASK-087 | Create Sales Return tables with metadata | PRD-009 | High | PRD-007 |
+| TASK-088 | Create Credit Memo table with metadata | PRD-009 | High | PRD-007 |
+| TASK-089 | Implement Return workflow and Credit Memo generation | PRD-009 | High | TASK-087, TASK-088 |
+| TASK-090 | Implement Return inventory receipt integration | PRD-009 | Medium | TASK-089 |
+| TASK-091 | Seed Return and Credit Memo forms | PRD-009 | High | TASK-087, TASK-088 |
+| TASK-092 | Implement Sales Analytics dashboard | PRD-009 | Medium | TASK-091 |
 
 ---
 
@@ -37,6 +80,10 @@ See `ai/agent/rules/status-transitions.md` for full transition rules.
 | PRD-003 | ERP Order Flow — Transaction Forms | 1.0.0 | **COMPLETED** | High |
 | PRD-004 | Window Hierarchy & Menu System | 1.1.0 | **COMPLETED** | High |
 | PRD-005 | Backend-Frontend Separation & Code Standardization | 1.3.1 | **REOPENED** | High |
+| PRD-006 | Sales Quotation & Price Management | 1.0.0 | **APPROVED** | High |
+| PRD-007 | Sales Order Workflow & Customer Management | 1.0.0 | **APPROVED** | High |
+| PRD-008 | CRM Pipeline & Sales Team Management | 1.0.0 | **APPROVED** | Medium |
+| PRD-009 | Sales Return & Analytics | 1.0.0 | **APPROVED** | Medium |
 
 ---
 
@@ -189,17 +236,21 @@ See `ai/agent/rules/status-transitions.md` for full transition rules.
 
 | Status | Count |
 |--------|-------|
-| PRDs | 5 (4 COMPLETED, 1 REOPENED: PRD-005) |
-| Ready For Dev | 0 |
+| PRDs | 9 (4 COMPLETED, 1 REOPENED, 4 APPROVED) |
+| Ready For Dev | 4 (TASK-060..063, PRD-006) |
 | Ready For Test | 0 |
 | In Testing | 0 |
 | In Development | 0 |
-| Planning | 0 |
+| Planned | 29 (TASK-064..092) |
 | Bugs | 13 (8 COMPLETED, 1 CANCELLED, 4 RESOLVED) |
 | Completed (PRD-001) | 27 tasks + 2 enhancements (ENH-001, ENH-003) |
 | Completed (PRD-002) | 3 tasks + 1 enhancement (TASK-033/034/035 + ENH-002) |
 | Completed (PRD-003) | 5 tasks (TASK-028/029/030/031/032) — merged to main |
 | Completed (PRD-004) | 10 tasks (TASK-036..045) — merged to main |
 | Completed (PRD-005) | 14 tasks (TASK-046..059) — BUG-013 opened, PRD-005 REOPENED |
-| Total Tasks | 61 completed + 1 active bug |
+| PRD-006 (APPROVED) | 10 tasks (TASK-060..069) — 4 READY_FOR_DEV, 6 PLANNED |
+| PRD-007 (APPROVED) | 8 tasks (TASK-070..077) — 8 PLANNED |
+| PRD-008 (APPROVED) | 9 tasks (TASK-078..086) — 9 PLANNED |
+| PRD-009 (APPROVED) | 6 tasks (TASK-087..092) — 6 PLANNED |
+| Total Tasks | 61 completed + 33 new = 94 total |
 | PRD-005 Status | REOPENED (v1.3.1) — BUG-013: childTabIds reference-based resolution |

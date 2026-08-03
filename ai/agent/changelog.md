@@ -3,10 +3,40 @@ document: CHANGELOG
 version: 1.0.0
 status: ACTIVE
 owner: Product Manager
-last_updated: 2026-07-21
+last_updated: 2026-07-29
 ---
 
 # Changelog
+
+## 2026-07-29 (Sales & Customer Management Module — Planned)
+
+### Summary
+Complete Sales & Customer Management module planned across 4 PRDs (PRD-006 through PRD-009), referencing iDempiere and Odoo patterns. All PRDs approved by user; 33 implementation tasks generated (TASK-060 through TASK-092).
+
+### New PRDs Created
+| PRD | Title | Status | Priority | Tasks |
+|-----|-------|--------|----------|-------|
+| PRD-006 | Sales Quotation & Price Management | APPROVED | High | 10 (TASK-060..069) |
+| PRD-007 | Sales Order Workflow & Customer Management | APPROVED | High | 8 (TASK-070..077) |
+| PRD-008 | CRM Pipeline & Sales Team Management | APPROVED | Medium | 9 (TASK-078..086) |
+| PRD-009 | Sales Return & Analytics | APPROVED | Medium | 6 (TASK-087..092) |
+
+### Key Features Planned
+- **PRD-006:** Auto-numbering, price lists (customer/volume), discount rules, sales quotations, quote-to-order conversion, deprecate hardcoded sales/order modules
+- **PRD-007:** Order status workflow (Draft→Paid), auto-calculation, payment terms (Net 30/60), credit limit/check, Customer 360
+- **PRD-008:** Lead→Opportunity→Quote→Order pipeline, lead scoring, sales territories, commission tracking, CRM dashboard, deprecate hardcoded crm/ module
+- **PRD-009:** Sales Return (RMA), credit memo generation, return inventory receipt, sales analytics dashboard
+
+### Workflow Update
+- Added server verification step to SE workflow: start-all.sh + log check before PRD→TESTING
+- Individual start.sh scripts updated with `--log` flag
+
+### Total
+- 4 new PRDs (all APPROVED)
+- 33 new tasks (4 READY_FOR_DEV, 29 PLANNED)
+- 18 new database tables planned across all PRDs
+
+---
 
 ## 2026-07-21 (BUG-013 — Post-Release Regression, PRD-005 REOPENED)
 
