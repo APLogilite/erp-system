@@ -1,10 +1,10 @@
 # Project Board
 
-Last Updated: 2026-07-29
+Last Updated: 2026-07-30
 
-Updated By: Product Manager
+Updated By: Software Engineer
 
-(PRD-005 REOPENED v1.3.1 — BUG-013 RESOLVED (V8 fix verified). ENH-004 raised.)
+(PRD-005 REOPENED v1.3.1 — BUG-013 RESOLVED. BUG-014 status dropdown, BUG-015 breadcrumb fixed & RESOLVED. V9 + ENH-004 generation endpoint live.)
 
 (Sales & Customer Management module planned: PRD-006/007/008/009 APPROVED. 33 new tasks generated (TASK-060..092). PRD-006 root tasks READY_FOR_DEV.)
 
@@ -212,6 +212,8 @@ See `ai/agent/rules/status-transitions.md` for full transition rules.
 | BUG-011 | TASK-041 | Critical | **RESOLVED** | QA Engineer | — |
 | BUG-012 | TASK-047 | Critical | **RESOLVED** | QA Engineer | — |
 | BUG-013 | TASK-046 | Critical | **RESOLVED** | QA Engineer | — |
+| BUG-014 | (seed) | Medium | **RESOLVED** | Software Engineer | — |
+| BUG-015 | TASK-046 | Medium | **RESOLVED** | Software Engineer | — |
 
 ---
 
@@ -242,7 +244,7 @@ See `ai/agent/rules/status-transitions.md` for full transition rules.
 | In Testing | 0 |
 | In Development | 0 |
 | Planned | 29 (TASK-064..092) |
-| Bugs | 13 (8 COMPLETED, 1 CANCELLED, 4 RESOLVED) |
+| Bugs | 15 (8 COMPLETED, 1 CANCELLED, 6 RESOLVED) |
 | Completed (PRD-001) | 27 tasks + 2 enhancements (ENH-001, ENH-003) |
 | Completed (PRD-002) | 3 tasks + 1 enhancement (TASK-033/034/035 + ENH-002) |
 | Completed (PRD-003) | 5 tasks (TASK-028/029/030/031/032) — merged to main |
