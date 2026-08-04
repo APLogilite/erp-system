@@ -3,19 +3,19 @@ id: BUG-014
 
 title: Status columns render as text input instead of dropdown (missing enum_options)
 
-status: IN_DEVELOPMENT
+status: READY_FOR_TEST
 
 priority: Medium
 
 severity: Medium
 
-owner: Software Engineer
+owner: QA Engineer
 
 assigned_to: Software Engineer
 
 assigned_branch: prd/PRD-005-v2
 
-locked: true
+locked: false
 
 created: 2026-07-30
 

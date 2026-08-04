@@ -3,19 +3,19 @@ id: BUG-015
 
 title: Breadcrumb root level shows child record _display instead of parent
 
-status: IN_DEVELOPMENT
+status: READY_FOR_TEST
 
 priority: Medium
 
 severity: Medium
 
-owner: Software Engineer
+owner: QA Engineer
 
 assigned_to: Software Engineer
 
 assigned_branch: prd/PRD-005-v2
 
-locked: true
+locked: false
 
 created: 2026-07-30
 

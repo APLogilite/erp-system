@@ -29,7 +29,7 @@ import {
   Typography,
 } from '@mui/material';
 import { useMutation, useQueries, useQuery, useQueryClient } from '@tanstack/react-query';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { PageContainer } from '@/components/layouts/PageContainer';
@@ -157,6 +157,17 @@ function RecordDialog({ open, windowName, windowDef, recordId, onClose }: Record
       : recordData
         ? ((recordData as { record?: Record<string, unknown> }).record ?? recordData)
         : undefined;
+
+  // BUG-015: Store root record _display in a ref so the breadcrumb root level
+  // always shows the parent record's display value — even after drilling down
+  // (effectiveFormRecord switches to the child record when drilled).
+  const rootDisplayRef = useRef<string>('');
+  useEffect(() => {
+    if (!isDrilled) {
+      const rec = (recordData as { record?: Record<string, unknown> })?.record ?? recordData;
+      rootDisplayRef.current = ((rec as Record<string, unknown>)?._display as string) ?? '';
+    }
+  }, [isDrilled, recordData]);
 
   // Reset drill stack when opening a different record
   useEffect(() => {
@@ -293,12 +304,18 @@ function RecordDialog({ open, windowName, windowDef, recordId, onClose }: Record
   const getDisplayVal = (rec: Record<string, unknown> | undefined): string =>
     (rec?._display as string) ?? '';
   const breadcrumbParts = [
-    // Root: window name (with parent record display if editing)
+    // Root: window name with parent record display.
+    // When drilled, use the stored root _display (BUG-015: effectiveFormRecord
+    // points to child record data after drilling, giving wrong display value).
     recordId
       ? windowDef.window.name +
-        (effectiveFormRecord
-          ? ' (' + getDisplayVal(effectiveFormRecord as Record<string, unknown>) + ')'
-          : '')
+        (isDrilled
+          ? rootDisplayRef.current
+            ? ' (' + rootDisplayRef.current + ')'
+            : ''
+          : effectiveFormRecord
+            ? ' (' + getDisplayVal(effectiveFormRecord as Record<string, unknown>) + ')'
+            : '')
       : windowDef.window.name,
     // Drill levels: tab name (record display value)
     ...drillStack.map(
