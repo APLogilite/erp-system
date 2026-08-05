@@ -3,12 +3,12 @@ id: TASK-063
 title: Create Quotation tables with metadata registration
 type: Feature
 scope: database
-status: IN_DEVELOPMENT
+status: READY_FOR_TEST
 priority: High
 owner: developer
 assigned_to:
 assigned_branch:
-locked: true
+locked: false
 created: 2026-07-29
 updated: 2026-07-29
 started: 2026-08-05
@@ -125,3 +125,5 @@ Created Task (PLANNED) — PRD-006 approved by user
 # Related Documents
 
 - PRD-006 — Sales Quotation & Price Management (FR-004)
+
+  - 2026-08-05 — Software Engineer — Implemented: V12 creates tx_quotation + tx_quotation_line tables with FKs, index, metadata, status enum. Verified: Flyway v12, 10 columns + index + enum. → READY_FOR_TEST.
