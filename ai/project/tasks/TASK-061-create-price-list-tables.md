@@ -3,12 +3,12 @@ id: TASK-061
 title: Create Price List tables with metadata registration
 type: Feature
 scope: database
-status: IN_DEVELOPMENT
+status: READY_FOR_TEST
 priority: High
 owner: developer
 assigned_to:
 assigned_branch:
-locked: true
+locked: false
 created: 2026-07-29
 updated: 2026-07-29
 started: 2026-08-05
@@ -125,3 +125,5 @@ Created Task (PLANNED) — PRD-006 approved by user
 # Related Documents
 
 - PRD-006 — Sales Quotation & Price Management (FR-002)
+
+  - 2026-08-05 — Software Engineer — Implemented: V11 migration creates md_price_list + md_price_list_line tables with metadata; seed STANDARD price list + 3 sample lines. Verified: Flyway v11, DB data correct. → READY_FOR_TEST.
