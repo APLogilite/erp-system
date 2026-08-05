@@ -3,15 +3,15 @@ id: TASK-060
 title: Create Document Sequence table and auto-numbering service
 type: Feature
 scope: both
-status: READY_FOR_DEV
+status: IN_DEVELOPMENT
 priority: High
 owner: developer
-assigned_to:
-assigned_branch:
-locked: false
+assigned_to: Software Engineer
+assigned_branch: feature/TASK-060
+locked: true
 created: 2026-07-29
-updated: 2026-07-29
-started:
+updated: 2026-08-05
+started: 2026-08-05
 completed:
 estimated_hours: 4
 actual_hours:
