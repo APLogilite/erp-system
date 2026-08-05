@@ -3,12 +3,12 @@ id: TASK-060
 title: Create Document Sequence table and auto-numbering service
 type: Feature
 scope: both
-status: IN_DEVELOPMENT
+status: READY_FOR_TEST
 priority: High
-owner: developer
+owner: QA Engineer
 assigned_to: Software Engineer
 assigned_branch: feature/TASK-060
-locked: true
+locked: false
 created: 2026-07-29
 updated: 2026-08-05
 started: 2026-08-05
@@ -142,3 +142,5 @@ Created Task (PLANNED) — PRD-006 approved by user
 # Related Documents
 
 - PRD-006 — Sales Quotation & Price Management (FR-001)
+
+  - 2026-08-05 — Software Engineer — Implemented: V10 migration, entity, repository with pessimistic lock, service, controller. Verified: QT-0001/QT-0002 next, QT-0003 peek, 404 for unknown, 11 sequences seeded. → READY_FOR_TEST.
