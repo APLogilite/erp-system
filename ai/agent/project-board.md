@@ -4,7 +4,7 @@ Last Updated: 2026-07-30
 
 Updated By: Software Engineer
 
-(PRD-005 REOPENED v1.3.1 — BUG-013 RESOLVED. BUG-014 status dropdown, BUG-015 breadcrumb fixed & RESOLVED. V9 + ENH-004 generation endpoint live.)
+(PRD-005 COMPLETED v1.3.1. BUG-013/014/015 RESOLVED, ENH-004 COMPLETED — ready for merge to main.)
 
 (Sales & Customer Management module planned: PRD-006/007/008/009 APPROVED. 33 new tasks generated (TASK-060..092). PRD-006 root tasks READY_FOR_DEV.)
 
@@ -79,7 +79,7 @@ See `ai/agent/rules/status-transitions.md` for full transition rules.
 | PRD-002 | Admin Configuration Forms | 1.1.0 | **COMPLETED** | High |
 | PRD-003 | ERP Order Flow — Transaction Forms | 1.0.0 | **COMPLETED** | High |
 | PRD-004 | Window Hierarchy & Menu System | 1.1.0 | **COMPLETED** | High |
-| PRD-005 | Backend-Frontend Separation & Code Standardization | 1.3.1 | **REOPENED** | High |
+| PRD-005 | Backend-Frontend Separation & Code Standardization | 1.3.1 | **COMPLETED** | High |
 | PRD-006 | Sales Quotation & Price Management | 1.0.0 | **APPROVED** | High |
 | PRD-007 | Sales Order Workflow & Customer Management | 1.0.0 | **APPROVED** | High |
 | PRD-008 | CRM Pipeline & Sales Team Management | 1.0.0 | **APPROVED** | Medium |
@@ -224,7 +224,7 @@ See `ai/agent/rules/status-transitions.md` for full transition rules.
 | ENH-001 | PRD-001 | TASK-007 | Form Designer API tenant authorization | COMPLETED |
 | ENH-002 | PRD-002 | TASK-034, TASK-035 | Add tenant_id to all admin forms (REQ-ISSUE-001) | COMPLETED |
 | ENH-003 | PRD-001 | TASK-026 | RuntimePage not integrated with API — uses hardcoded sample bundles instead of dynamic form rendering | COMPLETED |
-| ENH-004 | PRD-005 | BUG-013 (QA) | Window definition cache auto-invalidation after DB reseeds (stale ghost-UUID errors) | PLANNING |
+| ENH-004 | PRD-005 | BUG-013 (QA) | Window definition cache auto-invalidation after DB reseeds (stale ghost-UUID errors) | COMPLETED |
 
 ---
 
@@ -238,7 +238,7 @@ See `ai/agent/rules/status-transitions.md` for full transition rules.
 
 | Status | Count |
 |--------|-------|
-| PRDs | 9 (4 COMPLETED, 1 REOPENED, 4 APPROVED) |
+| PRDs | 9 (5 COMPLETED, 4 APPROVED) |
 | Ready For Dev | 4 (TASK-060..063, PRD-006) |
 | Ready For Test | 0 |
 | In Testing | 0 |
@@ -255,4 +255,4 @@ See `ai/agent/rules/status-transitions.md` for full transition rules.
 | PRD-008 (APPROVED) | 9 tasks (TASK-078..086) — 9 PLANNED |
 | PRD-009 (APPROVED) | 6 tasks (TASK-087..092) — 6 PLANNED |
 | Total Tasks | 61 completed + 33 new = 94 total |
-| PRD-005 Status | REOPENED (v1.3.1) — BUG-013: childTabIds reference-based resolution |
+| PRD-005 Status | **COMPLETED** (v1.3.1) — all tasks, bugs, and enhancements resolved; ready for merge to main |

@@ -3,17 +3,17 @@ id: ENH-004
 
 title: Window definition cache auto-invalidation after backend data-generation change (DB reseed)
 
-status: TESTING
+status: COMPLETED
 
 priority: High
 
-owner: QA Engineer
+owner: Software Engineer
 
 assigned_to: QA Engineer
 
 assigned_branch: prd/PRD-005-v2
 
-locked: true
+locked: false
 
 created: 2026-07-29
 
@@ -106,3 +106,5 @@ There is no mechanism for the frontend to learn that the backend's data generati
 
 - Reducing `staleTime`/`gcTime` globally (would increase server load; generation check is the targeted fix)
 - Cross-tab broadcast of invalidation (single-tab polling is sufficient for dev)
+
+  - 2026-07-30 — Software Engineer — Cascade COMPLETED with PRD-005 merge. Manual reseed scenario deferred (non-blocking).

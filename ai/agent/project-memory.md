@@ -12,7 +12,7 @@ last_updated: 2026-07-13
 |-------|-------|
 | Project Name | Dynamic ERP Platform |
 | Business Goal | Metadata-driven ERP runtime platform |
-| Current Phase | PRD-001 — Dynamic Form Configuration System (TESTING) |
+| Current Phase | PRD-005 — COMPLETED (2026-07-30) / Next: PRD-006 Sales Quotation & Price Management |
 | Current Version | 1.6.0 |
 
 ---

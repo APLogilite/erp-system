@@ -816,3 +816,19 @@ PRD-005 created for backend-frontend separation. 14 tasks covering:
 
 ### Status
 PRD-005: APPROVED — 14 tasks awaiting development
+
+## 2026-07-30 (PRD-005 — Returned to COMPLETED)
+
+### Summary
+PRD-005 REOPENED → COMPLETED. BUG-013 resolved (V8 seed FK columns + backfill), BUG-014 (V9 status enum options), BUG-015 (breadcrumb root _display fix). ENH-004 (generation-based definition cache auto-invalidation). All 14 original tasks COMPLETED, 3 bugs RESOLVED, 1 enhancement COMPLETED.
+
+### Key Deliverables
+- V7: parent_column → parent_link_column_id UUID FK (structural fix)
+- V8: seed FK sys_column rows + backfill parent_link columns
+- V9: status columns → enum type with dropdown options
+- ENH-004: GET /runtime/meta/generation endpoint + useDefinitionGeneration hook (auto-invalidate on DB reseed)
+- BUG-015: breadcrumb root level shows correct parent _display
+- QA script suite refreshed: prd-001 fixed, prd-002/003/004 v2 created, run-all-regression.sh rewritten, verify-bug-013-child-tabs.sh added — ALL TESTS PASSED
+
+### Status
+PRD-005: COMPLETED — ready for merge to main.

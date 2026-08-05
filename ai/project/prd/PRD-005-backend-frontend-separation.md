@@ -5,7 +5,7 @@ title: Backend-Frontend Separation — Move Data Logic to Backend
 
 version: 1.3.1
 
-status: REOPENED
+status: COMPLETED
 
 priority: High
 
@@ -13,9 +13,9 @@ owner: Product Manager
 
 created: 2026-07-15
 
-updated: 2026-07-21
+updated: 2026-07-30
 
-qa_summary: All 14 tasks TESTED. BUG-012 (lookup filter) found, fixed, and RESOLVED. BUG-013 opened for child tab not appearing regression (TASK-046 childTabIds matching fails for plural table names).
+qa_summary: All 14 tasks TESTED. BUG-012 (lookup filter) + BUG-013 (child tab V8 seed) + BUG-014 (status enum V9) + BUG-015 (breadcrumb _display) — all RESOLVED. ENH-004 (cache auto-invalidation generation endpoint) implemented and merged.
 
 approved_by:
 
@@ -35,12 +35,15 @@ related_tasks: []
 
 related_bugs:
   - BUG-013
+  - BUG-014
+  - BUG-015
 
 dependencies: []
 
 change_log:
   - 1.0.0 — Initial Draft
   - 1.3.1 — 2026-07-21: REOPENED for BUG-013 — child tab not appearing. Backend childTabIds matching fails for plural table names (tx_orders, tx_order_lines).
+  - 1.3.1 — 2026-07-30: RETURNED TO COMPLETED. BUG-013 resolved (V8 seed FK columns + backfill), BUG-014 (V9 status enum), BUG-015 (breadcrumb root _display) — all RESOLVED. ENH-004 (generation-based definition cache auto-invalidation) merged.
 
 ---
 
