@@ -3,7 +3,7 @@ id: TASK-064
 title: Implement Price Resolution backend service
 type: Feature
 scope: backend
-status: PLANNED
+status: READY_FOR_DEV
 priority: High
 owner: developer
 assigned_to:
