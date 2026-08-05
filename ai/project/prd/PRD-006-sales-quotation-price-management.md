@@ -2,11 +2,11 @@
 id: PRD-006
 title: Sales Quotation & Price Management
 version: 1.0.0
-status: APPROVED
+status: IN_DEVELOPMENT
 priority: High
 owner: Product Manager
 created: 2026-07-29
-updated: 2026-07-29
+updated: 2026-08-05
 approved_by: user
 project: Dynamic ERP Platform
 repository: erp-system
