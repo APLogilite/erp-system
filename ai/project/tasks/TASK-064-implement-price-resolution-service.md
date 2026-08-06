@@ -3,12 +3,12 @@ id: TASK-064
 title: Implement Price Resolution backend service
 type: Feature
 scope: backend
-status: IN_DEVELOPMENT
+status: READY_FOR_TEST
 priority: High
 owner: developer
 assigned_to:
 assigned_branch:
-locked: true
+locked: false
 created: 2026-07-29
 updated: 2026-07-29
 started: 2026-08-05
@@ -136,3 +136,5 @@ Created Task (PLANNED) — PRD-006 approved by user
 # Related Documents
 
 - PRD-006 — Sales Quotation & Price Management (FR-002)
+
+  - 2026-08-06 — SE — Implemented with NamedParameterJdbcTemplate. Verified: default PL 1200, 404. → READY_FOR_TEST.
