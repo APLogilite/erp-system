@@ -3,7 +3,7 @@ id: TASK-069
 title: Deprecate hardcoded sales/ and order/ modules
 type: Refactor
 scope: both
-status: PLANNED
+status: READY_FOR_DEV
 priority: High
 owner: developer
 assigned_to:

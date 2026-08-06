@@ -3,12 +3,12 @@ id: TASK-068
 title: Implement Quotation to Order conversion
 type: Feature
 scope: backend
-status: IN_DEVELOPMENT
+status: READY_FOR_TEST
 priority: High
 owner: developer
 assigned_to:
 assigned_branch:
-locked: true
+locked: false
 created: 2026-07-29
 updated: 2026-07-29
 started: 2026-08-06
@@ -138,3 +138,5 @@ Created Task (PLANNED) — PRD-006 approved by user
 # Related Documents
 
 - PRD-006 — Sales Quotation & Price Management (FR-006)
+
+  - 2026-08-06 — SE — Quote→Order conversion with auto-numbering. → READY_FOR_TEST.

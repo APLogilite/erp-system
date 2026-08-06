@@ -6,6 +6,7 @@ import com.erp.modules.common.dto.PriceResolveRequest;
 import com.erp.modules.common.dto.QuotationTotalsResponse;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -28,12 +29,15 @@ public class QuotationService {
   private final NamedParameterJdbcTemplate jdbc;
   private final PriceResolutionService priceService;
   private final DiscountResolutionService discountService;
+  private final DocumentSequenceService sequenceService;
 
   public QuotationService(NamedParameterJdbcTemplate jdbc, PriceResolutionService priceService,
-                          DiscountResolutionService discountService) {
+                          DiscountResolutionService discountService,
+                          DocumentSequenceService sequenceService) {
     this.jdbc = jdbc;
     this.priceService = priceService;
     this.discountService = discountService;
+    this.sequenceService = sequenceService;
   }
 
   /**
@@ -154,5 +158,62 @@ public class QuotationService {
     resp.setLineTotal(lineTotal);
     resp.setTaxAmount(taxAmt);
     return resp;
+  }
+
+  /**
+   * Converts an accepted quotation into a sales order.
+   * Returns the new order id. Uses auto-numbering for the order number.
+   */
+  @Transactional
+  public UUID convertToOrder(UUID quotationId, UUID tenantId) {
+    Map<String, Object> quote = jdbc.queryForMap(
+        "SELECT id, partner_id, currency, subtotal, discount_amount, tax_amount, grand_total, status "
+          + "FROM tx_quotation WHERE id = :id",
+        new MapSqlParameterSource("id", quotationId));
+    String status = (String) quote.get("status");
+    if (!"accepted".equals(status))
+      throw new IllegalStateException("Quotation must be accepted before converting. Current status: " + status);
+
+    // Generate order number
+    String orderNumber = sequenceService.getNextNumber("sales_order", tenantId);
+
+    // Create order
+    UUID orderId = UUID.randomUUID();
+    jdbc.update(
+        "INSERT INTO tx_order (id, order_number, order_date, order_type, partner_id, currency, "
+          + "subtotal, discount_amount, tax_amount, grand_total, status, tenant_id, created_at, updated_at) "
+          + "VALUES (:id, :num, :date, 'sales', :pid, :cur, :s, :d, :t, :g, 'draft', :tid, now(), now())",
+        new MapSqlParameterSource()
+          .addValue("id", orderId).addValue("num", orderNumber)
+          .addValue("date", LocalDate.now()).addValue("pid", quote.get("partner_id"))
+          .addValue("cur", quote.get("currency")).addValue("s", quote.get("subtotal"))
+          .addValue("d", quote.get("discount_amount")).addValue("t", quote.get("tax_amount"))
+          .addValue("g", quote.get("grand_total")).addValue("tid", tenantId));
+
+    // Copy lines
+    List<Map<String, Object>> lines = jdbc.queryForList(
+        "SELECT line_number, product_id, description, quantity, uom_id, unit_price, "
+          + "discount_percent, discount_amount, line_total, tax_rate "
+          + "FROM tx_quotation_line WHERE quotation_id = :qid AND is_active = true ORDER BY line_number",
+        new MapSqlParameterSource("qid", quotationId));
+    for (Map<String, Object> line : lines) {
+      jdbc.update(
+          "INSERT INTO tx_order_line (id, order_id, line_number, product_id, description, quantity, "
+            + "uom_id, unit_price, line_total, tax_rate, tenant_id, created_at, updated_at) "
+            + "VALUES (gen_random_uuid(), :oid, :ln, :pid, :desc, :qty, :uom, :up, :lt, :tr, :tid, now(), now())",
+          new MapSqlParameterSource()
+            .addValue("oid", orderId).addValue("ln", line.get("line_number"))
+            .addValue("pid", line.get("product_id")).addValue("desc", line.get("description"))
+            .addValue("qty", line.get("quantity")).addValue("uom", line.get("uom_id"))
+            .addValue("up", line.get("unit_price")).addValue("lt", line.get("line_total"))
+            .addValue("tr", line.get("tax_rate")).addValue("tid", tenantId));
+    }
+
+    // Mark quotation as converted
+    jdbc.update(
+        "UPDATE tx_quotation SET status = 'converted', converted_order_id = :oid, updated_at = now() WHERE id = :id",
+        new MapSqlParameterSource().addValue("oid", orderId).addValue("id", quotationId));
+
+    return orderId;
   }
 }
