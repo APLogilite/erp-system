@@ -3,15 +3,15 @@ id: TASK-066
 title: Seed Quotation, Price List, Discount, and Sequence forms
 type: Feature
 scope: database
-status: READY_FOR_DEV
+status: IN_DEVELOPMENT
 priority: High
 owner: developer
 assigned_to:
 assigned_branch:
-locked: false
+locked: true
 created: 2026-07-29
 updated: 2026-07-29
-started:
+started: 2026-08-06
 completed:
 estimated_hours: 5
 actual_hours:
