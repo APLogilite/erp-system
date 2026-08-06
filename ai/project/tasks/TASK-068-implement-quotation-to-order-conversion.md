@@ -3,7 +3,7 @@ id: TASK-068
 title: Implement Quotation to Order conversion
 type: Feature
 scope: backend
-status: PLANNED
+status: READY_FOR_DEV
 priority: High
 owner: developer
 assigned_to:
