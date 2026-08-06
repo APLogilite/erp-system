@@ -3,15 +3,15 @@ id: TASK-065
 title: Implement Discount Resolution backend service
 type: Feature
 scope: backend
-status: READY_FOR_DEV
+status: IN_DEVELOPMENT
 priority: Medium
 owner: developer
 assigned_to:
 assigned_branch:
-locked: false
+locked: true
 created: 2026-07-29
 updated: 2026-07-29
-started:
+started: 2026-08-06
 completed:
 estimated_hours: 3
 actual_hours:
