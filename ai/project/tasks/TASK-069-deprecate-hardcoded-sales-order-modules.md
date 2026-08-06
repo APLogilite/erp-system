@@ -3,12 +3,12 @@ id: TASK-069
 title: Deprecate hardcoded sales/ and order/ modules
 type: Refactor
 scope: both
-status: IN_DEVELOPMENT
+status: READY_FOR_TEST
 priority: High
 owner: developer
 assigned_to:
 assigned_branch:
-locked: true
+locked: false
 created: 2026-07-29
 updated: 2026-07-29
 started: 2026-08-06
@@ -130,3 +130,5 @@ Created Task (PLANNED) — PRD-006 approved by user
 # Related Documents
 
 - PRD-006 — Sales Quotation & Price Management (FR-007)
+
+  - 2026-08-06 — SE — Deleted legacy modules + V15 drop. BUILD SUCCESS. → READY_FOR_TEST.

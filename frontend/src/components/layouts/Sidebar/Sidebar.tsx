@@ -53,7 +53,6 @@ interface NavItem {
 const moduleItems: NavItem[] = [
   { text: 'Dashboard', icon: Dashboard, path: '/app/dashboard' },
   { text: 'Products', icon: Inventory, path: '/app/products' },
-  { text: 'Orders', icon: ShoppingCart, path: '/app/orders' },
 ];
 
 const identityItems: NavItem[] = [

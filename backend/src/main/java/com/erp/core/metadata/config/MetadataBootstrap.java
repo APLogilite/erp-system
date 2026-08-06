@@ -28,7 +28,6 @@ public class MetadataBootstrap {
     registerProductModule();
     registerBusinessPartnerModule();
     registerWarehouseModule();
-    registerSalesOrder();
     registerInventoryTransaction();
     registerPurchaseOrder();
     registerReservation();
@@ -137,51 +136,6 @@ public class MetadataBootstrap {
     metadataRegistry.registerAction(new ActionMetadataDto("act_wh_create", "Create Warehouse", ActionMetadataDto.ActionType.CREATE));
   }
 
-  private void registerSalesOrder() {
-    ModelMetadataDto model = new ModelMetadataDto("sales_order", "Sales Order", "Customer purchase orders");
-    model.setWorkflowEnabled(true);
-    model.setFields(Arrays.asList(
-        new FieldMetadataDto("documentNo", "Document No", "string", true, true),
-        new FieldMetadataDto("documentDate", "Document Date", "date", true, false),
-        new FieldMetadataDto("customerId", "Customer", "string", true, false),
-        new FieldMetadataDto("warehouseId", "Warehouse", "string", false, false),
-        new FieldMetadataDto("status", "Status", "string", false, true),
-        new FieldMetadataDto("description", "Description", "text", false, false),
-        new FieldMetadataDto("totalAmount", "Total Amount", "decimal", false, true),
-        new FieldMetadataDto("currency", "Currency", "string", false, false)
-    ));
-    metadataRegistry.registerModel(model);
-
-    metadataRegistry.registerView(new ViewMetadataDto("sales_order_list", "sales_order", ViewMetadataDto.ViewType.GRID, "Sales Orders"));
-    metadataRegistry.registerView(new ViewMetadataDto("sales_order_form", "sales_order", ViewMetadataDto.ViewType.FORM, "Sales Order Details"));
-
-    WorkflowMetadataDto workflow = new WorkflowMetadataDto("sales_order_workflow", "sales_order");
-    workflow.setStates(Arrays.asList(
-        new WorkflowStateDto("DRAFT", "Draft", true),
-        new WorkflowStateDto("COMPLETED", "Completed", false),
-        new WorkflowStateDto("APPROVED", "Approved", false),
-        new WorkflowStateDto("CLOSED", "Closed", false)
-    ));
-    workflow.setTransitions(Arrays.asList(
-        new WorkflowTransitionDto("complete", "Complete", "DRAFT", "COMPLETED"),
-        new WorkflowTransitionDto("approve", "Approve", "COMPLETED", "APPROVED"),
-        new WorkflowTransitionDto("close", "Close", "APPROVED", "CLOSED"),
-        new WorkflowTransitionDto("reopen", "Reopen", "CLOSED", "DRAFT"),
-        new WorkflowTransitionDto("void", "Void", "DRAFT", "CLOSED")
-    ));
-    metadataRegistry.registerWorkflow(workflow);
-
-    metadataRegistry.registerAction(new ActionMetadataDto("act_sales_order_create", "Create Sales Order", ActionMetadataDto.ActionType.CREATE));
-    metadataRegistry.registerAction(new ActionMetadataDto("act_sales_order_add_line", "Add Line", ActionMetadataDto.ActionType.CUSTOM));
-    metadataRegistry.registerAction(new ActionMetadataDto("act_sales_order_recalculate", "Recalculate", ActionMetadataDto.ActionType.CUSTOM));
-    metadataRegistry.registerAction(new ActionMetadataDto("act_sales_order_complete", "Complete", ActionMetadataDto.ActionType.CUSTOM));
-    metadataRegistry.registerAction(new ActionMetadataDto("act_sales_order_approve", "Approve", ActionMetadataDto.ActionType.CUSTOM));
-    metadataRegistry.registerAction(new ActionMetadataDto("act_sales_order_close", "Close", ActionMetadataDto.ActionType.CUSTOM));
-    metadataRegistry.registerAction(new ActionMetadataDto("act_sales_order_print", "Print", ActionMetadataDto.ActionType.EXPORT));
-
-    metadataRegistry.registerPermission(new PermissionMetadataDto("perm_sales_user", "sales_order", PermissionMetadataDto.PermissionType.READ));
-    metadataRegistry.registerPermission(new PermissionMetadataDto("perm_sales_manager", "sales_order", PermissionMetadataDto.PermissionType.ADMIN));
-  }
 
   private void registerInventoryTransaction() {
     ModelMetadataDto model = new ModelMetadataDto("inventory_transaction", "Inventory Transaction", "Stock movement tracking");
