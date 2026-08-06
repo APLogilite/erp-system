@@ -3,12 +3,12 @@ id: TASK-062
 title: Create Discount Rule table with metadata registration
 type: Feature
 scope: database
-status: IN_DEVELOPMENT
+status: READY_FOR_TEST
 priority: Medium
 owner: developer
 assigned_to:
 assigned_branch:
-locked: true
+locked: false
 created: 2026-07-29
 updated: 2026-07-29
 started: 2026-08-05
@@ -129,3 +129,5 @@ Created Task (PLANNED) — PRD-006 approved by user
 # Related Documents
 
 - PRD-006 — Sales Quotation & Price Management (FR-003)
+
+  - 2026-08-05 — SE — V13 migration + metadata + 2 sample rules. → READY_FOR_TEST.
