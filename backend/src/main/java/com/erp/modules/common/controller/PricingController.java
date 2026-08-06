@@ -4,6 +4,7 @@ import com.erp.common.api.ApiResponse;
 import com.erp.config.ApiVersionConfig;
 import com.erp.modules.common.dto.PriceResolveRequest;
 import com.erp.modules.common.dto.PriceResolveResponse;
+import com.erp.modules.common.service.DiscountResolutionService;
 import com.erp.modules.common.service.PriceResolutionService;
 import com.erp.platform.identity.dto.RuntimeContext;
 import com.erp.platform.identity.dto.RuntimeContextHolder;
@@ -27,10 +28,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class PricingController {
 
   private static final Logger log = LoggerFactory.getLogger(PricingController.class);
-  private final PriceResolutionService service;
+  private final PriceResolutionService priceService;
+  private final DiscountResolutionService discountService;
 
-  public PricingController(PriceResolutionService service) {
-    this.service = service;
+  public PricingController(PriceResolutionService priceService, DiscountResolutionService discountService) {
+    this.priceService = priceService;
+    this.discountService = discountService;
   }
 
   @PostMapping("/resolve")
@@ -42,7 +45,18 @@ public class PricingController {
     }
 
     try {
-      PriceResolveResponse response = service.resolve(request);
+      PriceResolveResponse response = priceService.resolve(request);
+
+      // Attach best-matching discount (TASK-065)
+      if (response.getUnitPrice() != null) {
+        var discount = discountService.resolve(request.getPartnerId(), request.getProductId(),
+            request.getQuantity(), response.getUnitPrice());
+        if (discount != null) {
+          response.setDiscountPercent(discount.discountPercent());
+          response.setDiscountAmount(discount.discountAmount());
+          response.setDiscountRuleId(discount.discountRuleId());
+        }
+      }
       return ResponseEntity.ok(ApiResponse.success(response, "Price resolved."));
     } catch (IllegalArgumentException e) {
       return ResponseEntity.status(HttpStatus.NOT_FOUND)

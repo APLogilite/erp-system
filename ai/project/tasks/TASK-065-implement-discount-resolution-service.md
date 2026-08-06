@@ -3,12 +3,12 @@ id: TASK-065
 title: Implement Discount Resolution backend service
 type: Feature
 scope: backend
-status: IN_DEVELOPMENT
+status: READY_FOR_TEST
 priority: Medium
 owner: developer
 assigned_to:
 assigned_branch:
-locked: true
+locked: false
 created: 2026-07-29
 updated: 2026-07-29
 started: 2026-08-06
@@ -133,3 +133,5 @@ Created Task (PLANNED) — PRD-006 approved by user
 # Related Documents
 
 - PRD-006 — Sales Quotation & Price Management (FR-003)
+
+  - 2026-08-06 — SE — Percentage=120 off 200 verified. → READY_FOR_TEST.

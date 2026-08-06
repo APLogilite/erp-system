@@ -3,7 +3,7 @@ id: TASK-067
 title: Implement Quotation calculation API
 type: Feature
 scope: backend
-status: PLANNED
+status: READY_FOR_DEV
 priority: High
 owner: developer
 assigned_to:
