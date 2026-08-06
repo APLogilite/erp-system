@@ -3,12 +3,12 @@ id: TASK-066
 title: Seed Quotation, Price List, Discount, and Sequence forms
 type: Feature
 scope: database
-status: IN_DEVELOPMENT
+status: READY_FOR_TEST
 priority: High
 owner: developer
 assigned_to:
 assigned_branch:
-locked: true
+locked: false
 created: 2026-07-29
 updated: 2026-07-29
 started: 2026-08-06
@@ -149,3 +149,5 @@ Created Task (PLANNED) — PRD-006 approved by user
 # Related Documents
 
 - PRD-006 — Sales Quotation & Price Management (FR-005)
+
+  - 2026-08-06 — SE — V14: 4 windows + 2 child tabs + fields + access + menu. → READY_FOR_TEST.
