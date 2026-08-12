@@ -3,11 +3,9 @@ id: TASK-062
 title: Create Discount Rule table with metadata registration
 type: Feature
 scope: database
-status: READY_FOR_TEST
+status: TESTED
 priority: Medium
-owner: developer
-assigned_to:
-assigned_branch:
+owner: QA Engineer
 locked: false
 created: 2026-07-29
 updated: 2026-07-29
@@ -68,10 +66,10 @@ Register table in `sys_table` and columns in `sys_column` (ensure_column pattern
 
 # Acceptance Criteria
 
-- [ ] `[SE]` Migration creates md_discount_rule with correct columns
-- [ ] `[SE]` Table and columns registered in sys_table/sys_column
-- [ ] `[SE]` At least one sample discount rule seeded
-- [ ] `[SE]` Migration is idempotent
+- [x] `[SE]` Migration creates md_discount_rule with correct columns
+- [x] `[SE]` Table and columns registered in sys_table/sys_column
+- [x] `[SE]` At least one sample discount rule seeded
+- [x] `[SE]` Migration is idempotent
 - [ ] `[QA]` Table queryable via runtime CRUD API
 - [ ] `[SE][QA]` Backend starts cleanly with migration applied
 

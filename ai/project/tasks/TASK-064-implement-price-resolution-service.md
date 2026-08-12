@@ -3,11 +3,9 @@ id: TASK-064
 title: Implement Price Resolution backend service
 type: Feature
 scope: backend
-status: READY_FOR_TEST
+status: TESTED
 priority: High
-owner: developer
-assigned_to:
-assigned_branch:
+owner: QA Engineer
 locked: false
 created: 2026-07-29
 updated: 2026-07-29
@@ -71,13 +69,13 @@ Cache resolved price lists in memory with 5-minute TTL (Spring `@Cacheable` or s
 
 # Acceptance Criteria
 
-- [ ] `[SE]` Customer-specific price list takes priority over default price list
-- [ ] `[SE]` Volume pricing: quantity above a line's min_quantity uses that line's price
-- [ ] `[SE]` Falls back to md_product.unit_price when no price list matches
-- [ ] `[SE]` Expired price lists (valid_to < today) are ignored
-- [ ] `[SE]` Response includes source indicator
-- [ ] `[QA]` Unknown productId returns 404
-- [ ] `[SE][QA]` Backend starts cleanly (no errors in /tmp/erp-backend.log)
+- [x] `[SE]` Customer-specific price list takes priority over default price list
+- [x] `[SE]` Volume pricing: quantity above a line's min_quantity uses that line's price
+- [x] `[SE]` Falls back to md_product.unit_price when no price list matches
+- [x] `[SE]` Expired price lists (valid_to < today) are ignored
+- [x] `[SE]` Response includes source indicator
+- [x] `[QA]` Unknown productId returns 404
+- [x] `[SE][QA]` Backend starts cleanly (no errors in /tmp/erp-backend.log)
 
 ---
 

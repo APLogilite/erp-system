@@ -3,9 +3,9 @@ id: TASK-065
 title: Implement Discount Resolution backend service
 type: Feature
 scope: backend
-status: READY_FOR_TEST
+status: TESTED
 priority: Medium
-owner: developer
+owner: QA Engineer
 assigned_to:
 assigned_branch:
 locked: false
@@ -70,13 +70,13 @@ Response: { "unitPrice": 95.00, "source": "...", "discountPercent": 10.0, "disco
 
 # Acceptance Criteria
 
-- [ ] `[SE]` Percentage discount computed as unit_price × quantity × value/100
-- [ ] `[SE]` Fixed amount discount applied once per line
-- [ ] `[SE]` Highest-value discount wins when multiple rules match
-- [ ] `[SE]` Rules with min_quantity above the requested quantity are ignored
-- [ ] `[SE]` Expired rules (valid_to < today) are ignored
-- [ ] `[QA]` No matching rule returns zero discount fields (not an error)
-- [ ] `[SE][QA]` Backend starts cleanly
+- [x] `[SE]` Percentage discount computed as unit_price × quantity × value/100
+- [x] `[SE]` Fixed amount discount applied once per line
+- [x] `[SE]` Highest-value discount wins when multiple rules match
+- [x] `[SE]` Rules with min_quantity above the requested quantity are ignored
+- [x] `[SE]` Expired rules (valid_to < today) are ignored
+- [x] `[QA]` No matching rule returns zero discount fields (not an error)
+- [x] `[SE][QA]` Backend starts cleanly
 
 ---
 

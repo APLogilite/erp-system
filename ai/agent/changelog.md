@@ -3,10 +3,42 @@ document: CHANGELOG
 version: 1.0.0
 status: ACTIVE
 owner: Product Manager
-last_updated: 2026-07-29
+last_updated: 2026-08-12
 ---
 
 # Changelog
+
+## 2026-08-12 (PRD-006 QA Testing Complete)
+
+### Summary
+QA Engineer completed full functional testing of PRD-006 (Sales Quotation & Price Management). All 10 tasks (TASK-060..069) advanced from READY_FOR_TEST to TESTED. Zero bugs found. 6 manual UI scenarios pending user confirmation.
+
+### Test Results
+| Task | Title | Status |
+|------|-------|--------|
+| TASK-060 | Document Sequence table + auto-numbering | TESTED |
+| TASK-061 | Price List tables + metadata | TESTED |
+| TASK-062 | Discount Rule table + metadata | TESTED |
+| TASK-063 | Quotation tables + metadata | TESTED |
+| TASK-064 | Price Resolution service | TESTED |
+| TASK-065 | Discount Resolution service | TESTED |
+| TASK-066 | Seed PRD-006 forms | TESTED |
+| TASK-067 | Quotation calculation API | TESTED |
+| TASK-068 | Quotation → Order conversion | TESTED |
+| TASK-069 | Deprecate legacy sales/order modules | TESTED |
+
+### Key Verifications
+- 11 document sequences auto-number correctly (QT-0001..QT-0003 tested)
+- Price resolution: default_price_list → product_base fallback chain works
+- Discount resolution: 10% VOLUME10 rule applied correctly, integrated into pricing endpoint
+- Quotation → Order conversion: creates tx_order with order_type=sales, links converted_order_id
+- Legacy sales/ and order/ modules fully removed, legacy tables dropped
+- Server startup clean (backend "Started ErpApplication", frontend "VITE ready")
+- PRD-006 advanced from IN_DEVELOPMENT → TESTING
+
+### Pending
+- 6 manual UI scenarios (menu items, forms, dropdowns, child tabs) — awaiting user execution
+- PRD-006 can advance to READY_FOR_DEPLOYMENT after user confirms manual scenarios
 
 ## 2026-07-29 (Sales & Customer Management Module — Planned)
 

@@ -3,14 +3,14 @@ id: TASK-067
 title: Implement Quotation calculation API
 type: Feature
 scope: backend
-status: READY_FOR_TEST
+status: TESTED
 priority: High
-owner: developer
+owner: QA Engineer
 assigned_to:
 assigned_branch:
 locked: false
 created: 2026-07-29
-updated: 2026-07-29
+updated: 2026-08-12
 started: 2026-08-06
 completed:
 estimated_hours: 4
@@ -81,14 +81,14 @@ Response: { "unitPrice": 95.00, "discountPercent": 10.0, "discountAmount": 95.00
 
 # Acceptance Criteria
 
-- [ ] `[SE]` Calculate endpoint updates and returns all four header totals correctly
-- [ ] `[SE]` Line totals persisted after calculation
-- [ ] `[SE]` Price auto-resolved for lines missing unit_price
-- [ ] `[SE]` Discount auto-applied from matching rules
-- [ ] `[SE]` calculate-line endpoint previews a single line without persisting
-- [ ] `[QA]` Calculation with zero lines returns all-zero totals (no error)
-- [ ] `[QA]` Unknown quotation id returns 404
-- [ ] `[SE][QA]` Backend starts cleanly
+- [x] `[SE]` Calculate endpoint updates and returns all four header totals correctly
+- [x] `[SE]` Line totals persisted after calculation
+- [x] `[SE]` Price auto-resolved for lines missing unit_price
+- [x] `[SE]` Discount auto-applied from matching rules
+- [x] `[SE]` calculate-line endpoint previews a single line without persisting
+- [x] `[QA]` Calculation with zero lines returns all-zero totals (no error)
+- [x] `[QA]` Unknown quotation id returns 404
+- [x] `[SE][QA]` Backend starts cleanly
 
 ---
 

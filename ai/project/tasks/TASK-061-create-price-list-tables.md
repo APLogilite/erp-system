@@ -3,14 +3,12 @@ id: TASK-061
 title: Create Price List tables with metadata registration
 type: Feature
 scope: database
-status: READY_FOR_TEST
+status: TESTED
 priority: High
-owner: developer
-assigned_to:
-assigned_branch:
+owner: QA Engineer
 locked: false
 created: 2026-07-29
-updated: 2026-07-29
+updated: 2026-08-12
 started: 2026-08-05
 completed:
 estimated_hours: 3
@@ -63,12 +61,12 @@ Register both tables in `sys_table` and all business columns in `sys_column` (us
 
 # Acceptance Criteria
 
-- [ ] `[SE]` Migration creates both tables with correct columns and types
-- [ ] `[SE]` Both tables registered in sys_table; all columns registered in sys_column
-- [ ] `[SE]` Default STANDARD price list seeded (is_default = true)
-- [ ] `[SE]` Migration is idempotent (safe to re-run — DROP IF EXISTS / WHERE NOT EXISTS guards)
-- [ ] `[QA]` Tables queryable via PRD-001 runtime CRUD API (`/api/v1/runtime/...`)
-- [ ] `[SE][QA]` Backend starts cleanly with migration applied
+- [x] `[SE]` Migration creates both tables with correct columns and types
+- [x] `[SE]` Both tables registered in sys_table; all columns registered in sys_column
+- [x] `[SE]` Default STANDARD price list seeded (is_default = true)
+- [x] `[SE]` Migration is idempotent (safe to re-run — DROP IF EXISTS / WHERE NOT EXISTS guards)
+- [x] `[QA]` Tables queryable via PRD-001 runtime CRUD API (`/api/v1/runtime/...`)
+- [x] `[SE][QA]` Backend starts cleanly with migration applied
 
 ---
 

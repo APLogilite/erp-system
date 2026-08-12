@@ -1,12 +1,10 @@
 # Project Board
 
-Last Updated: 2026-07-30
+Last Updated: 2026-08-12
 
-Updated By: Software Engineer
+Updated By: QA Engineer
 
-(PRD-005 COMPLETED v1.3.1. BUG-013/014/015 RESOLVED, ENH-004 COMPLETED — ready for merge to main.)
-
-(Sales & Customer Management module planned: PRD-006/007/008/009 APPROVED. 33 new tasks generated (TASK-060..092). PRD-006 root tasks READY_FOR_DEV.)
+(PRD-006 TESTING COMPLETE — all 10 tasks TESTED. 6 manual scenarios pending user confirmation.)
 
 ---
 
@@ -26,12 +24,7 @@ See `ai/agent/rules/status-transitions.md` for full transition rules.
 
 ## Ready For Development
 
-| Task | Title | PRD | Priority | Depends On |
-|------|-------|-----|----------|------------|
-| TASK-060 | Create Document Sequence table and auto-numbering service | PRD-006 | High | — |
-| TASK-061 | Create Price List tables with metadata registration | PRD-006 | High | — |
-| TASK-062 | Create Discount Rule table with metadata registration | PRD-006 | Medium | — |
-| TASK-063 | Create Quotation tables with metadata registration | PRD-006 | High | — |
+*(none — all PRD-006 tasks completed)*
 
 ---
 
@@ -39,12 +32,6 @@ See `ai/agent/rules/status-transitions.md` for full transition rules.
 
 | Task | Title | PRD | Priority | Depends On |
 |------|-------|-----|----------|------------|
-| TASK-064 | Implement Price Resolution backend service | PRD-006 | High | TASK-061 |
-| TASK-065 | Implement Discount Resolution backend service | PRD-006 | Medium | TASK-062 |
-| TASK-066 | Seed Quotation, Price List, Discount, and Sequence forms | PRD-006 | High | TASK-060/061/062/063 |
-| TASK-067 | Implement Quotation calculation API | PRD-006 | High | TASK-063/064/065 |
-| TASK-068 | Implement Quotation to Order conversion | PRD-006 | High | TASK-060, TASK-067 |
-| TASK-069 | Deprecate hardcoded sales/ and order/ modules | PRD-006 | High | TASK-066, TASK-068 |
 | TASK-070 | Create Payment Term table with seed data and metadata | PRD-007 | High | PRD-006 |
 | TASK-071 | Add credit limit and payment term to Business Partner | PRD-007 | High | TASK-070 |
 | TASK-072 | Add payment term to Order and Invoice tables | PRD-007 | High | TASK-070 |
@@ -80,7 +67,7 @@ See `ai/agent/rules/status-transitions.md` for full transition rules.
 | PRD-003 | ERP Order Flow — Transaction Forms | 1.0.0 | **COMPLETED** | High |
 | PRD-004 | Window Hierarchy & Menu System | 1.1.0 | **COMPLETED** | High |
 | PRD-005 | Backend-Frontend Separation & Code Standardization | 1.3.1 | **COMPLETED** | High |
-| PRD-006 | Sales Quotation & Price Management | 1.0.0 | **APPROVED** | High |
+| PRD-006 | Sales Quotation & Price Management | 1.0.0 | **TESTING** | High |
 | PRD-007 | Sales Order Workflow & Customer Management | 1.0.0 | **APPROVED** | High |
 | PRD-008 | CRM Pipeline & Sales Team Management | 1.0.0 | **APPROVED** | Medium |
 | PRD-009 | Sales Return & Analytics | 1.0.0 | **APPROVED** | Medium |
@@ -190,6 +177,16 @@ See `ai/agent/rules/status-transitions.md` for full transition rules.
 | TASK-057 | 2026-07-17 | 1.3.1 |
 | TASK-058 | 2026-07-17 | 1.3.1 |
 | TASK-059 | 2026-07-17 | 1.3.1 |
+| TASK-060 | 2026-08-12 | 1.0.0 |
+| TASK-061 | 2026-08-12 | 1.0.0 |
+| TASK-062 | 2026-08-12 | 1.0.0 |
+| TASK-063 | 2026-08-12 | 1.0.0 |
+| TASK-064 | 2026-08-12 | 1.0.0 |
+| TASK-065 | 2026-08-12 | 1.0.0 |
+| TASK-066 | 2026-08-12 | 1.0.0 |
+| TASK-067 | 2026-08-12 | 1.0.0 |
+| TASK-068 | 2026-08-12 | 1.0.0 |
+| TASK-069 | 2026-08-12 | 1.0.0 |
 
 ---
 
@@ -239,20 +236,16 @@ See `ai/agent/rules/status-transitions.md` for full transition rules.
 | Status | Count |
 |--------|-------|
 | PRDs | 9 (5 COMPLETED, 4 APPROVED) |
-| Ready For Dev | 4 (TASK-060..063, PRD-006) |
+| Ready For Dev | 0 |
 | Ready For Test | 0 |
 | In Testing | 0 |
 | In Development | 0 |
-| Planned | 29 (TASK-064..092) |
+| Planned | 23 (TASK-070..092) |
 | Bugs | 15 (8 COMPLETED, 1 CANCELLED, 6 RESOLVED) |
 | Completed (PRD-001) | 27 tasks + 2 enhancements (ENH-001, ENH-003) |
 | Completed (PRD-002) | 3 tasks + 1 enhancement (TASK-033/034/035 + ENH-002) |
 | Completed (PRD-003) | 5 tasks (TASK-028/029/030/031/032) — merged to main |
 | Completed (PRD-004) | 10 tasks (TASK-036..045) — merged to main |
 | Completed (PRD-005) | 14 tasks (TASK-046..059) — BUG-013 opened, PRD-005 REOPENED |
-| PRD-006 (APPROVED) | 10 tasks (TASK-060..069) — 4 READY_FOR_DEV, 6 PLANNED |
-| PRD-007 (APPROVED) | 8 tasks (TASK-070..077) — 8 PLANNED |
-| PRD-008 (APPROVED) | 9 tasks (TASK-078..086) — 9 PLANNED |
-| PRD-009 (APPROVED) | 6 tasks (TASK-087..092) — 6 PLANNED |
-| Total Tasks | 61 completed + 33 new = 94 total |
-| PRD-005 Status | **COMPLETED** (v1.3.1) — all tasks, bugs, and enhancements resolved; ready for merge to main |
+| Completed (PRD-006) | 10 tasks (TASK-060..069) — all TESTED, 6 manual scenarios pending |
+| Total Tasks | 71 completed + 23 planned = 94 total |

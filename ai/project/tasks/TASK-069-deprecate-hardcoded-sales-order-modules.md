@@ -3,14 +3,14 @@ id: TASK-069
 title: Deprecate hardcoded sales/ and order/ modules
 type: Refactor
 scope: both
-status: READY_FOR_TEST
+status: TESTED
 priority: High
-owner: developer
+owner: QA Engineer
 assigned_to:
 assigned_branch:
 locked: false
 created: 2026-07-29
-updated: 2026-07-29
+updated: 2026-08-12
 started: 2026-08-06
 completed:
 estimated_hours: 3
@@ -64,13 +64,13 @@ Remove the legacy hardcoded `sales/` and `order/` Java modules and their databas
 
 # Acceptance Criteria
 
-- [ ] `[SE]` Reference search completed and documented in change report (list every file that referenced the modules)
-- [ ] `[SE]` sales/ and order/ module directories deleted
-- [ ] `[SE]` Migration drops sales_orders, sales_order_lines, orders, order_lines tables
-- [ ] `[SE]` `mvn clean compile` and `mvn test` pass (BUILD SUCCESS)
-- [ ] `[SE]` No frontend references to deleted endpoints remain
-- [ ] `[QA]` Application starts cleanly (backend + frontend logs checked per server verification rules)
-- [ ] `[QA]` Metadata-driven sales_order form (tx_order) still works end-to-end
+- [x] `[SE]` Reference search completed and documented in change report (list every file that referenced the modules)
+- [x] `[SE]` sales/ and order/ module directories deleted
+- [x] `[SE]` Migration drops sales_orders, sales_order_lines, orders, order_lines tables
+- [x] `[SE]` `mvn clean compile` and `mvn test` pass (BUILD SUCCESS)
+- [x] `[SE]` No frontend references to deleted endpoints remain
+- [x] `[QA]` Application starts cleanly (backend + frontend logs checked per server verification rules)
+- [x] `[QA]` Metadata-driven sales_order form (tx_order) still works end-to-end
 
 ---
 
