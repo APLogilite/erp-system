@@ -3,10 +3,33 @@ document: CHANGELOG
 version: 1.0.0
 status: ACTIVE
 owner: Product Manager
-last_updated: 2026-08-12
+last_updated: 2026-08-14
 ---
 
 # Changelog
+
+## 2026-08-14 (PRD-006 QA Complete — READY_FOR_DEPLOYMENT)
+
+### Summary
+User confirmed all 6 pending manual UI scenarios PASSED. PRD-006 (Sales Quotation & Price Management v1.0.0) advanced from TESTING to READY_FOR_DEPLOYMENT. All 10 tasks (TASK-060..069) remain TESTED. Zero bugs found.
+
+### Manual UI Scenarios Confirmed
+| Scenario | Result |
+|----------|--------|
+| MS-001 — New menu entries visible | ✅ PASSED |
+| MS-002 — Document Sequence listing | ✅ PASSED |
+| MS-003 — Price List header + Lines child tab | ✅ PASSED |
+| MS-004 — Discount Rule type dropdown | ✅ PASSED |
+| MS-005 — Sales Quotation header + status dropdown | ✅ PASSED |
+| MS-006 — Existing Sales Orders regression | ✅ PASSED |
+
+### PRD Status Changed
+- **PRD-006** — Sales Quotation & Price Management v1.0.0: **TESTING → READY_FOR_DEPLOYMENT**
+
+### Project State
+- 5 PRDs COMPLETED (PRD-001..005)
+- 1 PRD READY_FOR_DEPLOYMENT (PRD-006)
+- 3 PRDs APPROVED (PRD-007..009)
 
 ## 2026-08-12 (PRD-006 QA Testing Complete)
 

@@ -1,10 +1,10 @@
 # Project Board
 
-Last Updated: 2026-08-12
+Last Updated: 2026-08-14
 
 Updated By: QA Engineer
 
-(PRD-006 TESTING COMPLETE — all 10 tasks TESTED. 6 manual scenarios pending user confirmation.)
+(PRD-006 READY FOR DEPLOYMENT — all 10 tasks TESTED, all 6 manual UI scenarios PASSED.)
 
 ---
 
@@ -67,7 +67,7 @@ See `ai/agent/rules/status-transitions.md` for full transition rules.
 | PRD-003 | ERP Order Flow — Transaction Forms | 1.0.0 | **COMPLETED** | High |
 | PRD-004 | Window Hierarchy & Menu System | 1.1.0 | **COMPLETED** | High |
 | PRD-005 | Backend-Frontend Separation & Code Standardization | 1.3.1 | **COMPLETED** | High |
-| PRD-006 | Sales Quotation & Price Management | 1.0.0 | **TESTING** | High |
+| PRD-006 | Sales Quotation & Price Management | 1.0.0 | **READY_FOR_DEPLOYMENT** | High |
 | PRD-007 | Sales Order Workflow & Customer Management | 1.0.0 | **APPROVED** | High |
 | PRD-008 | CRM Pipeline & Sales Team Management | 1.0.0 | **APPROVED** | Medium |
 | PRD-009 | Sales Return & Analytics | 1.0.0 | **APPROVED** | Medium |
@@ -235,7 +235,7 @@ See `ai/agent/rules/status-transitions.md` for full transition rules.
 
 | Status | Count |
 |--------|-------|
-| PRDs | 9 (5 COMPLETED, 4 APPROVED) |
+| PRDs | 9 (5 COMPLETED, 1 READY_FOR_DEPLOYMENT, 3 APPROVED) |
 | Ready For Dev | 0 |
 | Ready For Test | 0 |
 | In Testing | 0 |

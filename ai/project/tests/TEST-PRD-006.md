@@ -146,7 +146,7 @@ test_scope: Full PRD-006 — all 10 tasks (TASK-060..069) functional verificatio
 | | 3. Expand Transactions → Sales — verify **Sales Quotations** is present |
 | | 4. Expand Administration — verify **Document Sequences** is present |
 | Expected | All 4 menu items visible and clickable |
-| Status | **PENDING** |
+| Status | **PASSED** |
 
 ### MS-002: Document Sequence listing
 | Field | Value |
@@ -157,7 +157,7 @@ test_scope: Full PRD-006 — all 10 tasks (TASK-060..069) functional verificatio
 | | 3. Open the "quotation" sequence record |
 | | 4. Observe: Name, Prefix (QT-), Next Value, Padding (4) fields |
 | Expected | List shows all sequences; form fields populated |
-| Status | **PENDING** |
+| Status | **PASSED** |
 
 ### MS-003: Price List — header + Lines child tab
 | Field | Value |
@@ -169,7 +169,7 @@ test_scope: Full PRD-006 — all 10 tasks (TASK-060..069) functional verificatio
 | | 4. Click the **Lines** / **Price List Line** tab |
 | | 5. Verify grid shows 3 products with prices |
 | Expected | Header form + child tab with 3 line items |
-| Status | **PENDING** |
+| Status | **PASSED** |
 
 ### MS-004: Discount Rule — type dropdown
 | Field | Value |
@@ -180,7 +180,7 @@ test_scope: Full PRD-006 — all 10 tasks (TASK-060..069) functional verificatio
 | | 3. Verify: Type dropdown shows percentage / fixed_amount |
 | | 4. Verify: Value = 10.00 |
 | Expected | Discount type dropdown works; correct values |
-| Status | **PENDING** |
+| Status | **PASSED** |
 
 ### MS-005: Sales Quotation — header + status dropdown
 | Field | Value |
@@ -192,7 +192,7 @@ test_scope: Full PRD-006 — all 10 tasks (TASK-060..069) functional verificatio
 | | 4. Status dropdown options: draft/sent/accepted/rejected/converted/expired |
 | | 5. Click **Lines** tab — verify grid columns (Line #, Product, Qty, Unit Price, Line Total) |
 | Expected | Form renders with status dropdown; Lines tab present |
-| Status | **PENDING** |
+| Status | **PASSED** |
 
 ### MS-006: Existing Sales Orders still work (regression)
 | Field | Value |
@@ -203,7 +203,7 @@ test_scope: Full PRD-006 — all 10 tasks (TASK-060..069) functional verificatio
 | | 3. Verify form loads correctly with all fields |
 | | 4. Verify **Lines** tab shows line items |
 | Expected | Sales Orders form fully functional; no errors |
-| Status | **PENDING** |
+| Status | **PASSED** |
 
 ---
 
