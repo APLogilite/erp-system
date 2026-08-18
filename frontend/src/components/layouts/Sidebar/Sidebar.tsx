@@ -2,7 +2,6 @@ import {
   Dashboard,
   Dashboard as DashboardIcon,
   Inventory,
-  ShoppingCart,
   People,
   Settings,
   Business,

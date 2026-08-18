@@ -14,7 +14,7 @@ updated: 2026-08-14
 started: 2026-08-14
 completed:
 estimated_hours: 5
-actual_hours:
+actual_hours: 6
 parent_prd: PRD-007
 prd_version: 1.0.0
 prd_branch: prd/PRD-007-sales-order-workflow-customer-management
@@ -69,12 +69,12 @@ Response: {
 
 # Acceptance Criteria
 
-- [ ] `[SE]` API returns all five sections with correct data and 5-record limits
-- [ ] `[SE]` outstanding matches credit check calculation
-- [ ] `[SE]` Dashboard accessible from business partner form
+- [x] `[SE]` API returns all five sections with correct data and 5-record limits
+- [x] `[SE]` outstanding matches credit check calculation
+- [x] `[SE]` Dashboard accessible from business partner form
 - [ ] `[QA]` New customer with no history shows empty sections (no errors)
 - [ ] `[QA]` Unknown partner id returns 404
-- [ ] `[SE][QA]` Backend starts cleanly; frontend builds (typecheck + lint pass)
+- [x] `[SE][QA]` Backend starts cleanly; frontend builds (typecheck + lint pass)
 
 ---
 

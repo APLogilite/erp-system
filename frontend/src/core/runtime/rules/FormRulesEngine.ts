@@ -8,6 +8,7 @@
  */
 
 import type { FieldDefinition, FieldRule } from '../hooks/useForm.types';
+
 import { getOperator } from './ruleOperators';
 
 // ---- Types ----

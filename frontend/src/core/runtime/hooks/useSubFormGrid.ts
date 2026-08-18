@@ -1,6 +1,8 @@
 import { useState, useCallback } from 'react';
-import type { RecordEntry, SubFormDefinition } from './useForm.types';
+
 import type { ColumnInfo } from '../components/InlineEditableGrid';
+
+import type { RecordEntry, SubFormDefinition } from './useForm.types';
 
 export interface SubFormGridState {
   records: RecordEntry[];

@@ -18,11 +18,11 @@ import {
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import type { FormDefinition } from '../hooks/useForm.types';
+import { useRecordList } from '../hooks/useRecordList';
+
 import { EmptyState } from '@/components/ui/EmptyState';
 import { ErrorState } from '@/components/ui/ErrorState';
-
-import { useRecordList } from '../hooks/useRecordList';
-import type { FormDefinition } from '../hooks/useForm.types';
 
 interface Props {
   formDefinition: FormDefinition;

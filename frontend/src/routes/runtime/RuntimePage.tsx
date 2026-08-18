@@ -53,9 +53,7 @@ export function RuntimePage() {
   const viewCode = `${formCode}_form`;
 
   return (
-    <PageContainer
-      title={(bundle.model as Record<string, unknown>)?.name as string ?? formCode}
-    >
+    <PageContainer title={((bundle.model as Record<string, unknown>)?.name as string) ?? formCode}>
       <RuntimeRenderer metadataBundle={bundle as never} viewCode={viewCode} />
     </PageContainer>
   );

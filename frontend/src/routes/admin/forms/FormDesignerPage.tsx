@@ -16,7 +16,6 @@ import { useNavigate, useParams } from 'react-router-dom';
 
 import { ErrorState } from '@/components/ui/ErrorState';
 import { useAuthStore } from '@/core/auth/authStore';
-
 import { FieldsTab } from '@/modules/admin/forms/components/FieldsTab';
 import { GlobalFormTenantAccessTable } from '@/modules/admin/forms/components/GlobalFormTenantAccessTable';
 import { LayoutTab } from '@/modules/admin/forms/components/LayoutTab';

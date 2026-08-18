@@ -10,8 +10,8 @@ import {
 import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
-import { useMenuItems } from '../hooks/useMenuItems';
 import type { MenuTreeNode } from '../api/runtimeApi';
+import { useMenuItems } from '../hooks/useMenuItems';
 
 // Simple folder/file icons using unicode/MUI
 const GROUP_EXPANDED = '▼';
@@ -102,6 +102,10 @@ export function MenuNavigation() {
 
   const handleNavigate = (windowName: string | undefined) => {
     if (!windowName) return;
+    if (windowName === 'Customer 360') {
+      navigate('/app/customer-360');
+      return;
+    }
     navigate(`/app/window/${encodeURIComponent(windowName)}`);
   };
 

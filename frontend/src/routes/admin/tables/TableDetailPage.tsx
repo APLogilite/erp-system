@@ -14,6 +14,8 @@ import {
 import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
+import { ErrorState } from '@/components/ui/ErrorState';
+import { notifyActions } from '@/core/store/notifications/notificationStore';
 import { ColumnFormDialog } from '@/modules/admin/tables/components/ColumnFormDialog';
 import { ColumnList } from '@/modules/admin/tables/components/ColumnList';
 import { SchemaHistoryTimeline } from '@/modules/admin/tables/components/SchemaHistoryTimeline';
@@ -29,9 +31,6 @@ import type {
   TableColumn,
   UpdateColumnPayload,
 } from '@/modules/admin/tables/types';
-
-import { ErrorState } from '@/components/ui/ErrorState';
-import { notifyActions } from '@/core/store/notifications/notificationStore';
 
 export function TableDetailPage() {
   const { tableId } = useParams<{ tableId: string }>();

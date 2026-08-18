@@ -9,9 +9,10 @@ import {
   useMediaQuery,
   useTheme,
 } from '@mui/material';
-import { useCallback, useState } from 'react';
+import { ReactNode, useCallback, useState } from 'react';
 
 import { useKeyboardShortcuts } from '../hooks/useKeyboardShortcuts';
+
 import { RecordNavigator } from './RecordNavigator';
 import { UnsavedChangesDialog } from './UnsavedChangesDialog';
 
@@ -88,7 +89,7 @@ export function FormToolbar({
     { key: 'ArrowRight', altKey: true, action: onNext, enabled: () => !hasNext },
   ]);
 
-  const btn = (icon: React.ReactNode, label: string, onClick: () => void, disabled = false) =>
+  const btn = (icon: ReactNode, label: string, onClick: () => void, disabled = false) =>
     isSmall ? (
       <Tooltip title={label} key={label}>
         <span>

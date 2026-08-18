@@ -1,10 +1,17 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
 
+import { FormDesignerPage } from './admin/forms/FormDesignerPage';
+import { FormListPage } from './admin/forms/FormListPage';
 import { CreateTablePage } from './admin/tables/CreateTablePage';
 import { TableDetailPage } from './admin/tables/TableDetailPage';
 import { TableListPage } from './admin/tables/TableListPage';
-import { FormDesignerPage } from './admin/forms/FormDesignerPage';
-import { FormListPage } from './admin/forms/FormListPage';
+import { ChangePasswordPage } from './auth/change-password/ChangePasswordPage';
+import { ForgotPasswordPage } from './auth/forgot-password/ForgotPasswordPage';
+import { LoginPage } from './auth/LoginPage';
+import { ResetPasswordPage } from './auth/reset-password/ResetPasswordPage';
+import { Customer360Page } from './customer/Customer360Page';
+import { Customer360SelectorPage } from './customer/Customer360SelectorPage';
+import { DashboardPage } from './dashboard/DashboardPage';
 import { AdminDashboardPage } from './identity/admin/AdminDashboardPage';
 import { AuditPage } from './identity/admin/audit/AuditPage';
 import { BranchesAdminPage } from './identity/admin/branches/BranchesAdminPage';
@@ -20,12 +27,6 @@ import { ContextSelectPage } from './identity/context/ContextSelectPage';
 import { PreferencesPage } from './identity/preferences/PreferencesPage';
 import { ProfilePage } from './identity/profile/ProfilePage';
 import { SessionsPage } from './identity/sessions/SessionsPage';
-
-import { ChangePasswordPage } from './auth/change-password/ChangePasswordPage';
-import { ForgotPasswordPage } from './auth/forgot-password/ForgotPasswordPage';
-import { LoginPage } from './auth/LoginPage';
-import { ResetPasswordPage } from './auth/reset-password/ResetPasswordPage';
-import { DashboardPage } from './dashboard/DashboardPage';
 import { RuntimePage } from './runtime/RuntimePage';
 import { WindowPage } from './window/WindowPage';
 
@@ -150,6 +151,8 @@ export function AppRoutes() {
           />
           <Route path="runtime" element={<RuntimePage />} />
           <Route path="window/:windowName" element={<WindowPage />} />
+          <Route path="customer-360" element={<Customer360SelectorPage />} />
+          <Route path="customer-360/:partnerId" element={<Customer360Page />} />
         </Route>
       </Route>
 

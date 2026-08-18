@@ -32,9 +32,8 @@ function unwrap<T>(response: { data: ApiResponse<T> }): T {
  * GET /api/v1/runtime/meta/generation
  */
 export async function fetchDefinitionGeneration(): Promise<string> {
-  const response = await apiClient.get<ApiResponse<{ generation: string }>>(
-    `/runtime/meta/generation`
-  );
+  const response =
+    await apiClient.get<ApiResponse<{ generation: string }>>(`/runtime/meta/generation`);
   return unwrap(response).generation;
 }
 

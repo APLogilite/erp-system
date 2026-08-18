@@ -83,16 +83,26 @@ public class CreditCheckService {
     return new PartnerCredit(limit, hold != null && hold);
   }
 
+  /**
+   * Public helper: calculate outstanding exposure for a partner across open orders
+   * and unpaid invoices, without excluding any order.
+   */
+  public BigDecimal calculateOutstanding(UUID partnerId, UUID tenantId) {
+    return calculateOutstanding(partnerId, tenantId, null);
+  }
+
   private BigDecimal calculateOutstanding(UUID partnerId, UUID tenantId, UUID excludeOrderId) {
-    BigDecimal orders = jdbc.queryForObject(
-        "SELECT COALESCE(SUM(grand_total), 0) FROM tx_order "
-          + "WHERE partner_id = :pid AND tenant_id = :tid AND is_active = true "
-          + "AND status IN ('confirmed','delivered') AND id <> :exclude",
-        new MapSqlParameterSource()
-          .addValue("pid", partnerId)
-          .addValue("tid", tenantId)
-          .addValue("exclude", excludeOrderId),
-        BigDecimal.class);
+    String orderSql = "SELECT COALESCE(SUM(grand_total), 0) FROM tx_order "
+        + "WHERE partner_id = :pid AND tenant_id = :tid AND is_active = true "
+        + "AND status IN ('confirmed','delivered')";
+    MapSqlParameterSource orderParams = new MapSqlParameterSource()
+        .addValue("pid", partnerId)
+        .addValue("tid", tenantId);
+    if (excludeOrderId != null) {
+      orderSql += " AND id <> :exclude";
+      orderParams.addValue("exclude", excludeOrderId);
+    }
+    BigDecimal orders = jdbc.queryForObject(orderSql, orderParams, BigDecimal.class);
 
     BigDecimal invoices = jdbc.queryForObject(
         "SELECT COALESCE(SUM(due_amount), 0) FROM tx_invoice "

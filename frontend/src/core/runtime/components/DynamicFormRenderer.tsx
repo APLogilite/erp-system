@@ -8,7 +8,7 @@
  */
 
 import { Alert, Box, CircularProgress, Stack, Typography } from '@mui/material';
-import React, { useCallback, useMemo } from 'react';
+import { FC, useCallback, useMemo } from 'react';
 
 import type { FieldDefinition, FormDefinition, LayoutSection } from '../hooks/useForm.types';
 
@@ -34,7 +34,7 @@ export interface DynamicFormRendererProps {
 /**
  * Renders the complete dynamic form based on a FormDefinition.
  */
-export const DynamicFormRenderer: React.FC<DynamicFormRendererProps> = ({
+export const DynamicFormRenderer: FC<DynamicFormRendererProps> = ({
   formDefinition,
   record,
   mode,

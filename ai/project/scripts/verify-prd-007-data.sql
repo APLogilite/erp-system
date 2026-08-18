@@ -98,3 +98,10 @@ SELECT 'TASK-075: credit_check columns exist on partner' AS check_name,
                WHERE table_schema = 'public' AND table_name = 'md_business_partner' AND column_name = 'credit_limit')
        AND EXISTS (SELECT 1 FROM information_schema.columns
                WHERE table_schema = 'public' AND table_name = 'md_business_partner' AND column_name = 'credit_hold') AS passed;
+
+-- TASK-076: Customer 360
+SELECT 'TASK-076: Customer 360 window exists' AS check_name,
+       EXISTS (SELECT 1 FROM sys_window WHERE name = 'Customer 360') AS passed;
+
+SELECT 'TASK-076: Customer 360 menu exists' AS check_name,
+       EXISTS (SELECT 1 FROM sys_menu WHERE name = 'Customer 360') AS passed;
