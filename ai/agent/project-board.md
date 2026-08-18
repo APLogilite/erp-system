@@ -4,7 +4,7 @@ Last Updated: 2026-08-14
 
 Updated By: Software Engineer
 
-(PRD-007 IN_DEVELOPMENT — TASK-070/071 READY_FOR_TEST; TASK-072/073/074/075/076 READY_FOR_DEV.)
+(PRD-007 IN_DEVELOPMENT — TASK-070/071/072 READY_FOR_TEST; TASK-073/074/075/076 READY_FOR_DEV.)
 
 ---
 
@@ -26,7 +26,6 @@ See `ai/agent/rules/status-transitions.md` for full transition rules.
 
 | Task | Title | PRD | Priority | Depends On |
 |------|-------|-----|----------|------------|
-| TASK-072 | Add payment term to Order and Invoice tables | PRD-007 | High | TASK-070 |
 | TASK-073 | Implement Order status workflow backend service | PRD-007 | High | PRD-006 |
 | TASK-074 | Implement Order auto-calculation backend service | PRD-007 | High | PRD-006 |
 | TASK-075 | Implement Customer Credit Check backend service | PRD-007 | High | TASK-071, TASK-073 |
@@ -40,6 +39,7 @@ See `ai/agent/rules/status-transitions.md` for full transition rules.
 |------|-------|-----|----------|
 | TASK-070 | Create Payment Term table with seed data and metadata | PRD-007 | High |
 | TASK-071 | Add credit limit and payment term to Business Partner | PRD-007 | High |
+| TASK-072 | Add payment term to Order and Invoice tables | PRD-007 | High |
 
 ---
 
@@ -244,8 +244,8 @@ See `ai/agent/rules/status-transitions.md` for full transition rules.
 | Status | Count |
 |--------|-------|
 | PRDs | 9 (6 COMPLETED, 1 IN_DEVELOPMENT, 2 APPROVED) |
-| Ready For Dev | 5 |
-| Ready For Test | 2 |
+| Ready For Dev | 4 |
+| Ready For Test | 3 |
 | In Testing | 0 |
 | In Development | 0 |
 | Planned | 16 (TASK-077/087..092) |
