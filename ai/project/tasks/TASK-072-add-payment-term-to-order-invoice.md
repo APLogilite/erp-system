@@ -3,12 +3,12 @@ id: TASK-072
 title: Add payment term to Order and Invoice tables
 type: Feature
 scope: database
-status: READY_FOR_TEST
+status: TESTING
 priority: High
 owner: developer
 assigned_to: Software Engineer
 assigned_branch: feature/TASK-072
-locked: false
+locked: true
 created: 2026-07-29
 updated: 2026-08-14
 started: 2026-08-14
