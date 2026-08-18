@@ -29,8 +29,8 @@ import {
   Typography,
 } from '@mui/material';
 import { useMutation, useQueries, useQuery, useQueryClient } from '@tanstack/react-query';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { Fragment, useCallback, useEffect, useRef, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import { PageContainer } from '@/components/layouts/PageContainer';
 import {
@@ -70,6 +70,7 @@ interface RecordDialogProps {
 }
 
 function RecordDialog({ open, windowName, windowDef, recordId, onClose }: RecordDialogProps) {
+  const navigate = useNavigate();
   const queryClient = useQueryClient();
   const mainTab = windowDef.tabs.find((t) => !t.parentLinkColumnId);
   const [formData, setFormData] = useState<Record<string, unknown>>({});
@@ -117,11 +118,19 @@ function RecordDialog({ open, windowName, windowDef, recordId, onClose }: Record
   // (i.e., fields with filter_where_clause), fetch via the dynamic API
   const lookupResults: Record<string, { id: string; label: string }[]> = {};
   const dynamicLookupFields = (currentLevelTab?.fields ?? []).filter(
-    (f) => f.column.relationTable && (!f.column.lookupOptions || f.column.lookupOptions.length === 0)
+    (f) =>
+      f.column.relationTable && (!f.column.lookupOptions || f.column.lookupOptions.length === 0)
   );
   const dynamicQueryResults = useQueries({
     queries: dynamicLookupFields.map((f) => ({
-      queryKey: ['dynamic-lookup', f.column.relationTable, f.column.code, currentLevelTab.id, windowId, drillContext],
+      queryKey: [
+        'dynamic-lookup',
+        f.column.relationTable,
+        f.column.code,
+        currentLevelTab.id,
+        windowId,
+        drillContext,
+      ],
       queryFn: () =>
         fetchLookupRecords(
           f.column.relationTable!,
@@ -137,9 +146,10 @@ function RecordDialog({ open, windowName, windowDef, recordId, onClose }: Record
   dynamicLookupFields.forEach((f, idx) => {
     const data = dynamicQueryResults[idx]?.data;
     if (data) {
-      lookupResults[f.column.relationTable!] = (data as Record<string, unknown>[]).map(
-        (r) => ({ id: String(r.id), label: String(r._display ?? r.label ?? r.id) })
-      );
+      lookupResults[f.column.relationTable!] = (data as Record<string, unknown>[]).map((r) => ({
+        id: String(r.id),
+        label: String(r._display ?? r.label ?? r.id),
+      }));
     }
   });
 
@@ -334,7 +344,7 @@ function RecordDialog({ open, windowName, windowDef, recordId, onClose }: Record
         {/* Breadcrumb navigation path */}
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, mb: 0.5 }}>
           {breadcrumbParts.map((part, i) => (
-            <React.Fragment key={i}>
+            <Fragment key={i}>
               {i > 0 && (
                 <Typography sx={{ fontSize: 13, color: 'text.secondary' }}>&gt;</Typography>
               )}
@@ -356,7 +366,7 @@ function RecordDialog({ open, windowName, windowDef, recordId, onClose }: Record
               >
                 {part}
               </Button>
-            </React.Fragment>
+            </Fragment>
           ))}
         </Box>
         {currentTitle}
@@ -403,9 +413,10 @@ function RecordDialog({ open, windowName, windowDef, recordId, onClose }: Record
                 case 'enum': {
                   let opts: string[] = [];
                   if (field.column.enumOptions) {
-                    opts = typeof field.column.enumOptions === 'string'
-                      ? JSON.parse(field.column.enumOptions)
-                      : field.column.enumOptions;
+                    opts =
+                      typeof field.column.enumOptions === 'string'
+                        ? JSON.parse(field.column.enumOptions)
+                        : field.column.enumOptions;
                   }
                   return (
                     <FormControl key={field.column.code} fullWidth margin="dense" sx={{ mb: 1 }}>
@@ -417,7 +428,9 @@ function RecordDialog({ open, windowName, windowDef, recordId, onClose }: Record
                         disabled={field.isReadonly || isSaving}
                         required={field.isMandatory}
                       >
-                        <MenuItem value=""><em>Select...</em></MenuItem>
+                        <MenuItem value="">
+                          <em>Select...</em>
+                        </MenuItem>
                         {opts.map((o) => (
                           <MenuItem key={o} value={o}>
                             {o}
@@ -447,7 +460,8 @@ function RecordDialog({ open, windowName, windowDef, recordId, onClose }: Record
                 case 'many2many':
                 case 'one2many': {
                   // Use eager-loaded lookupOptions if available, otherwise fall back to dynamic fetch
-                  const lo = field.column.lookupOptions ?? lookupResults[field.column.relationTable!] ?? [];
+                  const lo =
+                    field.column.lookupOptions ?? lookupResults[field.column.relationTable!] ?? [];
                   return (
                     <FormControl key={field.column.code} fullWidth margin="dense" sx={{ mb: 1 }}>
                       <InputLabel>{label}</InputLabel>
@@ -559,6 +573,17 @@ function RecordDialog({ open, windowName, windowDef, recordId, onClose }: Record
       </DialogContent>
 
       <DialogActions>
+        {windowName === 'Business Partners' && recordId && (
+          <Button
+            onClick={() => {
+              onClose();
+              navigate(`/app/customer-360/${recordId}`);
+            }}
+            sx={{ mr: 'auto' }}
+          >
+            Customer 360
+          </Button>
+        )}
         <Button onClick={onClose}>Cancel</Button>
         <Button onClick={handleSave} variant="contained" disabled={isSaving || isLoadingRecord}>
           {isSaving ? 'Saving...' : 'Save'}
@@ -810,7 +835,9 @@ export function WindowPage() {
   }
 
   // Determine current top-level tab
-  const topTabs = windowDef.tabs.filter((t) => !t.parentLinkColumnId).sort((a, b) => a.seqNo - b.seqNo);
+  const topTabs = windowDef.tabs
+    .filter((t) => !t.parentLinkColumnId)
+    .sort((a, b) => a.seqNo - b.seqNo);
   const currentTab = topTabs[activeTab] ?? topTabs[0];
 
   const fields = currentTab?.fields ?? [];

@@ -15,7 +15,7 @@ import {
   Select,
   TextField,
 } from '@mui/material';
-import React, { useCallback } from 'react';
+import { FC, useCallback } from 'react';
 
 import type { FieldDefinition } from '../hooks/useForm.types';
 
@@ -56,7 +56,7 @@ function resolveInputType(field: FieldDefinition): string {
 /**
  * Renders a single form field based on its type definition.
  */
-export const FormFieldRenderer: React.FC<FormFieldRendererProps> = ({
+export const FormFieldRenderer: FC<FormFieldRendererProps> = ({
   field,
   value,
   mode,

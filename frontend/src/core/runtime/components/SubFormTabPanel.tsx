@@ -2,6 +2,7 @@ import { Box, Tab, Tabs } from '@mui/material';
 import { useState } from 'react';
 
 import type { RecordEntry, SubFormDefinition } from '../hooks/useForm.types';
+
 import { InlineEditableGrid } from './InlineEditableGrid';
 
 interface Props {

@@ -7,6 +7,7 @@
 import { useMemo } from 'react';
 
 import type { FieldDefinition } from '../hooks/useForm.types';
+
 import { evaluateAllFields, evaluateFieldState } from './FormRulesEngine';
 import type { FieldState, FieldStateMap } from './FormRulesEngine';
 
@@ -35,6 +36,8 @@ export function useFieldStates(
       return {};
     }
     return evaluateAllFields(fields, values);
+    // valuesKey is derived from values to keep the memoization key stable.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fields, valuesKey]);
 }
 
@@ -59,6 +62,8 @@ export function useFieldState(
       return { visible: true, readOnly: false, required: false };
     }
     return evaluateFieldState(field, values);
+    // valuesKey is derived from values to keep the memoization key stable.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [field, valuesKey]);
 }
 
