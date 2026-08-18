@@ -1,5 +1,5 @@
 -- Table: tx_order
--- Created: V20
+-- Created: V20; extended V19 (PRD-007)
 CREATE TABLE tx_order (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     tenant_id UUID NOT NULL,
@@ -15,6 +15,7 @@ CREATE TABLE tx_order (
     grand_total NUMERIC(15,2) DEFAULT 0,
     status VARCHAR(30) DEFAULT 'draft',
     expected_date DATE,
+    payment_term_id UUID REFERENCES md_payment_term(id),
     notes TEXT,
     created_at TIMESTAMP NOT NULL DEFAULT now(),
     updated_at TIMESTAMP NOT NULL DEFAULT now(),
@@ -29,3 +30,4 @@ CREATE INDEX IF NOT EXISTS idx_tx_order_warehouse ON tx_order(warehouse_id);
 CREATE INDEX IF NOT EXISTS idx_tx_order_type ON tx_order(order_type);
 CREATE INDEX IF NOT EXISTS idx_tx_order_tenant ON tx_order(tenant_id);
 CREATE INDEX IF NOT EXISTS idx_tx_order_status ON tx_order(status);
+CREATE INDEX IF NOT EXISTS idx_tx_order_payment_term ON tx_order(payment_term_id);

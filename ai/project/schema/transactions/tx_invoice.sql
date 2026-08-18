@@ -1,5 +1,5 @@
 -- Table: tx_invoice
--- Created: V20
+-- Created: V20; extended V19 (PRD-007)
 CREATE TABLE tx_invoice (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     tenant_id UUID NOT NULL,
@@ -17,6 +17,7 @@ CREATE TABLE tx_invoice (
     paid_amount NUMERIC(15,2) DEFAULT 0,
     due_amount NUMERIC(15,2) DEFAULT 0,
     status VARCHAR(30) DEFAULT 'draft',
+    payment_term_id UUID REFERENCES md_payment_term(id),
     notes TEXT,
     created_at TIMESTAMP NOT NULL DEFAULT now(),
     updated_at TIMESTAMP NOT NULL DEFAULT now(),
@@ -31,3 +32,4 @@ CREATE INDEX IF NOT EXISTS idx_tx_inv_order ON tx_invoice(order_id);
 CREATE INDEX IF NOT EXISTS idx_tx_inv_type ON tx_invoice(invoice_type);
 CREATE INDEX IF NOT EXISTS idx_tx_inv_tenant ON tx_invoice(tenant_id);
 CREATE INDEX IF NOT EXISTS idx_tx_inv_status ON tx_invoice(status);
+CREATE INDEX IF NOT EXISTS idx_tx_inv_payment_term ON tx_invoice(payment_term_id);

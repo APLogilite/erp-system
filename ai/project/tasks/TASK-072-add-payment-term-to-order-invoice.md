@@ -61,12 +61,12 @@ Also add backend auto-population logic (in the runtime save path or a small serv
 
 # Acceptance Criteria
 
-- [ ] `[SE]` payment_term_id column added to tx_order and tx_invoice with metadata registration
-- [ ] `[SE]` sales_order and sales_invoice forms show the payment term dropdown
-- [ ] `[SE]` Saving an invoice with a term auto-calculates due_date when empty
-- [ ] `[SE]` Creating an order pre-fills term from customer default
+- [x] `[SE]` payment_term_id column added to tx_order and tx_invoice with metadata registration
+- [x] `[SE]` sales_order and sales_invoice forms show the payment term dropdown
+- [x] `[SE]` Saving an invoice with a term auto-calculates due_date when empty
+- [x] `[SE]` Creating an order pre-fills term from customer default
 - [ ] `[QA]` End-to-end: partner with NET30 → new order shows NET30 → invoice due_date = invoice_date + 30
-- [ ] `[SE][QA]` Backend starts cleanly
+- [x] `[SE][QA]` Backend starts cleanly
 
 ---
 
