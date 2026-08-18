@@ -77,8 +77,11 @@
 
 | File | Description |
 |------|-------------|
+| `document-sequence.md` | Document auto-numbering — generates QT-0001, SO-0001, etc. with tenant-scoped sequences |
 | `order.md` | Order management — sales/purchase orders, order lines, status flow |
+| `pricing.md` | Price and discount resolution — customer/default price lists and discount rules |
 | `product.md` | Product catalog — definitions, categories, pricing, UOM, SKU tracking |
+| `quotation.md` | Quotation calculation and quote-to-order conversion |
 
 ## pages/
 

@@ -23,7 +23,10 @@
 
 | File | Description |
 |------|-------------|
+| `convert-quotation-to-order.md` | Convert an accepted quotation into a sales order |
+| `create-sales-quotation.md` | Create sales quotation — form → lines → calculate → save |
 | `place-sales-order.md` | Create sales order — form → validation → save → confirm |
+| `resolve-price.md` | Resolve product price and discount for a quotation line |
 
 ## navigation/
 
