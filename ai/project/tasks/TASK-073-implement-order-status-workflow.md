@@ -75,13 +75,13 @@ Rules:
 
 # Acceptance Criteria
 
-- [ ] `[SE]` Valid transitions succeed and update tx_order.status
-- [ ] `[SE]` Invalid transitions return 400 with explicit message
-- [ ] `[SE]` Every transition logged to tx_order_status_log
-- [ ] `[SE]` allowed-transitions endpoint returns correct list per status
+- [x] `[SE]` Valid transitions succeed and update tx_order.status
+- [x] `[SE]` Invalid transitions return 400 with explicit message
+- [x] `[SE]` Every transition logged to tx_order_status_log
+- [x] `[SE]` allowed-transitions endpoint returns correct list per status
 - [ ] `[QA]` Cancel blocked when an invoice exists for the order
 - [ ] `[QA]` Audit log rows show user, timestamp, from/to
-- [ ] `[SE][QA]` Backend starts cleanly
+- [x] `[SE][QA]` Backend starts cleanly
 
 ---
 

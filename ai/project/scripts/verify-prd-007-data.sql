@@ -76,3 +76,13 @@ SELECT 'TASK-072: sales invoice form has payment term' AS check_name,
         JOIN sys_window w ON w.id = tab.window_id
         JOIN sys_column c ON c.id = wf.column_id
         WHERE w.name = 'Sales Invoices' AND c.code = 'payment_term_id') AS passed;
+
+-- TASK-073: Order status workflow
+SELECT 'TASK-073: tx_order_status_log exists' AS check_name,
+       EXISTS (SELECT 1 FROM information_schema.tables
+               WHERE table_schema = 'public' AND table_name = 'tx_order_status_log') AS passed;
+
+SELECT 'TASK-073: order status log columns registered' AS check_name,
+       (SELECT COUNT(*) FROM sys_column c JOIN sys_table t ON t.id = c.table_id
+        WHERE t.name = 'tx_order_status_log'
+          AND c.code IN ('order_id','from_status','to_status','transitioned_by','transitioned_at')) = 5 AS passed;
