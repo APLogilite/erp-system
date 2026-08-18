@@ -411,3 +411,82 @@ export async function fetchMenu(): Promise<MenuTreeNode[]> {
   const response = await apiClient.get<ApiResponse<MenuTreeNode[]>>('/runtime/menu');
   return unwrap(response);
 }
+
+// ---- Sales Order Workflow API (PRD-007 TASK-077) ----
+
+export interface AllowedTransitionsResponse {
+  status: string;
+  allowedTransitions: string[];
+}
+
+export interface TransitionResponse {
+  success: boolean;
+  newStatus: string;
+  message: string;
+}
+
+export interface OrderTotalsResponse {
+  subtotal: number;
+  discountAmount: number;
+  taxAmount: number;
+  grandTotal: number;
+}
+
+export interface CreditCheckResponse {
+  approved: boolean;
+  reason: string;
+  creditLimit: number;
+  outstanding: number;
+  available: number;
+  orderAmount: number;
+}
+
+/**
+ * Lists valid workflow transitions for an order.
+ * GET /api/v1/orders/{id}/allowed-transitions
+ */
+export async function fetchAllowedTransitions(orderId: string): Promise<string[]> {
+  const response = await apiClient.get<ApiResponse<AllowedTransitionsResponse>>(
+    `/orders/${encodeURIComponent(orderId)}/allowed-transitions`
+  );
+  return unwrap(response).allowedTransitions;
+}
+
+/**
+ * Transitions an order to a new status.
+ * POST /api/v1/orders/{id}/transition
+ */
+export async function transitionOrder(
+  orderId: string,
+  targetStatus: string,
+  override = false,
+  overrideReason?: string
+): Promise<TransitionResponse> {
+  const response = await apiClient.post<ApiResponse<TransitionResponse>>(
+    `/orders/${encodeURIComponent(orderId)}/transition`,
+    { targetStatus, override, overrideReason }
+  );
+  return unwrap(response);
+}
+
+/**
+ * Recalculates header totals from order lines.
+ * POST /api/v1/orders/{id}/calculate
+ */
+export async function calculateOrder(orderId: string): Promise<OrderTotalsResponse> {
+  const response = await apiClient.post<ApiResponse<OrderTotalsResponse>>(
+    `/orders/${encodeURIComponent(orderId)}/calculate`
+  );
+  return unwrap(response);
+}
+
+/**
+ * Checks customer credit for an order.
+ * POST /api/v1/orders/{id}/check-credit
+ */
+export async function checkOrderCredit(orderId: string): Promise<CreditCheckResponse> {
+  const response = await apiClient.post<ApiResponse<CreditCheckResponse>>(
+    `/orders/${encodeURIComponent(orderId)}/check-credit`
+  );
+  return unwrap(response);
+}
