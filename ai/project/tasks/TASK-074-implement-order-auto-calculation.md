@@ -3,12 +3,12 @@ id: TASK-074
 title: Implement Order auto-calculation backend service
 type: Feature
 scope: backend
-status: READY_FOR_TEST
+status: TESTING
 priority: High
 owner: developer
 assigned_to: Software Engineer
 assigned_branch: feature/TASK-074
-locked: false
+locked: true
 created: 2026-07-29
 updated: 2026-08-14
 started: 2026-08-14
