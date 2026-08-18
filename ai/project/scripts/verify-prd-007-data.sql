@@ -105,3 +105,31 @@ SELECT 'TASK-076: Customer 360 window exists' AS check_name,
 
 SELECT 'TASK-076: Customer 360 menu exists' AS check_name,
        EXISTS (SELECT 1 FROM sys_menu WHERE name = 'Customer 360') AS passed;
+
+-- TASK-077: Sales Order form metadata
+SELECT 'TASK-077: sales order totals read-only and displayed' AS check_name,
+       NOT EXISTS (
+         SELECT 1
+         FROM sys_window_field swf
+         JOIN sys_tab st ON swf.tab_id = st.id
+         JOIN sys_window sw ON st.window_id = sw.id
+         JOIN sys_column sc ON swf.column_id = sc.id
+         JOIN sys_table tbl ON sc.table_id = tbl.id
+         WHERE sw.name = 'Sales Orders'
+           AND st.seq_no = 10
+           AND tbl.name = 'tx_order'
+           AND sc.code IN ('subtotal', 'tax_amount', 'discount_amount', 'grand_total', 'status')
+           AND (swf.is_readonly = false OR swf.is_displayed = false)
+       ) AS passed;
+
+SELECT 'TASK-077: sales order payment_term_id field exists' AS check_name,
+       EXISTS (
+         SELECT 1
+         FROM sys_window_field swf
+         JOIN sys_tab st ON swf.tab_id = st.id
+         JOIN sys_window sw ON st.window_id = sw.id
+         JOIN sys_column sc ON swf.column_id = sc.id
+         WHERE sw.name = 'Sales Orders'
+           AND st.seq_no = 10
+           AND sc.code = 'payment_term_id'
+       ) AS passed;

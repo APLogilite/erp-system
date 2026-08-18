@@ -14,7 +14,7 @@ updated: 2026-08-18
 started: 2026-08-18
 completed:
 estimated_hours: 4
-actual_hours:
+actual_hours: 5
 parent_prd: PRD-007
 prd_version: 1.0.0
 prd_branch: prd/PRD-007-sales-order-workflow-customer-management
@@ -70,13 +70,13 @@ Implement via the runtime renderer's action/button extension points if available
 
 # Acceptance Criteria
 
-- [ ] `[SE]` Header totals and status are read-only on the form
-- [ ] `[SE]` Action buttons render based on allowed-transitions response
-- [ ] `[SE]` Line changes trigger live recalculation of header totals
-- [ ] `[SE]` Credit failure on Confirm shows server message to the user
+- [x] `[SE]` Header totals and status are read-only on the form
+- [x] `[SE]` Action buttons render based on allowed-transitions response
+- [x] `[SE]` Line changes trigger live recalculation of header totals
+- [x] `[SE]` Credit failure on Confirm shows server message to the user
 - [ ] `[QA]` Full lifecycle works from UI: draft → confirmed → delivered → invoiced
 - [ ] `[QA]` Invalid transitions not offered as buttons
-- [ ] `[SE][QA]` Frontend typecheck + lint pass; backend starts cleanly
+- [x] `[SE][QA]` Frontend typecheck + lint pass; backend starts cleanly
 
 ---
 
