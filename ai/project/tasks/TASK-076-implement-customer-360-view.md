@@ -3,14 +3,14 @@ id: TASK-076
 title: Implement Customer 360 API and dashboard form
 type: Feature
 scope: both
-status: PLANNED
+status: READY_FOR_DEV
 priority: Medium
 owner: developer
 assigned_to:
 assigned_branch:
 locked: false
 created: 2026-07-29
-updated: 2026-07-29
+updated: 2026-08-14
 started:
 completed:
 estimated_hours: 5
