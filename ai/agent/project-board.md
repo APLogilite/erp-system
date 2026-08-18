@@ -4,7 +4,7 @@ Last Updated: 2026-08-14
 
 Updated By: Software Engineer
 
-(PRD-007 IN_DEVELOPMENT — TASK-070/071/072/073 READY_FOR_TEST; TASK-074/075/076 READY_FOR_DEV.)
+(PRD-007 IN_DEVELOPMENT — TASK-070/071/072/073/074 READY_FOR_TEST; TASK-075/076/077 READY_FOR_DEV.)
 
 ---
 
@@ -26,9 +26,9 @@ See `ai/agent/rules/status-transitions.md` for full transition rules.
 
 | Task | Title | PRD | Priority | Depends On |
 |------|-------|-----|----------|------------|
-| TASK-074 | Implement Order auto-calculation backend service | PRD-007 | High | PRD-006 |
 | TASK-075 | Implement Customer Credit Check backend service | PRD-007 | High | TASK-071, TASK-073 |
 | TASK-076 | Implement Customer 360 API and dashboard form | PRD-007 | Medium | TASK-071 |
+| TASK-077 | Update Sales Order form with workflow actions and payment terms | PRD-007 | High | TASK-072/073/074 |
 
 ---
 
@@ -40,6 +40,7 @@ See `ai/agent/rules/status-transitions.md` for full transition rules.
 | TASK-071 | Add credit limit and payment term to Business Partner | PRD-007 | High |
 | TASK-072 | Add payment term to Order and Invoice tables | PRD-007 | High |
 | TASK-073 | Implement Order status workflow backend service | PRD-007 | High |
+| TASK-074 | Implement Order auto-calculation backend service | PRD-007 | High |
 
 ---
 
@@ -47,7 +48,6 @@ See `ai/agent/rules/status-transitions.md` for full transition rules.
 
 | Task | Title | PRD | Priority | Depends On |
 |------|-------|-----|----------|------------|
-| TASK-077 | Update Sales Order form with workflow actions and payment terms | PRD-007 | High | TASK-072/073/074 |
 | TASK-078 | Create Sales Territory table with metadata | PRD-008 | Medium | PRD-006 |
 | TASK-079 | Create Lead table with metadata | PRD-008 | High | TASK-078 |
 | TASK-080 | Create Opportunity table with metadata | PRD-008 | High | TASK-078 |
@@ -245,10 +245,10 @@ See `ai/agent/rules/status-transitions.md` for full transition rules.
 |--------|-------|
 | PRDs | 9 (6 COMPLETED, 1 IN_DEVELOPMENT, 2 APPROVED) |
 | Ready For Dev | 3 |
-| Ready For Test | 4 |
+| Ready For Test | 5 |
 | In Testing | 0 |
 | In Development | 0 |
-| Planned | 16 (TASK-077/087..092) |
+| Planned | 15 (TASK-087..092) |
 | Bugs | 15 (8 COMPLETED, 1 CANCELLED, 6 RESOLVED) |
 | Completed (PRD-001) | 27 tasks + 2 enhancements (ENH-001, ENH-003) |
 | Completed (PRD-002) | 3 tasks + 1 enhancement (TASK-033/034/035 + ENH-002) |
