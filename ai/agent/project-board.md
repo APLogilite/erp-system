@@ -1,10 +1,10 @@
 # Project Board
 
-Last Updated: 2026-08-14
+Last Updated: 2026-08-18
 
 Updated By: Software Engineer
 
-(PRD-007 IN_DEVELOPMENT — TASK-070/071/072/073/074/075 READY_FOR_TEST; TASK-076/077 READY_FOR_DEV.)
+(PRD-007 TESTING — all 8 tasks TASK-070..077 READY_FOR_TEST.)
 
 ---
 
@@ -26,8 +26,7 @@ See `ai/agent/rules/status-transitions.md` for full transition rules.
 
 | Task | Title | PRD | Priority | Depends On |
 |------|-------|-----|----------|------------|
-| TASK-076 | Implement Customer 360 API and dashboard form | PRD-007 | Medium | TASK-071 |
-| TASK-077 | Update Sales Order form with workflow actions and payment terms | PRD-007 | High | TASK-072/073/074 |
+| (none) | | | | |
 
 ---
 
@@ -41,6 +40,8 @@ See `ai/agent/rules/status-transitions.md` for full transition rules.
 | TASK-073 | Implement Order status workflow backend service | PRD-007 | High |
 | TASK-074 | Implement Order auto-calculation backend service | PRD-007 | High |
 | TASK-075 | Implement Customer Credit Check backend service | PRD-007 | High |
+| TASK-076 | Implement Customer 360 API and dashboard form | PRD-007 | Medium |
+| TASK-077 | Update Sales Order form with workflow actions and payment terms | PRD-007 | High |
 
 ---
 
@@ -76,7 +77,7 @@ See `ai/agent/rules/status-transitions.md` for full transition rules.
 | PRD-004 | Window Hierarchy & Menu System | 1.1.0 | **COMPLETED** | High |
 | PRD-005 | Backend-Frontend Separation & Code Standardization | 1.3.1 | **COMPLETED** | High |
 | PRD-006 | Sales Quotation & Price Management | 1.0.0 | **COMPLETED** | High |
-| PRD-007 | Sales Order Workflow & Customer Management | 1.0.0 | **IN_DEVELOPMENT** | High |
+| PRD-007 | Sales Order Workflow & Customer Management | 1.0.0 | **TESTING** | High |
 | PRD-008 | CRM Pipeline & Sales Team Management | 1.0.0 | **APPROVED** | Medium |
 | PRD-009 | Sales Return & Analytics | 1.0.0 | **APPROVED** | Medium |
 
