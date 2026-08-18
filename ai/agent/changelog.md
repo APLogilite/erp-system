@@ -8,6 +8,24 @@ last_updated: 2026-08-14
 
 # Changelog
 
+## 2026-08-14 (PRD-007 Started — IN_DEVELOPMENT)
+
+### Summary
+PRD-007 (Sales Order Workflow & Customer Management v1.0.0) advanced from APPROVED to IN_DEVELOPMENT. Initial dependency-free tasks activated to READY_FOR_DEV now that PRD-006 is COMPLETED.
+
+### PRD Status Changed
+- **PRD-007** — Sales Order Workflow & Customer Management v1.0.0: **APPROVED → IN_DEVELOPMENT**
+
+### Tasks Activated
+| Task | Title | Status |
+|------|-------|--------|
+| TASK-070 | Create Payment Term table with seed data and metadata | READY_FOR_DEV |
+| TASK-073 | Implement Order status workflow backend service | READY_FOR_DEV |
+| TASK-074 | Implement Order auto-calculation backend service | READY_FOR_DEV |
+
+### Branch
+- `prd/PRD-007-sales-order-workflow-customer-management` created from `main`
+
 ## 2026-08-14 (PRD-006 Merged to Main — COMPLETED)
 
 ### Summary
