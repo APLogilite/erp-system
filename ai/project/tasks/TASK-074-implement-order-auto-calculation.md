@@ -68,11 +68,11 @@ Money math with BigDecimal, 2-decimal HALF_UP rounding. Empty order → all-zero
 
 # Acceptance Criteria
 
-- [ ] `[SE]` Calculate endpoint returns correct totals for multi-line orders
-- [ ] `[SE]` Totals persisted to tx_order
-- [ ] `[SE]` Zero-line order returns zeros without error
+- [x] `[SE]` Calculate endpoint returns correct totals for multi-line orders
+- [x] `[SE]` Totals persisted to tx_order
+- [x] `[SE]` Zero-line order returns zeros without error
 - [ ] `[QA]` Unknown order id returns 404
-- [ ] `[SE][QA]` Backend starts cleanly
+- [x] `[SE][QA]` Backend starts cleanly
 
 ---
 

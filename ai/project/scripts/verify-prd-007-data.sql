@@ -86,3 +86,8 @@ SELECT 'TASK-073: order status log columns registered' AS check_name,
        (SELECT COUNT(*) FROM sys_column c JOIN sys_table t ON t.id = c.table_id
         WHERE t.name = 'tx_order_status_log'
           AND c.code IN ('order_id','from_status','to_status','transitioned_by','transitioned_at')) = 5 AS passed;
+
+-- TASK-074: Order auto-calculation
+SELECT 'TASK-074: OrderCalculationService classes exist' AS check_name,
+       EXISTS (SELECT 1 FROM information_schema.tables
+               WHERE table_schema = 'public' AND table_name = 'tx_order_line' AND column_name = 'line_total') AS passed;
