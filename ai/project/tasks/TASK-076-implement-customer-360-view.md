@@ -27,6 +27,8 @@ related_tasks:
 depends_on:
   - TASK-071
 blocks: []
+related_bugs:
+  - BUG-003
 labels:
   - backend
   - frontend
