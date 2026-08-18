@@ -4,7 +4,7 @@ Last Updated: 2026-08-14
 
 Updated By: Software Engineer
 
-(PRD-007 IN_DEVELOPMENT — TASK-070/071/072/073/074 READY_FOR_TEST; TASK-075/076/077 READY_FOR_DEV.)
+(PRD-007 IN_DEVELOPMENT — TASK-070/071/072/073/074/075 READY_FOR_TEST; TASK-076/077 READY_FOR_DEV.)
 
 ---
 
@@ -26,7 +26,6 @@ See `ai/agent/rules/status-transitions.md` for full transition rules.
 
 | Task | Title | PRD | Priority | Depends On |
 |------|-------|-----|----------|------------|
-| TASK-075 | Implement Customer Credit Check backend service | PRD-007 | High | TASK-071, TASK-073 |
 | TASK-076 | Implement Customer 360 API and dashboard form | PRD-007 | Medium | TASK-071 |
 | TASK-077 | Update Sales Order form with workflow actions and payment terms | PRD-007 | High | TASK-072/073/074 |
 
@@ -41,6 +40,7 @@ See `ai/agent/rules/status-transitions.md` for full transition rules.
 | TASK-072 | Add payment term to Order and Invoice tables | PRD-007 | High |
 | TASK-073 | Implement Order status workflow backend service | PRD-007 | High |
 | TASK-074 | Implement Order auto-calculation backend service | PRD-007 | High |
+| TASK-075 | Implement Customer Credit Check backend service | PRD-007 | High |
 
 ---
 
@@ -244,8 +244,8 @@ See `ai/agent/rules/status-transitions.md` for full transition rules.
 | Status | Count |
 |--------|-------|
 | PRDs | 9 (6 COMPLETED, 1 IN_DEVELOPMENT, 2 APPROVED) |
-| Ready For Dev | 3 |
-| Ready For Test | 5 |
+| Ready For Dev | 2 |
+| Ready For Test | 6 |
 | In Testing | 0 |
 | In Development | 0 |
 | Planned | 15 (TASK-087..092) |
