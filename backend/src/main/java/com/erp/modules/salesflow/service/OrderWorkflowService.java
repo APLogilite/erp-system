@@ -1,6 +1,6 @@
 package com.erp.modules.salesflow.service;
 
-import java.time.LocalDateTime;
+import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -46,9 +46,11 @@ public class OrderWorkflowService {
   );
 
   private final NamedParameterJdbcTemplate jdbc;
+  private final CreditCheckService creditCheckService;
 
-  public OrderWorkflowService(NamedParameterJdbcTemplate jdbc) {
+  public OrderWorkflowService(NamedParameterJdbcTemplate jdbc, CreditCheckService creditCheckService) {
     this.jdbc = jdbc;
+    this.creditCheckService = creditCheckService;
   }
 
   /**
@@ -72,7 +74,8 @@ public class OrderWorkflowService {
    * Returns the new status, or throws IllegalStateException/IllegalArgumentException on failure.
    */
   @Transactional
-  public String transition(UUID orderId, String targetStatus, UUID userId, UUID tenantId) {
+  public String transition(UUID orderId, String targetStatus, UUID userId, UUID tenantId,
+                            boolean override, String overrideReason, List<String> roles) {
     if (targetStatus == null || targetStatus.isBlank()) {
       throw new IllegalArgumentException("Target status is required");
     }
@@ -99,6 +102,22 @@ public class OrderWorkflowService {
           "Cannot cancel order with active invoices");
     }
 
+    // Credit check on draft → confirmed
+    if (STATUS_DRAFT.equals(currentLower) && STATUS_CONFIRMED.equals(target)) {
+      var credit = creditCheckService.checkCredit(orderId, tenantId);
+      if (!credit.approved) {
+        if (!override) {
+          throw new IllegalStateException(
+              "Credit check failed: " + credit.reason + ". Outstanding=" + credit.outstanding
+                  + ", order=" + credit.orderAmount + ", limit=" + credit.creditLimit);
+        }
+        if (!hasManagerRole(roles)) {
+          throw new IllegalStateException(
+              "Credit override requires manager or admin role");
+        }
+      }
+    }
+
     // Update order status
     jdbc.update(
         "UPDATE tx_order SET status = :status, updated_at = now() WHERE id = :id AND tenant_id = :tid",
@@ -108,18 +127,31 @@ public class OrderWorkflowService {
           .addValue("tid", tenantId));
 
     // Audit log
+    String toStatus = target;
+    if (override && STATUS_CONFIRMED.equals(target)) {
+      toStatus = target + " (credit override: " + (overrideReason != null ? overrideReason : "no reason") + ")";
+    }
     jdbc.update(
         "INSERT INTO tx_order_status_log (id, order_id, from_status, to_status, transitioned_by, transitioned_at, tenant_id, created_at, updated_at, is_active) "
           + "VALUES (gen_random_uuid(), :oid, :from, :to, :user, now(), :tid, now(), now(), true)",
         new MapSqlParameterSource()
           .addValue("oid", orderId)
           .addValue("from", currentLower)
-          .addValue("to", target)
+          .addValue("to", toStatus)
           .addValue("user", userId)
           .addValue("tid", tenantId));
 
-    log.info("Order {} transitioned from {} to {} by user {}", orderId, currentLower, target, userId);
+    log.info("Order {} transitioned from {} to {} by user {} (override={})",
+        orderId, currentLower, target, userId, override);
     return target;
+  }
+
+  private boolean hasManagerRole(List<String> roles) {
+    if (roles == null) return false;
+    return roles.stream().anyMatch(r ->
+        "sys_admin".equalsIgnoreCase(r)
+            || "tnt_admin".equalsIgnoreCase(r)
+            || "sales_manager".equalsIgnoreCase(r));
   }
 
   private String queryCurrentStatus(UUID orderId, UUID tenantId) {

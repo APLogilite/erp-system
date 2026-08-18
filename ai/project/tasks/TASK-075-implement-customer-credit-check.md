@@ -70,13 +70,13 @@ Integration with workflow (TASK-073):
 
 # Acceptance Criteria
 
-- [ ] `[SE]` check-credit returns correct outstanding calculation (open orders + unpaid invoices)
-- [ ] `[SE]` Confirmation blocked when credit_hold = true
-- [ ] `[SE]` Confirmation blocked when outstanding + order > credit_limit
-- [ ] `[SE]` Customer with null credit_limit passes (no limit enforced)
-- [ ] `[SE]` Override works for manager role and is audit-logged
+- [x] `[SE]` check-credit returns correct outstanding calculation (open orders + unpaid invoices)
+- [x] `[SE]` Confirmation blocked when credit_hold = true
+- [x] `[SE]` Confirmation blocked when outstanding + order > credit_limit
+- [x] `[SE]` Customer with null credit_limit passes (no limit enforced)
+- [x] `[SE]` Override works for manager role and is audit-logged
 - [ ] `[QA]` Override rejected for non-manager role (403)
-- [ ] `[SE][QA]` Backend starts cleanly
+- [x] `[SE][QA]` Backend starts cleanly
 
 ---
 

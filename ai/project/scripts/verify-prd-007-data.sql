@@ -91,3 +91,10 @@ SELECT 'TASK-073: order status log columns registered' AS check_name,
 SELECT 'TASK-074: OrderCalculationService classes exist' AS check_name,
        EXISTS (SELECT 1 FROM information_schema.tables
                WHERE table_schema = 'public' AND table_name = 'tx_order_line' AND column_name = 'line_total') AS passed;
+
+-- TASK-075: Customer credit check
+SELECT 'TASK-075: credit_check columns exist on partner' AS check_name,
+       EXISTS (SELECT 1 FROM information_schema.columns
+               WHERE table_schema = 'public' AND table_name = 'md_business_partner' AND column_name = 'credit_limit')
+       AND EXISTS (SELECT 1 FROM information_schema.columns
+               WHERE table_schema = 'public' AND table_name = 'md_business_partner' AND column_name = 'credit_hold') AS passed;

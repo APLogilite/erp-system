@@ -48,7 +48,9 @@ public class OrderWorkflowController {
       return unauthorized();
     }
     try {
-      String newStatus = service.transition(id, request.getTargetStatus(), ctx.getUserId(), ctx.getTenantId());
+      String newStatus = service.transition(
+          id, request.getTargetStatus(), ctx.getUserId(), ctx.getTenantId(),
+          request.isOverride(), request.getOverrideReason(), ctx.getRoles());
       return ResponseEntity.ok(ApiResponse.success(
           new TransitionResponse(true, newStatus, "Transition successful."),
           "Order transitioned to " + newStatus));
