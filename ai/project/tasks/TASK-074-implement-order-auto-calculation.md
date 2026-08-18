@@ -27,6 +27,8 @@ related_tasks:
 depends_on: []
 blocks:
   - TASK-077
+related_bugs:
+  - BUG-001
 labels:
   - backend
   - prd-007
