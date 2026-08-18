@@ -24,3 +24,28 @@ SELECT 'TASK-070: Payment Terms window exists' AS check_name,
 
 SELECT 'TASK-070: Payment Terms menu exists' AS check_name,
        EXISTS (SELECT 1 FROM sys_menu WHERE name = 'Payment Terms') AS passed;
+
+-- TASK-071: Credit limit, credit hold, and payment term on business partner
+SELECT 'TASK-071: credit_limit column exists' AS check_name,
+       EXISTS (SELECT 1 FROM information_schema.columns
+               WHERE table_schema = 'public' AND table_name = 'md_business_partner' AND column_name = 'credit_limit') AS passed;
+
+SELECT 'TASK-071: credit_hold column exists' AS check_name,
+       EXISTS (SELECT 1 FROM information_schema.columns
+               WHERE table_schema = 'public' AND table_name = 'md_business_partner' AND column_name = 'credit_hold') AS passed;
+
+SELECT 'TASK-071: payment_term_id column exists' AS check_name,
+       EXISTS (SELECT 1 FROM information_schema.columns
+               WHERE table_schema = 'public' AND table_name = 'md_business_partner' AND column_name = 'payment_term_id') AS passed;
+
+SELECT 'TASK-071: partner credit columns registered' AS check_name,
+       (SELECT COUNT(*) FROM sys_column c JOIN sys_table t ON t.id = c.table_id
+        WHERE t.name = 'md_business_partner'
+          AND c.code IN ('credit_limit','credit_hold','payment_term_id')) = 3 AS passed;
+
+SELECT 'TASK-071: partner form has credit fields' AS check_name,
+       (SELECT COUNT(*) FROM sys_window_field wf
+        JOIN sys_tab tab ON tab.id = wf.tab_id
+        JOIN sys_window w ON w.id = tab.window_id
+        JOIN sys_column c ON c.id = wf.column_id
+        WHERE w.name = 'Business Partners' AND c.code IN ('credit_limit','credit_hold','payment_term_id')) = 3 AS passed;

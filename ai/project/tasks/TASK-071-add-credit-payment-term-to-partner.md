@@ -66,12 +66,12 @@ Migration must be idempotent (ADD COLUMN IF NOT EXISTS / ensure_column guards).
 
 # Acceptance Criteria
 
-- [ ] `[SE]` Three columns added to md_business_partner
-- [ ] `[SE]` Columns registered in sys_column metadata
-- [ ] `[SE]` business_partner form updated with Credit & Terms section
-- [ ] `[SE]` Migration idempotent
+- [x] `[SE]` Three columns added to md_business_partner
+- [x] `[SE]` Columns registered in sys_column metadata
+- [x] `[SE]` business_partner form updated with Credit & Terms section
+- [x] `[SE]` Migration idempotent
 - [ ] `[QA]` Editing a partner via runtime UI saves credit_limit, credit_hold, payment_term_id
-- [ ] `[SE][QA]` Backend starts cleanly
+- [x] `[SE][QA]` Backend starts cleanly
 
 ---
 
