@@ -69,11 +69,11 @@ Register table in `sys_table` / `sys_column` and seed a metadata form `payment_t
 
 # Acceptance Criteria
 
-- [ ] `[SE]` Migration creates md_payment_term and seeds 5 standard terms
-- [ ] `[SE]` Table/columns registered in sys_table/sys_column
-- [ ] `[SE]` payment_term form seeded and visible in runtime forms list
+- [x] `[SE]` Migration creates md_payment_term and seeds 5 standard terms
+- [x] `[SE]` Table/columns registered in sys_table/sys_column
+- [x] `[SE]` payment_term form seeded and visible in runtime forms list
 - [ ] `[QA]` CRUD on payment terms works via runtime UI
-- [ ] `[SE][QA]` Backend starts cleanly with migration applied
+- [x] `[SE][QA]` Backend starts cleanly with migration applied
 
 ---
 
