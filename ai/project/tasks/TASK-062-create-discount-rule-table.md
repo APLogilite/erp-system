@@ -3,7 +3,7 @@ id: TASK-062
 title: Create Discount Rule table with metadata registration
 type: Feature
 scope: database
-status: TESTED
+status: COMPLETED
 priority: Medium
 owner: QA Engineer
 locked: false

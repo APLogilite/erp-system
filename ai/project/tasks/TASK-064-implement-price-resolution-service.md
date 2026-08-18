@@ -3,7 +3,7 @@ id: TASK-064
 title: Implement Price Resolution backend service
 type: Feature
 scope: backend
-status: TESTED
+status: COMPLETED
 priority: High
 owner: QA Engineer
 locked: false

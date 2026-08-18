@@ -3,7 +3,7 @@ id: TASK-063
 title: Create Quotation tables with metadata registration
 type: Feature
 scope: database
-status: TESTED
+status: COMPLETED
 priority: High
 owner: QA Engineer
 locked: false

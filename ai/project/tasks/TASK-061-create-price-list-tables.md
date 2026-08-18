@@ -3,12 +3,12 @@ id: TASK-061
 title: Create Price List tables with metadata registration
 type: Feature
 scope: database
-status: TESTED
+status: COMPLETED
 priority: High
 owner: QA Engineer
 locked: false
 created: 2026-07-29
-updated: 2026-08-12
+updated: 2026-08-14
 started: 2026-08-05
 completed:
 estimated_hours: 3

@@ -2,7 +2,7 @@
 id: PRD-006
 title: Sales Quotation & Price Management
 version: 1.0.0
-status: READY_FOR_DEPLOYMENT
+status: COMPLETED
 priority: High
 owner: Product Manager
 created: 2026-07-29

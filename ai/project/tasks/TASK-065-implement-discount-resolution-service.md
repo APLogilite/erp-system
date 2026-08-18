@@ -3,7 +3,7 @@ id: TASK-065
 title: Implement Discount Resolution backend service
 type: Feature
 scope: backend
-status: TESTED
+status: COMPLETED
 priority: Medium
 owner: QA Engineer
 assigned_to:

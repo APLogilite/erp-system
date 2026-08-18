@@ -3,14 +3,14 @@ id: TASK-060
 title: Create Document Sequence table and auto-numbering service
 type: Feature
 scope: both
-status: TESTED
+status: COMPLETED
 priority: High
 owner: QA Engineer
 assigned_to: Software Engineer
 assigned_branch: feature/TASK-060
 locked: false
 created: 2026-07-29
-updated: 2026-08-12
+updated: 2026-08-14
 started: 2026-08-05
 completed:
 estimated_hours: 4

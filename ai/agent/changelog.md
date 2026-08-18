@@ -8,6 +8,33 @@ last_updated: 2026-08-14
 
 # Changelog
 
+## 2026-08-14 (PRD-006 Merged to Main — COMPLETED)
+
+### Summary
+PRD-006 (Sales Quotation & Price Management v1.0.0) merged to `main`. All 10 tasks, all change reports, all test reports, and the new module/flow documentation are now COMPLETED. Cascade completion applied to PRD-006 tasks and documentation.
+
+### PRD Completed
+- **PRD-006** — Sales Quotation & Price Management v1.0.0 → **COMPLETED** (merged to main)
+
+### Tasks Completed (10)
+| Task | Title |
+|------|-------|
+| TASK-060 | Create Document Sequence table and auto-numbering service |
+| TASK-061 | Create Price List tables |
+| TASK-062 | Create Discount Rule table |
+| TASK-063 | Create Quotation tables |
+| TASK-064 | Implement Price Resolution service |
+| TASK-065 | Implement Discount Resolution service |
+| TASK-066 | Seed PRD-006 forms |
+| TASK-067 | Implement Quotation calculation API |
+| TASK-068 | Implement Quotation to Order conversion |
+| TASK-069 | Deprecate hardcoded sales/ and order/ modules |
+
+### Project State
+- 6 PRDs COMPLETED (PRD-001..006)
+- 3 PRDs APPROVED (PRD-007..009)
+- PRD-007 dependencies (PRD-006) now satisfied; initial tasks can be activated
+
 ## 2026-08-14 (PRD-006 QA Complete — READY_FOR_DEPLOYMENT)
 
 ### Summary
