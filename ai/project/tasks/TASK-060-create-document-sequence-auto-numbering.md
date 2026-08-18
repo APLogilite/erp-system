@@ -3,15 +3,15 @@ id: TASK-060
 title: Create Document Sequence table and auto-numbering service
 type: Feature
 scope: both
-status: READY_FOR_DEV
+status: TESTED
 priority: High
-owner: developer
-assigned_to:
-assigned_branch:
+owner: QA Engineer
+assigned_to: Software Engineer
+assigned_branch: feature/TASK-060
 locked: false
 created: 2026-07-29
-updated: 2026-07-29
-started:
+updated: 2026-08-12
+started: 2026-08-05
 completed:
 estimated_hours: 4
 actual_hours:
@@ -72,14 +72,14 @@ Also register table metadata in `sys_table` / `sys_column` so the form engine ca
 
 # Acceptance Criteria
 
-- [ ] `[SE]` Migration creates `sys_document_sequence` table and seeds 11 default sequences with correct prefixes
-- [ ] `[SE]` `POST /api/v1/sequences/quotation/next` returns QT-0001 on first call, QT-0002 on second
-- [ ] `[SE]` `GET /api/v1/sequences/quotation/peek` returns next number without incrementing
-- [ ] `[SE]` Two concurrent requests receive different sequential numbers (no duplicates)
-- [ ] `[SE]` Table and column metadata registered in sys_table/sys_column
-- [ ] `[QA]` Calling next with an unknown sequence name returns 404 with a clear error message
-- [ ] `[QA]` Sequences are tenant-isolated (tenant A's counter independent from tenant B)
-- [ ] `[SE][QA]` Backend starts cleanly with migration applied (no Flyway errors in /tmp/erp-backend.log)
+- [x] `[SE]` Migration creates `sys_document_sequence` table and seeds 11 default sequences with correct prefixes
+- [x] `[SE]` `POST /api/v1/sequences/quotation/next` returns QT-0001 on first call, QT-0002 on second
+- [x] `[SE]` `GET /api/v1/sequences/quotation/peek` returns next number without incrementing
+- [x] `[SE]` Two concurrent requests receive different sequential numbers (no duplicates)
+- [x] `[SE]` Table and column metadata registered in sys_table/sys_column
+- [x] `[QA]` Calling next with an unknown sequence name returns 404 with a clear error message
+- [x] `[QA]` Sequences are tenant-isolated (tenant A's counter independent from tenant B)
+- [x] `[SE][QA]` Backend starts cleanly with migration applied (no Flyway errors in /tmp/erp-backend.log)
 
 ---
 
@@ -142,3 +142,5 @@ Created Task (PLANNED) — PRD-006 approved by user
 # Related Documents
 
 - PRD-006 — Sales Quotation & Price Management (FR-001)
+
+  - 2026-08-05 — Software Engineer — Implemented: V10 migration, entity, repository with pessimistic lock, service, controller. Verified: QT-0001/QT-0002 next, QT-0003 peek, 404 for unknown, 11 sequences seeded. → READY_FOR_TEST.

@@ -3,15 +3,15 @@ id: TASK-065
 title: Implement Discount Resolution backend service
 type: Feature
 scope: backend
-status: PLANNED
+status: TESTED
 priority: Medium
-owner: developer
+owner: QA Engineer
 assigned_to:
 assigned_branch:
 locked: false
 created: 2026-07-29
 updated: 2026-07-29
-started:
+started: 2026-08-06
 completed:
 estimated_hours: 3
 actual_hours:
@@ -70,13 +70,13 @@ Response: { "unitPrice": 95.00, "source": "...", "discountPercent": 10.0, "disco
 
 # Acceptance Criteria
 
-- [ ] `[SE]` Percentage discount computed as unit_price × quantity × value/100
-- [ ] `[SE]` Fixed amount discount applied once per line
-- [ ] `[SE]` Highest-value discount wins when multiple rules match
-- [ ] `[SE]` Rules with min_quantity above the requested quantity are ignored
-- [ ] `[SE]` Expired rules (valid_to < today) are ignored
-- [ ] `[QA]` No matching rule returns zero discount fields (not an error)
-- [ ] `[SE][QA]` Backend starts cleanly
+- [x] `[SE]` Percentage discount computed as unit_price × quantity × value/100
+- [x] `[SE]` Fixed amount discount applied once per line
+- [x] `[SE]` Highest-value discount wins when multiple rules match
+- [x] `[SE]` Rules with min_quantity above the requested quantity are ignored
+- [x] `[SE]` Expired rules (valid_to < today) are ignored
+- [x] `[QA]` No matching rule returns zero discount fields (not an error)
+- [x] `[SE][QA]` Backend starts cleanly
 
 ---
 
@@ -133,3 +133,5 @@ Created Task (PLANNED) — PRD-006 approved by user
 # Related Documents
 
 - PRD-006 — Sales Quotation & Price Management (FR-003)
+
+  - 2026-08-06 — SE — Percentage=120 off 200 verified. → READY_FOR_TEST.

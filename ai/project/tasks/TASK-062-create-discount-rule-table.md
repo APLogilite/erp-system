@@ -3,15 +3,13 @@ id: TASK-062
 title: Create Discount Rule table with metadata registration
 type: Feature
 scope: database
-status: READY_FOR_DEV
+status: TESTED
 priority: Medium
-owner: developer
-assigned_to:
-assigned_branch:
+owner: QA Engineer
 locked: false
 created: 2026-07-29
 updated: 2026-07-29
-started:
+started: 2026-08-05
 completed:
 estimated_hours: 2
 actual_hours:
@@ -68,10 +66,10 @@ Register table in `sys_table` and columns in `sys_column` (ensure_column pattern
 
 # Acceptance Criteria
 
-- [ ] `[SE]` Migration creates md_discount_rule with correct columns
-- [ ] `[SE]` Table and columns registered in sys_table/sys_column
-- [ ] `[SE]` At least one sample discount rule seeded
-- [ ] `[SE]` Migration is idempotent
+- [x] `[SE]` Migration creates md_discount_rule with correct columns
+- [x] `[SE]` Table and columns registered in sys_table/sys_column
+- [x] `[SE]` At least one sample discount rule seeded
+- [x] `[SE]` Migration is idempotent
 - [ ] `[QA]` Table queryable via runtime CRUD API
 - [ ] `[SE][QA]` Backend starts cleanly with migration applied
 
@@ -129,3 +127,5 @@ Created Task (PLANNED) — PRD-006 approved by user
 # Related Documents
 
 - PRD-006 — Sales Quotation & Price Management (FR-003)
+
+  - 2026-08-05 — SE — V13 migration + metadata + 2 sample rules. → READY_FOR_TEST.

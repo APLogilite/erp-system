@@ -3,15 +3,15 @@ id: TASK-068
 title: Implement Quotation to Order conversion
 type: Feature
 scope: backend
-status: PLANNED
+status: TESTED
 priority: High
-owner: developer
+owner: QA Engineer
 assigned_to:
 assigned_branch:
 locked: false
 created: 2026-07-29
-updated: 2026-07-29
-started:
+updated: 2026-08-12
+started: 2026-08-06
 completed:
 estimated_hours: 4
 actual_hours:
@@ -72,14 +72,14 @@ Logic:
 
 # Acceptance Criteria
 
-- [ ] `[SE]` Accepted quotation converts successfully; order and lines created
-- [ ] `[SE]` Order number auto-generated from sales_order sequence
-- [ ] `[SE]` Quotation status updated to 'converted' with converted_order_id set
-- [ ] `[SE]` Non-accepted quotation returns 400 with clear message
-- [ ] `[SE]` Already-converted quotation returns 400 with clear message
-- [ ] `[QA]` Rollback works: simulate failure mid-conversion leaves no partial order
-- [ ] `[QA]` Converted order opens in the sales_order runtime form with all lines intact
-- [ ] `[SE][QA]` Backend starts cleanly
+- [x] `[SE]` Accepted quotation converts successfully; order and lines created
+- [x] `[SE]` Order number auto-generated from sales_order sequence
+- [x] `[SE]` Quotation status updated to 'converted' with converted_order_id set
+- [x] `[SE]` Non-accepted quotation returns 400 with clear message
+- [x] `[SE]` Already-converted quotation returns 400 with clear message
+- [x] `[QA]` Rollback works: simulate failure mid-conversion leaves no partial order
+- [x] `[QA]` Converted order opens in the sales_order runtime form with all lines intact
+- [x] `[SE][QA]` Backend starts cleanly
 
 ---
 
@@ -138,3 +138,5 @@ Created Task (PLANNED) — PRD-006 approved by user
 # Related Documents
 
 - PRD-006 — Sales Quotation & Price Management (FR-006)
+
+  - 2026-08-06 — SE — Quote→Order conversion with auto-numbering. → READY_FOR_TEST.

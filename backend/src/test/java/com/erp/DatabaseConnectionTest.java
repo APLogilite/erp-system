@@ -61,8 +61,8 @@ public class DatabaseConnectionTest {
         String[] entityTables = {
                 "products",
                 "product_categories",
-                "orders",
-                "order_lines",
+                "purchase_orders",
+                "purchase_order_lines",
                 "m1_warehouses",
                 "warehouse_locations",
                 "business_partners",
@@ -98,7 +98,7 @@ public class DatabaseConnectionTest {
         // Not checking emptiness because IdentitySeedData seeds demo data at startup.
         assertThat(jdbcTemplate.queryForObject("SELECT COUNT(*) FROM products", Integer.class))
                 .isNotNull();
-        assertThat(jdbcTemplate.queryForObject("SELECT COUNT(*) FROM orders", Integer.class))
+        assertThat(jdbcTemplate.queryForObject("SELECT COUNT(*) FROM purchase_orders", Integer.class))
                 .isNotNull();
         assertThat(jdbcTemplate.queryForObject("SELECT COUNT(*) FROM m1_warehouses", Integer.class))
                 .isNotNull();

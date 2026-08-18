@@ -3,15 +3,13 @@ id: TASK-063
 title: Create Quotation tables with metadata registration
 type: Feature
 scope: database
-status: READY_FOR_DEV
+status: TESTED
 priority: High
-owner: developer
-assigned_to:
-assigned_branch:
+owner: QA Engineer
 locked: false
 created: 2026-07-29
 updated: 2026-07-29
-started:
+started: 2026-08-05
 completed:
 estimated_hours: 3
 actual_hours:
@@ -64,12 +62,12 @@ Register both tables in `sys_table` / `sys_column`. Add index on `tx_quotation_l
 
 # Acceptance Criteria
 
-- [ ] `[SE]` Migration creates both tables with correct columns and FK constraints
-- [ ] `[SE]` Both tables registered in sys_table/sys_column
-- [ ] `[SE]` Index exists on tx_quotation_line.quotation_id
-- [ ] `[SE]` Migration is idempotent
-- [ ] `[QA]` Tables queryable via runtime CRUD API
-- [ ] `[SE][QA]` Backend starts cleanly with migration applied
+- [x] `[SE]` Migration creates both tables with correct columns and FK constraints
+- [x] `[SE]` Both tables registered in sys_table/sys_column
+- [x] `[SE]` Index exists on tx_quotation_line.quotation_id
+- [x] `[SE]` Migration is idempotent
+- [x] `[QA]` Tables queryable via runtime CRUD API
+- [x] `[SE][QA]` Backend starts cleanly with migration applied
 
 ---
 
@@ -125,3 +123,5 @@ Created Task (PLANNED) — PRD-006 approved by user
 # Related Documents
 
 - PRD-006 — Sales Quotation & Price Management (FR-004)
+
+  - 2026-08-05 — Software Engineer — Implemented: V12 creates tx_quotation + tx_quotation_line tables with FKs, index, metadata, status enum. Verified: Flyway v12, 10 columns + index + enum. → READY_FOR_TEST.

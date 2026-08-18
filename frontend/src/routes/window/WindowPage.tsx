@@ -401,9 +401,12 @@ function RecordDialog({ open, windowName, windowDef, recordId, onClose }: Record
                     />
                   );
                 case 'enum': {
-                  const opts: string[] = field.column.enumOptions
-                    ? JSON.parse(field.column.enumOptions)
-                    : [];
+                  let opts: string[] = [];
+                  if (field.column.enumOptions) {
+                    opts = typeof field.column.enumOptions === 'string'
+                      ? JSON.parse(field.column.enumOptions)
+                      : field.column.enumOptions;
+                  }
                   return (
                     <FormControl key={field.column.code} fullWidth margin="dense" sx={{ mb: 1 }}>
                       <InputLabel>{label}</InputLabel>
@@ -414,6 +417,7 @@ function RecordDialog({ open, windowName, windowDef, recordId, onClose }: Record
                         disabled={field.isReadonly || isSaving}
                         required={field.isMandatory}
                       >
+                        <MenuItem value=""><em>Select...</em></MenuItem>
                         {opts.map((o) => (
                           <MenuItem key={o} value={o}>
                             {o}

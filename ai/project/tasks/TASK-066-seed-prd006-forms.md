@@ -3,15 +3,15 @@ id: TASK-066
 title: Seed Quotation, Price List, Discount, and Sequence forms
 type: Feature
 scope: database
-status: PLANNED
+status: TESTED
 priority: High
-owner: developer
+owner: QA Engineer
 assigned_to:
 assigned_branch:
 locked: false
 created: 2026-07-29
-updated: 2026-07-29
-started:
+updated: 2026-08-12
+started: 2026-08-06
 completed:
 estimated_hours: 5
 actual_hours:
@@ -84,14 +84,14 @@ Add menu entries under a "Sales" menu group for Sales Quotations, Price Lists, D
 
 # Acceptance Criteria
 
-- [ ] `[SE]` All 6 forms present in `GET /api/v1/runtime/forms` (or equivalent metadata endpoint)
-- [ ] `[SE]` sales_quotation form renders with 3 sections and Quotation Lines tab
-- [ ] `[SE]` price_list form renders with Price Lines tab
-- [ ] `[SE]` Read-only fields configured (quote_number, subtotal, discount_amount, tax_amount, grand_total)
-- [ ] `[SE]` Menu entries added for Sales and Admin groups
-- [ ] `[QA]` Full CRUD works on each form through the runtime renderer
-- [ ] `[QA]` Sub-form drill-down works (add/edit lines within quotation)
-- [ ] `[SE][QA]` Backend starts cleanly with migration applied
+- [x] `[SE]` All 6 forms present in `GET /api/v1/runtime/forms` (or equivalent metadata endpoint)
+- [x] `[SE]` sales_quotation form renders with 3 sections and Quotation Lines tab
+- [x] `[SE]` price_list form renders with Price Lines tab
+- [x] `[SE]` Read-only fields configured (quote_number, subtotal, discount_amount, tax_amount, grand_total)
+- [x] `[SE]` Menu entries added for Sales and Admin groups
+- [x] `[QA]` Full CRUD works on each form through the runtime renderer
+- [x] `[QA]` Sub-form drill-down works (add/edit lines within quotation)
+- [x] `[SE][QA]` Backend starts cleanly with migration applied
 
 ---
 
@@ -149,3 +149,5 @@ Created Task (PLANNED) — PRD-006 approved by user
 # Related Documents
 
 - PRD-006 — Sales Quotation & Price Management (FR-005)
+
+  - 2026-08-06 — SE — V14: 4 windows + 2 child tabs + fields + access + menu. → READY_FOR_TEST.
