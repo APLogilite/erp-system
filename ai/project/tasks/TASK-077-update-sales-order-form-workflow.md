@@ -39,7 +39,7 @@ review_required: true
 test_required: true
 automation_required: false
 change_summary:
-test_report:
+test_report: TEST-TASK-077.md
 test_script:
 history:
   - created
