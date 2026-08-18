@@ -3,16 +3,16 @@ id: TASK-070
 title: Create Payment Term table with seed data and metadata
 type: Feature
 scope: database
-status: IN_DEVELOPMENT
+status: READY_FOR_TEST
 priority: High
 owner: developer
 assigned_to: Software Engineer
 assigned_branch: feature/TASK-070
-locked: true
+locked: false
 created: 2026-07-29
 updated: 2026-08-14
 started: 2026-08-14
-completed:
+completed: 2026-08-14
 estimated_hours: 2
 actual_hours:
 parent_prd: PRD-007
