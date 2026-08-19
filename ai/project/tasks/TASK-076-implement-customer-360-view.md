@@ -3,7 +3,7 @@ id: TASK-076
 title: Implement Customer 360 API and dashboard form
 type: Feature
 scope: both
-status: READY_FOR_TEST
+status: TESTED
 priority: Medium
 owner: developer
 assigned_to: Software Engineer

@@ -3,7 +3,7 @@ id: TASK-077
 title: Update Sales Order form with workflow actions and payment terms
 type: Feature
 scope: both
-status: READY_FOR_TEST
+status: TESTED
 priority: High
 owner: developer
 assigned_to: Software Engineer

@@ -1,7 +1,7 @@
 ---
 id: BUG-003
 title: Customer 360 API returns list item keys in lowercase instead of camelCase, breaking frontend display
-status: READY_FOR_TEST
+status: RESOLVED
 priority: High
 severity: Medium
 owner: Software Engineer

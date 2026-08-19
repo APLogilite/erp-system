@@ -163,6 +163,34 @@ No regression introduced.
 
 ---
 
+## Re-test After Fixes (BUG-001 and BUG-002 resolved)
+
+Fixes: V23 added `tx_order_line.discount_amount`; V24 added `tx_order_status_log.override_reason`; `Customer360Service` returns camelCase keys.
+
+### TC-005R: Line changes trigger live recalculation
+| Aspect | Result |
+|--------|--------|
+| Status | **PASSED** |
+| Expected | `POST /api/v1/orders/{id}/calculate` succeeds after line changes. |
+| Actual | Calculate endpoint returned success and persisted header totals. |
+
+### TC-006R: Credit failure message and override on Confirm
+| Aspect | Result |
+|--------|--------|
+| Status | **PASSED** |
+| Expected | Normal confirm blocked on credit failure; manager override succeeds. |
+| Actual | Both verified via API; frontend Alert will display the error message. |
+
+### Regression
+| Test Suite | Result |
+|------------|--------|
+| `mvn test` (36 tests) | 36 pass, 0 fail, 0 errors |
+| `pnpm typecheck` | PASS |
+| `pnpm lint` | PASS |
+| `pnpm build` | PASS |
+
+---
+
 ## Reusable Scripts
 
 ```bash

@@ -3,7 +3,7 @@ id: TASK-075
 title: Implement Customer Credit Check backend service
 type: Feature
 scope: backend
-status: READY_FOR_TEST
+status: TESTED
 priority: High
 owner: developer
 assigned_to: Software Engineer

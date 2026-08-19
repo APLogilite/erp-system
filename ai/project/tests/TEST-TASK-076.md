@@ -144,6 +144,34 @@ No regression introduced.
 
 ---
 
+## Re-test After Fix (BUG-003 resolved)
+
+Fix: `Customer360Service` now maps JDBC result rows to camelCase keys explicitly.
+
+### TC-002R: List item keys use documented camelCase
+| Aspect | Result |
+|--------|--------|
+| Status | **PASSED** |
+| Expected | Keys such as `orderNumber`, `orderDate`, `grandTotal`, `dueAmount`, `creditLimit`. |
+| Actual | API returns `orderNumber`, `orderDate`, `grandTotal`, `dueAmount`; partner uses `creditLimit`, `creditHold`, `paymentTermId`. |
+
+### TC-004R: New partner with no history shows empty sections
+| Aspect | Result |
+|--------|--------|
+| Status | **PASSED** |
+| Expected | Empty arrays returned without error. |
+| Actual | Verified via API for a partner with no related records. |
+
+### Regression
+| Test Suite | Result |
+|------------|--------|
+| `mvn test` (36 tests) | 36 pass, 0 fail, 0 errors |
+| `pnpm typecheck` | PASS |
+| `pnpm lint` | PASS |
+| `pnpm build` | PASS |
+
+---
+
 ## Reusable Scripts
 
 ```bash

@@ -124,13 +124,52 @@ No regression introduced by test activity; existing defect discovered.
 
 ---
 
+## Re-test After Fix (BUG-001 resolved)
+
+Fix: V23 migration added `discount_amount` to `tx_order_line` and registered it in metadata.
+
+### TC-001R: Calculate endpoint returns correct totals for multi-line order
+| Aspect | Result |
+|--------|--------|
+| Status | **PASSED** |
+| Expected | Endpoint returns subtotal, discountAmount, taxAmount, grandTotal and persists to tx_order. |
+| Actual | Calculation succeeded; returned `{subtotal: 958.98, discountAmount: 0.0, taxAmount: 0, grandTotal: 958.98}`. |
+
+### TC-002R: Totals persisted to tx_order
+| Aspect | Result |
+|--------|--------|
+| Status | **PASSED** |
+| Expected | tx_order header totals updated after calculate. |
+| Actual | Header totals persisted correctly. |
+
+### TC-003R: Zero-line order returns zeros without error
+| Aspect | Result |
+|--------|--------|
+| Status | **PASSED** |
+| Expected | Empty order returns all-zero totals. |
+| Actual | Returned `{subtotal: 0, discountAmount: 0, taxAmount: 0, grandTotal: 0}`. |
+
+### TC-004R: Unknown order id returns 404
+| Aspect | Result |
+|--------|--------|
+| Status | **PASSED** |
+| Expected | `404 NOT_FOUND` with explicit message. |
+| Actual | Still returns 404 correctly. |
+
+### Regression
+| Test Suite | Result |
+|------------|--------|
+| `mvn test` (36 tests) | 36 pass, 0 fail, 0 errors |
+
+---
+
 ## Reusable Scripts
 
 ```bash
 TOKEN=$(curl -s -X POST http://localhost:8081/api/v1/auth/login \
   -H "Content-Type: application/json" \
   -d '{"username":"admin","password":"Admin@123"}' | python3 -c "import sys,json; print(json.load(sys.stdin)['data']['accessToken'])")
-ORDER_ID=$(PGPASSWORD=erp_password psql -U erp_user -h localhost -d erp_db -tAc "SELECT id FROM tx_order WHERE order_type='sales' LIMIT 1;")
+ORDER_ID=<draft-sales-order-id>
 curl -s -X POST "http://localhost:8081/api/v1/orders/$ORDER_ID/calculate" \
   -H "Authorization: Bearer $TOKEN" | python3 -m json.tool
 ```

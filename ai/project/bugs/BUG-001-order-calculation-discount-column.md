@@ -1,7 +1,7 @@
 ---
 id: BUG-001
 title: Order calculation endpoint fails because tx_order_line has no discount_amount column
-status: READY_FOR_TEST
+status: RESOLVED
 priority: High
 severity: High
 owner: Software Engineer
@@ -9,9 +9,9 @@ assigned_to: Software Engineer
 assigned_branch: fix/BUG-001
 locked: false
 created: 2026-08-18
-updated: 2026-08-18
+updated: 2026-08-19
 started: 2026-08-18
-completed: 2026-08-18
+completed: 2026-08-19
 parent_prd: PRD-007
 parent_task: TASK-074
 reported_by: QA Engineer

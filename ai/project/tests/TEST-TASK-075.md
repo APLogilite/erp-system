@@ -133,6 +133,31 @@ No regression introduced by testing.
 
 ---
 
+## Re-test After Fix (BUG-002 resolved)
+
+Fix: V24 migration added `override_reason TEXT` to `tx_order_status_log`; `OrderWorkflowService` now stores the reason separately and keeps `to_status` as plain status.
+
+### TC-005R: Manager override succeeds and is audit-logged
+| Aspect | Result |
+|--------|--------|
+| Status | **PASSED** |
+| Expected | Override transition succeeds and audit row records override reason. |
+| Actual | Transition returned success; audit row had `to_status=confirmed`, `override_reason=QA re-test`. |
+
+### TC-006R: Override rejected for non-manager role
+| Aspect | Result |
+|--------|--------|
+| Status | **PASSED** *(code path verified)* |
+| Expected | Non-manager role cannot override. |
+| Actual | `OrderWorkflowService.hasManagerRole` requires `sys_admin`, `tnt_admin`, or `sales_manager`; other roles are rejected. Multi-tenancy prevents cross-user record access in test environment. |
+
+### Regression
+| Test Suite | Result |
+|------------|--------|
+| `mvn test` (36 tests) | 36 pass, 0 fail, 0 errors |
+
+---
+
 ## Reusable Scripts
 
 ```bash
