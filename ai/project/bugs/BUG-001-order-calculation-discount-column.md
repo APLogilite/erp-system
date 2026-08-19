@@ -1,17 +1,17 @@
 ---
 id: BUG-001
 title: Order calculation endpoint fails because tx_order_line has no discount_amount column
-status: IN_DEVELOPMENT
+status: READY_FOR_TEST
 priority: High
 severity: High
 owner: Software Engineer
 assigned_to: Software Engineer
 assigned_branch: fix/BUG-001
-locked: true
+locked: false
 created: 2026-08-18
 updated: 2026-08-18
 started: 2026-08-18
-completed:
+completed: 2026-08-18
 parent_prd: PRD-007
 parent_task: TASK-074
 reported_by: QA Engineer
@@ -75,10 +75,10 @@ API response:
 
 # Fix
 
-*(Developer to fill)*
+Added `discount_amount NUMERIC(15,2) DEFAULT 0` to `tx_order_line` via V23 migration, registered it in `sys_column`, and added it to the Sales Orders and Purchase Orders line tabs.
 
 Suggested options:
-1. Add `discount_amount` column to `tx_order_line` via a new Flyway migration and register it in `sys_column` / window fields.
+1. Add `discount_amount` column to `tx_order_line` via a new Flyway migration and register it in `sys_column` / window fields. **(selected)**
 2. Or, treat missing per-line discount as zero and compute header `discount_amount` as `subtotal - grand_total + tax` or default to 0 until a line-level discount feature is added.
 
 ---
@@ -96,7 +96,9 @@ Suggested options:
 
 # Files Changed
 
-*(Developer to fill)*
+- `backend/src/main/resources/db/migration/V23__add_order_line_discount_column.sql`
+- `ai/project/schema/transactions/tx_order_line.sql`
+- `ai/project/scripts/verify-prd-007-data.sql`
 
 ---
 
