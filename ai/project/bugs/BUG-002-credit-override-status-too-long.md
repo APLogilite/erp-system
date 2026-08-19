@@ -1,16 +1,16 @@
 ---
 id: BUG-002
 title: Credit override transition fails because override status text exceeds tx_order_status_log.to_status varchar(30)
-status: READY_FOR_DEV
+status: IN_DEVELOPMENT
 priority: High
 severity: High
 owner: Software Engineer
-assigned_to:
-assigned_branch:
-locked: false
+assigned_to: Software Engineer
+assigned_branch: fix/BUG-002
+locked: true
 created: 2026-08-18
-updated: 2026-08-18
-started:
+updated: 2026-08-19
+started: 2026-08-19
 completed:
 parent_prd: PRD-007
 parent_task: TASK-075
