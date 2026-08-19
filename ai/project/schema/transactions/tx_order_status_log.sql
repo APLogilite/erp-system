@@ -5,6 +5,7 @@ CREATE TABLE tx_order_status_log (
     order_id UUID NOT NULL REFERENCES tx_order(id),
     from_status VARCHAR(30),
     to_status VARCHAR(30) NOT NULL,
+    override_reason TEXT,
     transitioned_by UUID,
     transitioned_at TIMESTAMP NOT NULL DEFAULT now(),
     tenant_id UUID NOT NULL,

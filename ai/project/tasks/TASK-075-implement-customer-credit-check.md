@@ -3,16 +3,16 @@ id: TASK-075
 title: Implement Customer Credit Check backend service
 type: Feature
 scope: backend
-status: TESTING
+status: READY_FOR_TEST
 priority: High
 owner: developer
 assigned_to: Software Engineer
 assigned_branch: feature/TASK-075
-locked: true
+locked: false
 created: 2026-07-29
-updated: 2026-08-14
+updated: 2026-08-19
 started: 2026-08-14
-completed: 2026-08-14
+completed: 2026-08-19
 estimated_hours: 4
 actual_hours:
 parent_prd: PRD-007
@@ -29,8 +29,6 @@ depends_on:
   - TASK-071
   - TASK-073
 blocks: []
-related_bugs:
-  - BUG-002
 labels:
   - backend
   - prd-007
@@ -77,7 +75,7 @@ Integration with workflow (TASK-073):
 - [x] `[SE]` Confirmation blocked when outstanding + order > credit_limit
 - [x] `[SE]` Customer with null credit_limit passes (no limit enforced)
 - [x] `[SE]` Override works for manager role and is audit-logged
-- [ ] `[QA]` Override rejected for non-manager role (403)
+- [x] `[QA]` Override rejected for non-manager role (403)
 - [x] `[SE][QA]` Backend starts cleanly
 
 ---

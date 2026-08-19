@@ -140,3 +140,10 @@ SELECT 'BUG-001: tx_order_line.discount_amount exists' AS check_name,
          SELECT 1 FROM information_schema.columns
          WHERE table_schema = 'public' AND table_name = 'tx_order_line' AND column_name = 'discount_amount'
        ) AS passed;
+
+-- BUG-002 fix: tx_order_status_log override_reason column
+SELECT 'BUG-002: tx_order_status_log.override_reason exists' AS check_name,
+       EXISTS (
+         SELECT 1 FROM information_schema.columns
+         WHERE table_schema = 'public' AND table_name = 'tx_order_status_log' AND column_name = 'override_reason'
+       ) AS passed;
