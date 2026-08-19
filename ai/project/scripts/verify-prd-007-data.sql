@@ -133,3 +133,10 @@ SELECT 'TASK-077: sales order payment_term_id field exists' AS check_name,
            AND st.seq_no = 10
            AND sc.code = 'payment_term_id'
        ) AS passed;
+
+-- BUG-001 fix: tx_order_line discount_amount column
+SELECT 'BUG-001: tx_order_line.discount_amount exists' AS check_name,
+       EXISTS (
+         SELECT 1 FROM information_schema.columns
+         WHERE table_schema = 'public' AND table_name = 'tx_order_line' AND column_name = 'discount_amount'
+       ) AS passed;
