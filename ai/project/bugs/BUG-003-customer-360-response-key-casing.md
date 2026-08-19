@@ -1,17 +1,17 @@
 ---
 id: BUG-003
 title: Customer 360 API returns list item keys in lowercase instead of camelCase, breaking frontend display
-status: IN_DEVELOPMENT
+status: READY_FOR_TEST
 priority: High
 severity: Medium
 owner: Software Engineer
 assigned_to: Software Engineer
 assigned_branch: fix/BUG-003
-locked: true
+locked: false
 created: 2026-08-18
 updated: 2026-08-19
 started: 2026-08-19
-completed:
+completed: 2026-08-19
 parent_prd: PRD-007
 parent_task: TASK-076
 reported_by: QA Engineer
@@ -75,10 +75,10 @@ API returns lowercase keys:
 
 # Fix
 
-*(Developer to fill)*
+Updated `Customer360Service` to map JDBC result rows to camelCase keys explicitly, both for the partner profile and for all collection sections.
 
 Suggested options:
-1. In `Customer360Service`, build result maps manually with explicit camelCase keys after querying.
+1. In `Customer360Service`, build result maps manually with explicit camelCase keys after querying. **(selected)**
 2. Or, return strongly-typed DTOs/records with `@JsonProperty` annotations instead of `Map<String, Object>`.
 3. Or, update frontend interface to use lowercase keys (not recommended — diverges from spec).
 
@@ -97,7 +97,7 @@ Suggested options:
 
 # Files Changed
 
-*(Developer to fill)*
+- `backend/src/main/java/com/erp/modules/customer/service/Customer360Service.java`
 
 ---
 

@@ -3,16 +3,16 @@ id: TASK-076
 title: Implement Customer 360 API and dashboard form
 type: Feature
 scope: both
-status: TESTING
+status: READY_FOR_TEST
 priority: Medium
 owner: developer
 assigned_to: Software Engineer
 assigned_branch: feature/TASK-076
-locked: true
+locked: false
 created: 2026-07-29
-updated: 2026-08-18
+updated: 2026-08-19
 started: 2026-08-14
-completed:
+completed: 2026-08-19
 estimated_hours: 5
 actual_hours: 6
 parent_prd: PRD-007
@@ -27,8 +27,6 @@ related_tasks:
 depends_on:
   - TASK-071
 blocks: []
-related_bugs:
-  - BUG-003
 labels:
   - backend
   - frontend
@@ -74,8 +72,8 @@ Response: {
 - [x] `[SE]` API returns all five sections with correct data and 5-record limits
 - [x] `[SE]` outstanding matches credit check calculation
 - [x] `[SE]` Dashboard accessible from business partner form
-- [ ] `[QA]` New customer with no history shows empty sections (no errors)
-- [ ] `[QA]` Unknown partner id returns 404
+- [x] `[QA]` New customer with no history shows empty sections (no errors)
+- [x] `[QA]` Unknown partner id returns 404
 - [x] `[SE][QA]` Backend starts cleanly; frontend builds (typecheck + lint pass)
 
 ---
