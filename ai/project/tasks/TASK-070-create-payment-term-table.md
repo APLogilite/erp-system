@@ -29,6 +29,8 @@ depends_on: []
 blocks:
   - TASK-071
   - TASK-072
+related_bugs:
+  - BUG-004
 labels:
   - database
   - prd-007
