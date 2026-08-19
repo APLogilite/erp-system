@@ -1,17 +1,17 @@
 ---
 id: BUG-002
 title: Credit override transition fails because override status text exceeds tx_order_status_log.to_status varchar(30)
-status: IN_DEVELOPMENT
+status: READY_FOR_TEST
 priority: High
 severity: High
 owner: Software Engineer
 assigned_to: Software Engineer
 assigned_branch: fix/BUG-002
-locked: true
+locked: false
 created: 2026-08-18
 updated: 2026-08-19
 started: 2026-08-19
-completed:
+completed: 2026-08-19
 parent_prd: PRD-007
 parent_task: TASK-075
 reported_by: QA Engineer
@@ -75,11 +75,11 @@ API response:
 
 # Fix
 
-*(Developer to fill)*
+Added `override_reason TEXT` column to `tx_order_status_log` via V24 migration and updated `OrderWorkflowService` to store the override reason separately while keeping `to_status` as the plain status.
 
 Suggested options:
 1. Increase `tx_order_status_log.to_status` (and `from_status`) to `VARCHAR(100)` or `TEXT` via Flyway migration.
-2. Or, keep `to_status` as the plain status and store `override_reason` in a new nullable column.
+2. Or, keep `to_status` as the plain status and store `override_reason` in a new nullable column. **(selected)**
 
 ---
 
@@ -98,7 +98,10 @@ Suggested options:
 
 # Files Changed
 
-*(Developer to fill)*
+- `backend/src/main/resources/db/migration/V24__add_status_log_override_reason.sql`
+- `backend/src/main/java/com/erp/modules/salesflow/service/OrderWorkflowService.java`
+- `ai/project/schema/transactions/tx_order_status_log.sql`
+- `ai/project/scripts/verify-prd-007-data.sql`
 
 ---
 

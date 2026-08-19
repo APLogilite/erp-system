@@ -128,16 +128,18 @@ public class OrderWorkflowService {
 
     // Audit log
     String toStatus = target;
+    String overrideReasonValue = null;
     if (override && STATUS_CONFIRMED.equals(target)) {
-      toStatus = target + " (credit override: " + (overrideReason != null ? overrideReason : "no reason") + ")";
+      overrideReasonValue = overrideReason != null && !overrideReason.isBlank() ? overrideReason : "no reason";
     }
     jdbc.update(
-        "INSERT INTO tx_order_status_log (id, order_id, from_status, to_status, transitioned_by, transitioned_at, tenant_id, created_at, updated_at, is_active) "
-          + "VALUES (gen_random_uuid(), :oid, :from, :to, :user, now(), :tid, now(), now(), true)",
+        "INSERT INTO tx_order_status_log (id, order_id, from_status, to_status, override_reason, transitioned_by, transitioned_at, tenant_id, created_at, updated_at, is_active) "
+          + "VALUES (gen_random_uuid(), :oid, :from, :to, :reason, :user, now(), :tid, now(), now(), true)",
         new MapSqlParameterSource()
           .addValue("oid", orderId)
           .addValue("from", currentLower)
           .addValue("to", toStatus)
+          .addValue("reason", overrideReasonValue)
           .addValue("user", userId)
           .addValue("tid", tenantId));
 
