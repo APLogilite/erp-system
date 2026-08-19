@@ -10,6 +10,7 @@ CREATE TABLE tx_order_line (
     quantity NUMERIC(15,3),
     uom_id UUID,
     unit_price NUMERIC(15,2),
+    discount_amount NUMERIC(15,2) DEFAULT 0,
     line_total NUMERIC(15,2),
     tax_rate NUMERIC(5,2),
     created_at TIMESTAMP NOT NULL DEFAULT now(),
