@@ -3,16 +3,16 @@ id: TASK-079
 title: Create Lead table with metadata
 type: Feature
 scope: database
-status: PLANNED
+status: COMPLETED
 priority: High
 owner: developer
-assigned_to:
-assigned_branch:
+assigned_to: Software Engineer
+assigned_branch: feature/TASK-078
 locked: false
 created: 2026-07-29
-updated: 2026-07-29
-started:
-completed:
+updated: 2026-08-24
+started: 2026-08-24
+completed: 2026-08-24
 estimated_hours: 3
 actual_hours:
 parent_prd: PRD-008
@@ -73,11 +73,11 @@ Register in sys_table/sys_column.
 
 # Acceptance Criteria
 
-- [ ] `[SE]` tx_lead created with all columns and metadata registration
-- [ ] `[SE]` FK constraints to md_sales_territory and md_business_partner exist
-- [ ] `[SE]` Migration idempotent
+- [x] `[SE]` tx_lead created with all columns and metadata registration
+- [x] `[SE]` FK constraints to md_sales_territory and md_business_partner exist
+- [x] `[SE]` Migration idempotent
 - [ ] `[QA]` Lead CRUD works via runtime API
-- [ ] `[SE][QA]` Backend starts cleanly
+- [x] `[SE][QA]` Backend starts cleanly
 
 ---
 

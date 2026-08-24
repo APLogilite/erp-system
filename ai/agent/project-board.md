@@ -42,7 +42,6 @@ See `ai/agent/rules/status-transitions.md` for full transition rules.
 
 | Task | Title | PRD | Priority | Depends On |
 |------|-------|-----|----------|------------|
-| TASK-078 | Create Sales Territory table with metadata | PRD-008 | Medium | PRD-006, PRD-007 |
 | TASK-081 | Create Commission table with metadata | PRD-008 | Medium | — |
 
 ---
@@ -51,7 +50,7 @@ See `ai/agent/rules/status-transitions.md` for full transition rules.
 
 | Task | Title | PRD | Priority | Depends On |
 |------|-------|-----|----------|------------|
-| (none) | | | |
+| TASK-078 | Create Sales Territory table with metadata | PRD-008 | Medium | PRD-006, PRD-007 |
 
 ---
 
@@ -274,5 +273,5 @@ See `ai/agent/rules/status-transitions.md` for full transition rules.
 | Completed (PRD-005) | 14 tasks (TASK-046..059) — BUG-013 opened, PRD-005 REOPENED |
 | Completed (PRD-006) | 10 tasks (TASK-060..069) — all TESTED, 6 manual scenarios pending |
 | Completed (PRD-007) | 8 tasks (TASK-070..077) — merged to main; BUG-004 unresolved |
-| In Development (PRD-008) | 2 tasks ready for dev (TASK-078, TASK-081) |
+| In Development (PRD-008) | 1 task in dev (TASK-078), 1 ready for dev (TASK-081) |
 | Total Tasks | 71 completed + 23 planned = 94 total |

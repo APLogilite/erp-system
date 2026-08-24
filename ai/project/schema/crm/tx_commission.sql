@@ -1,0 +1,21 @@
+CREATE TABLE IF NOT EXISTS tx_commission (
+  id                  UUID NOT NULL DEFAULT gen_random_uuid(),
+  salesperson_id      UUID          NOT NULL,
+  opportunity_id      UUID          NOT NULL,
+  order_id            UUID,
+  commission_percent  DECIMAL(5,2)  NOT NULL,
+  commission_amount   DECIMAL(15,2) NOT NULL,
+  status              VARCHAR(20)   NOT NULL DEFAULT 'pending',
+  payment_date        DATE,
+  tenant_id           UUID          NOT NULL DEFAULT '00000000-0000-0000-0000-000000000001',
+  is_active           BOOLEAN       NOT NULL DEFAULT true,
+  created_at          TIMESTAMP     NOT NULL DEFAULT now(),
+  updated_at          TIMESTAMP     NOT NULL DEFAULT now(),
+  created_by          UUID,
+  updated_by          UUID,
+  deleted_at          TIMESTAMP,
+  CONSTRAINT pk_tx_commission PRIMARY KEY (id),
+  CONSTRAINT fk_tx_commission_salesperson FOREIGN KEY (salesperson_id) REFERENCES identity_users(id),
+  CONSTRAINT fk_tx_commission_opportunity FOREIGN KEY (opportunity_id) REFERENCES tx_opportunity(id),
+  CONSTRAINT fk_tx_commission_order FOREIGN KEY (order_id) REFERENCES tx_order(id)
+);

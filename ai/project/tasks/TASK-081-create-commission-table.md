@@ -3,16 +3,16 @@ id: TASK-081
 title: Create Commission table with metadata
 type: Feature
 scope: database
-status: READY_FOR_DEV
+status: COMPLETED
 priority: Medium
 owner: developer
 assigned_to: Software Engineer
-assigned_branch: feature/TASK-081
+assigned_branch: feature/TASK-078
 locked: false
 created: 2026-07-29
 updated: 2026-08-24
-started:
-completed:
+started: 2026-08-24
+completed: 2026-08-24
 estimated_hours: 2
 actual_hours:
 parent_prd: PRD-008
@@ -65,11 +65,11 @@ Register in sys_table/sys_column.
 
 # Acceptance Criteria
 
-- [ ] `[SE]` tx_commission created with metadata registration
-- [ ] `[SE]` FK constraints exist (opportunity, order)
-- [ ] `[SE]` Migration idempotent
+- [x] `[SE]` tx_commission created with metadata registration
+- [x] `[SE]` FK constraints exist (opportunity, order)
+- [x] `[SE]` Migration idempotent
 - [ ] `[QA]` Commission CRUD works via runtime API
-- [ ] `[SE][QA]` Backend starts cleanly
+- [x] `[SE][QA]` Backend starts cleanly
 
 ---
 
