@@ -3,15 +3,15 @@ id: TASK-081
 title: Create Commission table with metadata
 type: Feature
 scope: database
-status: READY_FOR_DEV
+status: IN_DEVELOPMENT
 priority: Medium
 owner: developer
 assigned_to: Software Engineer
-assigned_branch: feature/TASK-081
-locked: false
+assigned_branch: feature/TASK-078
+locked: true
 created: 2026-07-29
 updated: 2026-08-24
-started:
+started: 2026-08-24
 completed:
 estimated_hours: 2
 actual_hours:

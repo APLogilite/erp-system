@@ -3,15 +3,15 @@ id: TASK-080
 title: Create Opportunity table with metadata
 type: Feature
 scope: database
-status: PLANNED
+status: IN_DEVELOPMENT
 priority: High
 owner: developer
-assigned_to:
-assigned_branch:
-locked: false
+assigned_to: Software Engineer
+assigned_branch: feature/TASK-078
+locked: true
 created: 2026-07-29
-updated: 2026-07-29
-started:
+updated: 2026-08-24
+started: 2026-08-24
 completed:
 estimated_hours: 3
 actual_hours:
