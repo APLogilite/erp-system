@@ -34,7 +34,15 @@ See `ai/agent/rules/status-transitions.md` for full transition rules.
 
 | Task | Title | PRD | Priority |
 |------|-------|-----|----------|
-| (none) | | | |
+| TASK-078 | Create Sales Territory table with metadata | PRD-008 | Medium |
+| TASK-079 | Create Lead table with metadata | PRD-008 | High |
+| TASK-080 | Create Opportunity table with metadata | PRD-008 | High |
+| TASK-081 | Create Commission table with metadata | PRD-008 | Medium |
+| TASK-082 | Implement Lead scoring and qualification workflow | PRD-008 | High |
+| TASK-083 | Implement Lead to Opportunity conversion | PRD-008 | High |
+| TASK-084 | Implement Opportunity pipeline workflow, quotation conversion, and commission | PRD-008 | High |
+| TASK-085 | Seed CRM forms (lead, opportunity, territory, commission) | PRD-008 | High |
+| TASK-086 | Implement CRM Dashboard API and deprecate hardcoded crm/ module | PRD-008 | Medium |
 
 ---
 
@@ -42,7 +50,7 @@ See `ai/agent/rules/status-transitions.md` for full transition rules.
 
 | Task | Title | PRD | Priority | Depends On |
 |------|-------|-----|----------|------------|
-| TASK-081 | Create Commission table with metadata | PRD-008 | Medium | — |
+| (none) | | | |
 
 ---
 
@@ -50,7 +58,7 @@ See `ai/agent/rules/status-transitions.md` for full transition rules.
 
 | Task | Title | PRD | Priority | Depends On |
 |------|-------|-----|----------|------------|
-| TASK-078 | Create Sales Territory table with metadata | PRD-008 | Medium | PRD-006, PRD-007 |
+| (none) | | | |
 
 ---
 
@@ -85,7 +93,7 @@ See `ai/agent/rules/status-transitions.md` for full transition rules.
 | PRD-005 | Backend-Frontend Separation & Code Standardization | 1.3.1 | **COMPLETED** | High |
 | PRD-006 | Sales Quotation & Price Management | 1.0.0 | **COMPLETED** | High |
 | PRD-007 | Sales Order Workflow & Customer Management | 1.0.0 | **COMPLETED** | High |
-| PRD-008 | CRM Pipeline & Sales Team Management | 1.0.0 | **IN_DEVELOPMENT** | Medium |
+| PRD-008 | CRM Pipeline & Sales Team Management | 1.0.0 | **TESTING** | Medium |
 | PRD-009 | Sales Return & Analytics | 1.0.0 | **APPROVED** | Medium |
 
 ---
@@ -259,12 +267,12 @@ See `ai/agent/rules/status-transitions.md` for full transition rules.
 
 | Status | Count |
 |--------|-------|
-| PRDs | 9 (7 COMPLETED, 1 IN_DEVELOPMENT, 1 APPROVED) |
-| Ready For Dev | 2 (TASK-078, TASK-081) |
-| Ready For Test | 0 |
+| PRDs | 9 (7 COMPLETED, 1 TESTING, 1 APPROVED) |
+| Ready For Dev | 0 |
+| Ready For Test | 9 (TASK-078..086) |
 | In Testing | 0 |
 | In Development | 0 |
-| Planned | 12 (TASK-079/080/082..086, TASK-087..092) |
+| Planned | 6 (TASK-087..092) |
 | Bugs | 16 (8 COMPLETED, 1 CANCELLED, 6 RESOLVED, 1 READY_FOR_DEV) |
 | Completed (PRD-001) | 27 tasks + 2 enhancements (ENH-001, ENH-003) |
 | Completed (PRD-002) | 3 tasks + 1 enhancement (TASK-033/034/035 + ENH-002) |
@@ -273,5 +281,5 @@ See `ai/agent/rules/status-transitions.md` for full transition rules.
 | Completed (PRD-005) | 14 tasks (TASK-046..059) — BUG-013 opened, PRD-005 REOPENED |
 | Completed (PRD-006) | 10 tasks (TASK-060..069) — all TESTED, 6 manual scenarios pending |
 | Completed (PRD-007) | 8 tasks (TASK-070..077) — merged to main; BUG-004 unresolved |
-| In Development (PRD-008) | 1 task in dev (TASK-078), 1 ready for dev (TASK-081) |
+| Testing (PRD-008) | 9 tasks ready for test (TASK-078..086) |
 | Total Tasks | 71 completed + 23 planned = 94 total |

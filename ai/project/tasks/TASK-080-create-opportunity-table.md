@@ -3,7 +3,7 @@ id: TASK-080
 title: Create Opportunity table with metadata
 type: Feature
 scope: database
-status: COMPLETED
+status: READY_FOR_TEST
 priority: High
 owner: developer
 assigned_to: Software Engineer
@@ -12,7 +12,7 @@ locked: false
 created: 2026-07-29
 updated: 2026-08-24
 started: 2026-08-24
-completed: 2026-08-24
+completed:
 estimated_hours: 3
 actual_hours:
 parent_prd: PRD-008

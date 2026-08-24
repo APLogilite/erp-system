@@ -2,7 +2,7 @@
 id: PRD-008
 title: CRM Pipeline & Sales Team Management
 version: 1.0.0
-status: IN_DEVELOPMENT
+status: TESTING
 priority: Medium
 owner: Product Manager
 created: 2026-07-29

@@ -8,6 +8,30 @@ last_updated: 2026-08-24
 
 # Changelog
 
+## 2026-08-24 (PRD-008 Implementation Complete — TESTING)
+
+### Summary
+PRD-008 (CRM Pipeline & Sales Team Management v1.0.0) advanced from IN_DEVELOPMENT to TESTING. All 9 tasks (TASK-078..086) implemented and merged into `prd/PRD-008-crm-pipeline-sales-team`. Backend `mvn clean compile` and `mvn test` pass (36 tests), frontend `pnpm lint`/`pnpm typecheck`/`pnpm build` pass.
+
+### PRD Status Changed
+- **PRD-008** — CRM Pipeline & Sales Team Management v1.0.0: **IN_DEVELOPMENT → TESTING**
+
+### Tasks Implemented (9)
+| Task | Title | Status |
+|------|-------|--------|
+| TASK-078 | Create Sales Territory table with metadata | READY_FOR_TEST |
+| TASK-079 | Create Lead table with metadata | READY_FOR_TEST |
+| TASK-080 | Create Opportunity table with metadata | READY_FOR_TEST |
+| TASK-081 | Create Commission table with metadata | READY_FOR_TEST |
+| TASK-082 | Implement Lead scoring and qualification workflow | READY_FOR_TEST |
+| TASK-083 | Implement Lead to Opportunity conversion | READY_FOR_TEST |
+| TASK-084 | Implement Opportunity pipeline workflow, quotation conversion, and commission | READY_FOR_TEST |
+| TASK-085 | Seed CRM forms (lead, opportunity, territory, commission) | READY_FOR_TEST |
+| TASK-086 | Implement CRM Dashboard API and deprecate hardcoded crm/ module | READY_FOR_TEST |
+
+### Branch
+- `prd/PRD-008-crm-pipeline-sales-team` ready for QA
+
 ## 2026-08-24 (PRD-007 Merged to Main — COMPLETED)
 
 ### Summary
