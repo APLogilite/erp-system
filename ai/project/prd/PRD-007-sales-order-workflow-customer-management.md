@@ -2,11 +2,12 @@
 id: PRD-007
 title: Sales Order Workflow & Customer Management
 version: 1.0.0
-status: TESTING
+status: COMPLETED
 priority: High
 owner: Product Manager
 created: 2026-07-29
-updated: 2026-08-18
+updated: 2026-08-24
+merged: 2026-08-24
 approved_by: user
 project: Dynamic ERP Platform
 repository: erp-system

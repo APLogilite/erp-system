@@ -1,10 +1,10 @@
 # Project Board
 
-Last Updated: 2026-08-18
+Last Updated: 2026-08-24
 
 Updated By: Software Engineer
 
-(PRD-007 TESTING — all 8 tasks TASK-070..077 READY_FOR_TEST.)
+(PRD-007 COMPLETED and merged to main. PRD-008 IN_DEVELOPMENT.)
 
 ---
 
@@ -34,14 +34,24 @@ See `ai/agent/rules/status-transitions.md` for full transition rules.
 
 | Task | Title | PRD | Priority |
 |------|-------|-----|----------|
-| TASK-070 | Create Payment Term table with seed data and metadata | PRD-007 | High |
-| TASK-071 | Add credit limit and payment term to Business Partner | PRD-007 | High |
-| TASK-072 | Add payment term to Order and Invoice tables | PRD-007 | High |
-| TASK-073 | Implement Order status workflow backend service | PRD-007 | High |
-| TASK-074 | Implement Order auto-calculation backend service | PRD-007 | High |
-| TASK-075 | Implement Customer Credit Check backend service | PRD-007 | High |
-| TASK-076 | Implement Customer 360 API and dashboard form | PRD-007 | Medium |
-| TASK-077 | Update Sales Order form with workflow actions and payment terms | PRD-007 | High |
+| (none) | | | |
+
+---
+
+## Ready For Development
+
+| Task | Title | PRD | Priority | Depends On |
+|------|-------|-----|----------|------------|
+| TASK-078 | Create Sales Territory table with metadata | PRD-008 | Medium | PRD-006, PRD-007 |
+| TASK-081 | Create Commission table with metadata | PRD-008 | Medium | — |
+
+---
+
+## In Development
+
+| Task | Title | PRD | Priority | Depends On |
+|------|-------|-----|----------|------------|
+| (none) | | | |
 
 ---
 
@@ -49,10 +59,8 @@ See `ai/agent/rules/status-transitions.md` for full transition rules.
 
 | Task | Title | PRD | Priority | Depends On |
 |------|-------|-----|----------|------------|
-| TASK-078 | Create Sales Territory table with metadata | PRD-008 | Medium | PRD-006 |
 | TASK-079 | Create Lead table with metadata | PRD-008 | High | TASK-078 |
 | TASK-080 | Create Opportunity table with metadata | PRD-008 | High | TASK-078 |
-| TASK-081 | Create Commission table with metadata | PRD-008 | Medium | — |
 | TASK-082 | Implement Lead scoring and qualification workflow | PRD-008 | High | TASK-079 |
 | TASK-083 | Implement Lead to Opportunity conversion | PRD-008 | High | TASK-079/080/082 |
 | TASK-084 | Implement Opportunity pipeline workflow, quotation conversion, and commission | PRD-008 | High | TASK-080, TASK-081 |
@@ -77,8 +85,8 @@ See `ai/agent/rules/status-transitions.md` for full transition rules.
 | PRD-004 | Window Hierarchy & Menu System | 1.1.0 | **COMPLETED** | High |
 | PRD-005 | Backend-Frontend Separation & Code Standardization | 1.3.1 | **COMPLETED** | High |
 | PRD-006 | Sales Quotation & Price Management | 1.0.0 | **COMPLETED** | High |
-| PRD-007 | Sales Order Workflow & Customer Management | 1.0.0 | **TESTING** | High |
-| PRD-008 | CRM Pipeline & Sales Team Management | 1.0.0 | **APPROVED** | Medium |
+| PRD-007 | Sales Order Workflow & Customer Management | 1.0.0 | **COMPLETED** | High |
+| PRD-008 | CRM Pipeline & Sales Team Management | 1.0.0 | **IN_DEVELOPMENT** | Medium |
 | PRD-009 | Sales Return & Analytics | 1.0.0 | **APPROVED** | Medium |
 
 ---
@@ -196,6 +204,14 @@ See `ai/agent/rules/status-transitions.md` for full transition rules.
 | TASK-067 | 2026-08-12 | 1.0.0 |
 | TASK-068 | 2026-08-12 | 1.0.0 |
 | TASK-069 | 2026-08-12 | 1.0.0 |
+| TASK-070 | 2026-08-24 | 1.0.0 |
+| TASK-071 | 2026-08-24 | 1.0.0 |
+| TASK-072 | 2026-08-24 | 1.0.0 |
+| TASK-073 | 2026-08-24 | 1.0.0 |
+| TASK-074 | 2026-08-24 | 1.0.0 |
+| TASK-075 | 2026-08-24 | 1.0.0 |
+| TASK-076 | 2026-08-24 | 1.0.0 |
+| TASK-077 | 2026-08-24 | 1.0.0 |
 
 ---
 
@@ -208,7 +224,7 @@ See `ai/agent/rules/status-transitions.md` for full transition rules.
 | BUG-001 | TASK-001 | Medium | COMPLETED | QA Engineer | — |
 | BUG-002 | TASK-007 | High | COMPLETED | QA Engineer | — |
 | BUG-003 | TASK-011 | High | COMPLETED | QA Engineer | — |
-| BUG-004 | TASK-025 | Medium | COMPLETED | QA Engineer | — |
+| BUG-004 | TASK-070 | Medium | READY_FOR_DEV | QA Engineer | — |
 | BUG-005 | TASK-025 | Medium | CANCELLED | QA Engineer | — |
 | BUG-006 | TASK-007 | Critical | COMPLETED | QA Engineer | — |
 | BUG-007 | TASK-036 | Critical | COMPLETED | QA Engineer | — |
@@ -244,17 +260,19 @@ See `ai/agent/rules/status-transitions.md` for full transition rules.
 
 | Status | Count |
 |--------|-------|
-| PRDs | 9 (6 COMPLETED, 1 IN_DEVELOPMENT, 2 APPROVED) |
-| Ready For Dev | 2 |
-| Ready For Test | 6 |
+| PRDs | 9 (7 COMPLETED, 1 IN_DEVELOPMENT, 1 APPROVED) |
+| Ready For Dev | 2 (TASK-078, TASK-081) |
+| Ready For Test | 0 |
 | In Testing | 0 |
 | In Development | 0 |
-| Planned | 15 (TASK-087..092) |
-| Bugs | 15 (8 COMPLETED, 1 CANCELLED, 6 RESOLVED) |
+| Planned | 12 (TASK-079/080/082..086, TASK-087..092) |
+| Bugs | 16 (8 COMPLETED, 1 CANCELLED, 6 RESOLVED, 1 READY_FOR_DEV) |
 | Completed (PRD-001) | 27 tasks + 2 enhancements (ENH-001, ENH-003) |
 | Completed (PRD-002) | 3 tasks + 1 enhancement (TASK-033/034/035 + ENH-002) |
 | Completed (PRD-003) | 5 tasks (TASK-028/029/030/031/032) — merged to main |
 | Completed (PRD-004) | 10 tasks (TASK-036..045) — merged to main |
 | Completed (PRD-005) | 14 tasks (TASK-046..059) — BUG-013 opened, PRD-005 REOPENED |
 | Completed (PRD-006) | 10 tasks (TASK-060..069) — all TESTED, 6 manual scenarios pending |
+| Completed (PRD-007) | 8 tasks (TASK-070..077) — merged to main; BUG-004 unresolved |
+| In Development (PRD-008) | 2 tasks ready for dev (TASK-078, TASK-081) |
 | Total Tasks | 71 completed + 23 planned = 94 total |

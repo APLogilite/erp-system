@@ -3,14 +3,14 @@ id: TASK-078
 title: Create Sales Territory table with metadata
 type: Feature
 scope: database
-status: PLANNED
+status: READY_FOR_DEV
 priority: Medium
 owner: developer
-assigned_to:
-assigned_branch:
+assigned_to: Software Engineer
+assigned_branch: feature/TASK-078
 locked: false
 created: 2026-07-29
-updated: 2026-07-29
+updated: 2026-08-24
 started:
 completed:
 estimated_hours: 2

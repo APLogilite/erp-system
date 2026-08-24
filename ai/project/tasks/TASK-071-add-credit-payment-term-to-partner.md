@@ -3,16 +3,16 @@ id: TASK-071
 title: Add credit limit and payment term to Business Partner
 type: Feature
 scope: database
-status: TESTING
+status: COMPLETED
 priority: High
 owner: developer
 assigned_to: Software Engineer
 assigned_branch: feature/TASK-071
-locked: true
+locked: false
 created: 2026-07-29
-updated: 2026-08-14
+updated: 2026-08-24
 started: 2026-08-14
-completed: 2026-08-14
+completed: 2026-08-24
 estimated_hours: 2
 actual_hours:
 parent_prd: PRD-007

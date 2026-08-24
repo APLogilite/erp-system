@@ -3,16 +3,16 @@ id: TASK-077
 title: Update Sales Order form with workflow actions and payment terms
 type: Feature
 scope: both
-status: TESTED
+status: COMPLETED
 priority: High
 owner: developer
 assigned_to: Software Engineer
 assigned_branch: feature/TASK-077
 locked: false
 created: 2026-07-29
-updated: 2026-08-19
+updated: 2026-08-24
 started: 2026-08-18
-completed: 2026-08-19
+completed: 2026-08-24
 estimated_hours: 4
 actual_hours: 5
 parent_prd: PRD-007

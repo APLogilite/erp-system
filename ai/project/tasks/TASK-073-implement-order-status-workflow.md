@@ -3,16 +3,16 @@ id: TASK-073
 title: Implement Order status workflow backend service
 type: Feature
 scope: backend
-status: TESTING
+status: COMPLETED
 priority: High
 owner: developer
 assigned_to: Software Engineer
 assigned_branch: feature/TASK-073
-locked: true
+locked: false
 created: 2026-07-29
-updated: 2026-08-14
+updated: 2026-08-24
 started: 2026-08-14
-completed: 2026-08-14
+completed: 2026-08-24
 estimated_hours: 4
 actual_hours:
 parent_prd: PRD-007

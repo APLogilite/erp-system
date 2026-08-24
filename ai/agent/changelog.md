@@ -3,10 +3,36 @@ document: CHANGELOG
 version: 1.0.0
 status: ACTIVE
 owner: Product Manager
-last_updated: 2026-08-18
+last_updated: 2026-08-24
 ---
 
 # Changelog
+
+## 2026-08-24 (PRD-007 Merged to Main — COMPLETED)
+
+### Summary
+PRD-007 (Sales Order Workflow & Customer Management v1.0.0) merged to `main` with cascade completion applied to all tasks. Manual UI testing for TASK-070/071/072/073 was not completed per PM direction, and BUG-004 (Payment Term delete button not working in runtime UI) remains unresolved — documented as a known issue.
+
+### PRD Status Changed
+- **PRD-007** — Sales Order Workflow & Customer Management v1.0.0: **TESTING → COMPLETED**
+
+### Tasks Completed (8)
+| Task | Title |
+|------|-------|
+| TASK-070 | Create Payment Term table with seed data and metadata |
+| TASK-071 | Add credit limit and payment term to Business Partner |
+| TASK-072 | Add payment term to Order and Invoice tables |
+| TASK-073 | Implement Order status workflow backend service |
+| TASK-074 | Implement Order auto-calculation backend service |
+| TASK-075 | Implement Customer Credit Check backend service |
+| TASK-076 | Implement Customer 360 API and dashboard form |
+| TASK-077 | Update Sales Order form with workflow actions and payment terms |
+
+### Known Issues
+- **BUG-004** — Payment Term delete button does not remove record in runtime UI (backend API works; frontend handler/refresh issue). Status: `READY_FOR_DEV`.
+
+### Branch
+- `prd/PRD-007-sales-order-workflow-customer-management` merged into `main`.
 
 ## 2026-08-18 (PRD-007 Implementation Complete — TESTING)
 
