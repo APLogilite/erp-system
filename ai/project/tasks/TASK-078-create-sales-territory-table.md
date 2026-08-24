@@ -3,7 +3,7 @@ id: TASK-078
 title: Create Sales Territory table with metadata
 type: Feature
 scope: database
-status: TESTED
+status: COMPLETED
 priority: Medium
 owner: developer
 assigned_to: Software Engineer

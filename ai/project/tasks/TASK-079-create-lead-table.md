@@ -3,7 +3,7 @@ id: TASK-079
 title: Create Lead table with metadata
 type: Feature
 scope: database
-status: TESTED
+status: COMPLETED
 priority: High
 owner: developer
 assigned_to: Software Engineer

@@ -3,7 +3,7 @@ id: TASK-083
 title: Implement Lead to Opportunity conversion
 type: Feature
 scope: backend
-status: TESTED
+status: COMPLETED
 priority: High
 owner: developer
 assigned_to: Software Engineer

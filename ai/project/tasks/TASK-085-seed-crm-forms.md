@@ -3,7 +3,7 @@ id: TASK-085
 title: Seed CRM forms (lead, opportunity, territory, commission)
 type: Feature
 scope: database
-status: TESTED
+status: COMPLETED
 priority: High
 owner: developer
 assigned_to: Software Engineer

@@ -3,7 +3,7 @@ id: TASK-082
 title: Implement Lead scoring and qualification workflow
 type: Feature
 scope: backend
-status: TESTED
+status: COMPLETED
 priority: High
 owner: developer
 assigned_to: Software Engineer

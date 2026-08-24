@@ -3,7 +3,7 @@ id: TASK-086
 title: Implement CRM Dashboard API and deprecate hardcoded crm/ module
 type: Feature
 scope: both
-status: TESTED
+status: COMPLETED
 priority: Medium
 owner: developer
 assigned_to: Software Engineer

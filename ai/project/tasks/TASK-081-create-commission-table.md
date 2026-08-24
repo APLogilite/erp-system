@@ -3,7 +3,7 @@ id: TASK-081
 title: Create Commission table with metadata
 type: Feature
 scope: database
-status: TESTED
+status: COMPLETED
 priority: Medium
 owner: developer
 assigned_to: Software Engineer
