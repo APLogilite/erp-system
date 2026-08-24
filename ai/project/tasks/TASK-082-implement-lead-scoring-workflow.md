@@ -3,16 +3,16 @@ id: TASK-082
 title: Implement Lead scoring and qualification workflow
 type: Feature
 scope: backend
-status: IN_DEVELOPMENT
+status: COMPLETED
 priority: High
 owner: developer
 assigned_to: Software Engineer
 assigned_branch: feature/TASK-078
-locked: true
+locked: false
 created: 2026-07-29
 updated: 2026-08-24
 started: 2026-08-24
-completed:
+completed: 2026-08-24
 estimated_hours: 3
 actual_hours:
 parent_prd: PRD-008
@@ -70,11 +70,11 @@ Allowed transitions: new → contacted / lost; contacted → qualified / lost; q
 
 # Acceptance Criteria
 
-- [ ] `[SE]` Score auto-computed correctly for all rule branches
-- [ ] `[SE]` Valid transitions succeed; invalid return 400 with message
-- [ ] `[SE]` lead_number auto-assigned from sequence on create
+- [x] `[SE]` Score auto-computed correctly for all rule branches
+- [x] `[SE]` Valid transitions succeed; invalid return 400 with message
+- [x] `[SE]` lead_number auto-assigned from sequence on create
 - [ ] `[QA]` Score read-only via API (client-set value ignored/overwritten)
-- [ ] `[SE][QA]` Backend starts cleanly
+- [x] `[SE][QA]` Backend starts cleanly
 
 ---
 

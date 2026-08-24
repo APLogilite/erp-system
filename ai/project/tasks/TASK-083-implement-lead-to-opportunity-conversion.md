@@ -3,16 +3,16 @@ id: TASK-083
 title: Implement Lead to Opportunity conversion
 type: Feature
 scope: backend
-status: IN_DEVELOPMENT
+status: COMPLETED
 priority: High
 owner: developer
 assigned_to: Software Engineer
 assigned_branch: feature/TASK-078
-locked: true
+locked: false
 created: 2026-07-29
 updated: 2026-08-24
 started: 2026-08-24
-completed:
+completed: 2026-08-24
 estimated_hours: 4
 actual_hours:
 parent_prd: PRD-008
@@ -72,12 +72,12 @@ Logic (single transaction):
 
 # Acceptance Criteria
 
-- [ ] `[SE]` Qualified lead converts: partner + opportunity created, lead updated
-- [ ] `[SE]` Opportunity number auto-generated from sequence
-- [ ] `[SE]` Non-qualified lead returns 400; already-converted returns 400
-- [ ] `[SE]` Transactional: failure leaves no partial records
+- [x] `[SE]` Qualified lead converts: partner + opportunity created, lead updated
+- [x] `[SE]` Opportunity number auto-generated from sequence
+- [x] `[SE]` Non-qualified lead returns 400; already-converted returns 400
+- [x] `[SE]` Transactional: failure leaves no partial records
 - [ ] `[QA]` Converted opportunity visible in runtime form with correct links
-- [ ] `[SE][QA]` Backend starts cleanly
+- [x] `[SE][QA]` Backend starts cleanly
 
 ---
 

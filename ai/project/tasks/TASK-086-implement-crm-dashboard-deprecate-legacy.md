@@ -3,16 +3,16 @@ id: TASK-086
 title: Implement CRM Dashboard API and deprecate hardcoded crm/ module
 type: Feature
 scope: both
-status: IN_DEVELOPMENT
+status: COMPLETED
 priority: Medium
 owner: developer
 assigned_to: Software Engineer
 assigned_branch: feature/TASK-078
-locked: true
+locked: false
 created: 2026-07-29
 updated: 2026-08-24
 started: 2026-08-24
-completed:
+completed: 2026-08-24
 estimated_hours: 5
 actual_hours:
 parent_prd: PRD-008
@@ -80,12 +80,12 @@ Response: {
 
 # Acceptance Criteria
 
-- [ ] `[SE]` Dashboard API returns correct pipeline aggregates and conversion rates
-- [ ] `[SE]` Dashboard page renders data without errors; menu entry works
-- [ ] `[SE]` Reference search documented; crm/ module deleted; legacy tables dropped
-- [ ] `[SE]` mvn clean compile + mvn test pass (BUILD SUCCESS)
+- [x] `[SE]` Dashboard API returns correct pipeline aggregates and conversion rates
+- [x] `[SE]` Dashboard page renders data without errors; menu entry works
+- [x] `[SE]` Reference search documented; crm/ module deleted; legacy tables dropped
+- [x] `[SE]` mvn clean compile + mvn test pass (BUILD SUCCESS)
 - [ ] `[QA]` Application starts cleanly; metadata lead/opportunity forms work end-to-end
-- [ ] `[SE][QA]` Frontend typecheck + lint pass
+- [x] `[SE][QA]` Frontend typecheck + lint pass
 
 ---
 

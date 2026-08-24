@@ -2,7 +2,7 @@
 document: CHANGE_REPORT
 task_id: TASK-078
 version: 1.0.0
-status: DRAFT
+status: FINAL
 author: Software Engineer
 date: 2026-08-24
 ---
@@ -16,8 +16,10 @@ Create Sales Territory table with metadata (PRD-008).
 ## Files Changed
 
 - `ai/project/schema/crm/md_sales_territory.sql`
+- `ai/project/schema/master-data/md_business_partner.sql`
 - `backend/src/main/resources/db/migration/V25__create_sales_territory_table.sql`
 - `backend/src/main/resources/db/migration/V26__seed_sales_territory_form.sql`
+- `backend/src/main/resources/db/migration/V32__add_territory_to_business_partner.sql`
 
 ## Summary
 

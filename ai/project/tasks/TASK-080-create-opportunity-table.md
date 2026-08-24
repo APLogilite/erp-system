@@ -3,16 +3,16 @@ id: TASK-080
 title: Create Opportunity table with metadata
 type: Feature
 scope: database
-status: IN_DEVELOPMENT
+status: COMPLETED
 priority: High
 owner: developer
 assigned_to: Software Engineer
 assigned_branch: feature/TASK-078
-locked: true
+locked: false
 created: 2026-07-29
 updated: 2026-08-24
 started: 2026-08-24
-completed:
+completed: 2026-08-24
 estimated_hours: 3
 actual_hours:
 parent_prd: PRD-008
@@ -74,11 +74,11 @@ Register in sys_table/sys_column.
 
 # Acceptance Criteria
 
-- [ ] `[SE]` tx_opportunity created with all columns and metadata registration
-- [ ] `[SE]` FK constraints exist (partner, lead, territory)
-- [ ] `[SE]` Migration idempotent
+- [x] `[SE]` tx_opportunity created with all columns and metadata registration
+- [x] `[SE]` FK constraints exist (partner, lead, territory)
+- [x] `[SE]` Migration idempotent
 - [ ] `[QA]` Opportunity CRUD works via runtime API
-- [ ] `[SE][QA]` Backend starts cleanly
+- [x] `[SE][QA]` Backend starts cleanly
 
 ---
 

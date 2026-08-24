@@ -3,16 +3,16 @@ id: TASK-084
 title: Implement Opportunity pipeline workflow, quotation conversion, and commission
 type: Feature
 scope: backend
-status: IN_DEVELOPMENT
+status: COMPLETED
 priority: High
 owner: developer
 assigned_to: Software Engineer
 assigned_branch: feature/TASK-078
-locked: true
+locked: false
 created: 2026-07-29
 updated: 2026-08-24
 started: 2026-08-24
-completed:
+completed: 2026-08-24
 estimated_hours: 5
 actual_hours:
 parent_prd: PRD-008
@@ -72,12 +72,12 @@ Implement `OpportunityService` (backend):
 
 # Acceptance Criteria
 
-- [ ] `[SE]` Stage transitions validated (invalid → 400)
-- [ ] `[SE]` create-quotation creates quotation and links it to the opportunity
-- [ ] `[SE]` Closing won auto-creates a pending commission with correct amount
-- [ ] `[SE]` Closing lost creates no commission
+- [x] `[SE]` Stage transitions validated (invalid → 400)
+- [x] `[SE]` create-quotation creates quotation and links it to the opportunity
+- [x] `[SE]` Closing won auto-creates a pending commission with correct amount
+- [x] `[SE]` Closing lost creates no commission
 - [ ] `[QA]` Opportunity number auto-assigned on create
-- [ ] `[SE][QA]` Backend starts cleanly
+- [x] `[SE][QA]` Backend starts cleanly
 
 ---
 
