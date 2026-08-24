@@ -3,7 +3,7 @@ id: TASK-083
 title: Implement Lead to Opportunity conversion
 type: Feature
 scope: backend
-status: READY_FOR_TEST
+status: TESTED
 priority: High
 owner: developer
 assigned_to: Software Engineer
@@ -12,7 +12,8 @@ locked: false
 created: 2026-07-29
 updated: 2026-08-24
 started: 2026-08-24
-completed:
+completed: 2026-08-24
+test_report: TEST-TASK-083
 estimated_hours: 4
 actual_hours:
 parent_prd: PRD-008

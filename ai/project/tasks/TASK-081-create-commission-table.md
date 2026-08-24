@@ -3,7 +3,7 @@ id: TASK-081
 title: Create Commission table with metadata
 type: Feature
 scope: database
-status: READY_FOR_TEST
+status: TESTED
 priority: Medium
 owner: developer
 assigned_to: Software Engineer
@@ -12,7 +12,8 @@ locked: false
 created: 2026-07-29
 updated: 2026-08-24
 started: 2026-08-24
-completed:
+completed: 2026-08-24
+test_report: TEST-TASK-081
 estimated_hours: 2
 actual_hours:
 parent_prd: PRD-008
