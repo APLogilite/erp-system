@@ -3,16 +3,16 @@ id: TASK-070
 title: Create Payment Term table with seed data and metadata
 type: Feature
 scope: database
-status: PLANNED
+status: TESTING
 priority: High
 owner: developer
-assigned_to:
-assigned_branch:
-locked: false
+assigned_to: Software Engineer
+assigned_branch: feature/TASK-070
+locked: true
 created: 2026-07-29
-updated: 2026-07-29
-started:
-completed:
+updated: 2026-08-14
+started: 2026-08-14
+completed: 2026-08-14
 estimated_hours: 2
 actual_hours:
 parent_prd: PRD-007
@@ -29,6 +29,8 @@ depends_on: []
 blocks:
   - TASK-071
   - TASK-072
+related_bugs:
+  - BUG-004
 labels:
   - database
   - prd-007
@@ -36,7 +38,7 @@ review_required: true
 test_required: true
 automation_required: false
 change_summary:
-test_report:
+test_report: TEST-TASK-070.md
 test_script:
 history:
   - created
@@ -69,11 +71,11 @@ Register table in `sys_table` / `sys_column` and seed a metadata form `payment_t
 
 # Acceptance Criteria
 
-- [ ] `[SE]` Migration creates md_payment_term and seeds 5 standard terms
-- [ ] `[SE]` Table/columns registered in sys_table/sys_column
-- [ ] `[SE]` payment_term form seeded and visible in runtime forms list
+- [x] `[SE]` Migration creates md_payment_term and seeds 5 standard terms
+- [x] `[SE]` Table/columns registered in sys_table/sys_column
+- [x] `[SE]` payment_term form seeded and visible in runtime forms list
 - [ ] `[QA]` CRUD on payment terms works via runtime UI
-- [ ] `[SE][QA]` Backend starts cleanly with migration applied
+- [x] `[SE][QA]` Backend starts cleanly with migration applied
 
 ---
 

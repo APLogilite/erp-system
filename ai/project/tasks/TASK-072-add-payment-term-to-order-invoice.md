@@ -3,16 +3,16 @@ id: TASK-072
 title: Add payment term to Order and Invoice tables
 type: Feature
 scope: database
-status: PLANNED
+status: TESTING
 priority: High
 owner: developer
-assigned_to:
-assigned_branch:
-locked: false
+assigned_to: Software Engineer
+assigned_branch: feature/TASK-072
+locked: true
 created: 2026-07-29
-updated: 2026-07-29
-started:
-completed:
+updated: 2026-08-14
+started: 2026-08-14
+completed: 2026-08-14
 estimated_hours: 2
 actual_hours:
 parent_prd: PRD-007
@@ -35,7 +35,7 @@ review_required: true
 test_required: true
 automation_required: false
 change_summary:
-test_report:
+test_report: TEST-TASK-072.md
 test_script:
 history:
   - created
@@ -61,12 +61,12 @@ Also add backend auto-population logic (in the runtime save path or a small serv
 
 # Acceptance Criteria
 
-- [ ] `[SE]` payment_term_id column added to tx_order and tx_invoice with metadata registration
-- [ ] `[SE]` sales_order and sales_invoice forms show the payment term dropdown
-- [ ] `[SE]` Saving an invoice with a term auto-calculates due_date when empty
-- [ ] `[SE]` Creating an order pre-fills term from customer default
+- [x] `[SE]` payment_term_id column added to tx_order and tx_invoice with metadata registration
+- [x] `[SE]` sales_order and sales_invoice forms show the payment term dropdown
+- [x] `[SE]` Saving an invoice with a term auto-calculates due_date when empty
+- [x] `[SE]` Creating an order pre-fills term from customer default
 - [ ] `[QA]` End-to-end: partner with NET30 → new order shows NET30 → invoice due_date = invoice_date + 30
-- [ ] `[SE][QA]` Backend starts cleanly
+- [x] `[SE][QA]` Backend starts cleanly
 
 ---
 

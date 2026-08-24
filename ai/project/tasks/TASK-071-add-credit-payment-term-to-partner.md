@@ -3,16 +3,16 @@ id: TASK-071
 title: Add credit limit and payment term to Business Partner
 type: Feature
 scope: database
-status: PLANNED
+status: TESTING
 priority: High
 owner: developer
-assigned_to:
-assigned_branch:
-locked: false
+assigned_to: Software Engineer
+assigned_branch: feature/TASK-071
+locked: true
 created: 2026-07-29
-updated: 2026-07-29
-started:
-completed:
+updated: 2026-08-14
+started: 2026-08-14
+completed: 2026-08-14
 estimated_hours: 2
 actual_hours:
 parent_prd: PRD-007
@@ -36,7 +36,7 @@ review_required: true
 test_required: true
 automation_required: false
 change_summary:
-test_report:
+test_report: TEST-TASK-071.md
 test_script:
 history:
   - created
@@ -66,12 +66,12 @@ Migration must be idempotent (ADD COLUMN IF NOT EXISTS / ensure_column guards).
 
 # Acceptance Criteria
 
-- [ ] `[SE]` Three columns added to md_business_partner
-- [ ] `[SE]` Columns registered in sys_column metadata
-- [ ] `[SE]` business_partner form updated with Credit & Terms section
-- [ ] `[SE]` Migration idempotent
+- [x] `[SE]` Three columns added to md_business_partner
+- [x] `[SE]` Columns registered in sys_column metadata
+- [x] `[SE]` business_partner form updated with Credit & Terms section
+- [x] `[SE]` Migration idempotent
 - [ ] `[QA]` Editing a partner via runtime UI saves credit_limit, credit_hold, payment_term_id
-- [ ] `[SE][QA]` Backend starts cleanly
+- [x] `[SE][QA]` Backend starts cleanly
 
 ---
 

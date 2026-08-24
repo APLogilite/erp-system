@@ -1,10 +1,10 @@
 # Project Board
 
-Last Updated: 2026-08-14
+Last Updated: 2026-08-18
 
 Updated By: Software Engineer
 
-(PRD-006 COMPLETED — merged to main. All 10 tasks COMPLETED.)
+(PRD-007 TESTING — all 8 tasks TASK-070..077 READY_FOR_TEST.)
 
 ---
 
@@ -24,7 +24,24 @@ See `ai/agent/rules/status-transitions.md` for full transition rules.
 
 ## Ready For Development
 
-*(none — all PRD-006 tasks completed)*
+| Task | Title | PRD | Priority | Depends On |
+|------|-------|-----|----------|------------|
+| (none) | | | | |
+
+---
+
+## Ready For Test
+
+| Task | Title | PRD | Priority |
+|------|-------|-----|----------|
+| TASK-070 | Create Payment Term table with seed data and metadata | PRD-007 | High |
+| TASK-071 | Add credit limit and payment term to Business Partner | PRD-007 | High |
+| TASK-072 | Add payment term to Order and Invoice tables | PRD-007 | High |
+| TASK-073 | Implement Order status workflow backend service | PRD-007 | High |
+| TASK-074 | Implement Order auto-calculation backend service | PRD-007 | High |
+| TASK-075 | Implement Customer Credit Check backend service | PRD-007 | High |
+| TASK-076 | Implement Customer 360 API and dashboard form | PRD-007 | Medium |
+| TASK-077 | Update Sales Order form with workflow actions and payment terms | PRD-007 | High |
 
 ---
 
@@ -32,14 +49,6 @@ See `ai/agent/rules/status-transitions.md` for full transition rules.
 
 | Task | Title | PRD | Priority | Depends On |
 |------|-------|-----|----------|------------|
-| TASK-070 | Create Payment Term table with seed data and metadata | PRD-007 | High | PRD-006 |
-| TASK-071 | Add credit limit and payment term to Business Partner | PRD-007 | High | TASK-070 |
-| TASK-072 | Add payment term to Order and Invoice tables | PRD-007 | High | TASK-070 |
-| TASK-073 | Implement Order status workflow backend service | PRD-007 | High | PRD-006 |
-| TASK-074 | Implement Order auto-calculation backend service | PRD-007 | High | PRD-006 |
-| TASK-075 | Implement Customer Credit Check backend service | PRD-007 | High | TASK-071, TASK-073 |
-| TASK-076 | Implement Customer 360 API and dashboard form | PRD-007 | Medium | TASK-071 |
-| TASK-077 | Update Sales Order form with workflow actions and payment terms | PRD-007 | High | TASK-072/073/074 |
 | TASK-078 | Create Sales Territory table with metadata | PRD-008 | Medium | PRD-006 |
 | TASK-079 | Create Lead table with metadata | PRD-008 | High | TASK-078 |
 | TASK-080 | Create Opportunity table with metadata | PRD-008 | High | TASK-078 |
@@ -68,7 +77,7 @@ See `ai/agent/rules/status-transitions.md` for full transition rules.
 | PRD-004 | Window Hierarchy & Menu System | 1.1.0 | **COMPLETED** | High |
 | PRD-005 | Backend-Frontend Separation & Code Standardization | 1.3.1 | **COMPLETED** | High |
 | PRD-006 | Sales Quotation & Price Management | 1.0.0 | **COMPLETED** | High |
-| PRD-007 | Sales Order Workflow & Customer Management | 1.0.0 | **APPROVED** | High |
+| PRD-007 | Sales Order Workflow & Customer Management | 1.0.0 | **TESTING** | High |
 | PRD-008 | CRM Pipeline & Sales Team Management | 1.0.0 | **APPROVED** | Medium |
 | PRD-009 | Sales Return & Analytics | 1.0.0 | **APPROVED** | Medium |
 
@@ -235,12 +244,12 @@ See `ai/agent/rules/status-transitions.md` for full transition rules.
 
 | Status | Count |
 |--------|-------|
-| PRDs | 9 (6 COMPLETED, 3 APPROVED) |
-| Ready For Dev | 0 |
-| Ready For Test | 0 |
+| PRDs | 9 (6 COMPLETED, 1 IN_DEVELOPMENT, 2 APPROVED) |
+| Ready For Dev | 2 |
+| Ready For Test | 6 |
 | In Testing | 0 |
 | In Development | 0 |
-| Planned | 23 (TASK-070..092) |
+| Planned | 15 (TASK-087..092) |
 | Bugs | 15 (8 COMPLETED, 1 CANCELLED, 6 RESOLVED) |
 | Completed (PRD-001) | 27 tasks + 2 enhancements (ENH-001, ENH-003) |
 | Completed (PRD-002) | 3 tasks + 1 enhancement (TASK-033/034/035 + ENH-002) |

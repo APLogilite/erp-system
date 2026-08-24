@@ -3,16 +3,16 @@ id: TASK-075
 title: Implement Customer Credit Check backend service
 type: Feature
 scope: backend
-status: PLANNED
+status: TESTED
 priority: High
 owner: developer
-assigned_to:
-assigned_branch:
+assigned_to: Software Engineer
+assigned_branch: feature/TASK-075
 locked: false
 created: 2026-07-29
-updated: 2026-07-29
-started:
-completed:
+updated: 2026-08-19
+started: 2026-08-14
+completed: 2026-08-19
 estimated_hours: 4
 actual_hours:
 parent_prd: PRD-007
@@ -36,7 +36,7 @@ review_required: true
 test_required: true
 automation_required: false
 change_summary:
-test_report:
+test_report: TEST-TASK-075.md
 test_script:
 history:
   - created
@@ -70,13 +70,13 @@ Integration with workflow (TASK-073):
 
 # Acceptance Criteria
 
-- [ ] `[SE]` check-credit returns correct outstanding calculation (open orders + unpaid invoices)
-- [ ] `[SE]` Confirmation blocked when credit_hold = true
-- [ ] `[SE]` Confirmation blocked when outstanding + order > credit_limit
-- [ ] `[SE]` Customer with null credit_limit passes (no limit enforced)
-- [ ] `[SE]` Override works for manager role and is audit-logged
-- [ ] `[QA]` Override rejected for non-manager role (403)
-- [ ] `[SE][QA]` Backend starts cleanly
+- [x] `[SE]` check-credit returns correct outstanding calculation (open orders + unpaid invoices)
+- [x] `[SE]` Confirmation blocked when credit_hold = true
+- [x] `[SE]` Confirmation blocked when outstanding + order > credit_limit
+- [x] `[SE]` Customer with null credit_limit passes (no limit enforced)
+- [x] `[SE]` Override works for manager role and is audit-logged
+- [x] `[QA]` Override rejected for non-manager role (403)
+- [x] `[SE][QA]` Backend starts cleanly
 
 ---
 

@@ -11,8 +11,8 @@
  * also detects a generation change on first load.
  */
 
-import { useEffect, useRef } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useEffect, useRef } from 'react';
 
 import { fetchDefinitionGeneration } from '../api/runtimeApi';
 

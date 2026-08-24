@@ -3,16 +3,16 @@ id: TASK-074
 title: Implement Order auto-calculation backend service
 type: Feature
 scope: backend
-status: PLANNED
+status: TESTED
 priority: High
 owner: developer
-assigned_to:
-assigned_branch:
+assigned_to: Software Engineer
+assigned_branch: feature/TASK-074
 locked: false
 created: 2026-07-29
-updated: 2026-07-29
-started:
-completed:
+updated: 2026-08-19
+started: 2026-08-14
+completed: 2026-08-19
 estimated_hours: 3
 actual_hours:
 parent_prd: PRD-007
@@ -34,7 +34,7 @@ review_required: true
 test_required: true
 automation_required: false
 change_summary:
-test_report:
+test_report: TEST-TASK-074.md
 test_script:
 history:
   - created
@@ -68,11 +68,11 @@ Money math with BigDecimal, 2-decimal HALF_UP rounding. Empty order → all-zero
 
 # Acceptance Criteria
 
-- [ ] `[SE]` Calculate endpoint returns correct totals for multi-line orders
-- [ ] `[SE]` Totals persisted to tx_order
-- [ ] `[SE]` Zero-line order returns zeros without error
-- [ ] `[QA]` Unknown order id returns 404
-- [ ] `[SE][QA]` Backend starts cleanly
+- [x] `[SE]` Calculate endpoint returns correct totals for multi-line orders
+- [x] `[SE]` Totals persisted to tx_order
+- [x] `[SE]` Zero-line order returns zeros without error
+- [x] `[QA]` Unknown order id returns 404
+- [x] `[SE][QA]` Backend starts cleanly
 
 ---
 

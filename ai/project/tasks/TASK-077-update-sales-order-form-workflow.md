@@ -3,18 +3,18 @@ id: TASK-077
 title: Update Sales Order form with workflow actions and payment terms
 type: Feature
 scope: both
-status: PLANNED
+status: TESTED
 priority: High
 owner: developer
-assigned_to:
-assigned_branch:
+assigned_to: Software Engineer
+assigned_branch: feature/TASK-077
 locked: false
 created: 2026-07-29
-updated: 2026-07-29
-started:
-completed:
+updated: 2026-08-19
+started: 2026-08-18
+completed: 2026-08-19
 estimated_hours: 4
-actual_hours:
+actual_hours: 5
 parent_prd: PRD-007
 prd_version: 1.0.0
 prd_branch: prd/PRD-007-sales-order-workflow-customer-management
@@ -39,7 +39,7 @@ review_required: true
 test_required: true
 automation_required: false
 change_summary:
-test_report:
+test_report: TEST-TASK-077.md
 test_script:
 history:
   - created
@@ -70,13 +70,13 @@ Implement via the runtime renderer's action/button extension points if available
 
 # Acceptance Criteria
 
-- [ ] `[SE]` Header totals and status are read-only on the form
-- [ ] `[SE]` Action buttons render based on allowed-transitions response
-- [ ] `[SE]` Line changes trigger live recalculation of header totals
-- [ ] `[SE]` Credit failure on Confirm shows server message to the user
-- [ ] `[QA]` Full lifecycle works from UI: draft → confirmed → delivered → invoiced
-- [ ] `[QA]` Invalid transitions not offered as buttons
-- [ ] `[SE][QA]` Frontend typecheck + lint pass; backend starts cleanly
+- [x] `[SE]` Header totals and status are read-only on the form
+- [x] `[SE]` Action buttons render based on allowed-transitions response
+- [x] `[SE]` Line changes trigger live recalculation of header totals
+- [x] `[SE]` Credit failure on Confirm shows server message to the user
+- [x] `[QA]` Full lifecycle works from UI: draft → confirmed → delivered → invoiced
+- [x] `[QA]` Invalid transitions not offered as buttons
+- [x] `[SE][QA]` Frontend typecheck + lint pass; backend starts cleanly
 
 ---
 

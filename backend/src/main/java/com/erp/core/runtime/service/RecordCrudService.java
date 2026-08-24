@@ -4,6 +4,7 @@ import com.erp.core.metadata.entity.FormRoleFilterEntity;
 import com.erp.core.metadata.repository.FormRoleFilterRepository;
 import com.erp.core.runtime.dto.FieldDefinitionResponse;
 import com.erp.core.runtime.dto.FormDefinitionBundleResponse;
+import com.erp.modules.common.service.PaymentTermService;
 import com.erp.platform.identity.dto.RuntimeContext;
 import com.erp.platform.identity.entity.Role;
 import com.erp.platform.identity.repository.RoleRepository;
@@ -38,18 +39,21 @@ public class RecordCrudService {
   private final RecordValidationService validationService;
   private final FormRoleFilterRepository formRoleFilterRepository;
   private final RoleRepository roleRepository;
+  private final PaymentTermService paymentTermService;
 
   public RecordCrudService(
       DynamicCrudService dynamicCrudService,
       FormDefinitionAssemblyService assemblyService,
       RecordValidationService validationService,
       FormRoleFilterRepository formRoleFilterRepository,
-      RoleRepository roleRepository) {
+      RoleRepository roleRepository,
+      PaymentTermService paymentTermService) {
     this.dynamicCrudService = dynamicCrudService;
     this.assemblyService = assemblyService;
     this.validationService = validationService;
     this.formRoleFilterRepository = formRoleFilterRepository;
     this.roleRepository = roleRepository;
+    this.paymentTermService = paymentTermService;
   }
 
   /**
@@ -181,6 +185,9 @@ public class RecordCrudService {
       data.put(def.getWhereClauseField(), def.getWhereClauseValue());
     }
 
+    // PRD-007: payment term enrichment for orders and invoices
+    applyPaymentTermEnrichment(def.getTableName(), data, true);
+
     return dynamicCrudService.createRecord(def.getTableName(), data, tenantId, userId);
   }
 
@@ -214,6 +221,9 @@ public class RecordCrudService {
         .map(FieldDefinitionResponse::getColumnCode)
         .collect(Collectors.toSet());
 
+    // PRD-007: recalculate invoice due date when payment term or invoice date changes
+    applyPaymentTermEnrichment(def.getTableName(), cleanedData, false);
+
     return dynamicCrudService.updateRecord(
         def.getTableName(), recordId, cleanedData, tenantId, userId, readOnlyFieldNames);
   }
@@ -227,6 +237,21 @@ public class RecordCrudService {
       throw new IllegalArgumentException("Form not found: " + formCode);
     }
     dynamicCrudService.deleteRecord(def.getTableName(), recordId, tenantId);
+  }
+
+  // ---------------------------------------------------------------
+  // Payment term enrichment (PRD-007 TASK-072)
+  // ---------------------------------------------------------------
+
+  private void applyPaymentTermEnrichment(String tableName, Map<String, Object> data, boolean isCreate) {
+    if (data == null || paymentTermService == null) {
+      return;
+    }
+    if ("tx_order".equals(tableName)) {
+      paymentTermService.enrichOrderPaymentTerm(data);
+    } else if ("tx_invoice".equals(tableName)) {
+      paymentTermService.enrichInvoiceDueDate(data);
+    }
   }
 
   // ---------------------------------------------------------------

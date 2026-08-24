@@ -2,9 +2,11 @@ import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
+  Alert,
   Box,
   Button,
   Checkbox,
+  Chip,
   CircularProgress,
   Dialog,
   DialogActions,
@@ -29,8 +31,8 @@ import {
   Typography,
 } from '@mui/material';
 import { useMutation, useQueries, useQuery, useQueryClient } from '@tanstack/react-query';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { Fragment, useCallback, useEffect, useRef, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import { PageContainer } from '@/components/layouts/PageContainer';
 import {
@@ -42,9 +44,14 @@ import {
   createWindowRecord,
   updateWindowRecord,
   deleteWindowRecord,
+  fetchAllowedTransitions,
+  transitionOrder,
+  calculateOrder,
+  checkOrderCredit,
   type WindowDefinition,
   type WindowTabDefinition,
   type WindowFieldDefinition,
+  type CreditCheckResponse,
 } from '@/core/runtime/api/runtimeApi';
 
 // ---- Drill Level (breadcrumb entry) ----
@@ -70,10 +77,16 @@ interface RecordDialogProps {
 }
 
 function RecordDialog({ open, windowName, windowDef, recordId, onClose }: RecordDialogProps) {
+  const navigate = useNavigate();
   const queryClient = useQueryClient();
   const mainTab = windowDef.tabs.find((t) => !t.parentLinkColumnId);
   const [formData, setFormData] = useState<Record<string, unknown>>({});
   const [saveError, setSaveError] = useState<string | null>(null);
+
+  // Sales-order-specific workflow state
+  const isSalesOrder = windowName === 'Sales Orders';
+  const [workflowError, setWorkflowError] = useState<string | null>(null);
+  const [creditStatus, setCreditStatus] = useState<CreditCheckResponse | null>(null);
 
   // Drill-down state
   const [drillStack, setDrillStack] = useState<DrillLevel[]>([]);
@@ -117,11 +130,19 @@ function RecordDialog({ open, windowName, windowDef, recordId, onClose }: Record
   // (i.e., fields with filter_where_clause), fetch via the dynamic API
   const lookupResults: Record<string, { id: string; label: string }[]> = {};
   const dynamicLookupFields = (currentLevelTab?.fields ?? []).filter(
-    (f) => f.column.relationTable && (!f.column.lookupOptions || f.column.lookupOptions.length === 0)
+    (f) =>
+      f.column.relationTable && (!f.column.lookupOptions || f.column.lookupOptions.length === 0)
   );
   const dynamicQueryResults = useQueries({
     queries: dynamicLookupFields.map((f) => ({
-      queryKey: ['dynamic-lookup', f.column.relationTable, f.column.code, currentLevelTab.id, windowId, drillContext],
+      queryKey: [
+        'dynamic-lookup',
+        f.column.relationTable,
+        f.column.code,
+        currentLevelTab.id,
+        windowId,
+        drillContext,
+      ],
       queryFn: () =>
         fetchLookupRecords(
           f.column.relationTable!,
@@ -137,9 +158,10 @@ function RecordDialog({ open, windowName, windowDef, recordId, onClose }: Record
   dynamicLookupFields.forEach((f, idx) => {
     const data = dynamicQueryResults[idx]?.data;
     if (data) {
-      lookupResults[f.column.relationTable!] = (data as Record<string, unknown>[]).map(
-        (r) => ({ id: String(r.id), label: String(r._display ?? r.label ?? r.id) })
-      );
+      lookupResults[f.column.relationTable!] = (data as Record<string, unknown>[]).map((r) => ({
+        id: String(r.id),
+        label: String(r._display ?? r.label ?? r.id),
+      }));
     }
   });
 
@@ -173,7 +195,44 @@ function RecordDialog({ open, windowName, windowDef, recordId, onClose }: Record
   useEffect(() => {
     setDrillStack([]);
     setExpandedPanels(new Set());
+    setWorkflowError(null);
+    setCreditStatus(null);
   }, [recordId, windowName]);
+
+  // Load workflow transitions and credit status for Sales Orders
+  useEffect(() => {
+    if (!isSalesOrder || !recordId) return;
+    let cancelled = false;
+    checkOrderCredit(recordId)
+      .then((result) => {
+        if (!cancelled) setCreditStatus(result);
+      })
+      .catch(() => {
+        // Ignore credit-check failures; badge will show "Unknown"
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [isSalesOrder, recordId]);
+
+  const [allowedTransitions, setAllowedTransitions] = useState<string[]>([]);
+  useEffect(() => {
+    if (!isSalesOrder || !recordId) {
+      setAllowedTransitions([]);
+      return;
+    }
+    let cancelled = false;
+    fetchAllowedTransitions(recordId)
+      .then((transitions) => {
+        if (!cancelled) setAllowedTransitions(transitions);
+      })
+      .catch(() => {
+        if (!cancelled) setAllowedTransitions([]);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [isSalesOrder, recordId, formData.status]);
 
   // Reset form data when drill level changes (before new data arrives)
   useEffect(() => {
@@ -235,6 +294,74 @@ function RecordDialog({ open, windowName, windowDef, recordId, onClose }: Record
     if (currentRecordId) updateMutation.mutate(formData);
     else createMutation.mutate(formData);
   }, [currentRecordId, formData, createMutation, updateMutation]);
+
+  const handleTransition = useCallback(
+    async (targetStatus: string) => {
+      if (!recordId) return;
+      setWorkflowError(null);
+      try {
+        await transitionOrder(recordId, targetStatus);
+        // Refresh record and window list to show new status
+        await queryClient.invalidateQueries({ queryKey: ['window-record', windowName] });
+        await queryClient.invalidateQueries({ queryKey: ['window-records', windowName] });
+        setInitializedKey('');
+      } catch (err) {
+        setWorkflowError(err instanceof Error ? err.message : 'Transition failed.');
+      }
+    },
+    [recordId, windowName, queryClient]
+  );
+
+  // Persist child-tab rows for Sales Orders, then recalculate header totals.
+  const handleChildRowsChange = useCallback(
+    async (tabId: string, rows: Record<string, unknown>[]) => {
+      if (!isSalesOrder || !recordId) return;
+
+      // Diff against original child records for this tab
+      const original =
+        ((recordData as Record<string, unknown> | undefined)?.childRecords as
+          | Record<string, Record<string, unknown>[]>
+          | undefined) ?? {};
+      const tabName = windowDef.tabs.find((t) => t.id === tabId)?.name ?? tabId;
+      const originalRows = original[tabName] ?? [];
+      const originalById = new Map(originalRows.map((r) => [String(r.id), r]));
+
+      try {
+        for (const row of rows) {
+          const rowId = row.id as string | undefined;
+          const payload = { ...row };
+          // Ensure parent FK is set
+          payload.order_id = recordId;
+          if (!rowId) {
+            await createWindowRecord(windowName, payload, tabId, recordId);
+          } else {
+            const existing = originalById.get(rowId);
+            if (existing) originalById.delete(rowId);
+            // Only update if row has changed
+            const changed = !existing || JSON.stringify(existing) !== JSON.stringify(row);
+            if (changed) {
+              await updateWindowRecord(windowName, rowId, payload, tabId);
+            }
+          }
+        }
+        // Delete removed rows
+        for (const [, existing] of originalById) {
+          const existingId = existing.id as string | undefined;
+          if (existingId) {
+            await deleteWindowRecord(windowName, existingId);
+          }
+        }
+
+        // Recalculate and refresh header record
+        await calculateOrder(recordId);
+        await queryClient.invalidateQueries({ queryKey: ['window-record', windowName] });
+        setInitializedKey('');
+      } catch (err) {
+        setSaveError(err instanceof Error ? err.message : 'Failed to save order lines.');
+      }
+    },
+    [isSalesOrder, recordId, windowName, windowDef.tabs, recordData, queryClient]
+  );
 
   const handleFieldChange = useCallback((fieldCode: string, value: unknown) => {
     setFormData((prev) => ({ ...prev, [fieldCode]: value }));
@@ -334,7 +461,7 @@ function RecordDialog({ open, windowName, windowDef, recordId, onClose }: Record
         {/* Breadcrumb navigation path */}
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, mb: 0.5 }}>
           {breadcrumbParts.map((part, i) => (
-            <React.Fragment key={i}>
+            <Fragment key={i}>
               {i > 0 && (
                 <Typography sx={{ fontSize: 13, color: 'text.secondary' }}>&gt;</Typography>
               )}
@@ -356,7 +483,7 @@ function RecordDialog({ open, windowName, windowDef, recordId, onClose }: Record
               >
                 {part}
               </Button>
-            </React.Fragment>
+            </Fragment>
           ))}
         </Box>
         {currentTitle}
@@ -372,6 +499,27 @@ function RecordDialog({ open, windowName, windowDef, recordId, onClose }: Record
           <Typography color="error" sx={{ mb: 2, p: 1, bgcolor: 'error.light', borderRadius: 1 }}>
             Failed to load record: {(recordError as Error).message}
           </Typography>
+        )}
+
+        {workflowError && (
+          <Alert severity="error" sx={{ mb: 2 }}>
+            {workflowError}
+          </Alert>
+        )}
+
+        {isSalesOrder && recordId && allowedTransitions.length > 0 && (
+          <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap', mb: 2 }}>
+            {allowedTransitions.map((status) => (
+              <Button
+                key={status}
+                size="small"
+                variant="outlined"
+                onClick={() => handleTransition(status)}
+              >
+                {status.charAt(0).toUpperCase() + status.slice(1)}
+              </Button>
+            ))}
+          </Box>
         )}
 
         {/* Form fields for the current level */}
@@ -403,9 +551,10 @@ function RecordDialog({ open, windowName, windowDef, recordId, onClose }: Record
                 case 'enum': {
                   let opts: string[] = [];
                   if (field.column.enumOptions) {
-                    opts = typeof field.column.enumOptions === 'string'
-                      ? JSON.parse(field.column.enumOptions)
-                      : field.column.enumOptions;
+                    opts =
+                      typeof field.column.enumOptions === 'string'
+                        ? JSON.parse(field.column.enumOptions)
+                        : field.column.enumOptions;
                   }
                   return (
                     <FormControl key={field.column.code} fullWidth margin="dense" sx={{ mb: 1 }}>
@@ -417,7 +566,9 @@ function RecordDialog({ open, windowName, windowDef, recordId, onClose }: Record
                         disabled={field.isReadonly || isSaving}
                         required={field.isMandatory}
                       >
-                        <MenuItem value=""><em>Select...</em></MenuItem>
+                        <MenuItem value="">
+                          <em>Select...</em>
+                        </MenuItem>
                         {opts.map((o) => (
                           <MenuItem key={o} value={o}>
                             {o}
@@ -447,27 +598,51 @@ function RecordDialog({ open, windowName, windowDef, recordId, onClose }: Record
                 case 'many2many':
                 case 'one2many': {
                   // Use eager-loaded lookupOptions if available, otherwise fall back to dynamic fetch
-                  const lo = field.column.lookupOptions ?? lookupResults[field.column.relationTable!] ?? [];
+                  const lo =
+                    field.column.lookupOptions ?? lookupResults[field.column.relationTable!] ?? [];
+                  const isPartnerField = isSalesOrder && field.column.code === 'partner_id';
+                  const creditChip = isPartnerField ? (
+                    creditStatus ? (
+                      <Chip
+                        size="small"
+                        label={
+                          creditStatus.approved
+                            ? 'Credit: Approved'
+                            : creditStatus.reason || 'Credit: Exceeded'
+                        }
+                        color={creditStatus.approved ? 'success' : 'error'}
+                        sx={{ ml: 1 }}
+                      />
+                    ) : (
+                      <Chip size="small" label="Credit: Unknown" sx={{ ml: 1 }} />
+                    )
+                  ) : null;
                   return (
-                    <FormControl key={field.column.code} fullWidth margin="dense" sx={{ mb: 1 }}>
-                      <InputLabel>{label}</InputLabel>
-                      <Select
-                        value={value as string}
-                        label={label}
-                        onChange={(e) => handleFieldChange(field.column.code, e.target.value)}
-                        disabled={field.isReadonly || isSaving}
-                        required={field.isMandatory}
-                      >
-                        <MenuItem value="">
-                          <em>None</em>
-                        </MenuItem>
-                        {lo.map((o) => (
-                          <MenuItem key={o.id} value={o.id}>
-                            {o.label}
+                    <Box
+                      key={field.column.code}
+                      sx={{ display: 'flex', alignItems: 'center', mb: 1 }}
+                    >
+                      <FormControl fullWidth margin="dense">
+                        <InputLabel>{label}</InputLabel>
+                        <Select
+                          value={value as string}
+                          label={label}
+                          onChange={(e) => handleFieldChange(field.column.code, e.target.value)}
+                          disabled={field.isReadonly || isSaving}
+                          required={field.isMandatory}
+                        >
+                          <MenuItem value="">
+                            <em>None</em>
                           </MenuItem>
-                        ))}
-                      </Select>
-                    </FormControl>
+                          {lo.map((o) => (
+                            <MenuItem key={o.id} value={o.id}>
+                              {o.label}
+                            </MenuItem>
+                          ))}
+                        </Select>
+                      </FormControl>
+                      {creditChip}
+                    </Box>
                   );
                 }
                 case 'text':
@@ -547,6 +722,7 @@ function RecordDialog({ open, windowName, windowDef, recordId, onClose }: Record
                           tab={ct}
                           childRecords={childRecords}
                           onRowClick={(rid: string) => handleDrillDown(ct, rid)}
+                          onChildRowsChange={handleChildRowsChange}
                         />
                       </AccordionDetails>
                     </Accordion>
@@ -559,6 +735,17 @@ function RecordDialog({ open, windowName, windowDef, recordId, onClose }: Record
       </DialogContent>
 
       <DialogActions>
+        {windowName === 'Business Partners' && recordId && (
+          <Button
+            onClick={() => {
+              onClose();
+              navigate(`/app/customer-360/${recordId}`);
+            }}
+            sx={{ mr: 'auto' }}
+          >
+            Customer 360
+          </Button>
+        )}
         <Button onClick={onClose}>Cancel</Button>
         <Button onClick={handleSave} variant="contained" disabled={isSaving || isLoadingRecord}>
           {isSaving ? 'Saving...' : 'Save'}
@@ -574,6 +761,7 @@ interface ChildTabGridProps {
   tab: WindowTabDefinition;
   childRecords: Record<string, unknown>[];
   onRowClick?: (recordId: string) => void;
+  onChildRowsChange?: (tabId: string, rows: Record<string, unknown>[]) => void;
 }
 
 /** Renders a single field value inside a table cell for inline editing. */
@@ -639,12 +827,21 @@ function ChildFieldCell({
   );
 }
 
-function ChildTabGrid({ tab, childRecords, onRowClick }: ChildTabGridProps) {
+function ChildTabGrid({ tab, childRecords, onRowClick, onChildRowsChange }: ChildTabGridProps) {
   const [editMode, setEditMode] = useState(false);
   const [rows, setRows] = useState<Record<string, unknown>[]>(() => [...childRecords]);
   const fields = tab.fields
     .filter((f) => f.isDisplayed !== false)
     .sort((a, b) => a.seqNo - b.seqNo);
+
+  const toggleEditMode = () => {
+    const nextMode = !editMode;
+    setEditMode(nextMode);
+    if (!nextMode) {
+      // User clicked "Done Editing" — propagate rows to parent for persistence/recalculation
+      onChildRowsChange?.(tab.id, rows);
+    }
+  };
 
   // Sync rows when childRecords prop changes (e.g. after record data reloads)
   useEffect(() => {
@@ -673,7 +870,7 @@ function ChildTabGrid({ tab, childRecords, onRowClick }: ChildTabGridProps) {
         <Button
           size="small"
           variant={editMode ? 'contained' : 'outlined'}
-          onClick={() => setEditMode(!editMode)}
+          onClick={toggleEditMode}
           color={editMode ? 'warning' : 'primary'}
         >
           {editMode ? 'Done Editing' : 'Quick Update'}
@@ -810,7 +1007,9 @@ export function WindowPage() {
   }
 
   // Determine current top-level tab
-  const topTabs = windowDef.tabs.filter((t) => !t.parentLinkColumnId).sort((a, b) => a.seqNo - b.seqNo);
+  const topTabs = windowDef.tabs
+    .filter((t) => !t.parentLinkColumnId)
+    .sort((a, b) => a.seqNo - b.seqNo);
   const currentTab = topTabs[activeTab] ?? topTabs[0];
 
   const fields = currentTab?.fields ?? [];

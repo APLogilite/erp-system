@@ -7,7 +7,7 @@
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Card, CardContent, CardHeader, Collapse, Grid, IconButton } from '@mui/material';
-import React, { useState } from 'react';
+import { FC, useState } from 'react';
 
 import type { FieldDefinition, LayoutSection } from '../hooks/useForm.types';
 
@@ -26,7 +26,7 @@ export interface FormSectionProps {
 /**
  * Renders a single layout section with its fields arranged in columns.
  */
-export const FormSection: React.FC<FormSectionProps> = ({
+export const FormSection: FC<FormSectionProps> = ({
   section,
   fields,
   fieldValues,

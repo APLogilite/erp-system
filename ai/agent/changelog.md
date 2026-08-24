@@ -3,10 +3,51 @@ document: CHANGELOG
 version: 1.0.0
 status: ACTIVE
 owner: Product Manager
-last_updated: 2026-08-14
+last_updated: 2026-08-18
 ---
 
 # Changelog
+
+## 2026-08-18 (PRD-007 Implementation Complete — TESTING)
+
+### Summary
+PRD-007 (Sales Order Workflow & Customer Management v1.0.0) advanced from IN_DEVELOPMENT to TESTING. All 8 tasks (TASK-070..077) implemented and marked READY_FOR_TEST. Backend `mvn test` passes (36 tests), frontend `pnpm typecheck`/`pnpm lint`/`pnpm build` pass, and `start-all.sh` verifies both servers start cleanly.
+
+### PRD Status Changed
+- **PRD-007** — Sales Order Workflow & Customer Management v1.0.0: **IN_DEVELOPMENT → TESTING**
+
+### Tasks Implemented (8)
+| Task | Title | Status |
+|------|-------|--------|
+| TASK-070 | Create Payment Term table with seed data and metadata | READY_FOR_TEST |
+| TASK-071 | Add credit fields and payment term to business partner | READY_FOR_TEST |
+| TASK-072 | Add payment term to order and invoice forms | READY_FOR_TEST |
+| TASK-073 | Implement Order status workflow backend service | READY_FOR_TEST |
+| TASK-074 | Implement Order auto-calculation backend service | READY_FOR_TEST |
+| TASK-075 | Implement customer credit check service | READY_FOR_TEST |
+| TASK-076 | Implement Customer 360 API and dashboard form | READY_FOR_TEST |
+| TASK-077 | Update Sales Order form with workflow actions and payment terms | READY_FOR_TEST |
+
+### Branch
+- `prd/PRD-007-sales-order-workflow-customer-management` ready for QA
+
+## 2026-08-14 (PRD-007 Started — IN_DEVELOPMENT)
+
+### Summary
+PRD-007 (Sales Order Workflow & Customer Management v1.0.0) advanced from APPROVED to IN_DEVELOPMENT. Initial dependency-free tasks activated to READY_FOR_DEV now that PRD-006 is COMPLETED.
+
+### PRD Status Changed
+- **PRD-007** — Sales Order Workflow & Customer Management v1.0.0: **APPROVED → IN_DEVELOPMENT**
+
+### Tasks Activated
+| Task | Title | Status |
+|------|-------|--------|
+| TASK-070 | Create Payment Term table with seed data and metadata | READY_FOR_DEV |
+| TASK-073 | Implement Order status workflow backend service | READY_FOR_DEV |
+| TASK-074 | Implement Order auto-calculation backend service | READY_FOR_DEV |
+
+### Branch
+- `prd/PRD-007-sales-order-workflow-customer-management` created from `main`
 
 ## 2026-08-14 (PRD-006 Merged to Main — COMPLETED)
 

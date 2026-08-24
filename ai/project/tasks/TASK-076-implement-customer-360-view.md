@@ -3,18 +3,18 @@ id: TASK-076
 title: Implement Customer 360 API and dashboard form
 type: Feature
 scope: both
-status: PLANNED
+status: TESTED
 priority: Medium
 owner: developer
-assigned_to:
-assigned_branch:
+assigned_to: Software Engineer
+assigned_branch: feature/TASK-076
 locked: false
 created: 2026-07-29
-updated: 2026-07-29
-started:
-completed:
+updated: 2026-08-19
+started: 2026-08-14
+completed: 2026-08-19
 estimated_hours: 5
-actual_hours:
+actual_hours: 6
 parent_prd: PRD-007
 prd_version: 1.0.0
 prd_branch: prd/PRD-007-sales-order-workflow-customer-management
@@ -35,7 +35,7 @@ review_required: true
 test_required: true
 automation_required: false
 change_summary:
-test_report:
+test_report: TEST-TASK-076.md
 test_script:
 history:
   - created
@@ -69,12 +69,12 @@ Response: {
 
 # Acceptance Criteria
 
-- [ ] `[SE]` API returns all five sections with correct data and 5-record limits
-- [ ] `[SE]` outstanding matches credit check calculation
-- [ ] `[SE]` Dashboard accessible from business partner form
-- [ ] `[QA]` New customer with no history shows empty sections (no errors)
-- [ ] `[QA]` Unknown partner id returns 404
-- [ ] `[SE][QA]` Backend starts cleanly; frontend builds (typecheck + lint pass)
+- [x] `[SE]` API returns all five sections with correct data and 5-record limits
+- [x] `[SE]` outstanding matches credit check calculation
+- [x] `[SE]` Dashboard accessible from business partner form
+- [x] `[QA]` New customer with no history shows empty sections (no errors)
+- [x] `[QA]` Unknown partner id returns 404
+- [x] `[SE][QA]` Backend starts cleanly; frontend builds (typecheck + lint pass)
 
 ---
 

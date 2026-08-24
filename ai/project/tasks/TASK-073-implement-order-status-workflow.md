@@ -3,16 +3,16 @@ id: TASK-073
 title: Implement Order status workflow backend service
 type: Feature
 scope: backend
-status: PLANNED
+status: TESTING
 priority: High
 owner: developer
-assigned_to:
-assigned_branch:
-locked: false
+assigned_to: Software Engineer
+assigned_branch: feature/TASK-073
+locked: true
 created: 2026-07-29
-updated: 2026-07-29
-started:
-completed:
+updated: 2026-08-14
+started: 2026-08-14
+completed: 2026-08-14
 estimated_hours: 4
 actual_hours:
 parent_prd: PRD-007
@@ -36,7 +36,7 @@ review_required: true
 test_required: true
 automation_required: false
 change_summary:
-test_report:
+test_report: TEST-TASK-073.md
 test_script:
 history:
   - created
@@ -75,13 +75,13 @@ Rules:
 
 # Acceptance Criteria
 
-- [ ] `[SE]` Valid transitions succeed and update tx_order.status
-- [ ] `[SE]` Invalid transitions return 400 with explicit message
-- [ ] `[SE]` Every transition logged to tx_order_status_log
-- [ ] `[SE]` allowed-transitions endpoint returns correct list per status
+- [x] `[SE]` Valid transitions succeed and update tx_order.status
+- [x] `[SE]` Invalid transitions return 400 with explicit message
+- [x] `[SE]` Every transition logged to tx_order_status_log
+- [x] `[SE]` allowed-transitions endpoint returns correct list per status
 - [ ] `[QA]` Cancel blocked when an invoice exists for the order
 - [ ] `[QA]` Audit log rows show user, timestamp, from/to
-- [ ] `[SE][QA]` Backend starts cleanly
+- [x] `[SE][QA]` Backend starts cleanly
 
 ---
 

@@ -1,11 +1,11 @@
 import { Box } from '@mui/material';
 import { ReactNode } from 'react';
 
-import { useDefinitionGeneration } from '@/core/runtime/hooks/useDefinitionGeneration';
-
 import { ContentArea } from '../ContentArea';
 import { Header } from '../Header';
 import { Sidebar, SIDEBAR_WIDTH } from '../Sidebar';
+
+import { useDefinitionGeneration } from '@/core/runtime/hooks/useDefinitionGeneration';
 
 type AppLayoutProps = {
   children: ReactNode;

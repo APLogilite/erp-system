@@ -18,11 +18,10 @@ import {
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { useDeleteTable, useTableList } from '@/modules/admin/tables/hooks/useTables';
-
 import { EmptyState } from '@/components/ui/EmptyState';
 import { ErrorState } from '@/components/ui/ErrorState';
 import { notifyActions } from '@/core/store/notifications/notificationStore';
+import { useDeleteTable, useTableList } from '@/modules/admin/tables/hooks/useTables';
 
 export function TableListPage() {
   const navigate = useNavigate();
