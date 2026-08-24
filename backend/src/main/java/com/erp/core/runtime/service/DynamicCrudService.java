@@ -34,9 +34,17 @@ public class DynamicCrudService {
       "created_by", "updated_by", "is_active", "deleted_at");
 
   private final NamedParameterJdbcTemplate jdbcTemplate;
+  private final List<com.erp.core.runtime.hook.RecordLifecycleHook> lifecycleHooks;
 
   public DynamicCrudService(NamedParameterJdbcTemplate jdbcTemplate) {
+    this(jdbcTemplate, java.util.Collections.emptyList());
+  }
+
+  @org.springframework.beans.factory.annotation.Autowired
+  public DynamicCrudService(NamedParameterJdbcTemplate jdbcTemplate,
+                            List<com.erp.core.runtime.hook.RecordLifecycleHook> lifecycleHooks) {
     this.jdbcTemplate = jdbcTemplate;
+    this.lifecycleHooks = lifecycleHooks != null ? lifecycleHooks : java.util.Collections.emptyList();
   }
 
   /**
@@ -223,6 +231,13 @@ public class DynamicCrudService {
 
     validateTableName(tableName);
     validateColumns(tableName, data.keySet());
+
+    for (com.erp.core.runtime.hook.RecordLifecycleHook hook : lifecycleHooks) {
+      if (hook.supports(tableName)) {
+        hook.beforeCreate(tableName, data, tenantId, userId);
+      }
+    }
+
     convertTypedStrings(data); // Convert strings to proper Java types (UUID, LocalDate) for SQL
 
     String tableRef = escapeIdentifier(tableName);
@@ -324,6 +339,13 @@ public class DynamicCrudService {
 
     validateTableName(tableName);
     validateColumns(tableName, data.keySet());
+
+    for (com.erp.core.runtime.hook.RecordLifecycleHook hook : lifecycleHooks) {
+      if (hook.supports(tableName)) {
+        hook.beforeUpdate(tableName, recordId, data, tenantId, userId);
+      }
+    }
+
     convertTypedStrings(data); // Convert strings to proper Java types (UUID, LocalDate) for SQL
 
     String tableRef = escapeIdentifier(tableName);

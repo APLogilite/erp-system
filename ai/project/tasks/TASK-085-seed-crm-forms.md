@@ -3,16 +3,17 @@ id: TASK-085
 title: Seed CRM forms (lead, opportunity, territory, commission)
 type: Feature
 scope: database
-status: PLANNED
+status: TESTED
 priority: High
 owner: developer
-assigned_to:
-assigned_branch:
+assigned_to: Software Engineer
+assigned_branch: feature/TASK-078
 locked: false
 created: 2026-07-29
-updated: 2026-07-29
-started:
-completed:
+updated: 2026-08-24
+started: 2026-08-24
+completed: 2026-08-24
+test_report: TEST-TASK-085
 estimated_hours: 4
 actual_hours:
 parent_prd: PRD-008
@@ -81,11 +82,11 @@ Menu entries under new "CRM" group: Leads, Opportunities; under "Sales": Commiss
 
 # Acceptance Criteria
 
-- [ ] `[SE]` All 4 forms present in runtime forms list
-- [ ] `[SE]` Sections render as specified; read-only fields configured
-- [ ] `[SE]` Menu entries visible after login
+- [x] `[SE]` All 4 forms present in runtime forms list
+- [x] `[SE]` Sections render as specified; read-only fields configured
+- [x] `[SE]` Menu entries visible after login
 - [ ] `[QA]` Full CRUD on each form via runtime renderer
-- [ ] `[SE][QA]` Backend starts cleanly with migration applied
+- [x] `[SE][QA]` Backend starts cleanly with migration applied
 
 ---
 

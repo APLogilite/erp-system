@@ -3,7 +3,7 @@ id: TASK-078
 title: Create Sales Territory table with metadata
 type: Feature
 scope: database
-status: READY_FOR_DEV
+status: TESTED
 priority: Medium
 owner: developer
 assigned_to: Software Engineer
@@ -11,8 +11,9 @@ assigned_branch: feature/TASK-078
 locked: false
 created: 2026-07-29
 updated: 2026-08-24
-started:
-completed:
+started: 2026-08-24
+completed: 2026-08-24
+test_report: TEST-TASK-078
 estimated_hours: 2
 actual_hours:
 parent_prd: PRD-008
@@ -60,11 +61,11 @@ Seed 2 sample territories (e.g., WEST / EAST). Register table metadata in sys_ta
 
 # Acceptance Criteria
 
-- [ ] `[SE]` md_sales_territory created with metadata registration
-- [ ] `[SE]` territory_id added to md_business_partner with metadata
-- [ ] `[SE]` 2 sample territories seeded
+- [x] `[SE]` md_sales_territory created with metadata registration
+- [x] `[SE]` territory_id added to md_business_partner with metadata
+- [x] `[SE]` 2 sample territories seeded
 - [ ] `[QA]` Territory CRUD works via runtime API
-- [ ] `[SE][QA]` Backend starts cleanly
+- [x] `[SE][QA]` Backend starts cleanly
 
 ---
 

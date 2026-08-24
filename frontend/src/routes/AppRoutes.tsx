@@ -9,6 +9,7 @@ import { ChangePasswordPage } from './auth/change-password/ChangePasswordPage';
 import { ForgotPasswordPage } from './auth/forgot-password/ForgotPasswordPage';
 import { LoginPage } from './auth/LoginPage';
 import { ResetPasswordPage } from './auth/reset-password/ResetPasswordPage';
+import CrmDashboard from './CrmDashboard';
 import { Customer360Page } from './customer/Customer360Page';
 import { Customer360SelectorPage } from './customer/Customer360SelectorPage';
 import { DashboardPage } from './dashboard/DashboardPage';
@@ -153,6 +154,7 @@ export function AppRoutes() {
           <Route path="window/:windowName" element={<WindowPage />} />
           <Route path="customer-360" element={<Customer360SelectorPage />} />
           <Route path="customer-360/:partnerId" element={<Customer360Page />} />
+          <Route path="crm-dashboard" element={<CrmDashboard />} />
         </Route>
       </Route>
 
