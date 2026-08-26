@@ -4,6 +4,7 @@ import com.erp.common.base.BaseEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.persistence.Column;
+import java.math.BigDecimal;
 import java.util.UUID;
 
 @Entity
@@ -34,6 +35,9 @@ public class Product extends BaseEntity {
     private Boolean isSold = true;
 
     private Boolean isPurchased = false;
+
+    @Column(name = "unit_price")
+    private BigDecimal unitPrice;
 
     private UUID categoryId;
 
@@ -66,6 +70,9 @@ public class Product extends BaseEntity {
 
     public Boolean getIsPurchased() { return isPurchased; }
     public void setIsPurchased(Boolean isPurchased) { this.isPurchased = isPurchased; }
+
+    public BigDecimal getUnitPrice() { return unitPrice; }
+    public void setUnitPrice(BigDecimal unitPrice) { this.unitPrice = unitPrice; }
 
     public UUID getCategoryId() { return categoryId; }
     public void setCategoryId(UUID categoryId) { this.categoryId = categoryId; }
