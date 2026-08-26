@@ -1,10 +1,10 @@
 # Project Board
 
-Last Updated: 2026-08-24
+Last Updated: 2026-08-26
 
 Updated By: Software Engineer
 
-(PRD-007 COMPLETED and merged to main. PRD-008 IN_DEVELOPMENT.)
+(PRD-010 tasks TASK-093..096 READY_FOR_TEST. TASK-097 activated.)
 
 ---
 
@@ -26,7 +26,7 @@ See `ai/agent/rules/status-transitions.md` for full transition rules.
 
 | Task | Title | PRD | Priority | Depends On |
 |------|-------|-----|----------|------------|
-| TASK-096 | Implement purchase price resolution service | PRD-010 | High | TASK-094/095 |
+| TASK-097 | Create purchase requisition and purchase order tables | PRD-011 | High | TASK-096 |
 | TASK-105 | Extend warehouse and create location type/locator tables | PRD-013 | High | — |
 | TASK-116 | Create work center and operation tables | PRD-016 | High | — |
 | TASK-125 | Create account type and account tables | PRD-018 | High | — |
@@ -42,6 +42,7 @@ See `ai/agent/rules/status-transitions.md` for full transition rules.
 | TASK-093 | Extend c_business_partner with vendor fields | PRD-010 | High |
 | TASK-094 | Create vendor category and purchase price list tables | PRD-010 | High |
 | TASK-095 | Seed vendor and purchase price list windows/menus | PRD-010 | High |
+| TASK-096 | Implement purchase price resolution service | PRD-010 | High |
 
 ---
 
@@ -78,7 +79,6 @@ See `ai/agent/rules/status-transitions.md` for full transition rules.
 | TASK-090 | Implement Return inventory receipt integration | PRD-009 | Medium | TASK-089 |
 | TASK-091 | Seed Return and Credit Memo forms | PRD-009 | High | TASK-087, TASK-088 |
 | TASK-092 | Implement Sales Analytics dashboard | PRD-009 | Medium | TASK-091 |
-| TASK-096 | Implement purchase price resolution service | PRD-010 | High | TASK-094/095 |
 | TASK-097 | Create purchase requisition and purchase order tables | PRD-011 | High | TASK-096 |
 | TASK-098 | Seed requisition and PO windows/menus | PRD-011 | High | TASK-097 |
 | TASK-099 | Implement PO auto-calculation service | PRD-011 | High | TASK-097/098 |
@@ -359,10 +359,10 @@ See `ai/agent/rules/status-transitions.md` for full transition rules.
 |--------|-------|
 | PRDs | 26 (8 COMPLETED, 0 TESTING, 18 APPROVED, 0 DRAFT) |
 | Ready For Dev | 6 |
-| Ready For Test | 3 |
+| Ready For Test | 4 |
 | In Testing | 0 |
 | In Development | 0 |
-| Planned | 77 (TASK-079..086, TASK-087..092, TASK-097..165) |
+| Planned | 76 (TASK-079..086, TASK-087..092, TASK-098..165) |
 | Bugs | 16 (8 COMPLETED, 1 CANCELLED, 6 RESOLVED, 1 READY_FOR_DEV) |
 | Completed (PRD-001) | 27 tasks + 2 enhancements (ENH-001, ENH-003) |
 | Completed (PRD-002) | 3 tasks + 1 enhancement (TASK-033/034/035 + ENH-002) |
