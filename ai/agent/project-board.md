@@ -26,7 +26,7 @@ See `ai/agent/rules/status-transitions.md` for full transition rules.
 
 | Task | Title | PRD | Priority | Depends On |
 |------|-------|-----|----------|------------|
-| TASK-095 | Seed vendor and purchase price list windows/menus | PRD-010 | High | TASK-093/094 |
+| TASK-096 | Implement purchase price resolution service | PRD-010 | High | TASK-094/095 |
 | TASK-105 | Extend warehouse and create location type/locator tables | PRD-013 | High | — |
 | TASK-116 | Create work center and operation tables | PRD-016 | High | — |
 | TASK-125 | Create account type and account tables | PRD-018 | High | — |
@@ -41,6 +41,7 @@ See `ai/agent/rules/status-transitions.md` for full transition rules.
 |------|-------|-----|----------|
 | TASK-093 | Extend c_business_partner with vendor fields | PRD-010 | High |
 | TASK-094 | Create vendor category and purchase price list tables | PRD-010 | High |
+| TASK-095 | Seed vendor and purchase price list windows/menus | PRD-010 | High |
 
 ---
 
@@ -358,10 +359,10 @@ See `ai/agent/rules/status-transitions.md` for full transition rules.
 |--------|-------|
 | PRDs | 26 (8 COMPLETED, 0 TESTING, 18 APPROVED, 0 DRAFT) |
 | Ready For Dev | 6 |
-| Ready For Test | 2 |
+| Ready For Test | 3 |
 | In Testing | 0 |
 | In Development | 0 |
-| Planned | 78 (TASK-079..086, TASK-087..092, TASK-096..165) |
+| Planned | 77 (TASK-079..086, TASK-087..092, TASK-097..165) |
 | Bugs | 16 (8 COMPLETED, 1 CANCELLED, 6 RESOLVED, 1 READY_FOR_DEV) |
 | Completed (PRD-001) | 27 tasks + 2 enhancements (ENH-001, ENH-003) |
 | Completed (PRD-002) | 3 tasks + 1 enhancement (TASK-033/034/035 + ENH-002) |
