@@ -2,12 +2,12 @@
 id: PRD-019
 title: General Ledger & Journal Posting Engine
 version: 1.0.0
-status: DRAFT
+status: APPROVED
 priority: High
 owner: Product Manager
 created: 2026-08-26
 updated: 2026-08-26
-approved_by:
+approved_by: user
 project: Dynamic ERP Platform
 repository: erp-system
 prd_branch: prd/PRD-019-general-ledger-journal-posting
@@ -37,6 +37,7 @@ dependencies:
 
 change_log:
   - 1.0.0 — Initial PRD: General ledger and journal posting engine
+  - 1.0.0 APPROVED — User approved for implementation
 ---
 
 # Executive Summary

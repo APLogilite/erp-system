@@ -2,12 +2,12 @@
 id: PRD-021
 title: Bank, Cash & Payments Reconciliation
 version: 1.0.0
-status: DRAFT
+status: APPROVED
 priority: High
 owner: Product Manager
 created: 2026-08-26
 updated: 2026-08-26
-approved_by:
+approved_by: user
 project: Dynamic ERP Platform
 repository: erp-system
 prd_branch: prd/PRD-021-bank-cash-payments-reconciliation
@@ -41,6 +41,7 @@ dependencies:
 
 change_log:
   - 1.0.0 — Initial PRD: Bank accounts, cash journals, payments, and reconciliation
+  - 1.0.0 APPROVED — User approved for implementation
 ---
 
 # Executive Summary

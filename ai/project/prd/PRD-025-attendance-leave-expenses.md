@@ -2,12 +2,12 @@
 id: PRD-025
 title: Attendance, Leave & Expenses
 version: 1.0.0
-status: DRAFT
+status: APPROVED
 priority: High
 owner: Product Manager
 created: 2026-08-26
 updated: 2026-08-26
-approved_by:
+approved_by: user
 project: Dynamic ERP Platform
 repository: erp-system
 prd_branch: prd/PRD-025-attendance-leave-expenses
@@ -37,6 +37,7 @@ dependencies:
 
 change_log:
   - 1.0.0 — Initial PRD: Attendance tracking, leave management, and employee expenses
+  - 1.0.0 APPROVED — User approved for implementation
 ---
 
 # Executive Summary

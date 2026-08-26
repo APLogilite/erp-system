@@ -2,12 +2,12 @@
 id: PRD-016
 title: Product BOM, Work Centers & Routings
 version: 1.0.0
-status: DRAFT
+status: APPROVED
 priority: High
 owner: Product Manager
 created: 2026-08-26
 updated: 2026-08-26
-approved_by:
+approved_by: user
 project: Dynamic ERP Platform
 repository: erp-system
 prd_branch: prd/PRD-016-bom-work-centers-routings
@@ -37,6 +37,7 @@ dependencies:
 
 change_log:
   - 1.0.0 — Initial PRD: Bill of materials, work centers, and routings
+  - 1.0.0 APPROVED — User approved for implementation
 ---
 
 # Executive Summary

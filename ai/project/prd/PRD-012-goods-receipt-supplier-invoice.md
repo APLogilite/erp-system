@@ -2,12 +2,12 @@
 id: PRD-012
 title: Goods Receipt & Supplier Invoice Matching
 version: 1.0.0
-status: DRAFT
+status: APPROVED
 priority: High
 owner: Product Manager
 created: 2026-08-26
 updated: 2026-08-26
-approved_by:
+approved_by: user
 project: Dynamic ERP Platform
 repository: erp-system
 prd_branch: prd/PRD-012-goods-receipt-supplier-invoice
@@ -43,6 +43,7 @@ dependencies:
 
 change_log:
   - 1.0.0 — Initial PRD: Goods receipt and supplier invoice matching
+  - 1.0.0 APPROVED — User approved for implementation
 ---
 
 # Executive Summary

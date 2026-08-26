@@ -2,12 +2,12 @@
 id: PRD-010
 title: Vendor Management & Purchase Price Lists
 version: 1.0.0
-status: DRAFT
+status: APPROVED
 priority: High
 owner: Product Manager
 created: 2026-08-26
 updated: 2026-08-26
-approved_by:
+approved_by: user
 project: Dynamic ERP Platform
 repository: erp-system
 prd_branch: prd/PRD-010-vendor-management-price-lists
@@ -40,6 +40,7 @@ dependencies:
 
 change_log:
   - 1.0.0 — Initial PRD: Vendor management and purchase price lists
+  - 1.0.0 APPROVED — User approved for implementation
 ---
 
 # Executive Summary

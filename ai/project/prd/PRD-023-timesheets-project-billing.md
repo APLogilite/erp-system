@@ -2,12 +2,12 @@
 id: PRD-023
 title: Timesheets & Project Billing
 version: 1.0.0
-status: DRAFT
+status: APPROVED
 priority: Medium
 owner: Product Manager
 created: 2026-08-26
 updated: 2026-08-26
-approved_by:
+approved_by: user
 project: Dynamic ERP Platform
 repository: erp-system
 prd_branch: prd/PRD-023-timesheets-project-billing
@@ -43,6 +43,7 @@ dependencies:
 
 change_log:
   - 1.0.0 — Initial PRD: Timesheets and project billing
+  - 1.0.0 APPROVED — User approved for implementation
 ---
 
 # Executive Summary

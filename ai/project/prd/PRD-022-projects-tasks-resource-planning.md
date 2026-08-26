@@ -2,12 +2,12 @@
 id: PRD-022
 title: Projects, Tasks & Resource Planning
 version: 1.0.0
-status: DRAFT
+status: APPROVED
 priority: Medium
 owner: Product Manager
 created: 2026-08-26
 updated: 2026-08-26
-approved_by:
+approved_by: user
 project: Dynamic ERP Platform
 repository: erp-system
 prd_branch: prd/PRD-022-projects-tasks-resource-planning
@@ -39,6 +39,7 @@ dependencies:
 
 change_log:
   - 1.0.0 — Initial PRD: Project and task management with resource planning
+  - 1.0.0 APPROVED — User approved for implementation
 ---
 
 # Executive Summary
