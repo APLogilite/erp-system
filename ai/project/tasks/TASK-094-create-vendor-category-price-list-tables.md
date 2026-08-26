@@ -3,18 +3,18 @@ id: TASK-094
 title: Create vendor category and purchase price list tables
 type: Feature
 scope: database
-status: IN_DEVELOPMENT
+status: READY_FOR_TEST
 priority: High
 owner: planner
 assigned_to: Software Engineer
 assigned_branch: feature/TASK-094
-locked: true
+locked: false
 created: 2026-08-26
 updated: 2026-08-26
 started: 2026-08-26
-completed:
+completed: 2026-08-26
 estimated_hours: 4
-actual_hours: 0
+actual_hours: 1
 parent_prd: PRD-010
 prd_version: 1.0.0
 prd_branch: prd/PRD-010-vendor-management-price-lists
@@ -38,11 +38,13 @@ labels:
 review_required: true
 test_required: true
 automation_required: true
-change_summary:
+change_summary: ai/project/changes/CHANGE-TASK-094.md
 test_report:
 test_script:
 history:
   - created
+  - 2026-08-26 — Software Engineer — Started implementation
+  - 2026-08-26 — Software Engineer — Completed implementation, merged to main
 ---
 
 # Goal
@@ -64,9 +66,9 @@ Create the database tables for vendor categories and purchase price lists (heade
 
 # Acceptance Criteria
 
-- [ ] `[SE]` Tables created with `BaseEntity` columns
-- [ ] `[SE]` Tables registered in metadata
-- [ ] `[SE]` Foreign keys and indexes in place
+- [x] `[SE]` Tables created with `BaseEntity` columns
+- [x] `[SE]` Tables registered in metadata
+- [x] `[SE]` Foreign keys and indexes in place
 - [ ] `[QA]` Tables exist in PostgreSQL
 - [ ] `[QA]` Metadata records are tenant-isolated
 
