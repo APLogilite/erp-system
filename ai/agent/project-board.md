@@ -87,6 +87,23 @@ See `ai/agent/rules/status-transitions.md` for full transition rules.
 | PRD-007 | Sales Order Workflow & Customer Management | 1.0.0 | **COMPLETED** | High |
 | PRD-008 | CRM Pipeline & Sales Team Management | 1.0.0 | **COMPLETED** | Medium |
 | PRD-009 | Sales Return & Analytics | 1.0.0 | **APPROVED** | Medium |
+| PRD-010 | Vendor Management & Purchase Price Lists | 1.0.0 | **DRAFT** | High |
+| PRD-011 | Purchase Requisition & Purchase Order | 1.0.0 | **DRAFT** | High |
+| PRD-012 | Goods Receipt & Supplier Invoice Matching | 1.0.0 | **DRAFT** | High |
+| PRD-013 | Warehouse Structure & Location Management | 1.0.0 | **DRAFT** | High |
+| PRD-014 | Stock Movements & Logistics | 1.0.0 | **DRAFT** | High |
+| PRD-015 | Inventory Adjustments, Counting & Valuation | 1.0.0 | **DRAFT** | High |
+| PRD-016 | Product BOM, Work Centers & Routings | 1.0.0 | **DRAFT** | High |
+| PRD-017 | Manufacturing Orders & Basic MRP | 1.0.0 | **DRAFT** | High |
+| PRD-018 | Chart of Accounts, Tax & Fiscal Calendar | 1.0.0 | **DRAFT** | High |
+| PRD-019 | General Ledger & Journal Posting Engine | 1.0.0 | **DRAFT** | High |
+| PRD-020 | Accounts Payable & Receivable | 1.0.0 | **DRAFT** | High |
+| PRD-021 | Bank, Cash & Payments Reconciliation | 1.0.0 | **DRAFT** | High |
+| PRD-022 | Projects, Tasks & Resource Planning | 1.0.0 | **DRAFT** | Medium |
+| PRD-023 | Timesheets & Project Billing | 1.0.0 | **DRAFT** | Medium |
+| PRD-024 | Employees, Contracts & Organization | 1.0.0 | **DRAFT** | High |
+| PRD-025 | Attendance, Leave & Expenses | 1.0.0 | **DRAFT** | High |
+| PRD-026 | Payroll Rules, Payslips & Compliance | 1.0.0 | **DRAFT** | High |
 
 ---
 
@@ -268,7 +285,7 @@ See `ai/agent/rules/status-transitions.md` for full transition rules.
 
 | Status | Count |
 |--------|-------|
-| PRDs | 9 (8 COMPLETED, 0 TESTING, 1 APPROVED) |
+| PRDs | 26 (8 COMPLETED, 0 TESTING, 1 APPROVED, 17 DRAFT) |
 | Ready For Dev | 0 |
 | Ready For Test | 0 |
 | In Testing | 0 |

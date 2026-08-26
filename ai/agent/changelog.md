@@ -8,6 +8,50 @@ last_updated: 2026-08-24
 
 # Changelog
 
+## 2026-08-26 (ERP Module Roadmap PRDs Created — DRAFT)
+
+### Summary
+Created 17 new DRAFT PRDs covering the operational ERP modules from Purchase through HR/Payroll. Each module was split into focused sub-PRDs to ensure no functionality is missed. All PRDs follow the metadata-driven form engine pattern and reference existing PRDs for dependencies.
+
+### New PRDs Created
+
+| PRD | Title | Status | Priority |
+|-----|-------|--------|----------|
+| PRD-010 | Vendor Management & Purchase Price Lists | DRAFT | High |
+| PRD-011 | Purchase Requisition & Purchase Order | DRAFT | High |
+| PRD-012 | Goods Receipt & Supplier Invoice Matching | DRAFT | High |
+| PRD-013 | Warehouse Structure & Location Management | DRAFT | High |
+| PRD-014 | Stock Movements & Logistics | DRAFT | High |
+| PRD-015 | Inventory Adjustments, Counting & Valuation | DRAFT | High |
+| PRD-016 | Product BOM, Work Centers & Routings | DRAFT | High |
+| PRD-017 | Manufacturing Orders & Basic MRP | DRAFT | High |
+| PRD-018 | Chart of Accounts, Tax & Fiscal Calendar | DRAFT | High |
+| PRD-019 | General Ledger & Journal Posting Engine | DRAFT | High |
+| PRD-020 | Accounts Payable & Receivable | DRAFT | High |
+| PRD-021 | Bank, Cash & Payments Reconciliation | DRAFT | High |
+| PRD-022 | Projects, Tasks & Resource Planning | DRAFT | Medium |
+| PRD-023 | Timesheets & Project Billing | DRAFT | Medium |
+| PRD-024 | Employees, Contracts & Organization | DRAFT | High |
+| PRD-025 | Attendance, Leave & Expenses | DRAFT | High |
+| PRD-026 | Payroll Rules, Payslips & Compliance | DRAFT | High |
+
+### Dependency Chain
+```
+PRD-010 → PRD-011 → PRD-012
+PRD-013 → PRD-014 → PRD-015
+PRD-016 → PRD-017
+PRD-018 → PRD-019 → PRD-020 → PRD-021
+PRD-022 → PRD-023
+PRD-024 → PRD-025 → PRD-026
+```
+
+### Next Steps
+- User review and approval of PRDs
+- Generate implementation tasks for approved PRDs
+- Update PROJECT_BOARD.md with tasks
+
+---
+
 ## 2026-08-24 (PRD-008 Merged to Main — COMPLETED)
 
 ### Summary
