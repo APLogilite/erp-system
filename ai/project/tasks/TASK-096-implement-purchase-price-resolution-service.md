@@ -3,18 +3,18 @@ id: TASK-096
 title: Implement purchase price resolution service
 type: Feature
 scope: backend
-status: IN_DEVELOPMENT
+status: READY_FOR_TEST
 priority: High
 owner: planner
 assigned_to: Software Engineer
 assigned_branch: feature/TASK-096
-locked: true
+locked: false
 created: 2026-08-26
 updated: 2026-08-26
 started: 2026-08-26
-completed:
+completed: 2026-08-26
 estimated_hours: 5
-actual_hours: 0
+actual_hours: 1.5
 parent_prd: PRD-010
 prd_version: 1.0.0
 prd_branch: prd/PRD-010-vendor-management-price-lists
@@ -36,11 +36,13 @@ labels:
 review_required: true
 test_required: true
 automation_required: true
-change_summary:
+change_summary: ai/project/changes/CHANGE-TASK-096.md
 test_report:
 test_script:
 history:
   - created
+  - 2026-08-26 — Software Engineer — Started implementation
+  - 2026-08-26 — Software Engineer — Completed implementation, all 36 backend tests pass, merged to main
 ---
 
 # Goal
@@ -63,9 +65,9 @@ Provide a backend service that resolves the correct purchase unit price for a pr
 
 # Acceptance Criteria
 
-- [ ] `[SE]` Service returns correct price by quantity break
-- [ ] `[SE]` Fallback to product price works
-- [ ] `[SE]` Endpoint returns `ApiResponse<T>`
+- [x] `[SE]` Service returns correct price by quantity break
+- [x] `[SE]` Fallback to product price works
+- [x] `[SE]` Endpoint returns `ApiResponse<T>`
 - [ ] `[QA]` Price lookup returns expected value for matching price list
 - [ ] `[QA]` Fallback returns product price when no price list exists
 - [ ] `[QA]` Tenant isolation enforced
