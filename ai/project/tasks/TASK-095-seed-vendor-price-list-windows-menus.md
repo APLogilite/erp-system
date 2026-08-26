@@ -3,18 +3,18 @@ id: TASK-095
 title: Seed vendor and purchase price list windows, tabs, fields, and menus
 type: Feature
 scope: both
-status: PLANNED
+status: IN_DEVELOPMENT
 priority: High
 owner: planner
-assigned_to:
-assigned_branch:
-locked: false
+assigned_to: Software Engineer
+assigned_branch: feature/TASK-095
+locked: true
 created: 2026-08-26
 updated: 2026-08-26
-started:
+started: 2026-08-26
 completed:
 estimated_hours: 5
-actual_hours:
+actual_hours: 0
 parent_prd: PRD-010
 prd_version: 1.0.0
 prd_branch: prd/PRD-010-vendor-management-price-lists
