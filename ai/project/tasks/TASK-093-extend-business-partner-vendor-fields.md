@@ -3,18 +3,18 @@ id: TASK-093
 title: Extend c_business_partner with vendor fields
 type: Feature
 scope: database
-status: PLANNED
+status: IN_DEVELOPMENT
 priority: High
 owner: planner
-assigned_to:
-assigned_branch:
-locked: false
+assigned_to: Software Engineer
+assigned_branch: feature/TASK-093
+locked: true
 created: 2026-08-26
 updated: 2026-08-26
-started:
+started: 2026-08-26
 completed:
 estimated_hours: 3
-actual_hours:
+actual_hours: 0
 parent_prd: PRD-010
 prd_version: 1.0.0
 prd_branch: prd/PRD-010-vendor-management-price-lists

@@ -2,7 +2,7 @@
 id: PRD-010
 title: Vendor Management & Purchase Price Lists
 version: 1.0.0
-status: APPROVED
+status: IN_DEVELOPMENT
 priority: High
 owner: Product Manager
 created: 2026-08-26
