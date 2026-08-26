@@ -16,7 +16,7 @@ CREATE TABLE md_business_partner (
     payment_term_id            UUID REFERENCES md_payment_term(id),
     territory_id               UUID REFERENCES md_sales_territory(id),
     is_vendor                  BOOLEAN NOT NULL DEFAULT false,
-    vendor_category_id         UUID,
+    vendor_category_id         UUID REFERENCES pur_vendor_category(id),
     default_purchase_currency  VARCHAR(3) DEFAULT 'USD',
     created_at                 TIMESTAMP NOT NULL DEFAULT now(),
     updated_at                 TIMESTAMP NOT NULL DEFAULT now(),
