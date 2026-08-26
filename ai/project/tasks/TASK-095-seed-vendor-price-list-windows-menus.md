@@ -3,18 +3,18 @@ id: TASK-095
 title: Seed vendor and purchase price list windows, tabs, fields, and menus
 type: Feature
 scope: both
-status: IN_DEVELOPMENT
+status: READY_FOR_TEST
 priority: High
 owner: planner
 assigned_to: Software Engineer
 assigned_branch: feature/TASK-095
-locked: true
+locked: false
 created: 2026-08-26
 updated: 2026-08-26
 started: 2026-08-26
-completed:
+completed: 2026-08-26
 estimated_hours: 5
-actual_hours: 0
+actual_hours: 1
 parent_prd: PRD-010
 prd_version: 1.0.0
 prd_branch: prd/PRD-010-vendor-management-price-lists
@@ -39,11 +39,13 @@ labels:
 review_required: true
 test_required: true
 automation_required: true
-change_summary:
+change_summary: ai/project/changes/CHANGE-TASK-095.md
 test_report:
 test_script:
 history:
   - created
+  - 2026-08-26 — Software Engineer — Started implementation
+  - 2026-08-26 — Software Engineer — Completed implementation, merged to main
 ---
 
 # Goal
@@ -65,10 +67,10 @@ Make vendor management and purchase price list forms available in the runtime UI
 
 # Acceptance Criteria
 
-- [ ] `[SE]` Vendor window renders in runtime UI
-- [ ] `[SE]` Vendor Category window renders
-- [ ] `[SE]` Purchase Price List window with lines tab renders
-- [ ] `[SE]` Menu entries visible under Purchasing
+- [x] `[SE]` Vendor window renders in runtime UI
+- [x] `[SE]` Vendor Category window renders
+- [x] `[SE]` Purchase Price List window with lines tab renders
+- [x] `[SE]` Menu entries visible under Purchasing
 - [ ] `[QA]` User can navigate to Vendor window
 - [ ] `[QA]` User can create a vendor category
 - [ ] `[QA]` User can create a price list with lines
