@@ -2,11 +2,11 @@
 id: PRD-011
 title: Purchase Requisition & Purchase Order
 version: 1.0.0
-status: APPROVED
+status: IN_DEVELOPMENT
 priority: High
 owner: Product Manager
 created: 2026-08-26
-updated: 2026-08-26
+updated: 2026-08-27
 approved_by: user
 project: Dynamic ERP Platform
 repository: erp-system
