@@ -2,11 +2,11 @@
 id: PRD-013
 title: Warehouse Structure & Location Management
 version: 1.0.0
-status: APPROVED
+status: IN_DEVELOPMENT
 priority: High
 owner: Product Manager
 created: 2026-08-26
-updated: 2026-08-26
+updated: 2026-08-31
 approved_by: user
 project: Dynamic ERP Platform
 repository: erp-system
@@ -40,6 +40,7 @@ dependencies:
 change_log:
   - 1.0.0 — Initial PRD: Warehouse and inventory location structure
   - 1.0.0 APPROVED — User approved for implementation
+  - 1.0.0 IN_DEVELOPMENT — Started implementation (TASK-105..107)
 ---
 
 # Executive Summary
