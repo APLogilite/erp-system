@@ -2,11 +2,11 @@
 id: PRD-014
 title: Stock Movements & Logistics
 version: 1.0.0
-status: APPROVED
+status: IN_DEVELOPMENT
 priority: High
 owner: Product Manager
 created: 2026-08-26
-updated: 2026-08-26
+updated: 2026-08-31
 approved_by: user
 project: Dynamic ERP Platform
 repository: erp-system
@@ -46,6 +46,7 @@ dependencies:
 change_log:
   - 1.0.0 — Initial PRD: Stock movements, receipts, deliveries, and transfers
   - 1.0.0 APPROVED — User approved for implementation
+  - 1.0.0 IN_DEVELOPMENT — Started implementation (TASK-108..111)
 ---
 
 # Executive Summary
