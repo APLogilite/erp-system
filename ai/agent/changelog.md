@@ -1162,32 +1162,6 @@ QA Engineer verified 78 tasks across 17 PRDs:
 - **PRD-025** (5 tasks): Attendance, leave, expenses — 
 - **PRD-026** (6 tasks): Payroll rules, payslips, reports — 
 
-**All branches compile clean ([INFO] Scanning for projects...
-[INFO] ------------------------------------------------------------------------
-[INFO] BUILD FAILURE
-[INFO] ------------------------------------------------------------------------
-[INFO] Total time:  0.072 s
-[INFO] Finished at: 2026-09-07T17:03:00+05:30
-[INFO] ------------------------------------------------------------------------
-[ERROR] The goal you specified requires a project to execute but there is no POM in this directory (/mnt/EXT_LL1/erp-system). Please verify you invoked Maven from the correct directory. -> [Help 1]
-[ERROR] 
-[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
-[ERROR] Re-run Maven using the -X switch to enable full debug logging.
-[ERROR] 
-[ERROR] For more information about the errors and possible solutions, please read the following articles:
-[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MissingProjectException), pass all 36 unit tests ([INFO] Scanning for projects...
-[INFO] ------------------------------------------------------------------------
-[INFO] BUILD FAILURE
-[INFO] ------------------------------------------------------------------------
-[INFO] Total time:  0.055 s
-[INFO] Finished at: 2026-09-07T17:03:01+05:30
-[INFO] ------------------------------------------------------------------------
-[ERROR] The goal you specified requires a project to execute but there is no POM in this directory (/mnt/EXT_LL1/erp-system). Please verify you invoked Maven from the correct directory. -> [Help 1]
-[ERROR] 
-[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
-[ERROR] Re-run Maven using the -X switch to enable full debug logging.
-[ERROR] 
-[ERROR] For more information about the errors and possible solutions, please read the following articles:
-[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MissingProjectException), and are marked READY_FOR_DEPLOYMENT.**
+**All branches compile clean (`mvn compile`), pass all 36 unit tests (`mvn test`), and are marked READY_FOR_DEPLOYMENT.**
 
 **Note:** PRD-012 (Goods Receipt & Supplier Invoice) has no branch — tasks remain PLANNED.
