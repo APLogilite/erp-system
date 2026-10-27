@@ -122,4 +122,5 @@ See individual README files in `backend/` and `frontend/` for detailed setup and
 - `backend/README.md` — Backend architecture, modules, Flyway migrations, API
 - `frontend/README.md` — Frontend architecture, components, state management
 - `ai/` — AI planning artifacts including PRD specs, task documents, change reports, test reports, and workflow documentation
+- `agent.sh` — AI Agent CLI helper for switching roles (`se`, `qa`, `pm`, `tw`), checking status, and monitoring
 - `docs/` — Development prompts and additional documentation

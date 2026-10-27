@@ -85,3 +85,28 @@ Before advancing a PRD from IN_DEVELOPMENT to TESTING, the SE must run `bash sta
 - Frontend `.env*` files exist on disk as defaults but are gitignored; Vite's `loadEnv` loads them directly
 - `mvn exec:java` only generates code for the 5 entities hardcoded in `CodeGenerator.java`
 - `ai/` directory contains PRD specs, task docs, change reports, test reports, and workflow docs — maintained by AI agents
+
+## AI Multi-Agent Framework & Roles
+
+The project uses a structured multi-agent workflow defined in `ai/agent/rules/`:
+
+| Role | Marker (`.agent-role`) | Antigravity Skill | Primary Responsibilities |
+|------|------------------------|-------------------|--------------------------|
+| **Product Manager** | `pm` | `product-manager` | PRDs (`ai/project/prd/`), task creation, dependencies, board updates |
+| **Software Engineer** | `se` | `software-engineer` | Implementation (`backend/`, `frontend/`), feature branches, change reports |
+| **QA Engineer** | `qa` | `qa-engineer` | Verification on `prd/*` branches, test reports, manual test scenarios, bug filing |
+| **Technical Writer** | `tw` | `technical-writer` | Module docs (`ai/project/modules/`), end-to-end flows (`ai/project/flows/`) |
+
+### Quick CLI Shortcuts
+
+Use `./agent.sh` to manage roles and inspect project state:
+
+```bash
+./agent.sh role [se|qa|pm|tw]   # View or switch current agent role
+./agent.sh status               # Show active role, git branch, and status
+./agent.sh check                # Validate access control boundaries (scripts/check-access.mjs)
+./agent.sh board                # View current ready tasks from project board
+./agent.sh monitor              # Start real-time monitor dashboard at http://localhost:3000
+./agent.sh verify               # Run start-all.sh to verify backend + frontend
+```
+

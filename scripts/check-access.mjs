@@ -48,7 +48,7 @@ try {
   process.exit(0);
 }
 
-const rulesPath = path.join(ROOT, 'ai', 'docs', 'rules', 'access.json');
+const rulesPath = path.join(ROOT, 'ai', 'agent', 'rules', 'access.json');
 let rules;
 try {
   rules = JSON.parse(fs.readFileSync(rulesPath, 'utf-8'));
